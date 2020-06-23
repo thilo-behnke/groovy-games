@@ -1,26 +1,70 @@
 package engine
 
-import gameObject.GameObjectProvider
+import engine.exception.DuplicateGameSceneException
+import global.DateProvider
+import groovy.util.logging.Log4j
 
-interface GameEngine {
-    void start();
+@Log4j
+class GameEngine {
+    private DateProvider dateProvider
 
-    void stop();
-}
+    private GameScene activeScene
+    private Map<String, GameScene> scenes = [:]
 
-class DefaultGameEngine implements GameEngine {
-    private isRunning = false;
-    
-    DefaultGameEngine(private GameObjectProvider gameObjectProvider) {
+    private isRunning = false
+    private long lastTimestamp
+
+    GameEngine(DateProvider dateProvider) {
+        this.dateProvider = dateProvider
     }
 
-    @Override
     void start() {
-
+        isRunning = true
+        startGameLoop()
     }
 
-    @Override
-    void stop() {
+    private startGameLoop() {
+        while(isRunning) {
+            long now = dateProvider.now()
+            long delta = now - lastTimestamp
+            log.debug("Updating Game. Time: ${now}. Delta: ${delta}".toString())
+            scenes.values().each {scene -> scene.update(now, delta)}
+            lastTimestamp = now
+        }
+    }
 
+    void addScene(GameScene scene) {
+        if(scenes.containsKey(scene.name)) {
+            throw new DuplicateGameSceneException("There already exists a scene with the name ${name}.".toString())
+        }
+        scenes.put(scene.name, scene)
+    }
+
+    void changeScene(String name, boolean stopActiveScene = true) {
+        GameScene scene = scenes.get(name)
+        if(!scene) {
+            log.debug("Tried to start a scene with name ${name}, but no such scene exists.")
+            return
+        }
+        if(!activeScene || activeScene.name == name) {
+            return
+        }
+        if(stopActiveScene) {
+            activeScene.stop()
+        } else {
+            activeScene.pause()
+        }
+        activeScene = scene
+        scene.start()
+    }
+
+    void removeScene(String name) {
+        GameScene scene = scenes.get(name)
+        if(!scene) {
+            log.debug("Tried to stop a scene with name ${name}, but no such scene exists.")
+            return
+        }
+        scene.stop()
+        scenes.remove(name)
     }
 }
