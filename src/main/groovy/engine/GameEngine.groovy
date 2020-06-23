@@ -50,12 +50,12 @@ class GameEngine {
             return
         }
         if(stopActiveScene) {
-            activeScene.stop()
+            scene.setState(GameSceneState.STOPPED)
         } else {
-            activeScene.pause()
+            scene.setState(GameSceneState.PAUSED)
         }
         activeScene = scene
-        scene.start()
+        scene.setState(GameSceneState.RUNNING)
     }
 
     void removeScene(String name) {
@@ -64,7 +64,7 @@ class GameEngine {
             log.debug("Tried to stop a scene with name ${name}, but no such scene exists.")
             return
         }
-        scene.stop()
+        scene.setState(GameSceneState.STOPPED)
         scenes.remove(name)
     }
 }

@@ -9,11 +9,7 @@ interface GameScene {
 
     void update(Long timestamp, Long delta)
 
-    void start()
-
-    void stop()
-
-    void pause()
+    void setState(GameSceneState sceneState)
 }
 
 @Log4j
@@ -38,17 +34,7 @@ class DefaultGameScene implements GameScene {
     }
 
     @Override
-    void start() {
-        gameSceneState = GameSceneState.RUNNING
-    }
-
-    @Override
-    void stop() {
-        gameSceneState = GameSceneState.STOPPED
-    }
-
-    @Override
-    void pause() {
-        gameSceneState = GameSceneState.PAUSED
+    void setState(GameSceneState state) {
+        gameSceneState = state
     }
 }
