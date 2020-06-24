@@ -1,39 +1,32 @@
 package engine
 
-
 import global.DateProvider
 import groovy.util.logging.Log4j
-
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
 
 @Log4j
 class GameEngine {
     private DateProvider dateProvider
     private SceneProvider sceneProvider
 
-    private GameScene activeScene
+    private Optional<GameScene> activeScene = Optional.empty()
 
     private isRunning = false
     private long lastTimestamp
 
     private Thread thread
 
-    private ExecutorService executorService
-
     GameEngine(DateProvider dateProvider, SceneProvider sceneProvider) {
         this.dateProvider = dateProvider
         this.sceneProvider = sceneProvider
-
-        executorService = Executors.newFixedThreadPool(1)
     }
 
     void start() {
         isRunning = true
-        // TODO: Does not seem like a good way. How can the GameEngine stay alive while the game loop thread is running?
+        // TODO: Does not seem like a good way.
         Runnable runnable = () -> {startGameLoop()}
-        executorService.invokeAll([startGameLoop])
+        thread = new Thread(runnable)
+        thread.start()
+        thread.join()
     }
 
     private startGameLoop() {
@@ -41,7 +34,7 @@ class GameEngine {
             long now = dateProvider.now()
             long delta = now - lastTimestamp
             log.debug("Updating Game. Time: ${now}. Delta: ${delta}".toString())
-            activeScene.update(now, delta)
+            activeScene.ifPresent{scene -> scene.update(now, delta)}
             lastTimestamp = now
         }
     }
@@ -70,12 +63,12 @@ class GameEngine {
         if(activeScene && activeScene.name == name) {
             return
         }
-        if(activeScene && stopActiveScene) {
-            activeScene.setState(GameSceneState.STOPPED)
-        } else if(activeScene) {
-            activeScene.setState(GameSceneState.PAUSED)
+        if(stopActiveScene) {
+            activeScene.ifPresent{s -> s.setState(GameSceneState.STOPPED)}
+        } else {
+            activeScene.ifPresent{s -> s.setState(GameSceneState.PAUSED)}
         }
-        activeScene = scene
+        activeScene = Optional.of(scene)
         scene.setState(GameSceneState.RUNNING)
     }
 

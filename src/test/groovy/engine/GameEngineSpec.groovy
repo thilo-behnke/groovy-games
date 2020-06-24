@@ -42,11 +42,11 @@ class GameEngineSpec extends Specification {
 
     def 'running the game loop with an active scene'() {
         when:
-        gameEngine.start()
         def sceneName = configureGameEngineWithScene(true)
+        // TODO: Does not work because loop is running in thread?
+        gameEngine.start()
         then:
         gameEngine.isRunning()
-        // TODO: Does not work because loop is running in thread?
         expectScenesToBeUpdated(sceneName)
     }
 
