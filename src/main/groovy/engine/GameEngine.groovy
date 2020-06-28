@@ -28,10 +28,9 @@ class GameEngine {
         this.executionCondition = Optional.of(executionCondition)
     }
 
-    ExecutorService start() {
+    void start() {
         isRunning = true
-        executorService.execute(() -> startGameLoop())
-        return executorService
+        startGameLoop()
     }
 
     private startGameLoop() {
@@ -39,11 +38,7 @@ class GameEngine {
             if(stopIfExecutionConditionIsMet()) {
                 break
             }
-            long now = dateProvider.now()
-            long delta = now - (lastTimestamp ?: now)
-            updateScenes(now, delta)
-            updateExecutionCondition(now, delta)
-            lastTimestamp = now
+            executorService.submit(() -> updateGame())
         }
     }
 
@@ -53,6 +48,15 @@ class GameEngine {
             return true
         }
     }
+
+    private updateGame() {
+        long now = dateProvider.now()
+        long delta = now - (lastTimestamp ?: now)
+        updateScenes(now, delta)
+        updateExecutionCondition(now, delta)
+        lastTimestamp = now
+    }
+
 
     private updateScenes(long now, long delta) {
         log.debug("Updating Game. Time: ${now}. Delta: ${delta}".toString())
@@ -87,7 +91,7 @@ class GameEngine {
         }
 
         GameScene scene = sceneOpt.get()
-        if(activeScene && activeScene.name == name) {
+        if(activeScene.isPresent() && activeScene.get().name == name) {
             return
         }
         if(stopActiveScene) {
