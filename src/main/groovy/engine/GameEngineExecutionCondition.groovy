@@ -1,5 +1,7 @@
 package engine
 
+import global.Observer
+
 import java.util.concurrent.atomic.AtomicLong
 
 interface GameEngineExecutionCondition {
@@ -10,6 +12,8 @@ interface GameEngineExecutionCondition {
 class FixedCycleGameEngineExecutionCondition implements GameEngineExecutionCondition {
     private long totalCycles
     private AtomicLong cyclesPassed = new AtomicLong()
+
+    private List<Observer<Long>> cycleObservers = new ArrayList()
 
     static nrOfCycles(long cycles) {
         return new FixedCycleGameEngineExecutionCondition(totalCycles: cycles)
