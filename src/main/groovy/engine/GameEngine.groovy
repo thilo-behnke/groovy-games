@@ -1,47 +1,74 @@
 package engine
 
 import global.DateProvider
+
 import groovy.util.logging.Log4j
+
+import java.util.concurrent.ExecutorService
 
 @Log4j
 class GameEngine {
     private DateProvider dateProvider
     private SceneProvider sceneProvider
+    private ExecutorService executorService
+    private Optional<GameEngineExecutionCondition> executionCondition = Optional.empty()
 
     private Optional<GameScene> activeScene = Optional.empty()
 
     private isRunning = false
     private long lastTimestamp
 
-    private Thread thread
-
-    GameEngine(DateProvider dateProvider, SceneProvider sceneProvider) {
+    GameEngine(ExecutorService executorService, DateProvider dateProvider, SceneProvider sceneProvider) {
         this.dateProvider = dateProvider
         this.sceneProvider = sceneProvider
+        this.executorService = executorService
     }
 
-    void start() {
+    void setExecutionCondition(GameEngineExecutionCondition executionCondition) {
+        this.executionCondition = Optional.of(executionCondition)
+    }
+
+    ExecutorService start() {
         isRunning = true
-        // TODO: Does not seem like a good way.
-        Runnable runnable = () -> {startGameLoop()}
-        thread = new Thread(runnable)
-        thread.start()
-        thread.join()
+        executorService.execute(() -> startGameLoop())
+        return executorService
     }
 
     private startGameLoop() {
         while(isRunning) {
+            if(stopIfExecutionConditionIsMet()) {
+                break
+            }
             long now = dateProvider.now()
-            long delta = now - lastTimestamp
-            log.debug("Updating Game. Time: ${now}. Delta: ${delta}".toString())
-            activeScene.ifPresent{scene -> scene.update(now, delta)}
+            long delta = now - (lastTimestamp ?: now)
+            updateScenes(now, delta)
+            updateExecutionCondition(now, delta)
             lastTimestamp = now
+        }
+    }
+
+    private stopIfExecutionConditionIsMet() {
+        if (executionCondition.isPresent() && executionCondition.get().shouldStop()) {
+            stop()
+            return true
+        }
+    }
+
+    private updateScenes(long now, long delta) {
+        log.debug("Updating Game. Time: ${now}. Delta: ${delta}".toString())
+        activeScene.ifPresent{scene -> scene.update(now, delta)}
+    }
+
+    private updateExecutionCondition(long now, long delta) {
+        if(executionCondition.isPresent()) {
+            executionCondition.get().onGameEngineCycle(now, delta)
         }
     }
 
     void stop() {
         sceneProvider.getAll().each {scene -> removeScene(scene.name)}
         isRunning = false
+        executorService.shutdown()
     }
 
     boolean isRunning() {
