@@ -18,7 +18,7 @@ class HaltingExecutorServiceSpec extends Specification {
         when:
         def future = haltingExecutorService.submit(() -> 'hello')
         then:
-        future.get(1000, TimeUnit.MILLISECONDS)
+        future.get()
         future.isDone()
     }
 
