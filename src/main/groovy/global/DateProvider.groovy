@@ -1,11 +1,11 @@
 package global
 
 interface DateProvider {
-    long now()
+	long now()
 }
 
 class DefaultDateProvider implements DateProvider {
-    long now() {
-        return new Date().getTime()
-    }
+	long now() {
+		return new Date().getTime()
+	}
 }

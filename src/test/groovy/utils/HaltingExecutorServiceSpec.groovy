@@ -16,7 +16,7 @@ class HaltingExecutorServiceSpec extends Specification {
 
     def 'should execute a single task asynchronously'() {
         when:
-        def future = haltingExecutorService.submit(() -> 'hello')
+        def future = haltingExecutorService.submit({'hello'})
         then:
         future.get()
         future.isDone()
@@ -24,8 +24,8 @@ class HaltingExecutorServiceSpec extends Specification {
 
     def 'should execute multiple tasks asynchronously, in the order they were added'() {
         when:
-        def future = haltingExecutorService.submit(() -> System.println('hello'))
-        def future2 = haltingExecutorService.submit(() -> System.println('world'))
+        def future = haltingExecutorService.submit({System.println('hello')})
+        def future2 = haltingExecutorService.submit({System.println('world')})
         then:
         future.get(100, TimeUnit.MILLISECONDS)
         future.isDone()
@@ -55,7 +55,7 @@ class HaltingExecutorServiceSpec extends Specification {
             // TODO: This works differently when the halt action is executed in thenCompose -> potential issue?
             haltingExecutorService.halt()
         })
-        def future2 = haltingExecutorService.submit(() -> 'world')
+        def future2 = haltingExecutorService.submit({'world'})
         return [future, future2]
     }
 }

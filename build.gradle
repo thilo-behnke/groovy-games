@@ -1,20 +1,42 @@
+plugins {
+	id "com.diffplug.gradle.spotless" version "4.5.1"
+}
+
 apply plugin: 'groovy'
 
 version = "0.0.1"
 
 repositories {
-    mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+	mavenCentral()
+	maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 dependencies {
-    compile "org.codehaus.groovy:groovy-all:3.0.2"
-    compile 'log4j:log4j:1.2.17'
+	compile "org.codehaus.groovy:groovy-all:3.0.2"
+	compile 'log4j:log4j:1.2.17'
 
-    testImplementation('org.spockframework:spock-core:2.0-M2-groovy-3.0')
-    testCompile "org.spockframework:spock-core"
+	testImplementation('org.spockframework:spock-core:2.0-M2-groovy-3.0')
+	testCompile "org.spockframework:spock-core"
 }
 
 test {
-    useJUnitPlatform()
+	useJUnitPlatform()
+}
+
+spotless {
+	groovy {
+		importOrder() // standard import order
+		//        importOrder('java', 'javax', 'com.acme', '') // or importOrderFile
+
+		excludeJava() // excludes all Java sources within the Groovy source dirs from formatting
+		// the Groovy Eclipse formatter extends the Java Eclipse formatter,
+		// so it formats Java files by default (unless `excludeJava` is used).
+		greclipse() // has its own section below
+
+		//        licenseHeader '/* (C) $YEAR */' // or licenseHeaderFile
+	}
+	groovyGradle {
+		target '*.gradle' // default target of groovyGradle
+		greclipse()
+	}
 }

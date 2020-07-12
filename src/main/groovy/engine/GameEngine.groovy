@@ -46,7 +46,7 @@ class GameEngine {
                 break
             }
             if(state == GameEngineState.RUNNING) {
-                executorService.submit(() -> updateGame())
+                executorService.submit({updateGame()})
             }
         }
     }
