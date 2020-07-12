@@ -17,6 +17,7 @@ class GameEngine {
     private HaltingExecutorService executorService
     private GameEngineExecutionRuleEngine executionRuleEngine
 
+    // TODO: This should be an array of scenes.
     private Optional<GameScene> activeScene = Optional.empty()
 
     private state = GameEngineState.UNINITIALIZED
@@ -46,6 +47,11 @@ class GameEngine {
                 break
             }
             if(state == GameEngineState.RUNNING) {
+                // TODO: This should not be one task, but multiple per cycle:
+                // - Render (Scene dependent)
+                // - GameObject updates (Scene dependent)
+                // - Inputs
+                // - etc.
                 executorService.submit({updateGame()})
             }
         }
