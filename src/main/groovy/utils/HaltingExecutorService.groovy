@@ -65,7 +65,7 @@ class HaltingExecutorService implements ExecutorService {
         return executionTask.future
     }
 
-    private CompletableFuture submitTasksUntilQueueIsEmpty() {
+    private CompletableFuture submitTasksUntilQueueIsEmpty(val) {
         if (haltExecution) {
             return CompletableFuture.completedFuture()
         }
@@ -75,19 +75,16 @@ class HaltingExecutorService implements ExecutorService {
         }
         currentExecution = submitTask(nextTask.task)
                 .thenRun({
-                    -> nextTask.future.complete('test')
+                    -> nextTask.future.complete('Future complete.')
                 })
         // TODO: Can't make this recursive call work.
-                .thenCompose({ ->
-                    return submitTasksUntilQueueIsEmpty()
-                })
+                .thenCompose(this::submitTasksUntilQueueIsEmpty)
         return currentExecution
     }
 
     private submitTask(Runnable task) {
         return CompletableFuture.supplyAsync({
             ->
-            System.println('test2')
             return CompletableFuture.runAsync(task, executorService)
         }, executorService)
     }
