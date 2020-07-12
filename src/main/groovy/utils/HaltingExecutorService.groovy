@@ -1,5 +1,7 @@
 package utils
 
+import groovy.util.logging.Log4j
+
 import java.util.concurrent.Callable
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ExecutionException
@@ -13,6 +15,7 @@ enum HaltingExecutorCompletionState {
     COMPLETED, HALTED
 }
 
+@Log4j
 class HaltingExecutorService implements ExecutorService {
     private Future currentExecution
     private Queue<ExecutorServiceQueueElement> executionQueue = new LinkedList<>()
@@ -76,10 +79,12 @@ class HaltingExecutorService implements ExecutorService {
     // TODO: Where does this nullable value val come from?
     private CompletableFuture submitTasksUntilQueueIsEmpty(val) {
         if (haltExecution) {
+            log.debug("Halting execution when ready to run the next task from queue.")
             return CompletableFuture.completedFuture(HaltingExecutorCompletionState.HALTED)
         }
         def nextTask = executionQueue.poll()
         if (!nextTask) {
+            log.debug("No next task in queue, ending execution.")
             return CompletableFuture.completedFuture(HaltingExecutorCompletionState.COMPLETED)
         }
         currentExecution = submitTask(nextTask.task)
@@ -88,11 +93,7 @@ class HaltingExecutorService implements ExecutorService {
                         if (completionState == HaltingExecutorCompletionState.COMPLETED) {
                             nextTask.future.complete('Future complete.')
                         }
-                        if (haltExecution) {
-                            return CompletableFuture.completedFuture(HaltingExecutorCompletionState.HALTED)
-                        } else {
-                            return this.submitTasksUntilQueueIsEmpty(null)
-                        }
+                        return this.submitTasksUntilQueueIsEmpty(null)
                 })
         return currentExecution
     }
@@ -100,6 +101,7 @@ class HaltingExecutorService implements ExecutorService {
     private submitTask(Runnable task) {
         return CompletableFuture.supplyAsync({->
             if(haltExecution) {
+                log.debug("Halting execution in task executor - returning halted execution state.")
                 return HaltingExecutorCompletionState.HALTED
             }
             task.run()

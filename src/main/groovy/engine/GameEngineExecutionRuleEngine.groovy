@@ -53,12 +53,12 @@ class NoopGameEngineExecutionCondition extends GameEngineExecutionRule {
     }
 }
 
-class FixedCycleGameEngineExecutionCondition extends GameEngineExecutionRule {
+class ShutdownAfterFixedNumberOfCyclesExecutionRule extends GameEngineExecutionRule {
     private long totalCycles
     private AtomicLong cyclesPassed = new AtomicLong()
 
     static nrOfCycles(long cycles) {
-        return new FixedCycleGameEngineExecutionCondition(totalCycles: cycles)
+        return new ShutdownAfterFixedNumberOfCyclesExecutionRule(totalCycles: cycles)
     }
 
     @Override
@@ -74,5 +74,21 @@ class FixedCycleGameEngineExecutionCondition extends GameEngineExecutionRule {
     @Override
     protected boolean checkCondition() {
         cyclesPassed.get() >= totalCycles
+    }
+}
+
+class HaltEveryCycleExecutionRule extends GameEngineExecutionRule {
+    @Override
+    Set<GameEngineExecutionRuleType> getRuleTypes() {
+        return [GameEngineExecutionRuleType.HALT]
+    }
+
+    @Override
+    void onGameEngineCycle(long timestamp, long delta) {
+    }
+
+    @Override
+    protected boolean checkCondition() {
+        return true
     }
 }

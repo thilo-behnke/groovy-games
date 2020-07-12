@@ -10,7 +10,7 @@ class Main {
         def sceneProvider = new DefaultSceneProvider()
         def executorService = new HaltingExecutorService()
         def executionRuleEngine = new GameEngineExecutionRuleEngine()
-        executionRuleEngine << FixedCycleGameEngineExecutionCondition.nrOfCycles(10)
+        executionRuleEngine << ShutdownAfterFixedNumberOfCyclesExecutionRule.nrOfCycles(10)
 
         def gameEngine = new GameEngine(executorService, dateProvider, sceneProvider)
         gameEngine.setExecutionRuleEngine(executionRuleEngine)

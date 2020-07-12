@@ -27,12 +27,13 @@ class GameEngineSpec extends Specification {
         def sceneProvider = new DefaultSceneProvider()
         executorService = Executors.newFixedThreadPool(1)
         gameEngine = new GameEngine(executorService, dateProviderMock, sceneProvider)
-        waitForCycles(1)
+        pauseAfterEveryCycle(1)
     }
 
-    private boolean waitForCycles(nrOfCycles = 1) {
-        def executionCondition = FixedCycleGameEngineExecutionCondition.nrOfCycles(1)
-        gameEngine.setExecutionRuleEngine(executionCondition)
+    private boolean pauseAfterEveryCycle(nrOfCycles = 1) {
+        def executionRuleEngine = new GameEngineExecutionRuleEngine()
+        executionRuleEngine << new HaltEveryCycleExecutionRule()
+        gameEngine.setExecutionRuleEngine(executionRuleEngine)
     }
 
     def cleanup() {

@@ -50,7 +50,11 @@ class HaltingExecutorServiceSpec extends Specification {
     }
 
     private prepareHaltedExecution() {
-        def future = haltingExecutorService.submit(() -> 'hello').thenComposeAsync({ haltingExecutorService.halt() })
+        def future = haltingExecutorService.submit({
+            System.println 'hello'
+            // TODO: This works differently when the halt action is executed in thenCompose -> potential issue?
+            haltingExecutorService.halt()
+        })
         def future2 = haltingExecutorService.submit(() -> 'world')
         return [future, future2]
     }
