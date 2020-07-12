@@ -3,13 +3,11 @@ package engine
 
 import gameObject.GameObjectProvider
 import global.DateProvider
-import global.Observer
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 
 @Unroll
@@ -34,7 +32,7 @@ class GameEngineSpec extends Specification {
 
     private boolean waitForCycles(nrOfCycles = 1) {
         def executionCondition = FixedCycleGameEngineExecutionCondition.nrOfCycles(1)
-        gameEngine.setExecutionCondition(executionCondition)
+        gameEngine.setExecutionRuleEngine(executionCondition)
     }
 
     def cleanup() {

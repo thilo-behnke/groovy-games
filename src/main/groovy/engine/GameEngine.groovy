@@ -8,10 +8,11 @@ import java.util.concurrent.ExecutorService
 
 @Log4j
 class GameEngine {
+    private static final defaultExecutionRuleEngine = new GameEngineExecutionRuleEngine()
     private DateProvider dateProvider
     private SceneProvider sceneProvider
     private ExecutorService executorService
-    private Optional<GameEngineExecutionCondition> executionCondition = Optional.empty()
+    private GameEngineExecutionRuleEngine executionRuleEngine
 
     private Optional<GameScene> activeScene = Optional.empty()
 
@@ -24,8 +25,8 @@ class GameEngine {
         this.executorService = executorService
     }
 
-    void setExecutionCondition(GameEngineExecutionCondition executionCondition) {
-        this.executionCondition = Optional.of(executionCondition)
+    void setExecutionRuleEngine(GameEngineExecutionRuleEngine gameEngineExecutionRuleEngine = defaultExecutionRuleEngine) {
+        this.executionRuleEngine = gameEngineExecutionRuleEngine
     }
 
     void start() {
@@ -43,7 +44,7 @@ class GameEngine {
     }
 
     private stopIfExecutionConditionIsMet() {
-        if (executionCondition.isPresent() && executionCondition.get().shouldStop()) {
+        if (executionRuleEngine.shouldShutdown()) {
             stop()
             return true
         }
@@ -53,7 +54,7 @@ class GameEngine {
         long now = dateProvider.now()
         long delta = now - (lastTimestamp ?: now)
         updateScenes(now, delta)
-        updateExecutionCondition(now, delta)
+        updateExecutionRuleEngine(now, delta)
         lastTimestamp = now
     }
 
@@ -63,10 +64,8 @@ class GameEngine {
         activeScene.ifPresent{scene -> scene.update(now, delta)}
     }
 
-    private updateExecutionCondition(long now, long delta) {
-        if(executionCondition.isPresent()) {
-            executionCondition.get().onGameEngineCycle(now, delta)
-        }
+    private updateExecutionRuleEngine(long now, long delta) {
+        executionRuleEngine.onGameEngineCycle(now, delta)
     }
 
     void stop() {
