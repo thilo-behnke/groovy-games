@@ -94,14 +94,6 @@ class HaltingExecutorService implements ExecutorService {
                             return this.submitTasksUntilQueueIsEmpty(null)
                         }
                 })
-//                .thenCompose({
-////                    if (completionState == HaltingExecutorCompletionState.COMPLETED) {
-////                        nextTask.future.complete('Future complete.')
-////                        return this::submitTasksUntilQueueIsEmpty
-////                    }
-////                    return CompletableFuture.completedFuture()
-//                    return this::submitTasksUntilQueueIsEmpty
-//                })
         return currentExecution
     }
 
@@ -113,15 +105,6 @@ class HaltingExecutorService implements ExecutorService {
             task.run()
             return HaltingExecutorCompletionState.COMPLETED
         }, executorService)
-//        return CompletableFuture<HaltingExecutorCompletionState>.supplyAsync({
-//            ->
-//            if (haltExecution) {
-//                return CompletableFuture.completedFuture(HaltingExecutorCompletionState.HALTED)
-//            }
-////            return HaltingExecutorCompletionState.COMPLETED
-//            return CompletableFuture.runAsync(task, executorService).thenApply({ ->
-//                HaltingExecutorCompletionState.COMPLETED })
-//        }, executorService)
     }
 
     private enqueueTask(Runnable task) {
