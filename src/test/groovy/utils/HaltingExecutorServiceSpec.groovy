@@ -34,10 +34,24 @@ class HaltingExecutorServiceSpec extends Specification {
 
     def 'should stop executing tasks when set to halt'() {
         when:
-        def future = haltingExecutorService.submit(() -> 'hello').thenComposeAsync({ haltingExecutorService.halt() })
-        def future2 = haltingExecutorService.submit(() -> 'world')
+        def (future, future2) = prepareHaltedExecution()
         then:
         future.isDone()
         !future2.isDone()
+    }
+
+    def 'should resume executing tasks when continueExecution is triggered'() {
+        when:
+        def (future, future2) = prepareHaltedExecution()
+        haltingExecutorService.continueExecution()
+        then:
+        future.isDone()
+        future2.isDone()
+    }
+
+    private prepareHaltedExecution() {
+        def future = haltingExecutorService.submit(() -> 'hello').thenComposeAsync({ haltingExecutorService.halt() })
+        def future2 = haltingExecutorService.submit(() -> 'world')
+        return [future, future2]
     }
 }

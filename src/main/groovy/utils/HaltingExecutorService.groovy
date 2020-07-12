@@ -8,7 +8,6 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
-import java.util.function.Supplier
 
 enum HaltingExecutorCompletionState {
     COMPLETED, HALTED
@@ -63,11 +62,15 @@ class HaltingExecutorService implements ExecutorService {
     @Override
     Future<?> submit(Runnable task) {
         def executionTask = enqueueTask(task)
+        triggerExecutionIfNotAlreadyRunning()
+        return executionTask.future
+    }
+
+    private triggerExecutionIfNotAlreadyRunning() {
         if (!currentExecution || currentExecution.isDone()) {
             currentExecution = submitTasksUntilQueueIsEmpty()
             currentExecution.get()
         }
-        return executionTask.future
     }
 
     // TODO: Where does this nullable value val come from?
@@ -138,6 +141,7 @@ class HaltingExecutorService implements ExecutorService {
 
     void continueExecution() {
         haltExecution = false
+        triggerExecutionIfNotAlreadyRunning()
     }
 
     @Override
