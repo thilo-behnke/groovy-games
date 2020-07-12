@@ -8,6 +8,11 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
+import java.util.function.Supplier
+
+enum HaltingExecutorCompletionState {
+    COMPLETED, HALTED
+}
 
 class HaltingExecutorService implements ExecutorService {
     private Future currentExecution
@@ -65,28 +70,55 @@ class HaltingExecutorService implements ExecutorService {
         return executionTask.future
     }
 
+    // TODO: Where does this nullable value val come from?
     private CompletableFuture submitTasksUntilQueueIsEmpty(val) {
         if (haltExecution) {
-            return CompletableFuture.completedFuture()
+            return CompletableFuture.completedFuture(HaltingExecutorCompletionState.HALTED)
         }
         def nextTask = executionQueue.poll()
         if (!nextTask) {
-            return CompletableFuture.completedFuture()
+            return CompletableFuture.completedFuture(HaltingExecutorCompletionState.COMPLETED)
         }
         currentExecution = submitTask(nextTask.task)
-                .thenRun({
-                    -> nextTask.future.complete('Future complete.')
+                .thenCompose({
+                    completionState ->
+                        if (completionState == HaltingExecutorCompletionState.COMPLETED) {
+                            nextTask.future.complete('Future complete.')
+                        }
+                        if (haltExecution) {
+                            return CompletableFuture.completedFuture(HaltingExecutorCompletionState.HALTED)
+                        } else {
+                            return this.submitTasksUntilQueueIsEmpty(null)
+                        }
                 })
-        // TODO: Can't make this recursive call work.
-                .thenCompose(this::submitTasksUntilQueueIsEmpty)
+//                .thenCompose({
+////                    if (completionState == HaltingExecutorCompletionState.COMPLETED) {
+////                        nextTask.future.complete('Future complete.')
+////                        return this::submitTasksUntilQueueIsEmpty
+////                    }
+////                    return CompletableFuture.completedFuture()
+//                    return this::submitTasksUntilQueueIsEmpty
+//                })
         return currentExecution
     }
 
     private submitTask(Runnable task) {
-        return CompletableFuture.supplyAsync({
-            ->
-            return CompletableFuture.runAsync(task, executorService)
+        return CompletableFuture.supplyAsync({->
+            if(haltExecution) {
+                return HaltingExecutorCompletionState.HALTED
+            }
+            task.run()
+            return HaltingExecutorCompletionState.COMPLETED
         }, executorService)
+//        return CompletableFuture<HaltingExecutorCompletionState>.supplyAsync({
+//            ->
+//            if (haltExecution) {
+//                return CompletableFuture.completedFuture(HaltingExecutorCompletionState.HALTED)
+//            }
+////            return HaltingExecutorCompletionState.COMPLETED
+//            return CompletableFuture.runAsync(task, executorService).thenApply({ ->
+//                HaltingExecutorCompletionState.COMPLETED })
+//        }, executorService)
     }
 
     private enqueueTask(Runnable task) {
