@@ -3,23 +3,26 @@ package engine
 import global.DateProvider
 
 import groovy.util.logging.Log4j
+import utils.HaltingExecutorService
 
-import java.util.concurrent.ExecutorService
+enum GameEngineState {
+    UNINITIALIZED, RUNNING, STOPPED, PAUSED
+}
 
 @Log4j
 class GameEngine {
     private static final defaultExecutionRuleEngine = new GameEngineExecutionRuleEngine()
     private DateProvider dateProvider
     private SceneProvider sceneProvider
-    private ExecutorService executorService
+    private HaltingExecutorService executorService
     private GameEngineExecutionRuleEngine executionRuleEngine
 
     private Optional<GameScene> activeScene = Optional.empty()
 
-    private isRunning = false
+    private state = GameEngineState.UNINITIALIZED
     private long lastTimestamp
 
-    GameEngine(ExecutorService executorService, DateProvider dateProvider, SceneProvider sceneProvider) {
+    GameEngine(HaltingExecutorService executorService, DateProvider dateProvider, SceneProvider sceneProvider) {
         this.dateProvider = dateProvider
         this.sceneProvider = sceneProvider
         this.executorService = executorService
@@ -30,22 +33,34 @@ class GameEngine {
     }
 
     void start() {
-        isRunning = true
+        state = GameEngineState.RUNNING
         startGameLoop()
     }
 
     private startGameLoop() {
-        while(isRunning) {
+        while(state == GameEngineState.RUNNING || state == GameEngineState.PAUSED) {
             if(stopIfExecutionConditionIsMet()) {
                 break
             }
-            executorService.submit(() -> updateGame())
+            if(state != GameEngineState.PAUSED && haltIfExecutionConditionIsMet()) {
+                break
+            }
+            if(state == GameEngineState.RUNNING) {
+                executorService.submit(() -> updateGame())
+            }
         }
     }
 
     private stopIfExecutionConditionIsMet() {
         if (executionRuleEngine.shouldShutdown()) {
             stop()
+            return true
+        }
+    }
+
+    private haltIfExecutionConditionIsMet() {
+        if(executionRuleEngine.shouldHalt()) {
+            halt()
             return true
         }
     }
@@ -68,14 +83,24 @@ class GameEngine {
         executionRuleEngine.onGameEngineCycle(now, delta)
     }
 
+    void halt() {
+        executorService.halt()
+        state = GameEngineState.PAUSED
+    }
+
+    void resume() {
+        executorService.continueExecution()
+        state = GameEngineState.RUNNING
+    }
+
     void stop() {
         sceneProvider.getAll().each {scene -> removeScene(scene.name)}
-        isRunning = false
+        state = GameEngineState.STOPPED
         executorService.shutdown()
     }
 
     boolean isRunning() {
-        return this.isRunning
+        return this.state == GameEngineState.RUNNING
     }
 
     void addScene(GameScene scene) {

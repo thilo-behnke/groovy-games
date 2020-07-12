@@ -5,6 +5,7 @@ import gameObject.GameObjectProvider
 import global.DateProvider
 import spock.lang.Specification
 import spock.lang.Unroll
+import utils.HaltingExecutorService
 
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -25,13 +26,14 @@ class GameEngineSpec extends Specification {
         receivedUpdates = 0
         def dateProviderMock = Mock(DateProvider)
         def sceneProvider = new DefaultSceneProvider()
-        executorService = Executors.newFixedThreadPool(1)
+        executorService = new HaltingExecutorService()
         gameEngine = new GameEngine(executorService, dateProviderMock, sceneProvider)
         pauseAfterEveryCycle(1)
     }
 
     private boolean pauseAfterEveryCycle(nrOfCycles = 1) {
         def executionRuleEngine = new GameEngineExecutionRuleEngine()
+//        executionRuleEngine << ShutdownAfterFixedNumberOfCyclesExecutionRule.nrOfCycles(1)
         executionRuleEngine << new HaltEveryCycleExecutionRule()
         gameEngine.setExecutionRuleEngine(executionRuleEngine)
     }
@@ -45,7 +47,6 @@ class GameEngineSpec extends Specification {
         gameEngine.start()
         runGameEngine()
         then:
-        gameEngine.isRunning()
         expectScenesToBeUpdated()
     }
 
@@ -54,8 +55,6 @@ class GameEngineSpec extends Specification {
         configureGameEngineWithScene()
         runGameEngine()
         then:
-        // TODO: This does not work reliably because the thread runs as it wants, see comment below.
-//        gameEngine.isRunning()
         expectScenesToBeUpdated()
     }
 
@@ -69,8 +68,6 @@ class GameEngineSpec extends Specification {
 
     private runGameEngine() {
         gameEngine.start()
-        // TODO: Abstract time away from game engine...
-        executorService.awaitTermination(10L, TimeUnit.MILLISECONDS)
     }
 
     private configureGameEngineWithScene(activate = false) {
