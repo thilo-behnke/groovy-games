@@ -1,15 +1,16 @@
 package engine
 
+import engine.helper.Updateable
+import gameObject.GameObject
 import gameObject.GameObjectProvider
 import global.DateProvider
 import groovy.util.logging.Log4j
 
-interface GameScene {
+interface GameScene extends Updateable {
     String name = 'default'
 
-    void update(Long timestamp, Long delta)
-
     void setState(GameSceneState sceneState)
+    Set<GameObject> getGameObjects()
 }
 
 @Log4j
@@ -29,12 +30,17 @@ class DefaultGameScene implements GameScene {
     @Override
     void update(Long timestamp, Long delta) {
         if(gameSceneState == GameSceneState.RUNNING) {
-            gameObjectProvider.get().each {obj -> obj.update(timestamp, delta)}
+            gameObjectProvider.getGameObjects().each { obj -> obj.update(timestamp, delta)}
         }
     }
 
     @Override
     void setState(GameSceneState state) {
         gameSceneState = state
+    }
+
+    @Override
+    Set<GameObject> getGameObjects() {
+        return gameObjectProvider.getGameObjects()
     }
 }

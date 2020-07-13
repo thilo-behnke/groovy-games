@@ -1,12 +1,12 @@
 package gameObject
 
 interface GameObjectProvider {
-	Set<GameObject> get();
+	Set<GameObject> getGameObjects();
 }
 
 class DefaultGameObjectProvider implements GameObjectProvider {
 	@Override
-	Set<GameObject> get() {
+	Set<GameObject> getGameObjects() {
 		return Collections.emptySet()
 	}
 }
