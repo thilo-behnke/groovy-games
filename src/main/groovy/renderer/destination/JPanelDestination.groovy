@@ -9,6 +9,8 @@ import javax.swing.JPanel
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Graphics
+import java.awt.Graphics2D
+import java.awt.geom.Line2D
 
 class JPanelDestination extends JPanel implements RenderDestination<FVector> {
     JPanelDestination() {
@@ -34,6 +36,7 @@ class JPanelDestination extends JPanel implements RenderDestination<FVector> {
 
     @Override
     void drawLine(FVector start, FVector end) {
-
+        ((Graphics2D) getGraphics()).draw(new Line2D.Float(start.x, start.y, end.x, end.y))
+        repaint()
     }
 }

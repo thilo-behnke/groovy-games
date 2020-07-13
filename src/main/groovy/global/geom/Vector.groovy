@@ -1,7 +1,7 @@
 package global.geom
 
 // TODO: Why can't this be a trait?
-class Vector<T> {
+abstract class Vector<T> {
     T x
     T y
 }

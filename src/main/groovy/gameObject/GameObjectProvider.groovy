@@ -1,12 +1,13 @@
 package gameObject
 
-interface GameObjectProvider {
-	Set<GameObject> getGameObjects();
-}
+class GameObjectProvider {
+    private Set<GameObject> gameObjects = []
 
-class DefaultGameObjectProvider implements GameObjectProvider {
-	@Override
+	Set<GameObject> leftShift(GameObject gameObject) {
+		return gameObjects << gameObject
+	}
+
 	Set<GameObject> getGameObjects() {
-		return Collections.emptySet()
+        return gameObjects
 	}
 }
