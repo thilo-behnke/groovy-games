@@ -6,6 +6,7 @@ import renderer.renderObjects.Renderable
 import java.awt.*
 import java.awt.geom.Line2D
 
+// Does not work...
 class Canvas2dDestination implements RenderDestination<FVector> {
     private Canvas canvas
     private Graphics2D graphics
