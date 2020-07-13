@@ -3,6 +3,7 @@ package engine
 
 import gameObject.GameObjectProvider
 import global.DateProvider
+import renderer.Renderer
 import spock.lang.Specification
 import spock.lang.Unroll
 import utils.HaltingExecutorService
@@ -27,7 +28,8 @@ class GameEngineSpec extends Specification {
         def dateProviderMock = Mock(DateProvider)
         def sceneProvider = new DefaultSceneProvider()
         executorService = new HaltingExecutorService()
-        gameEngine = new GameEngine(executorService, dateProviderMock, sceneProvider)
+        def renderer = Mock(Renderer)
+        gameEngine = new GameEngine(executorService, dateProviderMock, sceneProvider, renderer)
         pauseAfterEveryCycle(1)
     }
 

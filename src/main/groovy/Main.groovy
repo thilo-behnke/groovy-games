@@ -4,6 +4,7 @@ import gameObject.GameObjectProvider
 import gameObject.components.RenderComponent
 import global.DefaultDateProvider
 import global.geom.FVector
+import renderer.DefaultRenderer
 import renderer.Renderer
 import renderer.destination.JPanelDestination
 import renderer.renderObjects.RenderNode
@@ -31,7 +32,7 @@ class Main {
         f.setVisible(true);
 //        });
 
-        def renderer = new Renderer(renderDestination: renderDestination)
+        def renderer = new DefaultRenderer(renderDestination: renderDestination)
 
         def gameEngine = new GameEngine(executorService, dateProvider, sceneProvider, renderer)
         gameEngine.setExecutionRuleEngine(executionRuleEngine)
