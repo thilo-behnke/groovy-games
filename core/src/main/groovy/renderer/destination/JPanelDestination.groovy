@@ -1,8 +1,6 @@
 package renderer.destination
 
 import global.geom.FVector
-import global.geom.Vector
-import renderer.renderObjects.Renderable
 
 import javax.swing.BorderFactory
 import javax.swing.JPanel

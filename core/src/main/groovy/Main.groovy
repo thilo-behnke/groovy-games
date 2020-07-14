@@ -5,7 +5,6 @@ import gameObject.components.RenderComponent
 import global.DefaultDateProvider
 import global.geom.FVector
 import renderer.DefaultRenderer
-import renderer.Renderer
 import renderer.destination.JPanelDestination
 import renderer.renderObjects.RenderNode
 import renderer.shape.Line
