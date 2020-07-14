@@ -1,0 +1,11 @@
+apply plugin: 'groovy'
+
+version = "0.0.1"
+
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:3.0.2"
+    compile 'log4j:log4j:1.2.17'
+
+    testImplementation('org.spockframework:spock-core:2.0-M2-groovy-3.0')
+    testCompile "org.spockframework:spock-core"
+}

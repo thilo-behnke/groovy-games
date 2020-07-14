@@ -1,7 +1,6 @@
 package renderer.destination
 
 import global.geom.FVector
-import renderer.renderObjects.Renderable
 
 import java.awt.*
 import java.awt.geom.Line2D

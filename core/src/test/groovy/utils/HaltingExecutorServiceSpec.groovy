@@ -3,7 +3,6 @@ package utils
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 
 @Unroll
