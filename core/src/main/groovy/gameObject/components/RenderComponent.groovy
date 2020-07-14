@@ -5,13 +5,14 @@ import renderer.destination.RenderDestination
 import renderer.renderObjects.RenderNode
 import renderer.renderObjects.Renderable
 
-class RenderComponent implements Renderable {
+abstract class RenderComponent implements Renderable {
     GameObject parent
-    RenderNode renderNode
+
+    abstract RenderNode getRenderNode()
 
     @Override
     RenderNode render(RenderDestination renderDestination) {
         // TODO: Recursive call?
-        return renderNode.renderObject.render(renderDestination)
+        return getRenderNode().renderObject.render(renderDestination)
     }
 }

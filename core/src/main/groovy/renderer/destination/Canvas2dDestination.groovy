@@ -1,12 +1,12 @@
 package renderer.destination
 
-import global.geom.FVector
+import global.geom.Vector
 
 import java.awt.*
 import java.awt.geom.Line2D
 
 // Does not work...
-class Canvas2dDestination implements RenderDestination<FVector> {
+class Canvas2dDestination implements RenderDestination<Vector> {
     private Canvas canvas
     private Graphics2D graphics
 
@@ -16,7 +16,7 @@ class Canvas2dDestination implements RenderDestination<FVector> {
     }
 
     @Override
-    void drawLine(FVector start, FVector end) {
+    void drawLine(Vector start, Vector end) {
         graphics.draw(new Line2D.Float(start.x, start.y, end.x, end.y))
     }
 
