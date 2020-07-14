@@ -17,12 +17,12 @@ class Canvas2dDestination implements RenderDestination<FVector> {
     }
 
     @Override
-    void draw(Renderable renderable) {
-        renderable.render(this)
+    void drawLine(FVector start, FVector end) {
+        graphics.draw(new Line2D.Float(start.x, start.y, end.x, end.y))
     }
 
     @Override
-    void drawLine(FVector start, FVector end) {
-        graphics.draw(new Line2D.Float(start.x, start.y, end.x, end.y))
+    void refresh() {
+
     }
 }

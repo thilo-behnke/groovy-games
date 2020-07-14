@@ -11,8 +11,11 @@ import java.awt.Dimension
 import java.awt.Graphics
 import java.awt.Graphics2D
 import java.awt.geom.Line2D
+import java.util.concurrent.ConcurrentLinkedQueue
 
 class JPanelDestination extends JPanel implements RenderDestination<FVector> {
+    private Queue<Closure> drawQueue = new ConcurrentLinkedQueue<>()
+
     JPanelDestination() {
         setBorder(BorderFactory.createLineBorder(Color.black));
     }
@@ -26,17 +29,18 @@ class JPanelDestination extends JPanel implements RenderDestination<FVector> {
     void paintComponent(Graphics g) {
         super.paintComponent(g)
 
-        g.drawString("This is my custom Panel!",10,20);
-    }
-
-    @Override
-    void draw(Renderable renderable) {
-
+        drawQueue.forEach({it(g)})
+        drawQueue.clear()
     }
 
     @Override
     void drawLine(FVector start, FVector end) {
-        ((Graphics2D) getGraphics()).draw(new Line2D.Float(start.x, start.y, end.x, end.y))
+        def drawCl = {Graphics2D g -> g.draw(new Line2D.Float(start.x, start.y, end.x, end.y))}
+        drawQueue << drawCl
+    }
+
+    @Override
+    void refresh() {
         repaint()
     }
 }

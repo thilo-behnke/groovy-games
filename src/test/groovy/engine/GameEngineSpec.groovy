@@ -73,7 +73,7 @@ class GameEngineSpec extends Specification {
     }
 
     private configureGameEngineWithScene(activate = false) {
-        def scene = new DefaultGameScene('sceneOne', Mock(GameObjectProvider))
+        def scene = new DefaultGameScene('sceneOne', new GameObjectProvider())
         gameEngine.addScene(scene)
         if(activate) {
             gameEngine.changeScene(scene.name)

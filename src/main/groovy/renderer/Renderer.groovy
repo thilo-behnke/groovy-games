@@ -16,6 +16,7 @@ class DefaultRenderer implements Renderer {
             gameObjects.forEach({obj ->
                 obj.render(renderDestination)
             })
+            renderDestination.refresh()
         })
     }
 }
