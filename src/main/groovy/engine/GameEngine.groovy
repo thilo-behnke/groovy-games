@@ -3,6 +3,7 @@ package engine
 import global.DateProvider
 
 import groovy.util.logging.Log4j
+import renderer.Renderer
 import utils.HaltingExecutorService
 
 enum GameEngineState {
@@ -15,17 +16,20 @@ class GameEngine {
     private DateProvider dateProvider
     private SceneProvider sceneProvider
     private HaltingExecutorService executorService
+    private Renderer renderer
     private GameEngineExecutionRuleEngine executionRuleEngine
 
+    // TODO: This should be an array of scenes.
     private Optional<GameScene> activeScene = Optional.empty()
 
     private state = GameEngineState.UNINITIALIZED
     private long lastTimestamp
 
-    GameEngine(HaltingExecutorService executorService, DateProvider dateProvider, SceneProvider sceneProvider) {
+    GameEngine(HaltingExecutorService executorService, DateProvider dateProvider, SceneProvider sceneProvider, Renderer renderer) {
         this.dateProvider = dateProvider
         this.sceneProvider = sceneProvider
         this.executorService = executorService
+        this.renderer = renderer
     }
 
     void setExecutionRuleEngine(GameEngineExecutionRuleEngine gameEngineExecutionRuleEngine = defaultExecutionRuleEngine) {
@@ -46,6 +50,11 @@ class GameEngine {
                 break
             }
             if(state == GameEngineState.RUNNING) {
+                // TODO: This should not be one task, but multiple per cycle:
+                // - Render (Scene dependent)
+                // - GameObject updates (Scene dependent)
+                // - Inputs
+                // - etc.
                 executorService.submit({updateGame()})
             }
         }
@@ -69,14 +78,20 @@ class GameEngine {
         long now = dateProvider.now()
         long delta = now - (lastTimestamp ?: now)
         updateScenes(now, delta)
+        renderScenes()
         updateExecutionRuleEngine(now, delta)
         lastTimestamp = now
     }
 
 
     private updateScenes(long now, long delta) {
-        log.debug("Updating Game. Time: ${now}. Delta: ${delta}".toString())
+        log.debug("Updating active scenes. Time: ${now}. Delta: ${delta}".toString())
         activeScene.ifPresent{scene -> scene.update(now, delta)}
+    }
+
+    private renderScenes() {
+        log.debug("Rendering updated scenes.")
+        activeScene.ifPresent({renderer.render(new HashSet<GameScene>([it]))})
     }
 
     private updateExecutionRuleEngine(long now, long delta) {

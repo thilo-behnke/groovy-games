@@ -1,21 +1,20 @@
 package engine
 
-
 import gameObject.GameObjectProvider
 import global.DateProvider
+import renderer.Renderer
 import spock.lang.Specification
 import spock.lang.Unroll
 import utils.HaltingExecutorService
 
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
 @Unroll
 class GameEngineSpec extends Specification {
 
     GameEngine gameEngine
     ExecutorService executorService
+    Renderer renderer
 
     Set<GameScene> scenes = []
     GameScene activeScene
@@ -27,7 +26,8 @@ class GameEngineSpec extends Specification {
         def dateProviderMock = Mock(DateProvider)
         def sceneProvider = new DefaultSceneProvider()
         executorService = new HaltingExecutorService()
-        gameEngine = new GameEngine(executorService, dateProviderMock, sceneProvider)
+        renderer = Mock(Renderer)
+        gameEngine = new GameEngine(executorService, dateProviderMock, sceneProvider, renderer)
         pauseAfterEveryCycle(1)
     }
 
@@ -47,7 +47,7 @@ class GameEngineSpec extends Specification {
         gameEngine.start()
         runGameEngine()
         then:
-        expectScenesToBeUpdated()
+        expectScenesToBeUpdatedAndRendered()
     }
 
     def 'running the game loop without an active scene'() {
@@ -55,7 +55,7 @@ class GameEngineSpec extends Specification {
         configureGameEngineWithScene()
         runGameEngine()
         then:
-        expectScenesToBeUpdated()
+        expectScenesToBeUpdatedAndRendered()
     }
 
     def 'running the game loop with an active scene'() {
@@ -63,7 +63,7 @@ class GameEngineSpec extends Specification {
         def sceneName = configureGameEngineWithScene(true)
         runGameEngine()
         then:
-        expectScenesToBeUpdated(sceneName)
+        expectScenesToBeUpdatedAndRendered(sceneName)
     }
 
     private runGameEngine() {
@@ -71,7 +71,7 @@ class GameEngineSpec extends Specification {
     }
 
     private configureGameEngineWithScene(activate = false) {
-        def scene = new DefaultGameScene('sceneOne', Mock(GameObjectProvider))
+        def scene = new DefaultGameScene('sceneOne', new GameObjectProvider())
         gameEngine.addScene(scene)
         if(activate) {
             gameEngine.changeScene(scene.name)
@@ -80,10 +80,11 @@ class GameEngineSpec extends Specification {
         return scene.name
     }
 
-    private expectScenesToBeUpdated(String ...sceneNames) {
+    private expectScenesToBeUpdatedAndRendered(String ...sceneNames) {
         def scenes = scenes.findAll {scene -> sceneNames.find {name -> scene.name == name}}
         for(scene in scenes) {
             1 * scene.update()
+            1 * renderer.render(scenes)
         }
         return true
     }
