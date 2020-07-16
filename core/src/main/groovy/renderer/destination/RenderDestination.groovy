@@ -4,6 +4,7 @@ import global.geom.Vector
 
 interface RenderDestination<T extends Vector> {
     void drawLine(T start, T end)
+    void drawPoint(T pos)
 
     void refresh()
 }

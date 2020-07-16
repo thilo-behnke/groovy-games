@@ -1,19 +1,13 @@
 import engine.DefaultGameScene
 import engine.GameEngine
-import gameObject.GameObject
 import gameObject.GameObjectProvider
-import gameObject.components.RenderComponent
-import gameObject.player.Player
-import gameObject.player.PlayerRenderComponent
-import global.geom.Vector
-import renderer.renderObjects.RenderNode
-import renderer.shape.Line
+import gameObject.player.Clock
 
 GameEngine gameEngine = GameEngineProvider.provideGameEngine()
 
 def gameObjectProvider = new GameObjectProvider()
 
-def player = Player.create()
+def player = Clock.create()
 
 gameObjectProvider << player
 def defaultScene = new DefaultGameScene('default', gameObjectProvider)

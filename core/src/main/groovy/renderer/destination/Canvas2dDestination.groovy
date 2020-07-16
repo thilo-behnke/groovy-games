@@ -21,6 +21,11 @@ class Canvas2dDestination implements RenderDestination<Vector> {
     }
 
     @Override
+    void drawPoint(Vector pos) {
+
+    }
+
+    @Override
     void refresh() {
 
     }

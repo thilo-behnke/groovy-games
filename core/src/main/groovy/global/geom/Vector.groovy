@@ -8,9 +8,27 @@ class Vector {
     private final static zero = new Vector(x: 0, y: 0)
 
     Vector plus(Vector b) {
-        x = Float.sum(x, b.x)
-        y = Float.sum(y, b.y)
-        return this
+        def x = Float.sum(x, b.x)
+        def y = Float.sum(y, b.y)
+        return new Vector(x: x, y: y)
+    }
+
+    Vector plus(Long n) {
+        def x = (Float) (x + n)
+        def y = (Float) (y + n)
+        return new Vector(x: x, y: y)
+    }
+
+    Vector minus(Vector b) {
+        def x = (Float) (x - b.x)
+        def y = (Float) (y - b.y)
+        return new Vector(x: x, y: y)
+    }
+
+    Vector multiply(Float n) {
+        def x = (Float) (x * n)
+        def y = (Float) (y * n)
+        return new Vector(x: x, y: y)
     }
 
     static unitVector() {

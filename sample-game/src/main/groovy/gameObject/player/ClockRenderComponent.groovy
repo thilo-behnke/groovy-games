@@ -4,10 +4,12 @@ import gameObject.components.RenderComponent
 import global.geom.Vector
 import renderer.renderObjects.RenderNode
 import renderer.shape.Line
+import renderer.shape.Point
 
-class PlayerRenderComponent extends RenderComponent {
+class ClockRenderComponent extends RenderComponent {
     @Override
     RenderNode getRenderNode() {
-        return RenderNode.leaf(new Line(new Vector(x: parent.position.x, y: parent.position.y), new Vector(x: parent.position.x + 100, y: parent.position.y + 100)))
+        Clock parent = (Clock) parent
+        return RenderNode.leaf(new Point(pos: parent.position))
     }
 }

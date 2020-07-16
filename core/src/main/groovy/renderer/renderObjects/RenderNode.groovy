@@ -7,4 +7,8 @@ class RenderNode {
     static RenderNode leaf(Renderable obj) {
         new RenderNode(renderObject: obj, childNodes: [])
     }
+
+    boolean hasChildNodes () {
+        return childNodes.size()
+    }
 }
