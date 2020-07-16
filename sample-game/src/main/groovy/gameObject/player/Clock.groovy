@@ -38,6 +38,7 @@ class Clock extends GameObject {
             return
         }
 
+        // TODO: This does not work as expected - because Vector is not immutable?
         lastUpdate = timestamp
         def newX = position.x * Math.cos(clockStep) + position.y * Math.sin(clockStep)
         def newY = - position.x * Math.sin(clockStep) + position.y * Math.cos(clockStep)

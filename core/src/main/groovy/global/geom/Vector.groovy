@@ -2,6 +2,7 @@ package global.geom
 
 import groovy.transform.Immutable
 
+// TODO: Make immutable.
 class Vector {
     Float x
     Float y
