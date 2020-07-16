@@ -1,5 +1,7 @@
 package global.geom
 
+import groovy.transform.Immutable
+
 class Vector {
     Float x
     Float y
