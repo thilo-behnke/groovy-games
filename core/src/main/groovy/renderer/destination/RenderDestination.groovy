@@ -1,6 +1,6 @@
 package renderer.destination
 
-import global.geom.Vector
+
 import renderer.options.RenderOptions
 
 interface RenderDestination<Vector> {

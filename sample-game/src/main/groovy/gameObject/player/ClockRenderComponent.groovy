@@ -13,10 +13,10 @@ class ClockRenderComponent extends RenderComponent {
         Clock parent = (Clock) parent
         return RenderNode.node(
                 new Point(pos: parent.center),
-                new RenderOptions(drawColor: DrawColor.RED),
+                new RenderOptions(drawColor: DrawColor.BLACK),
                 [
                         RenderNode.leaf(new Circle(center: parent.center, radius: parent.orientation.length()), new RenderOptions(drawColor: DrawColor.RED)),
-                        RenderNode.leaf(new Point(pos: parent.position), new RenderOptions(drawColor: DrawColor.RED))
+                        RenderNode.leaf(new Point(pos: parent.position), new RenderOptions(drawColor: DrawColor.BLACK))
                 ]
         )
     }

@@ -42,7 +42,8 @@ class Clock extends GameObject {
         lastUpdate = timestamp
         def newX = position.x * Math.cos(clockStep) + position.y * Math.sin(clockStep)
         def newY = - position.x * Math.sin(clockStep) + position.y * Math.cos(clockStep)
-        position = new Vector(x: newX, y: newY)
+        position = new Vector(x: newX, y: newY).normalize()
+
         updateOrientation()
     }
 }
