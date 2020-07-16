@@ -3,6 +3,7 @@ package renderer.shape
 
 import global.geom.Vector
 import renderer.destination.RenderDestination
+import renderer.options.RenderOptions
 import renderer.renderObjects.RenderNode
 
 class Line implements Shape {
@@ -15,7 +16,7 @@ class Line implements Shape {
     }
 
     @Override
-    RenderNode render(RenderDestination renderDestination) {
-        return renderDestination.drawLine(start, end)
+    void render(RenderDestination renderDestination, RenderOptions options) {
+        renderDestination.drawLine(start, end, options)
     }
 }

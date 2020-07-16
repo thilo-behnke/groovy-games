@@ -31,6 +31,10 @@ class Vector {
         return new Vector(x: x, y: y)
     }
 
+    Float length() {
+        return Math.sqrt(x ** 2 + y ** 2)
+    }
+
     static unitVector() {
         return unit
     }

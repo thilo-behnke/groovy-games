@@ -4,8 +4,8 @@ import gameObject.GameObject
 import global.geom.Vector
 
 class Clock extends GameObject {
-    private Vector center
-    private Vector startPos
+    Vector center
+    Vector startPos
     Vector orientation
 
     private final clockStep = Math.PI / 360
@@ -15,7 +15,7 @@ class Clock extends GameObject {
     private Clock() {}
 
     static create() {
-        def startPos = Vector.unitVector() * 100
+        def startPos = Vector.unitVector() * 1000
         def player = new Clock(position: startPos)
         player.startPos = startPos
         player.setRenderComponent(new ClockRenderComponent ())

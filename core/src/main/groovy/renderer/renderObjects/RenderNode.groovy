@@ -1,14 +1,17 @@
 package renderer.renderObjects
 
+import renderer.options.RenderOptions
+
 class RenderNode {
     Renderable renderObject
-    List<RenderNode> childNodes
+    RenderOptions renderOptions
+    List<RenderNode> childNodes = []
 
-    static RenderNode leaf(Renderable obj) {
-        new RenderNode(renderObject: obj, childNodes: [])
+    static RenderNode node(Renderable obj, RenderOptions options, List<RenderNode> childNodes) {
+        new RenderNode(renderObject: obj, renderOptions: options, childNodes: childNodes)
     }
 
-    boolean hasChildNodes () {
-        return childNodes.size()
+    static RenderNode leaf(Renderable obj, RenderOptions options = RenderOptions.empty) {
+        new RenderNode(renderObject: obj, renderOptions: options, childNodes: [])
     }
 }
