@@ -1,21 +1,15 @@
 package renderer.shape
 
-
 import global.geom.Vector
 import renderer.destination.RenderDestination
 import renderer.options.RenderOptions
 
-class Line implements Shape {
-    Vector start
-    Vector end
-
-    Line(Vector start, Vector end) {
-        this.start = start
-        this.end = end
-    }
+class Circle implements Shape {
+    Vector center
+    BigDecimal radius
 
     @Override
     void render(RenderDestination renderDestination, RenderOptions options) {
-        renderDestination.drawLine(start, end, options)
+        renderDestination.drawCircle(center, radius, options)
     }
 }

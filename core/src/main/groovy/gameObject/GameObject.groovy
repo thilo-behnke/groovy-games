@@ -2,14 +2,14 @@ package gameObject
 
 import engine.helper.Updateable
 import gameObject.components.RenderComponent
+import global.geom.Vector
 import groovy.transform.EqualsAndHashCode
 import renderer.destination.RenderDestination
-import renderer.renderObjects.RenderNode
-import renderer.renderObjects.Renderable
 
 @EqualsAndHashCode(includes='id')
-class GameObject implements Renderable, Updateable {
+class GameObject implements Updateable {
     Long id
+
     RenderComponent renderComponent
 
     void setRenderComponent(RenderComponent renderComponent) {
@@ -17,9 +17,8 @@ class GameObject implements Renderable, Updateable {
         this.renderComponent = renderComponent
     }
 
-    @Override
-    RenderNode render(RenderDestination renderDestination) {
-        return renderComponent.render(renderDestination)
+    void render(RenderDestination renderDestination) {
+        renderComponent.render(renderDestination)
     }
 
     @Override

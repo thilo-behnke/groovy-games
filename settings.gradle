@@ -1,3 +1,3 @@
 rootProject.name = 'groovy-games'
 include 'core'
-include 'sample-game'
+include 'render-demo-clock'

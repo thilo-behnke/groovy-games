@@ -77,6 +77,10 @@ class GameEngine {
     private updateGame() {
         long now = dateProvider.now()
         long delta = now - (lastTimestamp ?: now)
+        // TODO: Make refresh period configurable.
+        if(lastTimestamp && delta < 1000 / 60) {
+            return
+        }
         updateScenes(now, delta)
         renderScenes()
         updateExecutionRuleEngine(now, delta)
@@ -85,12 +89,12 @@ class GameEngine {
 
 
     private updateScenes(long now, long delta) {
-        log.debug("Updating active scenes. Time: ${now}. Delta: ${delta}".toString())
+        log.info("Updating active scenes. Time: ${now}. Delta: ${delta}".toString())
         activeScene.ifPresent{scene -> scene.update(now, delta)}
     }
 
     private renderScenes() {
-        log.debug("Rendering updated scenes.")
+        log.info("Rendering updated scenes.")
         activeScene.ifPresent({renderer.render(new HashSet<GameScene>([it]))})
     }
 
