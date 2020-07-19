@@ -3,6 +3,7 @@ package renderer.renderObjects
 import renderer.options.RenderOptions
 
 class RenderNode {
+    // TODO: Should be optional, in this case the node has only structural purpose. Maybe add a string descriptor field?
     Renderable renderObject
     RenderOptions renderOptions
     List<RenderNode> childNodes = []
