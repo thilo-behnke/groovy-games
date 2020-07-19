@@ -18,6 +18,8 @@ class JPanelDestination extends JPanel implements RenderDestination<Vector> {
     private Queue<DrawAction> drawQueue = new ConcurrentLinkedQueue<>()
     private defaultColor = Color.black
 
+    private List<Integer> dimensions = [500, 500]
+
     class DrawAction {
         Closure action
         RenderOptions options
@@ -28,8 +30,13 @@ class JPanelDestination extends JPanel implements RenderDestination<Vector> {
     }
 
     @Override
+    void setDimensions(int width, int height) {
+        dimensions = [width, height]
+    }
+
+    @Override
     Dimension getPreferredSize() {
-        return new Dimension(250, 200);
+        return new Dimension(dimensions[0], dimensions[1])
     }
 
     @Override
@@ -51,6 +58,10 @@ class JPanelDestination extends JPanel implements RenderDestination<Vector> {
                 return Color.red
             case DrawColor.YELLOW:
                 return Color.yellow
+            case DrawColor.BLUE:
+                return Color.blue
+            case DrawColor.GREEN:
+                return Color.green
             default:
                 return Color.black
         }
@@ -60,21 +71,21 @@ class JPanelDestination extends JPanel implements RenderDestination<Vector> {
     void drawLine(Vector start, Vector end, RenderOptions options) {
         def drawCl = { Graphics2D g ->
             g.setColor()
-            g.draw(new Line2D.Float(start.x, start.y, end.x, end.y))
+            g.draw(new Line2D.Float(start.x, getHeight() - start.y, end.x, getHeight() - end.y))
         }
         drawQueue << new DrawAction(action: drawCl, options: options)
     }
 
     @Override
     void drawPoint(Vector pos, RenderOptions options) {
-        def drawCl = { Graphics2D g -> g.draw(new Ellipse2D.Float(pos.x, pos.y, 1, 1)) }
+        def drawCl = { Graphics2D g -> g.draw(new Ellipse2D.Float(pos.x, getHeight() - pos.y, 1, 1)) }
         drawQueue << new DrawAction(action: drawCl, options: options)
     }
 
     @Override
     void drawCircle(Vector center, BigDecimal radius, RenderOptions options) {
         // TODO: Inefficient, should the shape classes provide both center and bounding areas?
-        def drawCl = { Graphics2D g -> g.draw(new Ellipse2D.Float(center.x - radius, center.y - radius, 2 * radius, 2 * radius)) }
+        def drawCl = { Graphics2D g -> g.draw(new Ellipse2D.Float(center.x - radius, getHeight() - center.y - radius, 2 * radius, 2 * radius)) }
         drawQueue << new DrawAction(action: drawCl, options: options)
     }
 

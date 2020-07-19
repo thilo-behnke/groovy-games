@@ -7,25 +7,36 @@ import global.geom.Vector
 import global.math.MathConstants
 
 class Clock extends GameObject {
-    Vector orientation
+    private final SECOND_CIRCLE_STEP = MathConstants.PI * 2 / 60
+    private final MINUTE_CIRCLE_STEP = MathConstants.PI * 2 / 60
+    private final HOUR_CIRCLE_STEP = MathConstants.PI * 2 / 24
 
-    CircleDesc circleDesc
-    private final clockStep = Math.PI / 360
+    private CircleDesc circleDesc
+    private Vector clockStart
 
+    private Long hours
+    private Long minutes
+    private Long seconds
     private Long lastUpdate = 0
 
-    private Clock() {}
+
+    public Vector secondHandlePos
+    public Vector minuteHandlePos
+    public Vector hourHandlePos
+
+    private Clock(CircleDesc circleDesc, Vector clockStart) {
+        this.circleDesc = circleDesc
+        this.clockStart = clockStart
+    }
 
     static create() {
-        def center = Vector.unitVector() * 1000.0
+        def center = Vector.unitVector() * 200.0
         def circleDesc = new CircleDesc(center: center, radius: 100.0)
         // TODO: Start the handle at 0 / 12.
-        def startPos = CircleOperations.getPointOnCircleInRadians(circleDesc, MathConstants.PI / 2)
-        def player = new Clock(position: startPos)
-        player.circleDesc = circleDesc
-        player.setRenderComponent(new ClockRenderComponent ())
-        player.updateOrientation()
-        return player
+        def clockStart = CircleOperations.getPointOnCircleInRadians(circleDesc, MathConstants.PI / 2)
+        def clock = new Clock(circleDesc, clockStart)
+        clock.setRenderComponent(new ClockRenderComponent ())
+        return clock
     }
 
     Vector getCenter() {
@@ -36,10 +47,6 @@ class Clock extends GameObject {
         circleDesc.radius
     }
 
-    void updateOrientation() {
-        orientation = position - this.circleDesc.center
-    }
-
     @Override
     void update(Long timestamp, Long delta) {
         if(timestamp - lastUpdate < 1000) {
@@ -48,11 +55,10 @@ class Clock extends GameObject {
 
         // TODO: This does not work as expected - because Vector is not immutable?
         lastUpdate = timestamp
-        position = CircleOperations.getPointOnCircleFromOtherPointInRadians(circleDesc, clockStep, position)
-//        def newX = position.x * Math.cos(clockStep) + position.y * Math.sin(clockStep)
-//        def newY = - position.x * Math.sin(clockStep) + position.y * Math.cos(clockStep)
-//        position = new Vector(x: newX, y: newY).normalize()
+        def time = Calendar.getInstance()
 
-        updateOrientation()
+        secondHandlePos = CircleOperations.getPointOnCircleFromOtherPointInRadians(circleDesc, - SECOND_CIRCLE_STEP * time.get(Calendar.SECOND), clockStart)
+        minuteHandlePos = CircleOperations.getPointOnCircleFromOtherPointInRadians(circleDesc, - MINUTE_CIRCLE_STEP * time.get(Calendar.MINUTE), clockStart)
+        hourHandlePos = CircleOperations.getPointOnCircleFromOtherPointInRadians(circleDesc, - HOUR_CIRCLE_STEP * time.get(Calendar.HOUR), clockStart)
     }
 }

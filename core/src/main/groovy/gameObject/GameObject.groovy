@@ -12,8 +12,6 @@ class GameObject implements Updateable {
 
     RenderComponent renderComponent
 
-    Vector position
-
     void setRenderComponent(RenderComponent renderComponent) {
         renderComponent.setParent(this)
         this.renderComponent = renderComponent

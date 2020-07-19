@@ -18,6 +18,7 @@ class Vector {
 
     private final static unit = new Vector(x: 1, y: 1)
     private final static zero = new Vector(x: 0, y: 0)
+    private final static invertY = new Vector(x: 1, y: -1)
 
     // TODO: Typing does not work.
     BigDecimal getAt(int i) {
@@ -87,5 +88,9 @@ class Vector {
 
     static zeroVector() {
         return zero
+    }
+
+    static invertYVector() {
+        return invertY
     }
 }
