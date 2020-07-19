@@ -7,18 +7,12 @@ import global.geom.Vector
 import global.math.MathConstants
 
 class Clock extends GameObject {
-    private final SECOND_CIRCLE_STEP = MathConstants.PI * 2 / 60
-    private final MINUTE_CIRCLE_STEP = MathConstants.PI * 2 / 60
-    private final HOUR_CIRCLE_STEP = MathConstants.PI * 2 / 24
+    final SECOND_CIRCLE_STEP = MathConstants.PI * 2 / 60
+    final MINUTE_CIRCLE_STEP = MathConstants.PI * 2 / 60
+    final HOUR_CIRCLE_STEP = MathConstants.PI * 2 / 24
 
-    private CircleDesc circleDesc
+    final CircleDesc circleDesc
     private Vector clockStart
-
-    private Long hours
-    private Long minutes
-    private Long seconds
-    private Long lastUpdate = 0
-
 
     public Vector secondHandlePos
     public Vector minuteHandlePos
@@ -32,7 +26,6 @@ class Clock extends GameObject {
     static create() {
         def center = Vector.unitVector() * 200.0
         def circleDesc = new CircleDesc(center: center, radius: 100.0)
-        // TODO: Start the handle at 0 / 12.
         def clockStart = CircleOperations.getPointOnCircleInRadians(circleDesc, MathConstants.PI / 2)
         def clock = new Clock(circleDesc, clockStart)
         clock.setRenderComponent(new ClockRenderComponent ())
@@ -49,12 +42,6 @@ class Clock extends GameObject {
 
     @Override
     void update(Long timestamp, Long delta) {
-        if(timestamp - lastUpdate < 1000) {
-            return
-        }
-
-        // TODO: This does not work as expected - because Vector is not immutable?
-        lastUpdate = timestamp
         def time = Calendar.getInstance()
 
         secondHandlePos = CircleOperations.getPointOnCircleFromOtherPointInRadians(circleDesc, - SECOND_CIRCLE_STEP * time.get(Calendar.SECOND), clockStart)
