@@ -1,6 +1,8 @@
 package global.geom
 
+import global.math.MathConstants
 import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 
 import java.math.MathContext
 import java.math.RoundingMode
@@ -9,13 +11,22 @@ import java.math.RoundingMode
 // TODO: Make immutable.
 
 @EqualsAndHashCode(includes = ['x', 'y'])
+@ToString
 class Vector {
     BigDecimal x
     BigDecimal y
 
     private final static unit = new Vector(x: 1, y: 1)
     private final static zero = new Vector(x: 0, y: 0)
-    private final static ctx = new MathContext(5, RoundingMode.HALF_UP)
+
+    // TODO: Typing does not work.
+    BigDecimal getAt(int i) {
+        switch (i) {
+            case 0: return x
+            case 1: return y
+        }
+        throw new IllegalArgumentException("No such element $i")
+    }
 
     Vector plus(Vector b) {
         def newX = x + b.x
@@ -63,11 +74,11 @@ class Vector {
     BigDecimal length() {
         def xPow = x.pow(2)
         def yPow = y.pow(2)
-        (xPow + yPow).sqrt(ctx)
+        (xPow + yPow).sqrt(MathConstants.ctx)
     }
 
     Vector normalize() {
-        return this / this.length()
+        return new Vector(x: x, y: y) / this.length()
     }
 
     static unitVector() {

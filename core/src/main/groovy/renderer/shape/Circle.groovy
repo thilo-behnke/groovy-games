@@ -6,7 +6,7 @@ import renderer.options.RenderOptions
 
 class Circle implements Shape {
     Vector center
-    Float radius
+    BigDecimal radius
 
     @Override
     void render(RenderDestination renderDestination, RenderOptions options) {

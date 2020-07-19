@@ -72,7 +72,7 @@ class JPanelDestination extends JPanel implements RenderDestination<Vector> {
     }
 
     @Override
-    void drawCircle(Vector center, Float radius, RenderOptions options) {
+    void drawCircle(Vector center, BigDecimal radius, RenderOptions options) {
         def drawCl = { Graphics2D g -> g.draw(new Ellipse2D.Float(center.x, center.y, radius, radius)) }
         drawQueue << new DrawAction(action: drawCl, options: options)
     }

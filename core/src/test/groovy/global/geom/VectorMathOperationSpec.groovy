@@ -33,15 +33,15 @@ class VectorMathOperationSpec extends Specification {
         expect:
         v1 - s == vRes
         where:
-        v1                                      | s       | vRes
-        new Vector(x: 111.19, y: 5193.3939)     | 83.9298 | new Vector(x: 27.2602, y: 5109.4641)
+        v1                                  | s       | vRes
+        new Vector(x: 111.19, y: 5193.3939) | 83.9298 | new Vector(x: 27.2602, y: 5109.4641)
     }
 
     def 'vector multiplication'() {
         expect:
         v1 * v2 == vRes
         where:
-        v1 | v2 | vRes
+        v1                                | v2                                | vRes
         new Vector(x: 234.238, y: 55.433) | new Vector(x: 138.344, y: 696.22) | new Vector(x: 32405.421872, y: 38593.56326)
     }
 
