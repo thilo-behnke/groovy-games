@@ -19,6 +19,7 @@ class Clock extends GameObject {
     static create() {
         def center = Vector.unitVector() * 1000.0
         def circleDesc = new CircleDesc(center: center, radius: 100.0)
+        // TODO: Start the handle at 0 / 12.
         def startPos = CircleOperations.getPointOnCircleInRadians(circleDesc, MathConstants.PI / 2)
         def player = new Clock(position: startPos)
         player.circleDesc = circleDesc
