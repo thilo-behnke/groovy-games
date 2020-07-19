@@ -73,7 +73,8 @@ class JPanelDestination extends JPanel implements RenderDestination<Vector> {
 
     @Override
     void drawCircle(Vector center, BigDecimal radius, RenderOptions options) {
-        def drawCl = { Graphics2D g -> g.draw(new Ellipse2D.Float(center.x, center.y, radius, radius)) }
+        // TODO: Inefficient, should the shape classes provide both center and bounding areas?
+        def drawCl = { Graphics2D g -> g.draw(new Ellipse2D.Float(center.x - radius, center.y - radius, 2 * radius, 2 * radius)) }
         drawQueue << new DrawAction(action: drawCl, options: options)
     }
 
