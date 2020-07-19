@@ -2,6 +2,9 @@ package global.geom
 
 import groovy.transform.EqualsAndHashCode
 
+import java.math.MathContext
+import java.math.RoundingMode
+
 
 // TODO: Make immutable.
 
@@ -12,14 +15,15 @@ class Vector {
 
     private final static unit = new Vector(x: 1, y: 1)
     private final static zero = new Vector(x: 0, y: 0)
+    private final static ctx = new MathContext(5, RoundingMode.HALF_UP)
 
     Vector plus(Vector b) {
-        def newX = x.add(b.x)
-        def newY = y.add(b.y)
+        def newX = x + b.x
+        def newY = y + b.y
         return new Vector(x: newX, y: newY)
     }
 
-    Vector plus(Float n) {
+    Vector plus(BigDecimal n) {
         def newX = x + n
         def newY = y + n
         return new Vector(x: newX, y: newY)
@@ -31,7 +35,13 @@ class Vector {
         return new Vector(x: newX, y: newY)
     }
 
-    Vector multiply(Float n) {
+    Vector minus(BigDecimal n) {
+        def newX = x - n
+        def newY = y - n
+        return new Vector(x: newX, y: newY)
+    }
+
+    Vector multiply(BigDecimal n) {
         def newX = x * n
         def newY = y * n
         return new Vector(x: newX, y: newY)
@@ -43,14 +53,17 @@ class Vector {
         return new Vector(x: newX, y: newY)
     }
 
-    Vector div(double n) {
+    // TODO: Write tests.
+    Vector div(BigDecimal n) {
         def newX = x / n
         def newY = y / n
         return new Vector(x: newX, y: newY)
     }
 
-    Float length() {
-        return Math.sqrt(x ** 2 + y ** 2)
+    BigDecimal length() {
+        def xPow = x.pow(2)
+        def yPow = y.pow(2)
+        (xPow + yPow).sqrt(ctx)
     }
 
     Vector normalize() {
