@@ -31,7 +31,7 @@ class CircleOperations {
         def alpha = radians + beta
         def cos = BigDecimal.valueOf(Math.cos(alpha)).setScale(MathConstants.ctx.precision, MathConstants.ctx.roundingMode)
         def sin = BigDecimal.valueOf(Math.sin(alpha)).setScale(MathConstants.ctx.precision, MathConstants.ctx.roundingMode)
-        def newPoint = new Vector(x: cos, y: sin)
+        def newPoint = new Vector(x: cos, y: sin) * circleDesc.radius
         circleDesc.center + newPoint
     }
 

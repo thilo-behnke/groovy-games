@@ -15,7 +15,7 @@ class ClockRenderComponent extends RenderComponent {
                 new Point(pos: parent.center),
                 new RenderOptions(drawColor: DrawColor.BLACK),
                 [
-                        RenderNode.leaf(new Circle(center: parent.center, radius: parent.orientation.length()), new RenderOptions(drawColor: DrawColor.RED)),
+                        RenderNode.leaf(new Circle(center: parent.center, radius: parent.radius), new RenderOptions(drawColor: DrawColor.RED)),
                         RenderNode.leaf(new Point(pos: parent.position), new RenderOptions(drawColor: DrawColor.BLACK))
                 ]
         )
