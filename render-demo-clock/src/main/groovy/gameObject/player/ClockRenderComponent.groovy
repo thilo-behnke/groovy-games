@@ -20,7 +20,6 @@ class ClockRenderComponent extends RenderComponent {
     RenderNode getRenderNode() {
         Clock parent = (Clock) parent
         // Clock marks.
-        def hourMarks = getHourMarks()
         def nodes = [
                 // Clock circle.
                 RenderNode.leaf(new Circle(center: parent.center, radius: parent.radius), new RenderOptions(drawColor: DrawColor.BLACK)),
@@ -29,8 +28,10 @@ class ClockRenderComponent extends RenderComponent {
                 RenderNode.leaf(new Line(parent.center, parent.minuteHandlePos), new RenderOptions(drawColor: DrawColor.BLUE)),
                 RenderNode.leaf(new Line(parent.center, parent.hourHandlePos), new RenderOptions(drawColor: DrawColor.GREEN))
         ]
-        // TODO: Fix marks.
-        nodes = nodes + hourMarks
+
+        def hourMarks = getHourMarks()
+        def minuteMarks = getMinuteMarks()
+        nodes = nodes + hourMarks + minuteMarks
         return RenderNode.node(
                 // Center.
                 new Point(pos: parent.center),
@@ -41,15 +42,29 @@ class ClockRenderComponent extends RenderComponent {
         )
     }
 
+    private getMinuteMarks() {
+        if (minuteMarks) {
+            return minuteMarks
+        }
+        Clock clock = (Clock) parent
+        minuteMarks = (1..60).collect {
+            def minuteStep = clock.MINUTE_CIRCLE_STEP * it
+            def minutePosOnCircle = CircleOperations.getPointOnCircleInRadians(clock.circleDesc, minuteStep)
+            def line = new Line(minutePosOnCircle + (clock.center - minutePosOnCircle) * 0.05, minutePosOnCircle)
+            RenderNode.leaf(line, new RenderOptions(drawColor: DrawColor.YELLOW))
+        }
+        return hourMarks
+    }
+
     private getHourMarks() {
         if (hourMarks) {
             return hourMarks
         }
         Clock clock = (Clock) parent
-        def hourMarks = (1..24).collect {
+        hourMarks = (1..12).collect {
             def hourStep = clock.HOUR_CIRCLE_STEP * it
             def hourPosOnCircle = CircleOperations.getPointOnCircleInRadians(clock.circleDesc, hourStep)
-            def line = new Line(clock.center + (clock.center - hourPosOnCircle) * 0.1, hourPosOnCircle)
+            def line = new Line(hourPosOnCircle + (clock.center - hourPosOnCircle) * 0.2, hourPosOnCircle)
             RenderNode.leaf(line, new RenderOptions(drawColor: DrawColor.YELLOW))
         }
         return hourMarks
