@@ -15,6 +15,10 @@ class ClockRenderComponent extends RenderComponent {
     private RenderNode minuteMarks
     private RenderNode hourMarks
 
+    enum ClockRenderOrder {
+        HANDLES, CENTER, CIRCLE, MARKS
+    }
+
     @Override
     RenderNode getRenderNode() {
         Clock parent = (Clock) parent
@@ -23,31 +27,35 @@ class ClockRenderComponent extends RenderComponent {
 
         nodes << getClockCircle()
         nodes << getHandles()
-        nodes << getHourMarks()
-        nodes << getMinuteMarks()
+        nodes << getMarks()
+        nodes << RenderNode.leaf(new Point(pos: parent.center), new RenderOptions(drawColor: DrawColor.BLACK), ClockRenderOrder.CENTER.ordinal())
 
         return RenderNode.node(
-                nodes,
-                // Center.
-                new Point(pos: parent.center),
-                // TODO: Make marks gray.
-                new RenderOptions(drawColor: DrawColor.BLACK),
+                nodes
         )
     }
 
     private getClockCircle() {
         Clock parent = (Clock) parent
-        RenderNode.leaf(new Circle(center: parent.center, radius: parent.radius), new RenderOptions(drawColor: DrawColor.BLACK))
+        Circle circle = new Circle(center: parent.center, radius: parent.radius)
+        RenderNode.leaf(circle, new RenderOptions(drawColor: DrawColor.BLACK), ClockRenderOrder.CIRCLE.ordinal())
     }
 
     private RenderNode getHandles() {
         Clock parent = (Clock) parent
         def handles = [
-                RenderNode.leaf(new Line(parent.center, parent.secondHandlePos), new RenderOptions(drawColor: DrawColor.RED)),
-                RenderNode.leaf(new Line(parent.center, parent.minuteHandlePos), new RenderOptions(drawColor: DrawColor.BLUE)),
-                RenderNode.leaf(new Line(parent.center, parent.hourHandlePos), new RenderOptions(drawColor: DrawColor.GREEN))
+                RenderNode.leaf(new Line(parent.center, parent.secondHandlePos), new RenderOptions(drawColor: DrawColor.RED), 0),
+                RenderNode.leaf(new Line(parent.center, parent.minuteHandlePos), new RenderOptions(drawColor: DrawColor.BLUE), 1),
+                RenderNode.leaf(new Line(parent.center, parent.hourHandlePos), new RenderOptions(drawColor: DrawColor.GREEN), 2)
         ]
-        return RenderNode.node(handles)
+        return RenderNode.node(handles, ClockRenderOrder.HANDLES.ordinal())
+    }
+
+    private RenderNode getMarks() {
+        def minuteMarks = getMinuteMarks()
+        def hourMarks = getHourMarks()
+        def markNodes = [minuteMarks, hourMarks]
+        RenderNode.node(markNodes, ClockRenderOrder.MARKS.ordinal())
     }
 
     private RenderNode getMinuteMarks() {

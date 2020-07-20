@@ -7,12 +7,17 @@ class RenderNode {
     Optional<Renderable> renderObject
     Optional<RenderOptions> renderOptions
     List<RenderNode> childNodes = []
+    Long order
 
-    static RenderNode node(List<RenderNode> childNodes, Renderable obj = null, RenderOptions options = null) {
-        new RenderNode(renderObject: Optional.ofNullable(obj), renderOptions: Optional.ofNullable(options), childNodes: childNodes)
+    static RenderNode node(List<RenderNode> childNodes, Long order) {
+        return node(childNodes, null, null, order)
     }
 
-    static RenderNode leaf(Renderable obj, RenderOptions options = RenderOptions.empty) {
-        new RenderNode(renderObject: Optional.of(obj), renderOptions: Optional.of(options), childNodes: [])
+    static RenderNode node(List<RenderNode> childNodes, Renderable obj = null, RenderOptions options = null, Long order = -1L) {
+        new RenderNode(renderObject: Optional.ofNullable(obj), renderOptions: Optional.ofNullable(options), childNodes: childNodes, order: order)
+    }
+
+    static RenderNode leaf(Renderable obj, RenderOptions options = RenderOptions.empty, Long order = -1L) {
+        new RenderNode(renderObject: Optional.of(obj), renderOptions: Optional.of(options), childNodes: [], order: order)
     }
 }
