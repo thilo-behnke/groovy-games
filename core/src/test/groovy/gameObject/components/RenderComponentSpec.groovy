@@ -24,11 +24,10 @@ class RenderComponentSpec extends Specification {
 
     def 'should do nothing if the renderNode is empty and has no children'() {
         given:
-        def renderComp = new DummyRenderComponent(node: RenderNode.node([]))
+        def renderComp = Spy(new DummyRenderComponent(node: RenderNode.node([])))
         when:
         renderComp.render(renderDestinationMock)
         then:
-        // TODO: Fix.
         1 * renderComp.performRender(renderComp.renderNode, renderDestinationMock)
     }
 }

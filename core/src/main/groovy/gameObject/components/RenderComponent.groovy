@@ -9,7 +9,7 @@ abstract class RenderComponent {
 
     abstract RenderNode getRenderNode()
 
-    void performRender(RenderNode renderNode, RenderDestination renderDestination) {
+    protected void performRender(RenderNode renderNode, RenderDestination renderDestination) {
         if (renderNode.renderObject.isPresent() && renderNode.renderOptions.isPresent()) {
             renderNode.renderObject.get().render(renderDestination, renderNode.renderOptions.get())
         }

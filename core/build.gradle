@@ -7,7 +7,9 @@ dependencies {
     compile 'log4j:log4j:1.2.17'
 
     testImplementation('org.spockframework:spock-core:2.0-M2-groovy-3.0')
+
     testCompile "org.spockframework:spock-core"
+    testCompile group: 'net.bytebuddy', name: 'byte-buddy-gradle-plugin', version: '1.10.13'
 }
 
 test {
