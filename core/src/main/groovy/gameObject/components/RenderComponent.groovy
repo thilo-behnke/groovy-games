@@ -10,8 +10,10 @@ abstract class RenderComponent {
     abstract RenderNode getRenderNode()
 
     void performRender(RenderNode renderNode, RenderDestination renderDestination) {
-        renderNode.renderObject.render(renderDestination, renderNode.renderOptions)
-        renderNode.childNodes.forEach({performRender(it, renderDestination)})
+        if (renderNode.renderObject.isPresent() && renderNode.renderOptions.isPresent()) {
+            renderNode.renderObject.get().render(renderDestination, renderNode.renderOptions.get())
+        }
+        renderNode.childNodes.sort{a, b -> b.order <=> a.order}.forEach({ performRender(it, renderDestination) })
     }
 
     void render(RenderDestination renderDestination) {

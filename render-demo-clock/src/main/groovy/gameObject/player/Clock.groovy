@@ -9,7 +9,7 @@ import global.math.MathConstants
 class Clock extends GameObject {
     final SECOND_CIRCLE_STEP = MathConstants.PI * 2 / 60
     final MINUTE_CIRCLE_STEP = MathConstants.PI * 2 / 60
-    final HOUR_CIRCLE_STEP = MathConstants.PI * 2 / 24
+    final HOUR_CIRCLE_STEP = MathConstants.PI * 2 / 12
 
     final CircleDesc circleDesc
     private Vector clockStart
