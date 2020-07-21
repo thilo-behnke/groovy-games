@@ -45,8 +45,8 @@ class ClockRenderComponent extends RenderComponent {
         Clock parent = (Clock) parent
         def handles = [
                 RenderNode.leaf(new Line(parent.center, parent.secondHandlePos), new RenderOptions(drawColor: DrawColor.RED), 0),
-                RenderNode.leaf(new Line(parent.center, parent.minuteHandlePos), new RenderOptions(drawColor: DrawColor.BLUE), 1),
-                RenderNode.leaf(new Line(parent.center, parent.hourHandlePos), new RenderOptions(drawColor: DrawColor.GREEN), 2)
+                RenderNode.leaf(new Line(parent.center, parent.minuteHandlePos).scaleFromStart(0.8), new RenderOptions(drawColor: DrawColor.BLUE), 1),
+                RenderNode.leaf(new Line(parent.center, parent.hourHandlePos).scaleFromStart(0.6), new RenderOptions(drawColor: DrawColor.GREEN), 2)
         ]
         return RenderNode.node(handles, ClockRenderOrder.HANDLES.ordinal())
     }
@@ -66,7 +66,8 @@ class ClockRenderComponent extends RenderComponent {
         def minuteMarkNodes = (1..60).collect {
             def minuteStep = clock.MINUTE_CIRCLE_STEP * it
             def minutePosOnCircle = CircleOperations.getPointOnCircleInRadians(clock.circleDesc, minuteStep)
-            def line = new Line(minutePosOnCircle + (clock.center - minutePosOnCircle) * 0.05, minutePosOnCircle)
+            def line = new Line(clock.center, minutePosOnCircle)
+            line.scaleFromEnd(0.05)
             RenderNode.leaf(line, new RenderOptions(drawColor: DrawColor.YELLOW))
         }
         minuteMarks = RenderNode.node(minuteMarkNodes)
@@ -81,7 +82,8 @@ class ClockRenderComponent extends RenderComponent {
         def hourMarkNodes = (1..12).collect {
             def hourStep = clock.HOUR_CIRCLE_STEP * it
             def hourPosOnCircle = CircleOperations.getPointOnCircleInRadians(clock.circleDesc, hourStep)
-            def line = new Line(hourPosOnCircle + (clock.center - hourPosOnCircle) * 0.2, hourPosOnCircle)
+            def line = new Line(clock.center, hourPosOnCircle)
+            line.scaleFromEnd(0.2)
             RenderNode.leaf(line, new RenderOptions(drawColor: DrawColor.YELLOW))
         }
         hourMarks = RenderNode.node(hourMarkNodes)

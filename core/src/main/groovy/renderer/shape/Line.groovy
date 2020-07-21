@@ -14,6 +14,17 @@ class Line implements Shape {
         this.end = end
     }
 
+    Line scaleFromEnd(BigDecimal scaleFactor) {
+        start = end + (start - end) * scaleFactor
+        return this
+    }
+
+    Line scaleFromStart(BigDecimal scaleFactor) {
+        end = start + (end - start) * scaleFactor
+        return this
+    }
+
+
     @Override
     void render(RenderDestination renderDestination, RenderOptions options) {
         renderDestination.drawLine(start, end, options)
