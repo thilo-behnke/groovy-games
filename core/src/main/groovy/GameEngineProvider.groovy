@@ -18,6 +18,7 @@ class GameEngineProvider {
         def renderDestination = new JPanelDestination()
         // TODO: Move this away from here - shouldn't be that concrete.
         JFrame f = new JFrame("Game");
+        f.addKeyListener()
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.add(renderDestination);
         f.pack();
