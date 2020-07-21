@@ -33,7 +33,7 @@ class KeyEventJwtAdapter implements KeyEventSubject {
             parent.alertKeyReleased(e)
         }
     }
-    // TODO: What does this error mean?
+    
     private final JFrame frame
     private final JwtKeyListener keyListener
     private final Set<Integer> keyCodesToListenTo = new HashSet<>()
