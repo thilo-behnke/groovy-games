@@ -16,7 +16,9 @@ abstract class RenderComponent {
             def renderObj = renderNode.renderObject.get()
             renderObj.render(renderDestination, renderOptions)
         }
-        renderNode.childNodes.sort{a, b -> b.order <=> a.order}.forEach({ performRender(it, renderDestination) })
+        // Note: The order is inverted here, because being drawn last usually means being rendered on top.
+        def orderedChildren = renderNode.childNodes.sort{a, b -> b.order <=> a.order}
+        orderedChildren.forEach({ performRender(it, renderDestination) })
     }
 
     void render(RenderDestination renderDestination) {

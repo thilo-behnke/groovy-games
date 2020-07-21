@@ -20,4 +20,8 @@ class RenderNode {
     static RenderNode leaf(Renderable obj, RenderOptions options = RenderOptions.empty, Long order = -1L) {
         new RenderNode(renderObject: Optional.of(obj), renderOptions: Optional.of(options), childNodes: [], order: order)
     }
+
+    static RenderNode leaf(Renderable obj, Long order) {
+        new RenderNode(renderObject: Optional.of(obj), renderOptions: Optional.of(RenderOptions.empty), childNodes: [], order: order)
+    }
 }
