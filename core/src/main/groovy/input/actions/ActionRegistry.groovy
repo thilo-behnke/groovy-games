@@ -11,7 +11,7 @@ class ActionRegistry {
     private Set<String> actions
     private Map<KeyEvent, String> keyMappings
 
-    registerActions(Set<String> actions) {
+    void registerActions(Set<String> actions) {
         if (this.actions) {
             log.warn("Actions already registered, can't register again")
             return
@@ -19,17 +19,17 @@ class ActionRegistry {
         this.actions = actions
     }
 
-    registerKeyMappings(Map<KeyEvent, String> keyMappings) throws IllegalKeyAssignmentException {
+    void registerKeyMappings(Map<KeyEvent, String> keyMappings) throws IllegalKeyAssignmentException {
         throwIfActionsAreNotRegistered(keyMappings.values())
         this.keyMappings = keyMappings
     }
 
-    updateKeyMappings(Map<KeyEvent, String> mappingsToUpdate) throws IllegalKeyAssignmentException {
+    void updateKeyMappings(Map<KeyEvent, String> mappingsToUpdate) throws IllegalKeyAssignmentException {
         throwIfActionsAreNotRegistered(keyMappings.values())
         this.keyMappings = this.keyMappings + mappingsToUpdate
     }
 
-    updateKeyMapping(KeyEvent keyEvent, String action) throws IllegalKeyAssignmentException {
+    void updateKeyMapping(KeyEvent keyEvent, String action) throws IllegalKeyAssignmentException {
         throwIfActionIsNotRegistered(action)
         this.keyMappings.put(keyEvent, action)
     }

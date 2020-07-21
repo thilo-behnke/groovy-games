@@ -33,7 +33,7 @@ class KeyEventJwtAdapter implements KeyEventSubject {
             parent.alertKeyReleased(e)
         }
     }
-    
+
     private final JFrame frame
     private final JwtKeyListener keyListener
     private final Set<Integer> keyCodesToListenTo = new HashSet<>()
@@ -42,17 +42,17 @@ class KeyEventJwtAdapter implements KeyEventSubject {
     KeyEventJwtAdapter(JFrame frame) {
         this.frame = frame
         this.keyListener = new JwtKeyListener(this)
+        this.source = BehaviorSubject.createDefault(new HashSet<>())
     }
 
     @Override
     void register() {
-        this.source = BehaviorSubject.create()
         this.frame.addKeyListener(keyListener)
     }
 
     @Override
     void unregister() {
-        this.source.onComplete()
+        this.source.onNext(new HashSet<KeyEvent>())
         this.frame.removeKeyListener(keyListener)
     }
 
