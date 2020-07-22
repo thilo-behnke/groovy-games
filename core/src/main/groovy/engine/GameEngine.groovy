@@ -27,13 +27,11 @@ class GameEngine {
     private state = GameEngineState.UNINITIALIZED
     private long lastTimestamp
 
-    GameEngine(HaltingExecutorService executorService, DateProvider dateProvider, SceneProvider sceneProvider, Renderer renderer, InputActionProvider inputActionProvider) {
+    GameEngine(HaltingExecutorService executorService, DateProvider dateProvider, SceneProvider sceneProvider, Renderer renderer) {
         this.dateProvider = dateProvider
         this.sceneProvider = sceneProvider
         this.executorService = executorService
         this.renderer = renderer
-        // TODO: Shouldn't it be possible to have multiple? E.g. on a network game with multiple players?
-        this.inputActionProvider = inputActionProvider
     }
 
     void setExecutionRuleEngine(GameEngineExecutionRuleEngine gameEngineExecutionRuleEngine = defaultExecutionRuleEngine) {

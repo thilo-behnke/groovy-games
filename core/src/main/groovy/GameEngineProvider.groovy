@@ -16,7 +16,6 @@ class GameEngineProvider {
         def sceneProvider = new DefaultSceneProvider()
         def executorService = new HaltingExecutorService()
         def executionRuleEngine = new GameEngineExecutionRuleEngine()
-        def inputActionRegistry = new InputActionRegistry()
 //        executionRuleEngine << ShutdownAfterFixedNumberOfCyclesExecutionRule.nrOfCycles(10000)
 
         // TODO: Move this away from here - shouldn't be that concrete.
@@ -26,12 +25,15 @@ class GameEngineProvider {
         f.add(renderDestination);
         f.pack();
         f.setVisible(true);
+
+        // TODO: This should happen somewhere else, as multiple instances could exist...
+        def inputActionRegistry = new InputActionRegistry()
         def keyEventSubject = new KeyEventJwtAdapter(f)
+        def inputActionProvider = new InputActionProvider(inputActionRegistry, keyEventSubject)
 
         def renderer = new DefaultRenderer(renderDestination: renderDestination)
 
-        def inputActionProvider = new InputActionProvider(inputActionRegistry, keyEventSubject)
-        def gameEngine = new GameEngine(executorService, dateProvider, sceneProvider, renderer, inputActionProvider)
+        def gameEngine = new GameEngine(executorService, dateProvider, sceneProvider, renderer)
         gameEngine.setExecutionRuleEngine(executionRuleEngine)
 
         return gameEngine
