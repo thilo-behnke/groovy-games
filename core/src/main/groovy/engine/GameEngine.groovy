@@ -3,6 +3,7 @@ package engine
 import global.DateProvider
 
 import groovy.util.logging.Log4j
+import input.actions.InputActionProvider
 import renderer.Renderer
 import utils.HaltingExecutorService
 
@@ -17,6 +18,7 @@ class GameEngine {
     private SceneProvider sceneProvider
     private HaltingExecutorService executorService
     private Renderer renderer
+    private InputActionProvider inputActionProvider
     private GameEngineExecutionRuleEngine executionRuleEngine
 
     // TODO: This should be an array of scenes.
@@ -25,11 +27,13 @@ class GameEngine {
     private state = GameEngineState.UNINITIALIZED
     private long lastTimestamp
 
-    GameEngine(HaltingExecutorService executorService, DateProvider dateProvider, SceneProvider sceneProvider, Renderer renderer) {
+    GameEngine(HaltingExecutorService executorService, DateProvider dateProvider, SceneProvider sceneProvider, Renderer renderer, InputActionProvider inputActionProvider) {
         this.dateProvider = dateProvider
         this.sceneProvider = sceneProvider
         this.executorService = executorService
         this.renderer = renderer
+        // TODO: Shouldn't it be possible to have multiple? E.g. on a network game with multiple players?
+        this.inputActionProvider = inputActionProvider
     }
 
     void setExecutionRuleEngine(GameEngineExecutionRuleEngine gameEngineExecutionRuleEngine = defaultExecutionRuleEngine) {

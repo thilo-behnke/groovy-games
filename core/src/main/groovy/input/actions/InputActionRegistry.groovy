@@ -2,14 +2,17 @@ package input.actions
 
 import groovy.util.logging.Log4j
 import input.exception.IllegalKeyAssignmentException
-
-import java.awt.event.KeyEvent
+import input.keyEvent.KeyEvent
 
 @Log4j
-class ActionRegistry {
+class InputActionRegistry {
 
     private Set<String> actions
     private Map<KeyEvent, String> keyMappings
+
+    Map<KeyEvent, String> getKeyMappings() {
+        return keyMappings
+    }
 
     void registerActions(Set<String> actions) {
         if (this.actions) {
@@ -21,12 +24,13 @@ class ActionRegistry {
 
     void registerKeyMappings(Map<KeyEvent, String> keyMappings) throws IllegalKeyAssignmentException {
         throwIfActionsAreNotRegistered(keyMappings.values())
-        this.keyMappings = keyMappings
+        this.keyMappings.clear()
+        this.keyMappings.putAll(keyMappings)
     }
 
     void updateKeyMappings(Map<KeyEvent, String> mappingsToUpdate) throws IllegalKeyAssignmentException {
         throwIfActionsAreNotRegistered(keyMappings.values())
-        this.keyMappings = this.keyMappings + mappingsToUpdate
+        this.keyMappings.putAll(mappingsToUpdate)
     }
 
     void updateKeyMapping(KeyEvent keyEvent, String action) throws IllegalKeyAssignmentException {

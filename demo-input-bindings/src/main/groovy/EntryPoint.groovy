@@ -1,6 +1,7 @@
 import engine.DefaultGameScene
 import engine.GameEngine
 import gameObject.GameObjectProvider
+import input.keyEvent.KeyEventJwtAdapter
 
 GameEngine gameEngine = GameEngineProvider.provideGameEngine()
 
