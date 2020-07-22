@@ -9,8 +9,6 @@ interface KeyEventSubject {
     void register()
     void unregister()
 
-    void listenToKey(Integer keyCode)
-    void listenToKeys(List<Integer> keyCode)
-    void stopListeningToKey(Integer keyCode)
-    void stopListeningToKeys(List<Integer> keyCodes)
+    void listenToKeys(Integer ...keyCode)
+    void stopListeningToKeys(Integer ...keyCodes)
 }
