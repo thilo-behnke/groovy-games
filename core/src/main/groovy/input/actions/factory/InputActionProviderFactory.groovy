@@ -25,8 +25,7 @@ class AbstractInputActionProviderFactory {
         @Override
         InputActionProvider createProvider(AwtInputActionProviderArgs providerArgs) {
             def keyEventSubject = new KeyEventAwtAdapter(providerArgs.jFrame)
-            def inputActionRegistry = new InputActionRegistry()
-            inputActionRegistry.registerActions(providerArgs.actions)
+            def inputActionRegistry = new InputActionRegistry(providerArgs.actions)
             return new InputActionProvider(inputActionRegistry, keyEventSubject)
         }
     }
