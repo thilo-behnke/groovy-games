@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.subjects.Subject
 import service.Service
 
 class InputActionProvider implements Service {
-    @Delegate
+    @Delegate(excludeTypes = Service)
     private final InputActionRegistry actionRegistry
     private final KeyEventSubject keyEventSubject
 

@@ -1,10 +1,10 @@
 package gameObject.components
 
 import input.actions.InputActionProvider
+import service.Service
 
 abstract class InputComponent {
-    @Delegate
-    final InputActionProvider inputActionProvider
+    private final InputActionProvider inputActionProvider
 
     InputComponent(InputActionProvider inputActionProvider) {
         this.inputActionProvider = inputActionProvider
