@@ -15,11 +15,7 @@ class InputActionRegistry {
         return keyMappings
     }
 
-    void registerActions(Set<String> actions) {
-        if (this.actions) {
-            log.warn("Actions already registered, can't register again")
-            return
-        }
+    InputActionRegistry(Set<String> actions) {
         this.actions = actions
     }
 

@@ -10,6 +10,7 @@ import io.reactivex.rxjava3.subjects.Subject
 import service.Service
 
 class InputActionProvider implements Service {
+    @Delegate
     private final InputActionRegistry actionRegistry
     private final KeyEventSubject keyEventSubject
 
@@ -22,18 +23,6 @@ class InputActionProvider implements Service {
         this.keyEventSubject = keyEventSubject
 
         activeActionsSource = BehaviorSubject.createDefault((Set<String>) [])
-    }
-
-    void overrideKeyMappings(Map<Key, String> keyMappings) {
-        actionRegistry.overrideKeyMappings(keyMappings)
-    }
-
-    void updateKeyMappings(Map<Key, String> mappingsToUpdate) {
-        actionRegistry.updateKeyMappings(mappingsToUpdate)
-    }
-
-    void updateKeyMapping(Key keyEvent, String action) throws IllegalKeyAssignmentException {
-        actionRegistry.updateKeyMapping(keyEvent, action)
     }
 
     Observable<Set<String>> activeActions$() {
