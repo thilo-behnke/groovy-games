@@ -1,8 +1,9 @@
 package input.actions.factory
 
+import input.Key
 import input.actions.InputActionProvider
 import input.actions.InputActionRegistry
-import input.keyEvent.KeyEventJwtAdapter
+import input.awt.KeyEventAwtAdapter
 
 import javax.swing.JFrame
 
@@ -12,6 +13,7 @@ enum InputActionProviderType {
 
 class AwtInputActionProviderArgs {
     JFrame jFrame
+    Set<String> actions
 }
 
 class AbstractInputActionProviderFactory {
@@ -22,8 +24,10 @@ class AbstractInputActionProviderFactory {
     static class AwtInputActionProviderFactory implements InputActionProviderFactory<AwtInputActionProviderArgs> {
         @Override
         InputActionProvider createProvider(AwtInputActionProviderArgs providerArgs) {
-            def keyEventSubject = new KeyEventJwtAdapter(providerArgs.jFrame)
-            return new InputActionProvider(new InputActionRegistry(), keyEventSubject)
+            def keyEventSubject = new KeyEventAwtAdapter(providerArgs.jFrame)
+            def inputActionRegistry = new InputActionRegistry()
+            inputActionRegistry.registerActions(providerArgs.actions)
+            return new InputActionProvider(inputActionRegistry, keyEventSubject)
         }
     }
 

@@ -1,19 +1,20 @@
-package input.keyEvent
+package input.awt
 
-
+import input.Key
+import input.keyEvent.KeyEvent
+import input.keyEvent.KeyEventSubject
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import io.reactivex.rxjava3.subjects.Subject
 
 import javax.swing.JFrame
 import java.awt.event.KeyListener
 
-class KeyEventJwtAdapter implements KeyEventSubject {
+class KeyEventAwtAdapter implements KeyEventSubject {
     class JwtKeyListener implements KeyListener {
 
-        private KeyEventJwtAdapter parent
+        private KeyEventAwtAdapter parent
 
-        JwtKeyListener(KeyEventJwtAdapter parent) {
+        JwtKeyListener(KeyEventAwtAdapter parent) {
             this.parent = parent
         }
 
@@ -36,10 +37,10 @@ class KeyEventJwtAdapter implements KeyEventSubject {
     private final JFrame frame
     private final JwtKeyListener keyListener
     private final Set<Integer> keyCodesToListenTo = new HashSet<>()
-    private Set<KeyEvent> keysPressed = new HashSet<>()
-    private BehaviorSubject<Set<KeyEvent>> source
+    private Set<Key> keysPressed = new HashSet<>()
+    private BehaviorSubject<Set<Key>> source
 
-    KeyEventJwtAdapter(JFrame frame) {
+    KeyEventAwtAdapter(JFrame frame) {
         this.frame = frame
         this.keyListener = new JwtKeyListener(this)
         this.source = BehaviorSubject.createDefault(new HashSet<>())
@@ -58,36 +59,41 @@ class KeyEventJwtAdapter implements KeyEventSubject {
     }
 
     void alertKeyPressed(java.awt.event.KeyEvent event) {
-        keysPressed = keysPressed + new KeyEvent(keyCode: event.keyCode, keyName: event.keyChar)
+        def keyForCode = AwtKeyCodeConverter.convertAwtKeyCodesToKeys(event.keyCode)
+        keysPressed = keysPressed + keyForCode
         this.source.onNext(keysPressed)
     }
 
     void alertKeyReleased(java.awt.event.KeyEvent event) {
-        keysPressed = keysPressed - new KeyEvent(keyCode: event.keyCode, keyName: event.keyChar)
+        def keyForCode = AwtKeyCodeConverter.convertAwtKeyCodesToKeys(event.keyCode)
+        keysPressed = keysPressed - keyForCode
         this.source.onNext(keysPressed)
     }
 
     @Override
-    Observable<Set<KeyEvent>> pressedKeys() {
+    Observable<Set<Key>> pressedKeys() {
         // Ignore key presses to which should not be listened.
         return source
-                .<Set<KeyEvent>> map((Set<KeyEvent> events) ->
-                        events.findAll {
-                            event -> keyCodesToListenTo.find { it == event.keyCode }
+                .<Set<Key>> map((Set<Key> keys) ->
+                        keys.findAll { key ->
+                            def keyCodeForKey = AwtKeyCodeConverter.convertKeysToAwtKeyCodes(key).first()
+                            keyCodesToListenTo.find { it == keyCodeForKey }
                         }
                 )
                 .distinctUntilChanged()
     }
 
     @Override
-    void listenToKeys(Integer ...keyCodes) {
-        this.keyCodesToListenTo.addAll(keyCodes)
+    void listenToKeys(Key ...keys) {
+        def awtKeyCodes = AwtKeyCodeConverter.convertKeysToAwtKeyCodes(keys)
+        this.keyCodesToListenTo.addAll(awtKeyCodes)
         this.source.onNext(keysPressed)
     }
 
     @Override
-    void stopListeningToKeys(Integer ...keyCodes) {
-        this.keyCodesToListenTo.removeAll(keyCodes)
+    void stopListeningToKeys(Key ...keys) {
+        def awtKeyCodes = AwtKeyCodeConverter.convertKeysToAwtKeyCodes(keys)
+        this.keyCodesToListenTo.removeAll(keys)
         this.source.onNext(keysPressed)
     }
 }

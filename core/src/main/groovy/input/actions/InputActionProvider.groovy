@@ -1,15 +1,21 @@
 package input.actions
 
+import input.Key
+import input.exception.IllegalKeyAssignmentException
 import input.keyEvent.KeyEventSubject
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.Subject
+import service.Service
 
-class InputActionProvider {
-    private InputActionRegistry actionRegistry
-    private KeyEventSubject keyEventSubject
+class InputActionProvider implements Service {
+    private final InputActionRegistry actionRegistry
+    private final KeyEventSubject keyEventSubject
 
-    private BehaviorSubject<Set<String>> activeActionsSource
+    private final BehaviorSubject<Set<String>> activeActionsSource
+
+    private Disposable pressedKeyDisposable
 
     InputActionProvider(InputActionRegistry actionRegistry, KeyEventSubject keyEventSubject) {
         this.actionRegistry = actionRegistry
@@ -18,8 +24,28 @@ class InputActionProvider {
         activeActionsSource = BehaviorSubject.createDefault((Set<String>) [])
     }
 
-    void register() {
-        this.keyEventSubject.pressedKeys()
+    void overrideKeyMappings(Map<Key, String> keyMappings) {
+        actionRegistry.overrideKeyMappings(keyMappings)
+    }
+
+    void updateKeyMappings(Map<Key, String> mappingsToUpdate) {
+        actionRegistry.updateKeyMappings(mappingsToUpdate)
+    }
+
+    void updateKeyMapping(Key keyEvent, String action) throws IllegalKeyAssignmentException {
+        actionRegistry.updateKeyMapping(keyEvent, action)
+    }
+
+    Observable<Set<String>> activeActions$() {
+        activeActionsSource
+    }
+
+    Set<String> activeActions() {
+        activeActionsSource.getValue()
+    }
+
+    void init() {
+        pressedKeyDisposable = this.keyEventSubject.pressedKeys()
                 .map { keys ->
                     def mappedToActions = keys
                             .collect { key ->
@@ -32,11 +58,7 @@ class InputActionProvider {
                 .subscribe { activeActionsSource.onNext(it) }
     }
 
-    Observable<Set<String>> activeActions$() {
-        activeActionsSource
-    }
-
-    Set<String> activeActions() {
-        activeActionsSource.getValue()
+    void destroy() {
+        pressedKeyDisposable.dispose()
     }
 }

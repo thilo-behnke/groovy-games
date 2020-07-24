@@ -2,7 +2,7 @@ import engine.*
 import global.DefaultDateProvider
 import input.actions.InputActionProvider
 import input.actions.InputActionRegistry
-import input.keyEvent.KeyEventJwtAdapter
+import input.awt.KeyEventAwtAdapter
 import renderer.DefaultRenderer
 import renderer.destination.JPanelDestination
 import utils.HaltingExecutorService
@@ -28,7 +28,7 @@ class GameEngineProvider {
 
         // TODO: This should happen somewhere else, as multiple instances could exist...
         def inputActionRegistry = new InputActionRegistry()
-        def keyEventSubject = new KeyEventJwtAdapter(f)
+        def keyEventSubject = new KeyEventAwtAdapter(f)
         def inputActionProvider = new InputActionProvider(inputActionRegistry, keyEventSubject)
 
         def renderer = new DefaultRenderer(renderDestination: renderDestination)

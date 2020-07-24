@@ -1,6 +1,7 @@
 package input.actions
 
 import groovy.util.logging.Log4j
+import input.Key
 import input.exception.IllegalKeyAssignmentException
 import input.keyEvent.KeyEvent
 
@@ -8,9 +9,9 @@ import input.keyEvent.KeyEvent
 class InputActionRegistry {
 
     private Set<String> actions
-    private Map<KeyEvent, String> keyMappings
+    private Map<Key, String> keyMappings
 
-    Map<KeyEvent, String> getKeyMappings() {
+    Map<Key, String> getKeyMappings() {
         return keyMappings
     }
 
@@ -22,18 +23,18 @@ class InputActionRegistry {
         this.actions = actions
     }
 
-    void registerKeyMappings(Map<KeyEvent, String> keyMappings) throws IllegalKeyAssignmentException {
+    void overrideKeyMappings(Map<Key, String> keyMappings) throws IllegalKeyAssignmentException {
         throwIfActionsAreNotRegistered(keyMappings.values())
         this.keyMappings.clear()
         this.keyMappings.putAll(keyMappings)
     }
 
-    void updateKeyMappings(Map<KeyEvent, String> mappingsToUpdate) throws IllegalKeyAssignmentException {
+    void updateKeyMappings(Map<Key, String> mappingsToUpdate) throws IllegalKeyAssignmentException {
         throwIfActionsAreNotRegistered(keyMappings.values())
         this.keyMappings.putAll(mappingsToUpdate)
     }
 
-    void updateKeyMapping(KeyEvent keyEvent, String action) throws IllegalKeyAssignmentException {
+    void updateKeyMapping(Key keyEvent, String action) throws IllegalKeyAssignmentException {
         throwIfActionIsNotRegistered(action)
         this.keyMappings.put(keyEvent, action)
     }
