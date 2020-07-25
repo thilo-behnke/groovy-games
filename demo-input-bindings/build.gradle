@@ -9,6 +9,8 @@ repositories {
 
 dependencies {
     compile "org.codehaus.groovy:groovy-all:3.0.2"
+
+    compile project(":transform")
     compile project(":core")
 }
 

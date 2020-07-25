@@ -3,6 +3,7 @@ package org.tb.gg.input.actions.factory
 import org.tb.gg.di.Inject
 import org.tb.gg.di.definition.Singleton
 import org.tb.gg.env.EnvironmentService
+import org.tb.gg.env.EnvironmentSettings
 import org.tb.gg.input.actions.InputActionProvider
 import org.tb.gg.input.actions.InputActionRegistry
 import org.tb.gg.input.awt.KeyEventAwtAdapter
@@ -18,9 +19,13 @@ class AwtInputActionProviderArgs {
     Set<String> actions
 }
 
-class AbstractInputActionProviderFactory implements Singleton {
+class AbstractInputActionProviderFactory {
     @Inject
     private EnvironmentService environmentService
+
+    EnvironmentSettings checkEnv() {
+        return environmentService.getEnvironment()
+    }
 
     interface InputActionProviderFactory<T> {
         InputActionProvider createProvider(T providerArgs)
@@ -43,15 +48,5 @@ class AbstractInputActionProviderFactory implements Singleton {
             default:
                 throw new Exception("Factory InputActionProviderType for ${type} not implemented.")
         }
-    }
-
-    @Override
-    void init() {
-
-    }
-
-    @Override
-    void destroy() {
-
     }
 }

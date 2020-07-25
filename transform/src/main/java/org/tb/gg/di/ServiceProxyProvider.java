@@ -6,7 +6,7 @@ import java.util.Map;
 public class ServiceProxyProvider {
     private static final Map<String, ServiceProxy> proxyMap = new HashMap<>();
 
-    static Object getService(String serviceName) {
+    public static Object getService(String serviceName) {
         if(proxyMap.containsKey(serviceName)) {
             return proxyMap.get(serviceName);
         }
@@ -15,7 +15,7 @@ public class ServiceProxyProvider {
         return serviceProxy;
     }
 
-    static void setService(Object service) {
+    public static void setService(Object service) {
         if(!proxyMap.containsKey(service.getClass().getName())) {
             return;
         }

@@ -26,7 +26,8 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
         AnnotationNode anno = (AnnotationNode) nodes[0];
         if (!MY_TYPE.equals(anno.getClassNode())) {
             return;
-        };
+        }
+        ;
 
         if (parent instanceof FieldNode) {
             FieldNode fieldNode = (FieldNode) parent;
@@ -46,10 +47,13 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
                     new ReturnStatement(
                             new ExpressionStatement(
                                     new MethodCallExpression(
-//                                            new ClassExpression(serviceClassNode),
-                                            new ClassExpression(proxyClassNode),
-                                            "getService",
-                                            new ArgumentListExpression(new ConstantExpression(serviceClassNode.getName()))
+                                            new MethodCallExpression(
+                                                    new ClassExpression(proxyClassNode),
+                                                    "getService",
+                                                    new ArgumentListExpression(new ConstantExpression(serviceClassNode.getName()))
+                                            ),
+                                            "get",
+                                            ArgumentListExpression.EMPTY_ARGUMENTS
                                     )
                             )
                     )
