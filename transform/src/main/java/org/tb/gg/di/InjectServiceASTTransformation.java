@@ -36,25 +36,25 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
             ClassNode clazz = fieldNode.getDeclaringClass();
             // 1. Remove property, no longer needed.
             clazz.removeField(fieldNode.getName());
-            ClassNode proxyClassNode = new ClassNode(ServiceProxyProvider.class);
+            ClassNode proxyClassNode = new ClassNode(ServiceProvider.class);
             MethodNode serviceGetter = new MethodNode(
                     "get" + serviceName,
-                    Opcodes.ACC_PRIVATE,
+                    Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC,
                     serviceClassNode,
                     Parameter.EMPTY_ARRAY,
                     ClassNode.EMPTY_ARRAY,
                     // 3. Getter returns static proxy access to service, e.g. Proxy.get('<service>')
                     new ReturnStatement(
                             new ExpressionStatement(
-                                    new MethodCallExpression(
+//                                    new MethodCallExpression(
                                             new MethodCallExpression(
                                                     new ClassExpression(proxyClassNode),
                                                     "getService",
                                                     new ArgumentListExpression(new ConstantExpression(serviceClassNode.getName()))
-                                            ),
-                                            "get",
-                                            ArgumentListExpression.EMPTY_ARGUMENTS
-                                    )
+                                            )
+//                                            "get",
+//                                            ArgumentListExpression.EMPTY_ARGUMENTS
+//                                    )
                             )
                     )
 //                    new ReturnStatement(new ConstantExpression("test"))

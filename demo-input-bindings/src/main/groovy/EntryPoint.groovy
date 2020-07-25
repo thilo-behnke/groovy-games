@@ -1,3 +1,4 @@
+import org.tb.gg.di.ServiceProvider
 import org.tb.gg.di.ServiceProxyProvider
 import org.tb.gg.di.creator.DefaultConstructorServiceCreator
 import org.tb.gg.di.definition.Singleton
@@ -20,11 +21,8 @@ import org.tb.gg.input.actions.factory.AbstractInputActionProviderFactory
 
 def res = new ClasspathServiceScanner().scanForServices(Singleton.class)
 def services = new DefaultConstructorServiceCreator().createServices(res)
-System.println(services)
 def envService = (EnvironmentService) services.first()
 envService.setEnvironment(new EnvironmentSettings(graphics: Graphics.SWING))
-System.println(envService.getEnvironment())
-ServiceProxyProvider.setService(envService)
+ServiceProvider.setService(envService)
 
-def newFac = new AbstractInputActionProviderFactory()
-System.println(newFac.checkEnv())
+System.println(AbstractInputActionProviderFactory.factory())
