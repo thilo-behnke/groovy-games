@@ -19,6 +19,7 @@ class KeyEventAwtAdapterSpec extends Specification {
     TestObserver<Set<Key>> keyPressObserver
 
     def setup() {
+        System.println(System.getProperty('java.awt.headless'))
         jFrameMock = Mock(JFrame)
         jFrameMock.addKeyListener(_) >> {args ->
             keyListener = (KeyListener) args[0]
