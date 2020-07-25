@@ -47,7 +47,8 @@ class GameEngineSpec extends Specification {
         gameEngine.start()
         runGameEngine()
         then:
-        expectScenesToBeUpdatedAndRendered()
+        true == false
+//        expectScenesToBeUpdatedAndRendered()
     }
 
     def 'running the game loop without an active scene'() {
