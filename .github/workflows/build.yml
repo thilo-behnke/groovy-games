@@ -26,8 +26,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: '11.0.7' # The JDK version to make available on the path.
-    - name: Execute Gradle build
-      env:
-        DISPLAY: :0.0
-      run: ./gradlew build
-
+    - name: Run headless test
+      uses: GabrielBB/xvfb-action@v1.2
+      with:
+        run: ./gradlew build
