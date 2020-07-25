@@ -26,7 +26,7 @@ jobs:
         java-version: 11
     - uses: eskatos/gradle-command-action@v1
       with:
-        arguments: build -Dgg.headless=true
+        arguments: build
     - uses: eskatos/gradle-command-action@v1
       with:
-        arguments: test -Dgg.headless=true
+        arguments: test
