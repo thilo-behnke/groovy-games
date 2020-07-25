@@ -1,5 +1,5 @@
 import org.tb.gg.di.creator.DefaultConstructorServiceCreator
-import org.tb.gg.di.scanner.SingletonServiceScanner
+import org.tb.gg.di.scanner.ClasspathServiceScanner
 import org.tb.gg.env.EnvironmentService
 import org.tb.gg.env.EnvironmentSettings
 import org.tb.gg.env.Graphics
@@ -15,7 +15,7 @@ import org.tb.gg.env.Graphics
 //gameEngine.start()
 
 
-def res = new SingletonServiceScanner().scanForServices()
+def res = new ClasspathServiceScanner().scanForServices()
 def services = new DefaultConstructorServiceCreator().createServices(res)
 System.println(services)
 def envService = (EnvironmentService) services.first()
