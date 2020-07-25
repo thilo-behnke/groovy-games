@@ -1,5 +1,6 @@
 package input.actions
 
+import di.Service
 import input.Key
 import input.exception.IllegalKeyAssignmentException
 import input.keyEvent.KeyEventSubject
@@ -7,7 +8,6 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.Subject
-import service.Service
 
 class InputActionProvider implements Service {
     @Delegate(excludeTypes = Service)
