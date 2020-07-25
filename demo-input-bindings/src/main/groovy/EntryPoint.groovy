@@ -1,7 +1,5 @@
-import di.scanner.ClassLoaderServiceScanner
-import engine.DefaultGameScene
-import engine.GameEngine
-import gameObject.GameObjectProvider
+import org.tb.gg.di.provider.TopLevelClassDefinitionProvider
+import org.tb.gg.di.scanner.SingletonServiceScanner
 
 //GameEngine gameEngine = GameEngineProvider.provideGameEngine()
 //
@@ -13,5 +11,6 @@ import gameObject.GameObjectProvider
 //
 //gameEngine.start()
 
-def res = new ClassLoaderServiceScanner(this.getClass().getClassLoader()).scanForServices()
+def classDefs = new TopLevelClassDefinitionProvider().getClassDefinitions()
+def res = new SingletonServiceScanner().scanForServices(classDefs)
 System.println(res)

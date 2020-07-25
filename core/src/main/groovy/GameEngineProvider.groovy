@@ -1,11 +1,11 @@
-import engine.*
-import global.DefaultDateProvider
-import input.actions.InputActionProvider
-import input.actions.InputActionRegistry
-import input.awt.KeyEventAwtAdapter
-import renderer.DefaultRenderer
-import renderer.destination.JPanelDestination
-import utils.HaltingExecutorService
+import org.tb.gg.engine.*
+import org.tb.gg.global.DefaultDateProvider
+import org.tb.gg.input.actions.InputActionProvider
+import org.tb.gg.input.actions.InputActionRegistry
+import org.tb.gg.input.awt.KeyEventAwtAdapter
+import org.tb.gg.renderer.DefaultRenderer
+import org.tb.gg.renderer.destination.JPanelDestination
+import org.tb.gg.utils.HaltingExecutorService
 
 import javax.swing.*
 
