@@ -20,7 +20,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Install sdk man
-        run: curl -s https://get.sdkman.io | bash
+        run: curl -s https://get.sdkman.io | bash && source "/home/runner/.sdkman/bin/sdkman-init.sh"
       - name: Install java 11
         run: sdk install 11.0.7-open
       - name: Check java version
