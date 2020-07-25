@@ -23,7 +23,4 @@ jobs:
     - uses: actions/checkout@v2
     - uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-11
       with:
-        args: build
-    - uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-11
-      with:
-        args: test
+        args: build --stacktrace
