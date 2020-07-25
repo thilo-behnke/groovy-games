@@ -1,4 +1,4 @@
-package org.tb.gg.di
+package org.tb.gg.di.definition
 
 // TODO: Dependency Injection for Service classes.
 interface Service {

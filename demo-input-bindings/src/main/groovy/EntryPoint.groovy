@@ -1,5 +1,8 @@
-import org.tb.gg.di.provider.TopLevelClassDefinitionProvider
+import org.tb.gg.di.creator.DefaultConstructorServiceCreator
 import org.tb.gg.di.scanner.SingletonServiceScanner
+import org.tb.gg.env.EnvironmentService
+import org.tb.gg.env.EnvironmentSettings
+import org.tb.gg.env.Graphics
 
 //GameEngine gameEngine = GameEngineProvider.provideGameEngine()
 //
@@ -11,6 +14,10 @@ import org.tb.gg.di.scanner.SingletonServiceScanner
 //
 //gameEngine.start()
 
-def classDefs = new TopLevelClassDefinitionProvider().getClassDefinitions()
-def res = new SingletonServiceScanner().scanForServices(classDefs)
-System.println(res)
+
+def res = new SingletonServiceScanner().scanForServices()
+def services = new DefaultConstructorServiceCreator().createServices(res)
+System.println(services)
+def envService = (EnvironmentService) services.first()
+envService.setEnvironment(new EnvironmentSettings(graphics: Graphics.SWING))
+System.println(envService.getEnvironment())

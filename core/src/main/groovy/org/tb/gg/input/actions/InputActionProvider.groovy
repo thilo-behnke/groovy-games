@@ -1,6 +1,6 @@
 package org.tb.gg.input.actions
 
-import org.tb.gg.di.Service
+import org.tb.gg.di.definition.Service
 import org.tb.gg.input.keyEvent.KeyEventSubject
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable

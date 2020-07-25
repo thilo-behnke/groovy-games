@@ -1,6 +1,6 @@
 package org.tb.gg.env
 
-import org.tb.gg.di.Singleton
+import org.tb.gg.di.definition.Singleton
 
 class EnvironmentService implements Singleton {
     private EnvironmentSettings environment

@@ -1,6 +1,6 @@
 package org.tb.gg.input.actions.factory
 
-
+import org.tb.gg.di.Inject
 import org.tb.gg.input.actions.InputActionProvider
 import org.tb.gg.input.actions.InputActionRegistry
 import org.tb.gg.input.awt.KeyEventAwtAdapter
@@ -16,6 +16,7 @@ class AwtInputActionProviderArgs {
     Set<String> actions
 }
 
+@Inject(service = 'EnvironmentService')
 class AbstractInputActionProviderFactory {
     interface InputActionProviderFactory<T> {
         InputActionProvider createProvider(T providerArgs)
