@@ -22,9 +22,11 @@ jobs:
       - name: Install sdk man
         run: curl -s https://get.sdkman.io | bash
       - name: Install java 11
-        run: source "/home/runner/.sdkman/bin/sdkman-init.sh" && echo sdk --version && sdk install java 11.0.7-open
+        run: source "/home/runner/.sdkman/bin/sdkman-init.sh" && sdk install java 11.0.7-open
       - name: Check java version
-        run: echo java --version
+        run: echo $(java --version)
+      - name: Run gradle build
+        run: ./gradlew build
 #    - name: Check out current branch
 #      uses: actions/checkout@v2
 #    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
