@@ -19,12 +19,21 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Check out current branch
-      uses: actions/checkout@v2
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - name: Setup JDK 11
-      uses: actions/setup-java@v1
-      with:
-        java-version: '11.0.7' # The JDK version to make available on the path.
-    - name: Execute Gradle build
-      run: ./gradlew build
+      - name: Check out current branch
+        uses: actions/checkout@v2
+
+      - name: Install sdk man
+        run: curl -s https://get.sdkman.io | bash
+      - name: Run gradle build
+        run: source "/home/runner/.sdkman/bin/sdkman-init.sh" && sdk install java 11.0.7-open && echo $(java --version) && ./gradlew build
+
+#      - name: Run gradle build
+#        run: ./gradlew build
+#    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#    - name: Setup JDK 11
+#      uses: actions/setup-java@v1
+#      with:
+#        java-version: '11.0.7' # The JDK version to make available on the path.
+#    - name: Execute Gradle build
+#      run: ./gradlew build
+
