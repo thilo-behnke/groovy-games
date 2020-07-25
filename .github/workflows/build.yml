@@ -25,7 +25,8 @@ jobs:
 #      with:
 #        java-version: 11
     - uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-11
-#      with:
-#        arguments: build
       with:
-        arguments: test
+        args: build
+    - uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-11
+      with:
+        args: test
