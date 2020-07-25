@@ -19,6 +19,7 @@ import org.tb.gg.input.actions.factory.AbstractInputActionProviderFactory
 //gameEngine.start()
 
 
+// TODO: Move this into the game engine provider. Graphics settings should be sniffed from environment.
 def res = new ClasspathServiceScanner().scanForServices(Singleton.class)
 def services = new DefaultConstructorServiceCreator().createServices(res)
 def envService = (EnvironmentService) services.first()
