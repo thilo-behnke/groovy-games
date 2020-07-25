@@ -27,5 +27,7 @@ jobs:
       with:
         java-version: '11.0.7' # The JDK version to make available on the path.
     - name: Execute Gradle build
+      env:
+        DISPLAY: :0.0
       run: ./gradlew build
 
