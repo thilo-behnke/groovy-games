@@ -1,8 +1,6 @@
 package org.tb.gg.di;
 
-import groovy.transform.CompileStatic;
 import org.codehaus.groovy.ast.ASTNode;
-import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
