@@ -1,6 +1,5 @@
 package org.tb.gg.di;
 
-import groovy.transform.ToString;
 import groovyjarjarasm.asm.Opcodes;
 import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.*;
@@ -36,7 +35,7 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
             ClassNode clazz = fieldNode.getDeclaringClass();
             // 1. Remove property, no longer needed.
             clazz.removeField(fieldNode.getName());
-            ClassNode proxyClassNode = new ClassNode(ServiceProxy.class);
+            ClassNode proxyClassNode = new ClassNode(ServiceProxyProvider.class);
             MethodNode serviceGetter = new MethodNode(
                     "get" + serviceName,
                     Opcodes.ACC_PRIVATE,
@@ -49,8 +48,8 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
                                     new MethodCallExpression(
 //                                            new ClassExpression(serviceClassNode),
                                             new ClassExpression(proxyClassNode),
-                                            "get",
-                                            ArgumentListExpression.EMPTY_ARGUMENTS
+                                            "getService",
+                                            new ArgumentListExpression(new ConstantExpression(serviceClassNode.getName()))
                                     )
                             )
                     )

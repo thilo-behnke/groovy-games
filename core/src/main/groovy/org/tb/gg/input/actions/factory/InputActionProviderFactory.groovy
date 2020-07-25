@@ -1,7 +1,6 @@
 package org.tb.gg.input.actions.factory
 
 import org.tb.gg.di.Inject
-import org.tb.gg.di.ServiceProxy
 import org.tb.gg.di.definition.Singleton
 import org.tb.gg.env.EnvironmentService
 import org.tb.gg.input.actions.InputActionProvider

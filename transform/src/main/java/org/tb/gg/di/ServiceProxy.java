@@ -1,8 +1,13 @@
 package org.tb.gg.di;
 
 public class ServiceProxy {
-    static Object get() {
-        return new Object();
+    private Object obj = null;
+
+    Object get() {
+        return obj;
+    }
+
+    void setObject(Object obj) {
+        this.obj = obj;
     }
 }
-
