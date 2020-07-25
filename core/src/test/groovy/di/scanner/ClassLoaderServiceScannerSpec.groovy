@@ -5,18 +5,19 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @Unroll
-class DefaultServiceScannerSpec extends Specification {
-    private DefaultServiceScanner serviceScanner
+class ClassLoaderServiceScannerSpec extends Specification {
+    private ClassLoaderServiceScanner serviceScanner
+    private ClassLoader classLoaderMock
 
     void setup() {
-        serviceScanner = new DefaultServiceScanner()
+//        classLoaderMock = Mock(ClassLoader)
+        classLoaderMock = this.getClass().getClassLoader()
+        serviceScanner = new ClassLoaderServiceScanner(classLoaderMock)
     }
 
-    def 'should return empty list if no services are found in given package'() {
-        given:
-        def pkg = 'org.does.not.exist'
+    def 'should return empty list if no services are found in given class loader'() {
         when:
-        def serviceClasses = serviceScanner.scanForServices(pkg)
+        def serviceClasses = serviceScanner.scanForServices()
         then:
         serviceClasses == (Set<Class<Service>>) []
     }
