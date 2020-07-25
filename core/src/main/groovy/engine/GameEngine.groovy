@@ -3,6 +3,7 @@ package engine
 import global.DateProvider
 
 import groovy.util.logging.Log4j
+import input.actions.InputActionProvider
 import renderer.Renderer
 import utils.HaltingExecutorService
 
@@ -17,6 +18,7 @@ class GameEngine {
     private SceneProvider sceneProvider
     private HaltingExecutorService executorService
     private Renderer renderer
+    private InputActionProvider inputActionProvider
     private GameEngineExecutionRuleEngine executionRuleEngine
 
     // TODO: This should be an array of scenes.
