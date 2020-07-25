@@ -25,10 +25,11 @@ jobs:
         run: source "/home/runner/.sdkman/bin/sdkman-init.sh" && sdk install java 11.0.7-open
       - name: Check java version
         run: echo $(java --version)
+
+      - name: Check out current branch
+        uses: actions/checkout@v2
       - name: Run gradle build
         run: ./gradlew build
-#    - name: Check out current branch
-#      uses: actions/checkout@v2
 #    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 #    - name: Setup JDK 11
 #      uses: actions/setup-java@v1
