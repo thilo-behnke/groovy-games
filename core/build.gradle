@@ -15,5 +15,11 @@ dependencies {
 }
 
 test {
+    // Required for running tests on a build server that normally require physical input devices as keyboards.
+    def runHeadless = System.getProperty('gg.headless')
+    if(runHeadless == 'true') {
+        systemProperties 'java.awt.headless': "true"
+    }
+
     useJUnitPlatform()
 }
