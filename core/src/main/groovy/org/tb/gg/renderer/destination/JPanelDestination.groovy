@@ -14,7 +14,7 @@ import java.awt.geom.Ellipse2D
 import java.awt.geom.Line2D
 import java.util.concurrent.ConcurrentLinkedQueue
 
-class JPanelDestination extends JPanel implements RenderDestination<Vector> {
+class JPanelDestination extends JPanel implements RenderDestination {
     private Queue<DrawAction> drawQueue = new ConcurrentLinkedQueue<>()
     private defaultColor = Color.black
 

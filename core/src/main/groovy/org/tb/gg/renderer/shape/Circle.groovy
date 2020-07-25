@@ -1,6 +1,6 @@
 package org.tb.gg.renderer.shape
 
-
+import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 
