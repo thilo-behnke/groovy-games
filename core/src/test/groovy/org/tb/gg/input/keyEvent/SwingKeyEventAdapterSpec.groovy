@@ -1,5 +1,9 @@
 package org.tb.gg.input.keyEvent
 
+import org.tb.gg.di.ServiceProvider
+import org.tb.gg.di.ServiceProxy
+import org.tb.gg.env.EnvironmentService
+import org.tb.gg.env.EnvironmentSettings
 import org.tb.gg.input.Key
 import org.tb.gg.input.awt.SwingKeyEventAdapter
 import io.reactivex.rxjava3.observers.TestObserver
@@ -19,16 +23,23 @@ class SwingKeyEventAdapterSpec extends Specification {
     TestObserver<Set<Key>> keyPressObserver
 
     def setup() {
-        System.println(System.getProperty('java.awt.headless'))
+
         jFrameMock = Mock(JFrame)
         jFrameMock.addKeyListener(_) >> {args ->
             keyListener = (KeyListener) args[0]
         }
-        keyEventJwtAdapter = new SwingKeyEventAdapter(jFrameMock)
+
+        // TODO: Hotfix, This should also be handled by DI.
+        def environmentService = Mock(EnvironmentService)
+        environmentService.getEnvironment() >> {args -> new EnvironmentSettings(graphics: org.tb.gg.env.Graphics.SWING, environmentFrame: jFrameMock)}
+        ServiceProvider.setService(environmentService, EnvironmentService.getName())
+
+        keyEventJwtAdapter = new SwingKeyEventAdapter()
     }
 
     def cleanup() {
         keyPressObserver.dispose()
+        ServiceProvider.reset()
     }
 
     def 'should not register a keyListener on awt JFrame if not registered'() {

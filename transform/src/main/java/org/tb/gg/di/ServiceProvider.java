@@ -12,9 +12,19 @@ public class ServiceProvider {
     }
 
     public static void setService(Object service) {
-        if(serviceMap.containsKey(service.getClass().getName())) {
+        setService(service, service.getClass().getName());
+    }
+
+    public static void setService(Object service, String name) {
+        if(serviceMap.containsKey(name)) {
             return;
         }
-        serviceMap.put(service.getClass().getName(), service);
+        serviceMap.put(name, service);
     }
+
+    public static void reset() {
+        // TODO: What to do with services in the Map? Type is unclear here to call destroy on each...
+        serviceMap.clear();
+    }
+
 }
