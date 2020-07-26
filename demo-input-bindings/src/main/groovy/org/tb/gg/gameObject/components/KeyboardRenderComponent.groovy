@@ -1,4 +1,4 @@
-package org.tb.gg.gameObject
+package org.tb.gg.gameObject.components
 
 import org.tb.gg.gameObject.components.RenderComponent
 import org.tb.gg.global.geom.Vector
@@ -9,6 +9,6 @@ import org.tb.gg.renderer.shape.Line
 class KeyboardRenderComponent extends RenderComponent {
     @Override
     RenderNode getRenderNode() {
-        return RenderNode.leaf(new Line(Vector.unitVector(), Vector.zeroVector()))
+        return RenderNode.leaf(new Line(Vector.zeroVector(), Vector.unitVector() * 1000.0))
     }
 }

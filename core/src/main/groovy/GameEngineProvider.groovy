@@ -5,17 +5,13 @@ import org.tb.gg.engine.GameEngine
 import org.tb.gg.engine.GameEngineExecutionRuleEngine
 import org.tb.gg.env.EnvironmentAnalyzer
 import org.tb.gg.env.EnvironmentService
-import org.tb.gg.env.EnvironmentSettings
 import org.tb.gg.env.SystemPropertiesEnvironmentAnalyzer
 import org.tb.gg.global.DefaultDateProvider
-import org.tb.gg.input.actions.InputActionProvider
+import org.tb.gg.input.actions.KeyPressInputActionProvider
 import org.tb.gg.input.actions.InputActionRegistry
 import org.tb.gg.input.awt.SwingKeyEventAdapter
 import org.tb.gg.renderer.DefaultRenderer
-import org.tb.gg.renderer.destination.JPanelDestination
 import org.tb.gg.utils.HaltingExecutorService
-
-import javax.swing.*
 
 class GameEngineProvider {
 
@@ -52,7 +48,7 @@ class GameEngineProvider {
         // TODO: This should happen somewhere else, as multiple instances could exist...
         def inputActionRegistry = new InputActionRegistry()
         def keyEventSubject = new SwingKeyEventAdapter()
-        def inputActionProvider = new InputActionProvider(inputActionRegistry, keyEventSubject)
+        def inputActionProvider = new KeyPressInputActionProvider(inputActionRegistry, keyEventSubject)
 
         def renderer = new DefaultRenderer(renderDestination: environmentService.environment.renderDestination)
 

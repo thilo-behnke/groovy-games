@@ -3,14 +3,11 @@ package org.tb.gg.input.actions.factory
 import org.tb.gg.di.Inject
 import org.tb.gg.env.EnvironmentService
 import org.tb.gg.env.Graphics
-import org.tb.gg.input.actions.InputActionProvider
+import org.tb.gg.input.actions.KeyPressInputActionProvider
 import org.tb.gg.input.actions.InputActionRegistry
 import org.tb.gg.input.awt.SwingKeyEventAdapter
 
-import javax.swing.JFrame
-
-class AwtInputActionProviderArgs {
-    JFrame jFrame
+class InputActionProviderArgs {
     Set<String> actions
 }
 
@@ -19,15 +16,15 @@ class AbstractInputActionProviderFactory {
     private static EnvironmentService environmentService
 
     interface InputActionProviderFactory<T> {
-        InputActionProvider createProvider(T providerArgs)
+        KeyPressInputActionProvider createProvider(T providerArgs)
     }
 
-    static class AwtInputActionProviderFactory implements InputActionProviderFactory<AwtInputActionProviderArgs> {
+    static class AwtInputActionProviderFactory implements InputActionProviderFactory<InputActionProviderArgs> {
         @Override
-        InputActionProvider createProvider(AwtInputActionProviderArgs providerArgs) {
-            def keyEventSubject = new SwingKeyEventAdapter(providerArgs.jFrame)
+        KeyPressInputActionProvider createProvider(InputActionProviderArgs providerArgs) {
+            def keyEventSubject = new SwingKeyEventAdapter()
             def inputActionRegistry = new InputActionRegistry(providerArgs.actions)
-            return new InputActionProvider(inputActionRegistry, keyEventSubject)
+            return new KeyPressInputActionProvider(inputActionRegistry, keyEventSubject)
         }
     }
 

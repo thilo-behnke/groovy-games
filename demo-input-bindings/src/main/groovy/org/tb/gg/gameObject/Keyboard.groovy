@@ -1,5 +1,6 @@
 package org.tb.gg.gameObject
 
+import org.tb.gg.gameObject.components.KeyboardRenderComponent
 import org.tb.gg.input.actions.factory.AbstractInputActionProviderFactory
 
 class Keyboard extends GameObject {

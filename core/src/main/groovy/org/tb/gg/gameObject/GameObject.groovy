@@ -28,7 +28,7 @@ class GameObject implements Updateable {
 
     @Override
     void update(Long timestamp, Long delta) {
-        def activeActions = inputComponent.activeActions()
+        def activeActions = inputComponent.getActiveActions()
         // TODO: Update based on active actions.
         // TODO: Integrate state machine.
     }
