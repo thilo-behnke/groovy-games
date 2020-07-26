@@ -8,6 +8,7 @@ import org.tb.gg.renderer.destination.RenderDestination
 
 @EqualsAndHashCode(includes='id')
 class GameObject implements Updateable {
+    // TODO: Automatically generate.
     Long id
 
     RenderComponent renderComponent

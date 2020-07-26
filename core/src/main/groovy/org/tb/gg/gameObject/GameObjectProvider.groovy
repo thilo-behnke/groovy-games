@@ -1,9 +1,14 @@
 package org.tb.gg.gameObject
 
 class GameObjectProvider {
-    private Set<GameObject> gameObjects = []
+	private Long idCounter = 1
+
+	private Set<GameObject> gameObjects = []
 
 	Set<GameObject> leftShift(GameObject gameObject) {
+		gameObject.setId(idCounter)
+		idCounter = (Long) (idCounter + 1)
+        
 		return gameObjects << gameObject
 	}
 

@@ -12,9 +12,11 @@ import org.tb.gg.renderer.shape.Text
 // TODO: Add Keyboard visualization to show pressed keys.
 @Log4j
 class KeyboardRenderComponent extends RenderComponent {
+    Vector pos
+
     @Override
     RenderNode getRenderNode() {
         def keyboard = (Keyboard) parent
-        return RenderNode.leaf(new Text(pos: Vector.unitVector() * 500.0, text: keyboard.activeActions.join(', ')), new RenderOptions(drawColor: DrawColor.BLACK))
+        return RenderNode.leaf(new Text(pos: pos, text: keyboard.activeActions.join(', ')), new RenderOptions(drawColor: DrawColor.BLACK))
     }
 }
