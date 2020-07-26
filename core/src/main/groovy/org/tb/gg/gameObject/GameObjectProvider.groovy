@@ -1,14 +1,16 @@
 package org.tb.gg.gameObject
 
+import java.util.concurrent.atomic.AtomicLong
+
 class GameObjectProvider {
-	private Long idCounter = 1
+	private AtomicLong idCounter = new AtomicLong()
 
 	private Set<GameObject> gameObjects = []
 
 	Set<GameObject> leftShift(GameObject gameObject) {
-		gameObject.setId(idCounter)
-		idCounter = (Long) (idCounter + 1)
-        
+		def id = idCounter.incrementAndGet()
+		gameObject.setId(id)
+
 		return gameObjects << gameObject
 	}
 
