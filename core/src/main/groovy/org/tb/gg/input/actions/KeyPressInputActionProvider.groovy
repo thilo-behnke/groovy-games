@@ -1,13 +1,14 @@
 package org.tb.gg.input.actions
 
 import org.tb.gg.di.definition.Service
+import org.tb.gg.input.Key
+import org.tb.gg.input.exception.IllegalKeyAssignmentException
 import org.tb.gg.input.keyEvent.KeyEventSubject
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class KeyPressInputActionProvider implements InputActionProvider, Service {
-    @Delegate(excludeTypes = Service)
     private final InputActionRegistry actionRegistry
     private final KeyEventSubject keyEventSubject
 
@@ -30,6 +31,12 @@ class KeyPressInputActionProvider implements InputActionProvider, Service {
         activeActionsSource.getValue()
     }
 
+    void overrideKeyMappings(Map<Key, String> keyMappings) throws IllegalKeyAssignmentException {
+        // TODO: Handle removed keys, etc...
+        actionRegistry.overrideKeyMappings(keyMappings)
+        keyEventSubject.listenToKeys(*keyMappings.keySet().toList())
+    }
+
     void init() {
         pressedKeyDisposable = this.keyEventSubject.pressedKeys()
                 .map { keys ->
@@ -38,6 +45,9 @@ class KeyPressInputActionProvider implements InputActionProvider, Service {
                                 actionRegistry.getKeyMappings().find { mapping -> mapping.key == key }?.value
                             }
                             .find { it != null }
+                    if (!mappedToActions) {
+                        return new HashSet<>()
+                    }
                     mappedToActions.toSet()
                 }
                 .distinctUntilChanged()

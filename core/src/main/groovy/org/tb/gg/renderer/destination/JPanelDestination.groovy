@@ -90,6 +90,12 @@ class JPanelDestination extends JPanel implements RenderDestination {
     }
 
     @Override
+    void drawText(Vector pos, String text, RenderOptions options) {
+        def drawCl = { Graphics2D g -> g.drawString(text, pos.x, getHeight() - pos.y) }
+        drawQueue << new DrawAction(action: drawCl, options: options)
+    }
+
+    @Override
     void refresh() {
         repaint()
     }

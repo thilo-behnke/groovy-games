@@ -9,8 +9,8 @@ class GameObjectBuilder implements Builder<GameObject> {
 
     private GameObject gameObject
 
-    GameObjectBuilder() {
-        gameObject = new GameObject()
+    GameObjectBuilder(Class<? extends GameObject> clazz) {
+        gameObject = clazz.getConstructor().newInstance()
     }
 
     GameObjectBuilder setRenderComponent(RenderComponent renderComponent) {

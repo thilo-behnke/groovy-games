@@ -63,13 +63,13 @@ class SwingKeyEventAdapter implements KeyEventSubject {
         this.frame.removeKeyListener(keyListener)
     }
 
-    void alertKeyPressed(java.awt.event.KeyEvent event) {
+    void alertKeyPressed(KeyEvent event) {
         def keyForCode = AwtKeyCodeConverter.convertAwtKeyCodesToKeys(event.keyCode)
         keysPressed = keysPressed + keyForCode
         this.source.onNext(keysPressed)
     }
 
-    void alertKeyReleased(java.awt.event.KeyEvent event) {
+    void alertKeyReleased(KeyEvent event) {
         def keyForCode = AwtKeyCodeConverter.convertAwtKeyCodesToKeys(event.keyCode)
         keysPressed = keysPressed - keyForCode
         this.source.onNext(keysPressed)
@@ -81,7 +81,11 @@ class SwingKeyEventAdapter implements KeyEventSubject {
         return source
                 .<Set<Key>> map((Set<Key> keys) ->
                         keys.findAll { key ->
-                            def keyCodeForKey = AwtKeyCodeConverter.convertKeysToAwtKeyCodes(key).first()
+                            def matchingKeyCodesForKey = AwtKeyCodeConverter.convertKeysToAwtKeyCodes(key)
+                            if(matchingKeyCodesForKey.size() == 0) {
+                                return false
+                            }
+                            def keyCodeForKey = matchingKeyCodesForKey.first()
                             keyCodesToListenTo.find { it == keyCodeForKey }
                         }
                 )
@@ -98,7 +102,7 @@ class SwingKeyEventAdapter implements KeyEventSubject {
     @Override
     void stopListeningToKeys(Key ...keys) {
         def awtKeyCodes = AwtKeyCodeConverter.convertKeysToAwtKeyCodes(keys)
-        this.keyCodesToListenTo.removeAll(keys)
+        this.keyCodesToListenTo.removeAll(awtKeyCodes)
         this.source.onNext(keysPressed)
     }
 }

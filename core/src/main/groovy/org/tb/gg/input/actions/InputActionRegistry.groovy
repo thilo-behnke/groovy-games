@@ -8,7 +8,7 @@ import org.tb.gg.input.exception.IllegalKeyAssignmentException
 class InputActionRegistry {
 
     private Set<String> actions
-    private Map<Key, String> keyMappings
+    private Map<Key, String> keyMappings = new HashMap<>()
 
     Map<Key, String> getKeyMappings() {
         return keyMappings
