@@ -1,7 +1,7 @@
 package org.tb.gg.input.keyEvent
 
 import org.tb.gg.input.Key
-import org.tb.gg.input.awt.KeyEventAwtAdapter
+import org.tb.gg.input.awt.SwingKeyEventAdapter
 import io.reactivex.rxjava3.observers.TestObserver
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -11,9 +11,9 @@ import java.awt.*
 import java.awt.event.KeyListener
 
 @Unroll
-class KeyEventAwtAdapterSpec extends Specification {
+class SwingKeyEventAdapterSpec extends Specification {
 
-    KeyEventAwtAdapter keyEventJwtAdapter
+    SwingKeyEventAdapter keyEventJwtAdapter
     JFrame jFrameMock
     KeyListener keyListener
     TestObserver<Set<Key>> keyPressObserver
@@ -24,7 +24,7 @@ class KeyEventAwtAdapterSpec extends Specification {
         jFrameMock.addKeyListener(_) >> {args ->
             keyListener = (KeyListener) args[0]
         }
-        keyEventJwtAdapter = new KeyEventAwtAdapter(jFrameMock)
+        keyEventJwtAdapter = new SwingKeyEventAdapter(jFrameMock)
     }
 
     def cleanup() {

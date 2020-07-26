@@ -1,8 +1,14 @@
 package org.tb.gg.env
 
 import groovy.transform.Immutable
+import groovy.transform.ToString
+import org.tb.gg.renderer.destination.RenderDestination
 
-@Immutable class EnvironmentSettings {
+@ToString
+class EnvironmentSettings {
     Graphics graphics
+    // TODO: Find better name.
+    Object environmentFrame
+    RenderDestination renderDestination
 }
 

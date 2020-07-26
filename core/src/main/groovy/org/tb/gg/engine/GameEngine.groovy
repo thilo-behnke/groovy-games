@@ -91,12 +91,12 @@ class GameEngine {
 
 
     private updateScenes(long now, long delta) {
-        log.info("Updating active scenes. Time: ${now}. Delta: ${delta}".toString())
+        log.debug("Updating active scenes. Time: ${now}. Delta: ${delta}".toString())
         activeScene.ifPresent{scene -> scene.update(now, delta)}
     }
 
     private renderScenes() {
-        log.info("Rendering updated scenes.")
+        log.debug("Rendering updated scenes.")
         activeScene.ifPresent({renderer.render(new HashSet<GameScene>([it]))})
     }
 

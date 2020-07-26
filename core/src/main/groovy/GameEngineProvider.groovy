@@ -1,8 +1,16 @@
-import org.tb.gg.engine.*
+import org.tb.gg.di.DependencyInjectionHandler
+import org.tb.gg.di.Inject
+import org.tb.gg.engine.DefaultSceneProvider
+import org.tb.gg.engine.GameEngine
+import org.tb.gg.engine.GameEngineExecutionRuleEngine
+import org.tb.gg.env.EnvironmentAnalyzer
+import org.tb.gg.env.EnvironmentService
+import org.tb.gg.env.EnvironmentSettings
+import org.tb.gg.env.SystemPropertiesEnvironmentAnalyzer
 import org.tb.gg.global.DefaultDateProvider
 import org.tb.gg.input.actions.InputActionProvider
 import org.tb.gg.input.actions.InputActionRegistry
-import org.tb.gg.input.awt.KeyEventAwtAdapter
+import org.tb.gg.input.awt.SwingKeyEventAdapter
 import org.tb.gg.renderer.DefaultRenderer
 import org.tb.gg.renderer.destination.JPanelDestination
 import org.tb.gg.utils.HaltingExecutorService
@@ -10,28 +18,43 @@ import org.tb.gg.utils.HaltingExecutorService
 import javax.swing.*
 
 class GameEngineProvider {
+
+    private DependencyInjectionHandler dependencyInjectionHandler = new DependencyInjectionHandler()
+    private EnvironmentAnalyzer environmentAnalyzer = new SystemPropertiesEnvironmentAnalyzer()
+
+    @Inject
+    private EnvironmentService environmentService
+
     // TODO: It would be great to have something here like in Spring, e.g. auto detect files with ending Scene and startup the game that way.
-    static GameEngine provideGameEngine() {
+    GameEngine provideGameEngine() {
+        configureDependencyInjection()
+        configureEnvironment()
+        bootstrap()
+    }
+
+    private void configureDependencyInjection() {
+        dependencyInjectionHandler.injectDependencies()
+    }
+
+    private void configureEnvironment() {
+        def envService = (EnvironmentService) dependencyInjectionHandler.getService(EnvironmentService.getName())
+        def graphics = environmentAnalyzer.getGraphics()
+        envService.setEnvironment(graphics)
+    }
+
+    private GameEngine bootstrap() {
         def dateProvider = new DefaultDateProvider()
         def sceneProvider = new DefaultSceneProvider()
         def executorService = new HaltingExecutorService()
         def executionRuleEngine = new GameEngineExecutionRuleEngine()
 //        executionRuleEngine << ShutdownAfterFixedNumberOfCyclesExecutionRule.nrOfCycles(10000)
 
-        // TODO: Move this away from here - shouldn't be that concrete.
-        def renderDestination = new JPanelDestination()
-        JFrame f = new JFrame("Game");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.add(renderDestination);
-        f.pack();
-        f.setVisible(true);
-
         // TODO: This should happen somewhere else, as multiple instances could exist...
         def inputActionRegistry = new InputActionRegistry()
-        def keyEventSubject = new KeyEventAwtAdapter(f)
+        def keyEventSubject = new SwingKeyEventAdapter()
         def inputActionProvider = new InputActionProvider(inputActionRegistry, keyEventSubject)
 
-        def renderer = new DefaultRenderer(renderDestination: renderDestination)
+        def renderer = new DefaultRenderer(renderDestination: environmentService.environment.renderDestination)
 
         def gameEngine = new GameEngine(executorService, dateProvider, sceneProvider, renderer)
         gameEngine.setExecutionRuleEngine(executionRuleEngine)

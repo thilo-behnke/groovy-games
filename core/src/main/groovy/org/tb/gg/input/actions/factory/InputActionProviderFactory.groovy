@@ -1,13 +1,11 @@
 package org.tb.gg.input.actions.factory
 
 import org.tb.gg.di.Inject
-import org.tb.gg.di.definition.Singleton
 import org.tb.gg.env.EnvironmentService
-import org.tb.gg.env.EnvironmentSettings
 import org.tb.gg.env.Graphics
 import org.tb.gg.input.actions.InputActionProvider
 import org.tb.gg.input.actions.InputActionRegistry
-import org.tb.gg.input.awt.KeyEventAwtAdapter
+import org.tb.gg.input.awt.SwingKeyEventAdapter
 
 import javax.swing.JFrame
 
@@ -27,7 +25,7 @@ class AbstractInputActionProviderFactory {
     static class AwtInputActionProviderFactory implements InputActionProviderFactory<AwtInputActionProviderArgs> {
         @Override
         InputActionProvider createProvider(AwtInputActionProviderArgs providerArgs) {
-            def keyEventSubject = new KeyEventAwtAdapter(providerArgs.jFrame)
+            def keyEventSubject = new SwingKeyEventAdapter(providerArgs.jFrame)
             def inputActionRegistry = new InputActionRegistry(providerArgs.actions)
             return new InputActionProvider(inputActionRegistry, keyEventSubject)
         }
