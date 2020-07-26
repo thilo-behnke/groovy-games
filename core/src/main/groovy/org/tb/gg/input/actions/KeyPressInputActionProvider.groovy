@@ -1,5 +1,6 @@
 package org.tb.gg.input.actions
 
+import groovy.util.logging.Log4j
 import org.tb.gg.di.definition.Service
 import org.tb.gg.input.Key
 import org.tb.gg.input.exception.IllegalKeyAssignmentException
@@ -8,6 +9,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
+@Log4j
 class KeyPressInputActionProvider implements InputActionProvider, Service {
     private final InputActionRegistry actionRegistry
     private final KeyEventSubject keyEventSubject
@@ -44,7 +46,7 @@ class KeyPressInputActionProvider implements InputActionProvider, Service {
                             .collect { key ->
                                 actionRegistry.getKeyMappings().find { mapping -> mapping.key == key }?.value
                             }
-                            .find { it != null }
+                            .findAll { it != null }
                     if (!mappedToActions) {
                         return new HashSet<>()
                     }
