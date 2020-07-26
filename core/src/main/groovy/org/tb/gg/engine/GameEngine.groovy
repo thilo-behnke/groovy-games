@@ -3,7 +3,6 @@ package org.tb.gg.engine
 import org.tb.gg.global.DateProvider
 
 import groovy.util.logging.Log4j
-import org.tb.gg.input.actions.InputActionProvider
 import org.tb.gg.renderer.Renderer
 import org.tb.gg.utils.HaltingExecutorService
 
@@ -18,7 +17,6 @@ class GameEngine {
     private SceneProvider sceneProvider
     private HaltingExecutorService executorService
     private Renderer renderer
-    private InputActionProvider inputActionProvider
     private GameEngineExecutionRuleEngine executionRuleEngine
 
     // TODO: This should be an array of scenes.
@@ -91,12 +89,12 @@ class GameEngine {
 
 
     private updateScenes(long now, long delta) {
-        log.info("Updating active scenes. Time: ${now}. Delta: ${delta}".toString())
+        log.debug("Updating active scenes. Time: ${now}. Delta: ${delta}".toString())
         activeScene.ifPresent{scene -> scene.update(now, delta)}
     }
 
     private renderScenes() {
-        log.info("Rendering updated scenes.")
+        log.debug("Rendering updated scenes.")
         activeScene.ifPresent({renderer.render(new HashSet<GameScene>([it]))})
     }
 

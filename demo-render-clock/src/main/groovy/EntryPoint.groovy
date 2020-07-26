@@ -3,7 +3,7 @@ import org.tb.gg.engine.GameEngine
 import org.tb.gg.gameObject.GameObjectProvider
 import org.tb.gg.gameObject.player.Clock
 
-GameEngine gameEngine = GameEngineProvider.provideGameEngine()
+GameEngine gameEngine = new GameEngineProvider().provideGameEngine()
 
 def gameObjectProvider = new GameObjectProvider()
 

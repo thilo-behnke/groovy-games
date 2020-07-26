@@ -8,6 +8,7 @@ import org.tb.gg.renderer.destination.RenderDestination
 
 @EqualsAndHashCode(includes='id')
 class GameObject implements Updateable {
+    // TODO: Automatically generate.
     Long id
 
     RenderComponent renderComponent
@@ -28,7 +29,7 @@ class GameObject implements Updateable {
 
     @Override
     void update(Long timestamp, Long delta) {
-        def activeActions = inputComponent.activeActions()
+        def activeActions = inputComponent.getActiveActions()
         // TODO: Update based on active actions.
         // TODO: Integrate state machine.
     }

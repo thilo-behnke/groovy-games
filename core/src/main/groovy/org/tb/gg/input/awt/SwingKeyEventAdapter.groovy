@@ -1,37 +1,43 @@
 package org.tb.gg.input.awt
 
+import org.tb.gg.di.Inject
+import org.tb.gg.env.EnvironmentService
 import org.tb.gg.input.Key
 import org.tb.gg.input.keyEvent.KeyEventSubject
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 import javax.swing.JFrame
+import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 
-class KeyEventAwtAdapter implements KeyEventSubject {
+class SwingKeyEventAdapter implements KeyEventSubject {
     class JwtKeyListener implements KeyListener {
 
-        private KeyEventAwtAdapter parent
+        private SwingKeyEventAdapter parent
 
-        JwtKeyListener(KeyEventAwtAdapter parent) {
+        JwtKeyListener(SwingKeyEventAdapter parent) {
             this.parent = parent
         }
 
         @Override
-        void keyTyped(java.awt.event.KeyEvent e) {
+        void keyTyped(KeyEvent e) {
             // Ignore for now.
         }
 
         @Override
-        void keyPressed(java.awt.event.KeyEvent e) {
+        void keyPressed(KeyEvent e) {
             parent.alertKeyPressed(e)
         }
 
         @Override
-        void keyReleased(java.awt.event.KeyEvent e) {
+        void keyReleased(KeyEvent e) {
             parent.alertKeyReleased(e)
         }
     }
+
+    @Inject
+    private EnvironmentService environmentService
 
     private final JFrame frame
     private final JwtKeyListener keyListener
@@ -39,8 +45,8 @@ class KeyEventAwtAdapter implements KeyEventSubject {
     private Set<Key> keysPressed = new HashSet<>()
     private BehaviorSubject<Set<Key>> source
 
-    KeyEventAwtAdapter(JFrame frame) {
-        this.frame = frame
+    SwingKeyEventAdapter() {
+        this.frame = (JFrame) environmentService.environment.environmentFrame
         this.keyListener = new JwtKeyListener(this)
         this.source = BehaviorSubject.createDefault(new HashSet<>())
     }
@@ -57,13 +63,13 @@ class KeyEventAwtAdapter implements KeyEventSubject {
         this.frame.removeKeyListener(keyListener)
     }
 
-    void alertKeyPressed(java.awt.event.KeyEvent event) {
+    void alertKeyPressed(KeyEvent event) {
         def keyForCode = AwtKeyCodeConverter.convertAwtKeyCodesToKeys(event.keyCode)
         keysPressed = keysPressed + keyForCode
         this.source.onNext(keysPressed)
     }
 
-    void alertKeyReleased(java.awt.event.KeyEvent event) {
+    void alertKeyReleased(KeyEvent event) {
         def keyForCode = AwtKeyCodeConverter.convertAwtKeyCodesToKeys(event.keyCode)
         keysPressed = keysPressed - keyForCode
         this.source.onNext(keysPressed)
@@ -75,7 +81,11 @@ class KeyEventAwtAdapter implements KeyEventSubject {
         return source
                 .<Set<Key>> map((Set<Key> keys) ->
                         keys.findAll { key ->
-                            def keyCodeForKey = AwtKeyCodeConverter.convertKeysToAwtKeyCodes(key).first()
+                            def matchingKeyCodesForKey = AwtKeyCodeConverter.convertKeysToAwtKeyCodes(key)
+                            if(matchingKeyCodesForKey.size() == 0) {
+                                return false
+                            }
+                            def keyCodeForKey = matchingKeyCodesForKey.first()
                             keyCodesToListenTo.find { it == keyCodeForKey }
                         }
                 )
@@ -92,7 +102,7 @@ class KeyEventAwtAdapter implements KeyEventSubject {
     @Override
     void stopListeningToKeys(Key ...keys) {
         def awtKeyCodes = AwtKeyCodeConverter.convertKeysToAwtKeyCodes(keys)
-        this.keyCodesToListenTo.removeAll(keys)
+        this.keyCodesToListenTo.removeAll(awtKeyCodes)
         this.source.onNext(keysPressed)
     }
 }
