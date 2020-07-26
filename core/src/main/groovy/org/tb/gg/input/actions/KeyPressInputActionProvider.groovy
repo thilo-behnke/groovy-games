@@ -33,6 +33,7 @@ class KeyPressInputActionProvider implements InputActionProvider, Service {
         activeActionsSource.getValue()
     }
 
+    // TODO: This needs to be available on the input component - maybe delegation?
     void overrideKeyMappings(Map<Key, String> keyMappings) throws IllegalKeyAssignmentException {
         // TODO: Handle removed keys, etc...
         actionRegistry.overrideKeyMappings(keyMappings)
