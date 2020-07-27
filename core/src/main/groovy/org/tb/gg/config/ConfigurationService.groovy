@@ -21,7 +21,7 @@ class ConfigurationService implements Singleton {
     }
 
     void setFullScreen() {
-        if(isFullScreen()) {
+        if (isFullScreen()) {
             return
         }
         configurationExecutor.setFullScreen()
@@ -29,7 +29,7 @@ class ConfigurationService implements Singleton {
     }
 
     void setWindowed() {
-        if(isWindowed()) {
+        if (isWindowed()) {
             return
         }
         configurationExecutor.setWindowed()
