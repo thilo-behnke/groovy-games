@@ -28,7 +28,6 @@ class KeyboardRenderComponent extends RenderComponent {
         ])
     }
 
-    // TODO: Creat rectangle, properly position text...
     private createTitleText() {
         def keyboard = (Keyboard) parent
         RenderNode.leaf(
