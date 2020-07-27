@@ -1,15 +1,13 @@
+import org.tb.gg.GameEngineProvider
 import org.tb.gg.engine.DefaultGameScene
 import org.tb.gg.engine.GameEngine
 import org.tb.gg.gameObject.GameObjectProvider
 import org.tb.gg.gameObject.Keyboard
 import org.tb.gg.gameObject.components.KeyboardInputComponent
 import org.tb.gg.gameObject.components.KeyboardRenderComponent
-import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.factory.KeyBoundGameObjectBuilder
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.Key
-import org.tb.gg.input.actions.factory.AbstractInputActionProviderFactory
-import org.tb.gg.input.actions.factory.InputActionProviderArgs
 
 GameEngine gameEngine = new GameEngineProvider().provideGameEngine()
 

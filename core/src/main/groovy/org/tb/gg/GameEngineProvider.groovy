@@ -1,3 +1,5 @@
+package org.tb.gg
+
 import org.tb.gg.di.DependencyInjectionHandler
 import org.tb.gg.di.Inject
 import org.tb.gg.engine.DefaultSceneProvider
@@ -14,9 +16,7 @@ import org.tb.gg.renderer.DefaultRenderer
 import org.tb.gg.utils.HaltingExecutorService
 
 class GameEngineProvider {
-
     private DependencyInjectionHandler dependencyInjectionHandler = new DependencyInjectionHandler()
-    private EnvironmentAnalyzer environmentAnalyzer = new SystemPropertiesEnvironmentAnalyzer()
 
     @Inject
     private EnvironmentService environmentService
@@ -24,18 +24,15 @@ class GameEngineProvider {
     // TODO: It would be great to have something here like in Spring, e.g. auto detect files with ending Scene and startup the game that way.
     GameEngine provideGameEngine() {
         configureDependencyInjection()
-        configureEnvironment()
         bootstrap()
     }
 
     private void configureDependencyInjection() {
-        dependencyInjectionHandler.injectDependencies()
-    }
-
-    private void configureEnvironment() {
-        def envService = (EnvironmentService) dependencyInjectionHandler.getService(EnvironmentService.getName())
-        def graphics = environmentAnalyzer.getGraphics()
-        envService.setEnvironment(graphics)
+        def services = dependencyInjectionHandler.injectDependencies()
+        // TODO: Find better place for lifecycle management.
+        services.each {
+            it.init()
+        }
     }
 
     private GameEngine bootstrap() {
@@ -44,11 +41,6 @@ class GameEngineProvider {
         def executorService = new HaltingExecutorService()
         def executionRuleEngine = new GameEngineExecutionRuleEngine()
 //        executionRuleEngine << ShutdownAfterFixedNumberOfCyclesExecutionRule.nrOfCycles(10000)
-
-        // TODO: This should happen somewhere else, as multiple instances could exist...
-        def inputActionRegistry = new InputActionRegistry()
-        def keyEventSubject = new SwingKeyEventAdapter()
-        def inputActionProvider = new KeyPressInputActionProvider(inputActionRegistry, keyEventSubject)
 
         def renderer = new DefaultRenderer(renderDestination: environmentService.environment.renderDestination)
 

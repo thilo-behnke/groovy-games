@@ -11,10 +11,12 @@ import javax.swing.JFrame
 @Log4j
 class EnvironmentService implements Singleton {
     private EnvironmentSettings environment
+    private EnvironmentAnalyzer environmentAnalyzer = new SystemPropertiesEnvironmentAnalyzer()
 
     @Override
     void init() {
-
+        def graphics = environmentAnalyzer.getGraphics()
+        setEnvironment(graphics)
     }
 
     @Override
@@ -22,7 +24,7 @@ class EnvironmentService implements Singleton {
 
     }
 
-    void setEnvironment(Graphics graphics) {
+    private void setEnvironment(Graphics graphics) {
         if (this.environment) {
             throw new IllegalStateException("Can't redefine the environment once it was set!")
         }

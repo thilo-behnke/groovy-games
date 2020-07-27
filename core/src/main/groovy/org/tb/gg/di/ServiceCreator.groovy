@@ -1,4 +1,4 @@
-package org.tb.gg.di.creator
+package org.tb.gg.di
 
 import org.tb.gg.di.definition.Service
 

@@ -27,7 +27,6 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
         if (!MY_TYPE.equals(anno.getClassNode())) {
             return;
         }
-        ;
 
         if (parent instanceof FieldNode) {
             FieldNode fieldNode = (FieldNode) parent;
@@ -43,24 +42,23 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
                     serviceClassNode,
                     Parameter.EMPTY_ARRAY,
                     ClassNode.EMPTY_ARRAY,
-                    // 3. Getter returns static proxy access to service, e.g. Proxy.get('<service>')
+                    // 2. Getter returns static proxy access to service, e.g. Proxy.get('<service>')
                     new ReturnStatement(
                             new ExpressionStatement(
-//                                    new MethodCallExpression(
-                                            new MethodCallExpression(
-                                                    new ClassExpression(proxyClassNode),
-                                                    "getService",
-                                                    new ArgumentListExpression(new ConstantExpression(serviceClassNode.getName()))
-                                            )
-//                                            "get",
-//                                            ArgumentListExpression.EMPTY_ARGUMENTS
-//                                    )
+                                    new MethodCallExpression(
+                                            new ClassExpression(proxyClassNode),
+                                            "getService",
+                                            new ArgumentListExpression(new ConstantExpression(serviceClassNode.getName()))
+                                    )
                             )
                     )
-//                    new ReturnStatement(new ConstantExpression("test"))
             );
-//            // 2. Add getter for service
+            // 3. Add annotation to later identify the injected getter.
+            serviceGetter.addAnnotation(new AnnotationNode(new ClassNode(Injected.class)));
+            // 4. Add getter for service
             clazz.addMethod(serviceGetter);
+//            // 4. Register found dependency in service.
+//            DependencyRegistry.registerDependency(clazz.getTypeClass(), serviceClassNode.getTypeClass());
         }
     }
 }

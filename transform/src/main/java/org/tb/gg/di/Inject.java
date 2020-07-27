@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD })
 @GroovyASTTransformationClass("org.tb.gg.di.InjectServiceASTTransformation")
 public @interface Inject {

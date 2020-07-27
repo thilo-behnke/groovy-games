@@ -16,10 +16,6 @@ class ConfigurationService implements Singleton {
 
     private ConfigurationExecutor configurationExecutor
 
-    ConfigurationService() {
-        configurationExecutor = new ConfigurationExecutorFactory().getExecutor()
-    }
-
     ConfigurationSettings getConfiguration() {
         return configuration
     }
@@ -40,17 +36,17 @@ class ConfigurationService implements Singleton {
         configuration.windowMode = ConfigurationSettings.WindowMode.WINDOWED
     }
 
-    isFullScreen() {
+    boolean isFullScreen() {
         return configuration.windowMode == ConfigurationSettings.WindowMode.FULLSCREEN
     }
 
-    isWindowed() {
+    boolean isWindowed() {
         return configuration.windowMode == ConfigurationSettings.WindowMode.WINDOWED
     }
 
     @Override
     void init() {
-
+        configurationExecutor = new ConfigurationExecutorFactory().getExecutor()
     }
 
     @Override
