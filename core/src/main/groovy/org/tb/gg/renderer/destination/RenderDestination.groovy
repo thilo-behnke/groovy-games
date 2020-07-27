@@ -9,6 +9,7 @@ interface RenderDestination {
     void drawLine(Vector start, Vector end, RenderOptions options)
     void drawPoint(Vector pos, RenderOptions options)
     void drawCircle(Vector center, BigDecimal radius, RenderOptions options)
+    void drawRect(Vector topLeft, Vector dim, RenderOptions options)
     void drawText(Vector pos, String text, RenderOptions options)
 
     void refresh()

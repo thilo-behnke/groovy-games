@@ -1,6 +1,8 @@
 package org.tb.gg.env
 
 import groovy.util.logging.Log4j
+import org.tb.gg.config.ConfigurationService
+import org.tb.gg.di.Inject
 import org.tb.gg.di.definition.Singleton
 import org.tb.gg.renderer.destination.JPanelDestination
 
@@ -47,6 +49,7 @@ class EnvironmentService implements Singleton {
         def renderDestination = new JPanelDestination()
         JFrame f = new JFrame("Game");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setResizable(false);
         f.add(renderDestination);
         f.pack();
         f.setVisible(true);
