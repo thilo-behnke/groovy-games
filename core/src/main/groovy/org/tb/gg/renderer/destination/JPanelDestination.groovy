@@ -1,5 +1,7 @@
 package org.tb.gg.renderer.destination
 
+import org.tb.gg.config.ConfigurationService
+import org.tb.gg.di.Inject
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.options.DrawColor
 import org.tb.gg.renderer.options.RenderOptions
@@ -12,13 +14,15 @@ import java.awt.Graphics
 import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
 import java.awt.geom.Line2D
+import java.awt.geom.Rectangle2D
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class JPanelDestination extends JPanel implements RenderDestination {
     private Queue<DrawAction> drawQueue = new ConcurrentLinkedQueue<>()
     private defaultColor = Color.black
 
-    private List<Integer> dimensions = [500, 500]
+    @Inject
+    private ConfigurationService configurationService
 
     class DrawAction {
         Closure action
@@ -31,12 +35,13 @@ class JPanelDestination extends JPanel implements RenderDestination {
 
     @Override
     void setDimensions(int width, int height) {
-        dimensions = [width, height]
+//        dimensions = [width, height]
     }
 
     @Override
     Dimension getPreferredSize() {
-        return new Dimension(dimensions[0], dimensions[1])
+        def (x, y) = configurationService.getConfiguration().resolution
+        return new Dimension(x, y)
     }
 
     @Override
@@ -67,6 +72,7 @@ class JPanelDestination extends JPanel implements RenderDestination {
         }
     }
 
+    // TODO: Could be this repetition be solved with an AST transformation?
     @Override
     void drawLine(Vector start, Vector end, RenderOptions options) {
         def drawCl = { Graphics2D g ->
@@ -86,6 +92,12 @@ class JPanelDestination extends JPanel implements RenderDestination {
     void drawCircle(Vector center, BigDecimal radius, RenderOptions options) {
         // TODO: Inefficient, should the shape classes provide both center and bounding areas?
         def drawCl = { Graphics2D g -> g.draw(new Ellipse2D.Float(center.x - radius, getHeight() - center.y - radius, 2 * radius, 2 * radius)) }
+        drawQueue << new DrawAction(action: drawCl, options: options)
+    }
+
+    @Override
+    void drawRect(Vector topLeft, Vector dim, RenderOptions options) {
+        def drawCl = { Graphics2D g -> g.draw(new Rectangle2D.Float(topLeft.x, getHeight() - topLeft.y, dim.x, dim.y)) }
         drawQueue << new DrawAction(action: drawCl, options: options)
     }
 
