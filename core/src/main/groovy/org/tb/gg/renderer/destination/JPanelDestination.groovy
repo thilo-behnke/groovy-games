@@ -18,8 +18,8 @@ import java.awt.geom.Rectangle2D
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class JPanelDestination extends JPanel implements RenderDestination {
+    // TODO: Alternative BufferedImage: https://stackoverflow.com/questions/43236656/jpanel-painting-not-cleared.
     private Queue<DrawAction> drawQueue = new ConcurrentLinkedQueue<>()
-    private defaultColor = Color.black
 
     @Inject
     private ConfigurationService configurationService
@@ -30,7 +30,7 @@ class JPanelDestination extends JPanel implements RenderDestination {
     }
 
     JPanelDestination() {
-        setBorder(BorderFactory.createLineBorder(Color.black));
+        setBorder(BorderFactory.createLineBorder(Color.black))
     }
 
     @Override
@@ -55,7 +55,7 @@ class JPanelDestination extends JPanel implements RenderDestination {
         drawQueue.clear()
     }
 
-    private translateColor(DrawColor drawColor) {
+    private static translateColor(DrawColor drawColor) {
         switch (drawColor) {
             case DrawColor.BLACK:
                 return Color.black
