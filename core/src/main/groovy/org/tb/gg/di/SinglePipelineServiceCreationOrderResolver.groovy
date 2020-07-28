@@ -6,7 +6,7 @@ import org.tb.gg.di.definition.Service
 
 class SinglePipelineServiceCreationOrderResolver implements ServiceCreationOrderResolver {
     List<List<Class<? extends Service>>> determineCreationOrder(Set<Class<? extends Service>> serviceClasses) {
-        Map<Class<? extends Service>, List<Service>> dependenciesPerService = serviceClasses.collectEntries {
+        Map<Class<? extends Service>, List<Class<? extends Service>>> dependenciesPerService = serviceClasses.collectEntries {
             def methods = new ArrayList<>(Arrays.asList(it.getDeclaredMethods()))
             def injectedSetters = methods.findAll { method -> method.isAnnotationPresent(Injected.class) }
             def injectedServices = injectedSetters.collect { setter -> setter.returnType }
@@ -19,9 +19,25 @@ class SinglePipelineServiceCreationOrderResolver implements ServiceCreationOrder
         // Simple solution for now - order by number of dependencies.
         def orderedServices = dependenciesPerService
                 .sort { a, b -> a.getValue().size() <=> b.getValue().size() }
-                .collect { clazz, dependencies ->
-                    clazz
-                }
-        return [orderedServices]
+
+        def pipe = new ArrayList<Class<Service>>()
+        for (Map.Entry<Class<? extends Service>, List<Class<? extends Service>>> serviceWithDependencies : orderedServices.entrySet()) {
+            def serviceClass = serviceWithDependencies.key
+            def dependencies = serviceWithDependencies.value
+
+            if (pipe.contains(serviceClass)) {
+                continue
+            }
+
+            if (dependencies.size() == 0) {
+                pipe.add(serviceClass)
+            }
+
+            pipe.addAll(dependencies)
+            pipe.add(serviceClass)
+        }
+
+        pipe = pipe.unique()
+        return [pipe]
     }
 }
