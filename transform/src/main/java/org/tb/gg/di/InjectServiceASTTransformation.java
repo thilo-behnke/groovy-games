@@ -30,6 +30,7 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
 
         if (parent instanceof FieldNode) {
             FieldNode fieldNode = (FieldNode) parent;
+            // TODO: It would be nice to allow implicit injection by leaving out the Class return type, but how to find the matching class for the getter including the package path?
             ClassNode serviceClassNode = fieldNode.getType();
             String serviceName = fieldNode.getName().substring(0, 1).toUpperCase() + fieldNode.getName().substring(1);
             ClassNode clazz = fieldNode.getDeclaringClass();
@@ -57,8 +58,6 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
             serviceGetter.addAnnotation(new AnnotationNode(new ClassNode(Injected.class)));
             // 4. Add getter for service
             clazz.addMethod(serviceGetter);
-//            // 4. Register found dependency in service.
-//            DependencyRegistry.registerDependency(clazz.getTypeClass(), serviceClassNode.getTypeClass());
         }
     }
 }
