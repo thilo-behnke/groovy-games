@@ -14,7 +14,7 @@ class SinglePipelineServiceCreationOrderResolver implements ServiceCreationOrder
     private static Map<Class<? extends Service>, List<Class<? extends Service>>> identifyServiceDependencies(Set<Class<? extends Service>> serviceClasses) {
         serviceClasses.collectEntries {
             def methods = new ArrayList<>(Arrays.asList(it.getDeclaredMethods()))
-            def injectedSetters = methods.findAll { method -> method.isAnnotationPresent(Injected.class) }
+            def injectedSetters = methods.findAll { method -> method.isAnnotationPresent(InjectedStatic.class) }
             def injectedServices = injectedSetters.collect { setter -> setter.returnType }
             def undeclaredInjectedServices = identifyUndeclaredServices(injectedServices, serviceClasses)
             if (undeclaredInjectedServices.size() > 0) {

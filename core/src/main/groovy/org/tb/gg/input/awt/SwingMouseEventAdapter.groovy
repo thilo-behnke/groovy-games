@@ -6,12 +6,12 @@ import org.tb.gg.di.Inject
 import org.tb.gg.env.EnvironmentService
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
-import org.tb.gg.input.mouseEvent.MouseEventSubject
+import org.tb.gg.input.mouseEvent.MouseEventProvider
 
 import javax.swing.JFrame
 import java.awt.event.MouseListener
 
-class SwingMouseEventAdapter implements MouseEventSubject {
+class SwingMouseEventAdapter implements MouseEventProvider {
     class SwingMouseListener implements MouseListener {
 
         private SwingMouseEventAdapter parent
@@ -38,6 +38,7 @@ class SwingMouseEventAdapter implements MouseEventSubject {
         @Override
         void mouseEntered(java.awt.event.MouseEvent e) {
             // Ignore on purpose.
+            parent.alertMouseMove(e)
         }
 
         @Override
@@ -49,6 +50,7 @@ class SwingMouseEventAdapter implements MouseEventSubject {
     @Inject
     private EnvironmentService environmentService
 
+    private BehaviorSubject<MouseEvent> mouseMoveSubject
     private BehaviorSubject<MouseEvent> mouseDownSubject
     private BehaviorSubject<MouseEvent> mouseUpSubject
     private BehaviorSubject<MouseEvent> mouseClickSubject
@@ -57,6 +59,7 @@ class SwingMouseEventAdapter implements MouseEventSubject {
     private MouseListener mouseListener
 
     SwingMouseEventAdapter() {
+        mouseMoveSubject = BehaviorSubject.createDefault(null)
         mouseDownSubject = BehaviorSubject.createDefault(null)
         mouseUpSubject = BehaviorSubject.createDefault(null)
         mouseClickSubject = BehaviorSubject.createDefault(null)
@@ -66,13 +69,17 @@ class SwingMouseEventAdapter implements MouseEventSubject {
     }
 
     @Override
-    void register() {
+    void onInit() {
         jFrame.addMouseListener(mouseListener)
     }
 
     @Override
-    void unregister() {
+    void onDestroy() {
         jFrame.removeMouseListener(mouseListener)
+    }
+
+    protected alertMouseMove(java.awt.event.MouseEvent e) {
+        mouseMoveSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: e.y)))
     }
 
     protected alertMouseDown(java.awt.event.MouseEvent e) {
@@ -100,5 +107,10 @@ class SwingMouseEventAdapter implements MouseEventSubject {
     @Override
     Observable<MouseEvent> getMouseClicks() {
         return mouseClickSubject
+    }
+
+    @Override
+    Observable<MouseEvent> getMousePosition() {
+        return mouseMoveSubject
     }
 }

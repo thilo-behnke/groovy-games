@@ -54,8 +54,9 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
                             )
                     )
             );
+            Class<?> annotation = serviceClassNode.isInterface() ? InjectedDynamic.class : InjectedStatic.class;
             // 3. Add annotation to later identify the injected getter.
-            serviceGetter.addAnnotation(new AnnotationNode(new ClassNode(Injected.class)));
+            serviceGetter.addAnnotation(new AnnotationNode(new ClassNode(annotation)));
             // 4. Add getter for service
             clazz.addMethod(serviceGetter);
         }
