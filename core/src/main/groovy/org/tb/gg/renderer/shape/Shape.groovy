@@ -8,29 +8,7 @@ import org.tb.gg.input.mouseEvent.MouseEventProvider
 import org.tb.gg.renderer.renderObjects.Renderable
 
 // TODO: It would be great to model mouse interaction with a trait, but traits don't allow ast transformations.
-abstract class Shape implements Renderable, Lifecycle {
-
-    @Inject
-    private MouseEventProvider mouseEventProvider
-
-//    private Disposable mouseClicksDisposable
-    private Disposable mouseMoveDisposable
-    private boolean isMouseInShape
-
-    @Override
-    void onInit() {
-//        mouseClicksDisposable = mouseEventProvider.mouseClicks
-//                .subscribe{}
-        mouseMoveDisposable = mouseEventProvider.mousePosition
-            .subscribe{
-                isMouseInShape = isPointWithin(it.pos)
-            }
-    }
-
-    @Override
-    void onDestroy() {
-        mouseMoveDisposable.dispose()
-    }
+interface Shape extends Renderable {
 
     abstract boolean isPointWithin(Vector pos);
 //    boolean isShapeWithin(Shape shape);
