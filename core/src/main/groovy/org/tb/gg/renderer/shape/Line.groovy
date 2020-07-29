@@ -23,9 +23,18 @@ class Line implements Shape {
         return this
     }
 
-
     @Override
     void render(RenderDestination renderDestination, RenderOptions options) {
         renderDestination.drawLine(start, end, options)
+    }
+
+    @Override
+    boolean isPointWithin(Vector pos) {
+        def onSameLine = (end - start).normalize() == pos.normalize()
+        if(!onSameLine) {
+            return false
+        }
+        def betweenStartAndEnd = start.x <= pos.x && start.y <= pos.y && pos.x <= end.x && pos.y <= end.y
+        return betweenStartAndEnd
     }
 }

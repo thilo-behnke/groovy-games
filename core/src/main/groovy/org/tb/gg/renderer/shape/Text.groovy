@@ -12,4 +12,10 @@ class Text implements Shape {
     void render(RenderDestination renderDestination, RenderOptions options) {
         renderDestination.drawText(pos, text, options)
     }
+
+    @Override
+    boolean isPointWithin(Vector pos) {
+        // TODO: Given this definition, is text really a shape?
+        return false
+    }
 }

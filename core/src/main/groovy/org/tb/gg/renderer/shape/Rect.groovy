@@ -17,4 +17,15 @@ class Rect implements Shape {
     void render(RenderDestination renderDestination, RenderOptions options) {
         renderDestination.drawRect(topLeft, dim, options)
     }
+
+    @Override
+    boolean isPointWithin(Vector pos) {
+        def centerToPoint = pos - getCenter()
+        centerToPoint.x.abs() <= dim.x / 2 && centerToPoint.y.abs() <= dim.y / 2
+    }
+
+    // TODO: Add to shape interface + cache.
+    private getCenter() {
+        topLeft + dim * new Vector(x: 1, y: -1) / 2.0
+    }
 }
