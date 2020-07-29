@@ -37,5 +37,4 @@ class RectangleSpec extends Specification {
         new Vector(x: 0.5, y: -2.3) | _
         new Vector(x: 0.7, y: -2.2) | _
     }
-
 }

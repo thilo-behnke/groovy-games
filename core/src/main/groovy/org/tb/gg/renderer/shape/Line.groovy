@@ -30,8 +30,11 @@ class Line implements Shape {
 
     @Override
     boolean isPointWithin(Vector pos) {
+        if (pos == Vector.zeroVector() && (start == Vector.zeroVector() || end == Vector.zeroVector())) {
+            return true
+        }
         def onSameLine = (end - start).normalize() == pos.normalize()
-        if(!onSameLine) {
+        if (!onSameLine) {
             return false
         }
         def betweenStartAndEnd = start.x <= pos.x && start.y <= pos.y && pos.x <= end.x && pos.y <= end.y

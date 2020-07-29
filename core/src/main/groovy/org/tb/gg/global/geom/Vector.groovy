@@ -12,6 +12,7 @@ class Vector {
     BigDecimal x
     BigDecimal y
 
+    // TODO: Can be updated unless vector is made immutable.
     private final static unit = new Vector(x: 1, y: 1)
     private final static zero = new Vector(x: 0, y: 0)
     private final static invertY = new Vector(x: 1, y: -1)
@@ -63,8 +64,8 @@ class Vector {
 
     // TODO: Write tests.
     Vector div(BigDecimal n) {
-        def newX = x / n
-        def newY = y / n
+        def newX = x != 0 ? x / n : 0
+        def newY = y != 0 ? y / n : 0
         return new Vector(x: newX, y: newY)
     }
 
@@ -75,6 +76,9 @@ class Vector {
     }
 
     Vector normalize() {
+        if (this == zeroVector()) {
+            return new Vector(x: x, y: y)
+        }
         return new Vector(x: x, y: y) / this.length()
     }
 
