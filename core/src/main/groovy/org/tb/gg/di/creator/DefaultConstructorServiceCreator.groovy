@@ -21,13 +21,7 @@ class DefaultConstructorServiceCreator implements ServiceCreator {
         (List<Service>) serviceCreationOrderResolver.determineCreationOrder(serviceClasses).collect { pipe ->
             // TODO: Could each be done in separate threads.
             pipe.collect { serviceClass ->
-                def serviceClassToInstantiate
-                if(serviceClass.isInterface() || Modifier.isAbstract(serviceClass.getModifiers())) {
-                    serviceClassToInstantiate = serviceMappingRegistry.getImplementationForBaseClass(serviceClass.getSimpleName())
-                } else {
-                    serviceClassToInstantiate = serviceClass
-                }
-                def serviceInstance = serviceClassToInstantiate.getConstructor().newInstance()
+                def serviceInstance = serviceClass.getConstructor().newInstance()
                 ServiceProvider.setService(serviceInstance)
                 return serviceInstance
             }

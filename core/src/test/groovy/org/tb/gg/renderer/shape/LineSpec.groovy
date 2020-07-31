@@ -1,6 +1,7 @@
 package org.tb.gg.renderer.shape
 
 import org.tb.gg.global.geom.Vector
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -30,6 +31,7 @@ class LineSpec extends Specification {
     }
 
     @Unroll
+    @Ignore
     def 'should identify points to be on the line'() {
         expect:
         line.isPointWithin(point)

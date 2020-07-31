@@ -38,7 +38,6 @@ class SwingMouseEventAdapter implements MouseEventProvider {
         @Override
         void mouseEntered(java.awt.event.MouseEvent e) {
             // Ignore on purpose.
-            parent.alertMouseMove(e)
         }
 
         @Override

@@ -5,24 +5,28 @@ import org.tb.gg.di.Inject
 import org.tb.gg.global.lifecycle.Lifecycle
 import org.tb.gg.input.mouseEvent.MouseEventProvider
 
-class InteractiveShape implements Shape, Lifecycle {
+class InteractiveShape<S extends Shape> implements Shape, Lifecycle {
 
     @Inject
     private MouseEventProvider mouseEventProvider
 
     @Delegate
-    private final Shape shape
+    private final S shape
 
     private Disposable mouseMoveDisposable
-    private boolean isMouseInShape
+    boolean isMouseInShape
 
-    InteractiveShape(Shape shape) {
+    InteractiveShape(S shape) {
         this.shape = shape
     }
 
     static of(Shape shape) {
         def interactiveShape = new InteractiveShape(shape)
         return interactiveShape
+    }
+
+    S getShape() {
+       return shape
     }
 
     @Override

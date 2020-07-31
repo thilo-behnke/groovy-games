@@ -5,8 +5,8 @@ import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 
 class Rect implements Shape {
-    private Vector topLeft
-    private Vector dim
+    Vector topLeft
+    Vector dim
 
     Rect(Vector topLeft, Vector dim) {
         this.topLeft = topLeft
