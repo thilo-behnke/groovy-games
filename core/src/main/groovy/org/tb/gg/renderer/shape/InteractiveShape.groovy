@@ -34,7 +34,6 @@ class InteractiveShape<S extends Shape> implements Shape, Service {
     void init() {
         mouseMoveDisposable = mouseEventProvider.mousePosition
                 .subscribe {
-                    // TODO: Does not work?
                     isMouseInShape = isPointWithin(it.pos)
                 }
     }
