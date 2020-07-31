@@ -27,10 +27,10 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
         if (!MY_TYPE.equals(anno.getClassNode())) {
             return;
         }
-        ;
 
         if (parent instanceof FieldNode) {
             FieldNode fieldNode = (FieldNode) parent;
+            // TODO: It would be nice to allow implicit injection by leaving out the Class return type, but how to find the matching class for the getter including the package path?
             ClassNode serviceClassNode = fieldNode.getType();
             String serviceName = fieldNode.getName().substring(0, 1).toUpperCase() + fieldNode.getName().substring(1);
             ClassNode clazz = fieldNode.getDeclaringClass();
@@ -43,23 +43,21 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
                     serviceClassNode,
                     Parameter.EMPTY_ARRAY,
                     ClassNode.EMPTY_ARRAY,
-                    // 3. Getter returns static proxy access to service, e.g. Proxy.get('<service>')
+                    // 2. Getter returns static proxy access to service, e.g. Proxy.get('<service>')
                     new ReturnStatement(
                             new ExpressionStatement(
-//                                    new MethodCallExpression(
-                                            new MethodCallExpression(
-                                                    new ClassExpression(proxyClassNode),
-                                                    "getService",
-                                                    new ArgumentListExpression(new ConstantExpression(serviceClassNode.getName()))
-                                            )
-//                                            "get",
-//                                            ArgumentListExpression.EMPTY_ARGUMENTS
-//                                    )
+                                    new MethodCallExpression(
+                                            new ClassExpression(proxyClassNode),
+                                            "getService",
+                                            new ArgumentListExpression(new ConstantExpression(serviceClassNode.getNameWithoutPackage()))
+                                    )
                             )
                     )
-//                    new ReturnStatement(new ConstantExpression("test"))
             );
-//            // 2. Add getter for service
+            Class<?> annotation = serviceClassNode.isInterface() ? InjectedDynamic.class : Injected.class;
+            // 3. Add annotation to later identify the injected getter.
+            serviceGetter.addAnnotation(new AnnotationNode(new ClassNode(annotation)));
+            // 4. Add getter for service
             clazz.addMethod(serviceGetter);
         }
     }

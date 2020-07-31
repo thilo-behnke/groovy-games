@@ -12,11 +12,11 @@ import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 
 class SwingKeyEventAdapter implements KeyEventSubject {
-    class JwtKeyListener implements KeyListener {
+    class SwingKeyListener implements KeyListener {
 
         private SwingKeyEventAdapter parent
 
-        JwtKeyListener(SwingKeyEventAdapter parent) {
+        SwingKeyListener(SwingKeyEventAdapter parent) {
             this.parent = parent
         }
 
@@ -40,14 +40,14 @@ class SwingKeyEventAdapter implements KeyEventSubject {
     private EnvironmentService environmentService
 
     private final JFrame frame
-    private final JwtKeyListener keyListener
+    private final SwingKeyListener keyListener
     private final Set<Integer> keyCodesToListenTo = new HashSet<>()
     private Set<Key> keysPressed = new HashSet<>()
     private BehaviorSubject<Set<Key>> source
 
     SwingKeyEventAdapter() {
         this.frame = (JFrame) environmentService.environment.environmentFrame
-        this.keyListener = new JwtKeyListener(this)
+        this.keyListener = new SwingKeyListener(this)
         this.source = BehaviorSubject.createDefault(new HashSet<>())
     }
 

@@ -6,13 +6,17 @@ import java.util.Map;
 public class ServiceProvider {
     private static final Map<String, Object> serviceMap = new HashMap<>();
 
+    public static Map<String, Object> getServices() {
+        return serviceMap;
+    }
+
     public static Object getService(String serviceName) {
         // TODO: Handle failure.
         return serviceMap.get(serviceName);
     }
 
     public static void setService(Object service) {
-        setService(service, service.getClass().getName());
+        setService(service, service.getClass().getSimpleName());
     }
 
     public static void setService(Object service, String name) {

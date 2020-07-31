@@ -11,4 +11,9 @@ class Point implements Shape {
    void render(RenderDestination renderDestination, RenderOptions options) {
       renderDestination.drawPoint(pos, options)
    }
+
+   @Override
+   boolean isPointWithin(Vector pos) {
+      return this.pos == pos
+   }
 }

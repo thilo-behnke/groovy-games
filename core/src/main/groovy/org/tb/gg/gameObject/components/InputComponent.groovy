@@ -1,11 +1,12 @@
 package org.tb.gg.gameObject.components
 
+import org.tb.gg.input.actions.InputActionProvider
 import org.tb.gg.input.actions.KeyPressInputActionProvider
 
 abstract class InputComponent {
-    private final KeyPressInputActionProvider inputActionProvider
+    private final InputActionProvider inputActionProvider
 
-    InputComponent(KeyPressInputActionProvider inputActionProvider) {
+    InputComponent(InputActionProvider inputActionProvider) {
         this.inputActionProvider = inputActionProvider
     }
 

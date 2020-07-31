@@ -12,4 +12,9 @@ class Circle implements Shape {
     void render(RenderDestination renderDestination, RenderOptions options) {
         renderDestination.drawCircle(center, radius, options)
     }
+
+    @Override
+    boolean isPointWithin(Vector pos) {
+        return (pos - center).length() <= radius
+    }
 }
