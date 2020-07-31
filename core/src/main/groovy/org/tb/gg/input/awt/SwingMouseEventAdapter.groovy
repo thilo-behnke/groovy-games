@@ -59,22 +59,22 @@ class SwingMouseEventAdapter implements MouseEventProvider {
     private MouseListener mouseListener
 
     SwingMouseEventAdapter() {
-        mouseMoveSubject = BehaviorSubject.createDefault(null)
-        mouseDownSubject = BehaviorSubject.createDefault(null)
-        mouseUpSubject = BehaviorSubject.createDefault(null)
-        mouseClickSubject = BehaviorSubject.createDefault(null)
+        mouseMoveSubject = BehaviorSubject.create()
+        mouseDownSubject = BehaviorSubject.create()
+        mouseUpSubject = BehaviorSubject.create()
+        mouseClickSubject = BehaviorSubject.create()
 
         jFrame = (JFrame) environmentService.environment.environmentFrame
         mouseListener = new SwingMouseListener(this)
     }
 
     @Override
-    void onInit() {
+    void init() {
         jFrame.addMouseListener(mouseListener)
     }
 
     @Override
-    void onDestroy() {
+    void destroy() {
         jFrame.removeMouseListener(mouseListener)
     }
 

@@ -1,5 +1,5 @@
+import org.tb.gg.input.awt.SwingMouseEventAdapter
+
 services = {
-    myService(String)
-    myOtherService(Integer)
-    someThirdService(Void)
+    mouseEventProvider(SwingMouseEventAdapter)
 }

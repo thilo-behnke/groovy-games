@@ -2,6 +2,7 @@ package org.tb.gg.di
 
 import groovy.util.logging.Log4j
 import org.tb.gg.di.config.ServiceConfigReader
+import org.tb.gg.di.config.ServiceMappingRegistry
 import org.tb.gg.di.creator.DefaultConstructorServiceCreator
 import org.tb.gg.di.definition.Service
 import org.tb.gg.di.definition.Singleton
@@ -21,12 +22,13 @@ class DependencyInjectionHandler {
             log.warn("Tried to inject dependencies again.")
             return []
         }
+        def serviceMappingRegistry = new ServiceMappingRegistry()
+        new ServiceConfigReader(serviceMappingRegistry).readServiceConfig()
+
         def singletonClasses = new ClasspathServiceScanner().scanForServices(Singleton.class)
-        def services = new DefaultConstructorServiceCreator(new SinglePipelineServiceCreationOrderResolver()).createServices(singletonClasses)
+        def services = new DefaultConstructorServiceCreator(new SinglePipelineServiceCreationOrderResolver(), serviceMappingRegistry).createServices(singletonClasses)
 
         isInitialized = true
-
-        log.warn(new ServiceConfigReader().readServiceConfig())
 
         return services
     }

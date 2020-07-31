@@ -2,21 +2,32 @@ package org.tb.gg.di.creator
 
 import org.tb.gg.di.ServiceCreationOrderResolver
 import org.tb.gg.di.ServiceProvider
+import org.tb.gg.di.config.ServiceMappingRegistry
 import org.tb.gg.di.definition.Service
+
+import java.lang.reflect.Modifier
 
 class DefaultConstructorServiceCreator implements ServiceCreator {
     private ServiceCreationOrderResolver serviceCreationOrderResolver
+    private ServiceMappingRegistry serviceMappingRegistry
 
-    DefaultConstructorServiceCreator(ServiceCreationOrderResolver serviceCreationOrderResolver) {
+    DefaultConstructorServiceCreator(ServiceCreationOrderResolver serviceCreationOrderResolver, ServiceMappingRegistry serviceMappingRegistry) {
         this.serviceCreationOrderResolver = serviceCreationOrderResolver
+        this.serviceMappingRegistry = serviceMappingRegistry
     }
 
     @Override
     List<Service> createServices(Set<Class<? extends Service>> serviceClasses) {
         (List<Service>) serviceCreationOrderResolver.determineCreationOrder(serviceClasses).collect { pipe ->
             // TODO: Could each be done in separate threads.
-            pipe.collect { service ->
-                def serviceInstance = service.getConstructor().newInstance()
+            pipe.collect { serviceClass ->
+                def serviceClassToInstantiate
+                if(serviceClass.isInterface() || Modifier.isAbstract(serviceClass.getModifiers())) {
+                    serviceClassToInstantiate = serviceMappingRegistry.getImplementationForBaseClass(serviceClass.getSimpleName())
+                } else {
+                    serviceClassToInstantiate = serviceClass
+                }
+                def serviceInstance = serviceClassToInstantiate.getConstructor().newInstance()
                 ServiceProvider.setService(serviceInstance)
                 return serviceInstance
             }
