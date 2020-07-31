@@ -1,6 +1,7 @@
 package org.tb.gg.di
 
 import groovy.util.logging.Log4j
+import org.tb.gg.di.config.ServiceConfigReader
 import org.tb.gg.di.creator.DefaultConstructorServiceCreator
 import org.tb.gg.di.definition.Service
 import org.tb.gg.di.definition.Singleton
@@ -24,6 +25,8 @@ class DependencyInjectionHandler {
         def services = new DefaultConstructorServiceCreator(new SinglePipelineServiceCreationOrderResolver()).createServices(singletonClasses)
 
         isInitialized = true
+
+        log.warn(new ServiceConfigReader().readServiceConfig())
 
         return services
     }

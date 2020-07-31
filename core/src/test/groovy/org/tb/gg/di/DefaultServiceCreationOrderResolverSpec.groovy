@@ -26,7 +26,7 @@ public class DefaultServiceCreationOrderResolverSpec extends Specification {
     class ClassWithInjectedProp1 implements Service {
         private boolean myBoolean
 
-        @InjectedStatic
+        @Injected
         private WithoutInjectedProps getWithoutInjectedProps() {
             return new WithoutInjectedProps()
         }
@@ -45,7 +45,7 @@ public class DefaultServiceCreationOrderResolverSpec extends Specification {
     class ClassWithInjectedProp2 implements Service {
         private boolean myBoolean
 
-        @InjectedStatic
+        @Injected
         private ClassWithInjectedProp1 getWithInjectedProp1() {
             return new ClassWithInjectedProp1()
         }

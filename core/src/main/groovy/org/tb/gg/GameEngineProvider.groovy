@@ -23,6 +23,7 @@ class GameEngineProvider {
 
     // TODO: It would be great to have something here like in Spring, e.g. auto detect files with ending Scene and startup the game that way.
     GameEngine provideGameEngine() {
+        // TODO: First inject static services, then inject dynamic services (dependent on environment or other settings).
         configureDependencyInjection()
         bootstrap()
     }
