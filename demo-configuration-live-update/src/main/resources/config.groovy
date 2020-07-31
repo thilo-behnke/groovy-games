@@ -1,3 +1,2 @@
 services = {
-   metoo(Closure.class)
 }
