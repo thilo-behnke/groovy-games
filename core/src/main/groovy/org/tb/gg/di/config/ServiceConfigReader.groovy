@@ -2,6 +2,8 @@ package org.tb.gg.di.config
 
 
 class ServiceConfigReader {
+    private static final CONFIG_FILES = ['coreConfig.groovy', 'config.groovy']
+
     private class ServiceRegistry {
         Map<String, Class<?>> registeredServices = new HashMap<>()
         @Override
@@ -24,17 +26,26 @@ class ServiceConfigReader {
     }
 
     Map<String, Class> readServiceConfig() {
-        File serviceConfig = new File(
-                getClass().getClassLoader().getResource("config.groovy").getFile()
-        );
-        def binding = (Binding) new GroovyShell().evaluate(serviceConfig)
-        def services = (Closure) binding.getVariable('services')
-
         def serviceRegistry = new ServiceRegistry()
+
+        for(String fileName in CONFIG_FILES) {
+            registerServiceDefinitionsFromConfigFile(fileName, serviceRegistry)
+        }
+
+        return serviceRegistry.getRegisteredServices()
+    }
+
+    private void registerServiceDefinitionsFromConfigFile(String fileName, ServiceRegistry serviceRegistry) {
+        File serviceConfig = new File(
+                getClass().getClassLoader().getResource(fileName).getFile()
+        );
+        def binding = new Binding()
+        def script = new GroovyShell(binding).parse(serviceConfig)
+        script.run()
+
+        def services = (Closure) binding.getVariable('services')
         services.delegate = serviceRegistry
 
         services()
-
-        serviceRegistry.getRegisteredServices()
     }
 }
