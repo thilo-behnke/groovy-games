@@ -1,9 +1,11 @@
 package org.tb.gg.di.config
 
+import com.google.common.collect.BiMap
+import com.google.common.collect.HashBiMap
 import org.tb.gg.di.definition.Service
 
 class ServiceMappingRegistry {
-    Map<String, Class<? extends Service>> registeredServices = new HashMap<>()
+    BiMap<String, Class<? extends Service>> registeredServices = HashBiMap.create()
 
     @Override
     Object invokeMethod(String name, Object args) {

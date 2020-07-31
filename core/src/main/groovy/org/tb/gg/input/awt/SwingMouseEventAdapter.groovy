@@ -9,7 +9,9 @@ import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
 
 import javax.swing.JFrame
+import java.awt.MouseInfo
 import java.awt.event.MouseListener
+import java.util.concurrent.TimeUnit
 
 class SwingMouseEventAdapter implements MouseEventProvider {
     class SwingMouseListener implements MouseListener {
@@ -49,20 +51,27 @@ class SwingMouseEventAdapter implements MouseEventProvider {
     @Inject
     private EnvironmentService environmentService
 
-    private BehaviorSubject<MouseEvent> mouseMoveSubject
     private BehaviorSubject<MouseEvent> mouseDownSubject
     private BehaviorSubject<MouseEvent> mouseUpSubject
     private BehaviorSubject<MouseEvent> mouseClickSubject
+
+    private Observable<MouseEvent> mouseMoveEvent
 
     private JFrame jFrame
     private MouseListener mouseListener
 
     @Override
     void init() {
-        mouseMoveSubject = BehaviorSubject.create()
         mouseDownSubject = BehaviorSubject.create()
         mouseUpSubject = BehaviorSubject.create()
         mouseClickSubject = BehaviorSubject.create()
+
+        mouseMoveEvent = (Observable<MouseEvent>) Observable
+                .interval(100, TimeUnit.MILLISECONDS)
+                .map {
+                    def mousePos = MouseInfo.getPointerInfo().getLocation();
+                    return new MouseEvent(pos: new Vector(x: mousePos.x, y: mousePos.y))
+                }
 
         jFrame = (JFrame) environmentService.environment.environmentFrame
         mouseListener = new SwingMouseListener(this)
@@ -107,6 +116,6 @@ class SwingMouseEventAdapter implements MouseEventProvider {
 
     @Override
     Observable<MouseEvent> getMousePosition() {
-        return mouseMoveSubject
+        return mouseMoveEvent
     }
 }

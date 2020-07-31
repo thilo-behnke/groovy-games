@@ -14,6 +14,7 @@ class ButtonRenderComponent extends RenderComponent {
 
     ButtonRenderComponent(Vector pos, Vector dim) {
         interactiveShape = InteractiveShape<Rect>.of(new Rect(pos, dim))
+        interactiveShape.init()
     }
 
     @Override

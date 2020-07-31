@@ -5,8 +5,6 @@ import org.tb.gg.di.ServiceProvider
 import org.tb.gg.di.config.ServiceMappingRegistry
 import org.tb.gg.di.definition.Service
 
-import java.lang.reflect.Modifier
-
 class DefaultConstructorServiceCreator implements ServiceCreator {
     private ServiceCreationOrderResolver serviceCreationOrderResolver
     private ServiceMappingRegistry serviceMappingRegistry
@@ -22,9 +20,18 @@ class DefaultConstructorServiceCreator implements ServiceCreator {
             // TODO: Could each be done in separate threads.
             pipe.collect { serviceClass ->
                 def serviceInstance = serviceClass.getConstructor().newInstance()
-                ServiceProvider.setService(serviceInstance)
+                def baseServiceClassName = getBaseClassNameIfServiceImplementation(serviceClass)
+                if (baseServiceClassName) {
+                    ServiceProvider.setService(serviceInstance, baseServiceClassName)
+                } else {
+                    ServiceProvider.setService(serviceInstance)
+                }
                 return serviceInstance
             }
         }.flatten()
+    }
+
+    private getBaseClassNameIfServiceImplementation(Class<? extends Service> serviceClass) {
+        return serviceMappingRegistry.getRegisteredServices().inverse().get(serviceClass)
     }
 }
