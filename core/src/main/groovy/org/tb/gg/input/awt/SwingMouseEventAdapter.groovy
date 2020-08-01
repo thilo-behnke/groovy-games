@@ -7,8 +7,10 @@ import org.tb.gg.env.EnvironmentService
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
+import org.tb.gg.renderer.destination.JPanelDestination
 
 import javax.swing.JFrame
+import javax.swing.JPanel
 import java.awt.MouseInfo
 import java.awt.event.MouseListener
 import java.util.concurrent.TimeUnit
@@ -58,6 +60,7 @@ class SwingMouseEventAdapter implements MouseEventProvider {
     private Observable<MouseEvent> mouseMoveEvent
 
     private JFrame jFrame
+    private JPanel jPanel
     private MouseListener mouseListener
 
     @Override
@@ -66,14 +69,22 @@ class SwingMouseEventAdapter implements MouseEventProvider {
         mouseUpSubject = BehaviorSubject.create()
         mouseClickSubject = BehaviorSubject.create()
 
+        jFrame = (JFrame) environmentService.environment.environmentFrame
+        jPanel = (JPanel) environmentService.environment.renderDestination
+
         mouseMoveEvent = (Observable<MouseEvent>) Observable
-                .interval(100, TimeUnit.MILLISECONDS)
+                .interval((1000 / 60).toInteger(), TimeUnit.MILLISECONDS)
                 .map {
-                    def mousePos = MouseInfo.getPointerInfo().getLocation();
-                    return new MouseEvent(pos: new Vector(x: mousePos.x, y: mousePos.y))
+                    Optional.ofNullable(jPanel.getMousePosition())
+                }
+                .filter {
+                    it.isPresent()
+                }
+                .map { mousePosOpt ->
+                    def mousePos = mousePosOpt.get()
+                    return new MouseEvent(pos: new Vector(x: mousePos.x, y: jPanel.getHeight() - mousePos.y))
                 }
 
-        jFrame = (JFrame) environmentService.environment.environmentFrame
         mouseListener = new SwingMouseListener(this)
         jFrame.addMouseListener(mouseListener)
     }
@@ -83,20 +94,16 @@ class SwingMouseEventAdapter implements MouseEventProvider {
         jFrame.removeMouseListener(mouseListener)
     }
 
-    protected alertMouseMove(java.awt.event.MouseEvent e) {
-        mouseMoveSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: e.y)))
-    }
-
     protected alertMouseDown(java.awt.event.MouseEvent e) {
-        mouseDownSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: e.y)))
+        mouseDownSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: jFrame.getHeight() - e.y)))
     }
 
     protected alertMouseUp(java.awt.event.MouseEvent e) {
-        mouseUpSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: e.y)))
+        mouseUpSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: jFrame.getHeight() - e.y)))
     }
 
     protected alertMouseClick(java.awt.event.MouseEvent e) {
-        mouseClickSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: e.y)))
+        mouseClickSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: jFrame.getHeight() - e.y)))
     }
 
     @Override

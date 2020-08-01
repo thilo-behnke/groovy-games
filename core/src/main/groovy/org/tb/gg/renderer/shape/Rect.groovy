@@ -20,13 +20,12 @@ class Rect implements Shape {
 
     @Override
     boolean isPointWithin(Vector pos) {
-        // TODO: Does not work correctly in demo...
         def centerToPoint = pos - getCenter()
         centerToPoint.x.abs() <= dim.x / 2 && centerToPoint.y.abs() <= dim.y / 2
     }
 
     // TODO: Add to shape interface + cache.
     private getCenter() {
-        topLeft + dim * new Vector(x: 1, y: -1) / 2.0
+        topLeft + dim * Vector.invertYVector() / 2.0
     }
 }
