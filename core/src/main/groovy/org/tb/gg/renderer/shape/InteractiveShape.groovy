@@ -29,11 +29,14 @@ class InteractiveShape<S extends Shape> implements Shape, Service {
     }
 
     S getShape() {
-       return shape
+        return shape
     }
 
     Observable<MouseEvent> getMouseClicks() {
         mouseEventProvider.mouseClicks
+                .filter {
+                    isPointWithin(it.pos)
+                }
     }
 
     @Override

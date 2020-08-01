@@ -20,6 +20,7 @@ class SwingConfigurationExecutor implements ConfigurationExecutor {
                 GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
                 GraphicsDevice device = env.getDefaultScreenDevice();
 
+                // TODO: It would be nice to also undecorate the frame, but this would mean creating a new one...
                 jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH)
                 device.setFullScreenWindow(jFrame)
                 break

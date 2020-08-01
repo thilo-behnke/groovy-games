@@ -25,7 +25,6 @@ class RectButtonRenderComponent extends RenderComponent {
 
         // TODO: How to unsubscribe?
         rect.mouseClicks.subscribe {
-            System.println(it)
             switch(configurationService.windowMode) {
                 case ConfigurationSettings.WindowMode.WINDOWED:
                     configurationService.setFullScreen()

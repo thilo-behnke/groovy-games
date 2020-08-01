@@ -94,20 +94,16 @@ class SwingMouseEventAdapter implements MouseEventProvider {
         jFrame.removeMouseListener(mouseListener)
     }
 
-    protected alertMouseMove(java.awt.event.MouseEvent e) {
-        mouseMoveSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: e.y)))
-    }
-
     protected alertMouseDown(java.awt.event.MouseEvent e) {
-        mouseDownSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: e.y)))
+        mouseDownSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: jFrame.getHeight() - e.y)))
     }
 
     protected alertMouseUp(java.awt.event.MouseEvent e) {
-        mouseUpSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: e.y)))
+        mouseUpSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: jFrame.getHeight() - e.y)))
     }
 
     protected alertMouseClick(java.awt.event.MouseEvent e) {
-        mouseClickSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: e.y)))
+        mouseClickSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: jFrame.getHeight() - e.y)))
     }
 
     @Override
