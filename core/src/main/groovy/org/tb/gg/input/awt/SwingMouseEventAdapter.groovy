@@ -66,14 +66,21 @@ class SwingMouseEventAdapter implements MouseEventProvider {
         mouseUpSubject = BehaviorSubject.create()
         mouseClickSubject = BehaviorSubject.create()
 
+        jFrame = (JFrame) environmentService.environment.environmentFrame
+
         mouseMoveEvent = (Observable<MouseEvent>) Observable
-                .interval(100, TimeUnit.MILLISECONDS)
+                .interval((1000 / 60).toInteger(), TimeUnit.MILLISECONDS)
                 .map {
-                    def mousePos = MouseInfo.getPointerInfo().getLocation();
+                    Optional.ofNullable(jFrame.getMousePosition())
+                }
+                .filter {
+                    it.isPresent()
+                }
+                .map { mousePosOpt ->
+                    def mousePos = mousePosOpt.get()
                     return new MouseEvent(pos: new Vector(x: mousePos.x, y: mousePos.y))
                 }
 
-        jFrame = (JFrame) environmentService.environment.environmentFrame
         mouseListener = new SwingMouseListener(this)
         jFrame.addMouseListener(mouseListener)
     }
