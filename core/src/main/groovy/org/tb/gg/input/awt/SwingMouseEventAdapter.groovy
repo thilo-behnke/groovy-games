@@ -7,8 +7,10 @@ import org.tb.gg.env.EnvironmentService
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
+import org.tb.gg.renderer.destination.JPanelDestination
 
 import javax.swing.JFrame
+import javax.swing.JPanel
 import java.awt.MouseInfo
 import java.awt.event.MouseListener
 import java.util.concurrent.TimeUnit
@@ -58,6 +60,7 @@ class SwingMouseEventAdapter implements MouseEventProvider {
     private Observable<MouseEvent> mouseMoveEvent
 
     private JFrame jFrame
+    private JPanel jPanel
     private MouseListener mouseListener
 
     @Override
@@ -67,18 +70,19 @@ class SwingMouseEventAdapter implements MouseEventProvider {
         mouseClickSubject = BehaviorSubject.create()
 
         jFrame = (JFrame) environmentService.environment.environmentFrame
+        jPanel = (JPanel) environmentService.environment.renderDestination
 
         mouseMoveEvent = (Observable<MouseEvent>) Observable
                 .interval((1000 / 60).toInteger(), TimeUnit.MILLISECONDS)
                 .map {
-                    Optional.ofNullable(jFrame.getMousePosition())
+                    Optional.ofNullable(jPanel.getMousePosition())
                 }
                 .filter {
                     it.isPresent()
                 }
                 .map { mousePosOpt ->
                     def mousePos = mousePosOpt.get()
-                    return new MouseEvent(pos: new Vector(x: mousePos.x, y: mousePos.y))
+                    return new MouseEvent(pos: new Vector(x: mousePos.x, y: jPanel.getHeight() - mousePos.y))
                 }
 
         mouseListener = new SwingMouseListener(this)
