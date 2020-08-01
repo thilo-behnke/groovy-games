@@ -85,4 +85,13 @@ class ServiceImplementationValidatorSpec extends Specification {
         res == (Set<Class>) [SomeClassExtendingAbstractClass.class]
     }
 
+    def 'should throw if both a service interface and its implementation is provided in the set of classes'() {
+        given:
+        def services = (Set<Class>) [SomeInterface.class, SomeClassImplementingInterface.class]
+        when:
+        serviceImplementationValidator.validateServicesAndReplaceInterfaces(services)
+        then:
+        thrown ServiceConfigurationException
+    }
+
 }

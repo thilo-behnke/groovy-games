@@ -15,14 +15,26 @@ class ServiceImplementationValidator {
     }
 
     Set<Class<? extends Service>> validateServicesAndReplaceInterfaces(Set<Class<? extends Service>> services) {
+        throwIfMatchingServiceImplementationExistsForInterface(services)
         replaceInterfacesWithImplementations(services)
+    }
+
+    static void throwIfMatchingServiceImplementationExistsForInterface(Set<Class<? extends Service>> services) {
+        services
+                .findAll { service ->
+                    service.isInterface() || Modifier.isAbstract(service.getModifiers())
+                }
+                .find { serviceInterface ->
+                    services.find { it != serviceInterface && serviceInterface.isAssignableFrom(it) }
+                }
+
     }
 
     private replaceInterfacesWithImplementations(Set<Class<? extends Service>> services) {
         services.collect { serviceClass ->
             if (serviceClass.isInterface() || Modifier.isAbstract(serviceClass.getModifiers())) {
                 def implementation = serviceMappingRegistry.getImplementationForBaseClass(serviceClass.getSimpleName())
-                if(implementation == null) {
+                if (implementation == null) {
                     throw new ServiceConfigurationException("No implementation found for ${serviceClass.getName()}".toString())
                 }
                 return implementation
