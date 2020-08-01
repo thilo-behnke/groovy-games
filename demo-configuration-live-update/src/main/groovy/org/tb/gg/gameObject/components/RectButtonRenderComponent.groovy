@@ -1,5 +1,8 @@
 package org.tb.gg.gameObject.components
 
+import org.tb.gg.config.ConfigurationService
+import org.tb.gg.config.ConfigurationSettings
+import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.RectButton
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.options.DrawColor
@@ -11,11 +14,29 @@ import org.tb.gg.renderer.shape.Text
 
 class RectButtonRenderComponent extends RenderComponent {
 
+    @Inject
+    private ConfigurationService configurationService
+
     private InteractiveShape rect
 
     RectButtonRenderComponent(Vector pos, Vector dim) {
         rect = InteractiveShape<Rect>.of(new Rect(pos, dim))
         rect.init()
+
+        // TODO: How to unsubscribe?
+        rect.mouseClicks.subscribe {
+            System.println(it)
+            switch(configurationService.windowMode) {
+                case ConfigurationSettings.WindowMode.WINDOWED:
+                    configurationService.setFullScreen()
+                    break
+                case ConfigurationSettings.WindowMode.FULLSCREEN:
+                    configurationService.setWindowed()
+                    break
+                default:
+                    break
+            }
+        }
     }
 
     @Override

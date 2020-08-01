@@ -5,6 +5,8 @@ import org.tb.gg.env.EnvironmentService
 import org.tb.gg.env.Graphics
 
 import javax.swing.JFrame
+import java.awt.GraphicsDevice
+import java.awt.GraphicsEnvironment
 
 class SwingConfigurationExecutor implements ConfigurationExecutor {
     @Inject
@@ -15,9 +17,11 @@ class SwingConfigurationExecutor implements ConfigurationExecutor {
         switch(environmentService.environment.graphics) {
             case Graphics.SWING:
                 def jFrame = (JFrame) environmentService.environment.environmentFrame
+                GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                GraphicsDevice device = env.getDefaultScreenDevice();
+
                 jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH)
-                jFrame.setUndecorated(true)
-                jFrame.setVisible(true)
+                device.setFullScreenWindow(jFrame)
                 break
             default:
                 throw new IllegalArgumentException("Can't enter fullscreen mode for unknown graphics type ${environmentService.environment.graphics}".toString())
@@ -29,9 +33,12 @@ class SwingConfigurationExecutor implements ConfigurationExecutor {
         switch(environmentService.environment.graphics) {
             case Graphics.SWING:
                 def jFrame = (JFrame) environmentService.environment.environmentFrame
+                GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                GraphicsDevice device = env.getDefaultScreenDevice();
+
                 jFrame.setExtendedState(JFrame.NORMAL)
-                jFrame.setUndecorated(false)
-                jFrame.setVisible(false)
+                device.setFullScreenWindow(null)
+                jFrame.setVisible(true)
                 break
             default:
                 throw new IllegalArgumentException("Can't enter windowed mode for unknown graphics type ${environmentService.environment.graphics}".toString())

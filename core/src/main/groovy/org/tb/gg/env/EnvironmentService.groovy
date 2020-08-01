@@ -49,12 +49,15 @@ class EnvironmentService implements Singleton {
 
     private constructSwingEnvironment() {
         def renderDestination = new JPanelDestination()
-        JFrame f = new JFrame("Game");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setResizable(false);
-        f.add(renderDestination);
-        f.pack();
-        f.setVisible(true);
+
+        JFrame f = new JFrame("Game")
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+        f.setResizable(false)
+        f.add(renderDestination)
+        f.setUndecorated(false)
+        f.setVisible(true)
+        f.pack()
+
         return [ renderDestination: renderDestination, jFrame: f ]
     }
 
