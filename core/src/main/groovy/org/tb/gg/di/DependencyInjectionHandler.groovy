@@ -1,6 +1,7 @@
 package org.tb.gg.di
 
 import groovy.util.logging.Log4j
+import org.tb.gg.di.config.DefaultResourceProvider
 import org.tb.gg.di.config.ServiceConfigReader
 import org.tb.gg.di.config.ServiceMappingRegistry
 import org.tb.gg.di.creator.DefaultConstructorServiceCreator
@@ -24,7 +25,7 @@ class DependencyInjectionHandler {
             return []
         }
         def serviceMappingRegistry = new ServiceMappingRegistry()
-        new ServiceConfigReader(serviceMappingRegistry).readServiceConfig()
+        new ServiceConfigReader(new DefaultResourceProvider(), serviceMappingRegistry).readConfigAndRegisterServices()
 
         def singletonClasses = new ClasspathServiceScanner().scanForServices(Singleton.class)
         def validatedSingletonClasses = new ServiceImplementationValidator(serviceMappingRegistry).validateServicesAndReplaceInterfaces(singletonClasses)
