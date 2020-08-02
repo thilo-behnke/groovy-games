@@ -17,6 +17,15 @@ class Vector {
     private final static zero = new Vector(x: 0, y: 0)
     private final static invertY = new Vector(x: 1, y: -1)
 
+    Vector(Map map) {
+        def xVal = map.x ?: 0.0
+        def yVal = map.y ?: 0.0
+        // TODO: Handle different number types
+        x = map.x instanceof BigDecimal ? (BigDecimal) xVal : BigDecimal.valueOf(xVal).round(MathConstants.ctx)
+        y = map.y instanceof BigDecimal ? (BigDecimal) yVal : BigDecimal.valueOf(yVal).round(MathConstants.ctx)
+    }
+
+
     // TODO: Typing does not work.
     BigDecimal getAt(int i) {
         switch (i) {
