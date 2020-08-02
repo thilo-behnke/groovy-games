@@ -1,10 +1,7 @@
 package org.tb.gg.global.geom
 
-import groovy.transform.Immutable
-import org.apache.tools.ant.taskdefs.condition.Equals
-import org.tb.gg.global.math.MathConstants
-import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import org.tb.gg.global.math.MathConstants
 
 @ToString
 class Vector {
