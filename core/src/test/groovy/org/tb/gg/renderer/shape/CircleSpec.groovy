@@ -40,25 +40,17 @@ class CircleSpec extends Specification {
     @Unroll
     def 'overlapping with other circle'() {
         expect:
-        circle.doesOverlapWith(otherCircle)
+        circle.doesOverlapWith(otherCircle) == doOverlap
         where:
-        otherCircle                                              | _
-        new Circle(center: Vector.unitVector(), radius: 2)       | _
-        new Circle(center: Vector.unitVector() * 2.0, radius: 4) | _
-        new Circle(center: Vector.unitVector() * 5.0, radius: 1) | _
-        new Circle(center: Vector.unitVector() * 6.0, radius: 1) | _
-    }
-
-    @Unroll
-    def 'not overlapping with other circle'() {
-        expect:
-        !circle.doesOverlapWith(otherCircle)
-        where:
-        otherCircle                                                 | _
-        new Circle(center: Vector.unitVector() * 8.0, radius: 1)    | _
-        new Circle(center: Vector.unitVector() * 7.0, radius: 1)    | _
-        new Circle(center: Vector.unitVector() * 6.0, radius: 0.99) | _
-        new Circle(center: Vector.unitVector() * 22.0, radius: 10)  | _
+        otherCircle                                                | doOverlap
+        new Circle(center: Vector.unitVector(), radius: 2)         | true
+        new Circle(center: Vector.unitVector() * 2.0, radius: 4)   | true
+        new Circle(center: Vector.unitVector() * 5.0, radius: 1)   | true
+        new Circle(center: Vector.unitVector() * 6.0, radius: 3)   | true
+        new Circle(center: Vector.unitVector() * 8.0, radius: 1)   | false
+        new Circle(center: Vector.unitVector() * 7.0, radius: 1)   | false
+        new Circle(center: Vector.unitVector() * 6.0, radius: 2)   | false
+        new Circle(center: Vector.unitVector() * 22.0, radius: 10) | false
     }
 
 }

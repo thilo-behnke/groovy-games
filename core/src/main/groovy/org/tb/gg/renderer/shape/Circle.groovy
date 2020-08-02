@@ -15,7 +15,7 @@ class Circle implements Shape {
 
     @Override
     Vector getClosestPointInDirectionFromCenter(Vector direction) {
-        center + ((center + direction).normalize() * radius)
+        center + direction.normalize() * radius
     }
 
     @Override
@@ -25,8 +25,8 @@ class Circle implements Shape {
 
     @Override
     boolean doesOverlapWith(Shape shape) {
-        def circleToShape = shape.center - center
-        def closestPointOnShape = shape.getClosestPointInDirectionFromCenter(circleToShape)
+        def shapeToCircle = center - shape.center
+        def closestPointOnShape = shape.getClosestPointInDirectionFromCenter(shapeToCircle)
         def centerToClosestPointOnShape = closestPointOnShape - center
         centerToClosestPointOnShape.length() < radius
     }
