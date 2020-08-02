@@ -1,19 +1,16 @@
 package org.tb.gg.global.geom
 
+import groovy.transform.Immutable
 import org.apache.tools.ant.taskdefs.condition.Equals
 import org.tb.gg.global.math.MathConstants
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
-// TODO: Make immutable.
-
-@EqualsAndHashCode(includes = ['x', 'y'])
 @ToString
 class Vector {
-    BigDecimal x
-    BigDecimal y
+    private BigDecimal x
+    private BigDecimal y
 
-    // TODO: Can be updated unless vector is made immutable.
     private final static unit = new Vector(x: 1, y: 1)
     private final static zero = new Vector(x: 0, y: 0)
     private final static invertY = new Vector(x: 1, y: -1)
@@ -124,6 +121,15 @@ class Vector {
         def xDiff = (otherV.x - x).abs()
         def yDiff = (otherV.y - y).abs()
         return xDiff < 1e-4 && yDiff < 1e-4
+    }
+
+    // TODO: See the above equals implementation - is this hashcode then correct? Given that a small error margin is introduced for comparison.
+    @Override
+    int hashCode() {
+        int result
+        result = x.hashCode()
+        result = 31 * result + y.hashCode()
+        return result
     }
 }
 
