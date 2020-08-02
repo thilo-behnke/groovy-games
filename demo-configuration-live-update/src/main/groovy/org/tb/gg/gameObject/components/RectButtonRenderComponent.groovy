@@ -21,7 +21,6 @@ class RectButtonRenderComponent extends RenderComponent {
 
     RectButtonRenderComponent(Vector pos, Vector dim) {
         rect = InteractiveShape<Rect>.of(new Rect(pos, dim))
-        rect.init()
 
         // TODO: How to unsubscribe?
         rect.mouseClicks.subscribe {
@@ -36,6 +35,16 @@ class RectButtonRenderComponent extends RenderComponent {
                     break
             }
         }
+    }
+
+    @Override
+    void onInit() {
+        rect.onInit()
+    }
+
+    @Override
+    void onDestroy() {
+        rect.onDestroy()
     }
 
     @Override

@@ -1,9 +1,9 @@
 package org.tb.gg.gameObject.components
 
+import org.tb.gg.gameObject.lifecycle.Lifecycle
 import org.tb.gg.input.actions.InputActionProvider
-import org.tb.gg.input.actions.KeyPressInputActionProvider
 
-abstract class InputComponent {
+abstract class InputComponent implements Lifecycle {
     private final InputActionProvider inputActionProvider
 
     InputComponent(InputActionProvider inputActionProvider) {
@@ -12,5 +12,15 @@ abstract class InputComponent {
 
     Set<String> getActiveActions() {
         return this.inputActionProvider.activeActions()
+    }
+
+    @Override
+    void onInit() {
+        inputActionProvider.onInit()
+    }
+
+    @Override
+    void onDestroy() {
+        inputActionProvider.onDestroy()
     }
 }

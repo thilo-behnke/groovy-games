@@ -28,6 +28,16 @@ class KeyboardRenderComponent extends RenderComponent {
         ])
     }
 
+    @Override
+    void onInit() {
+
+    }
+
+    @Override
+    void onDestroy() {
+
+    }
+
     private createFrame() {
         RenderNode.leaf(
                 new Rect(pos + FRAME_START, FRAME_DIM),

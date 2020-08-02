@@ -52,12 +52,12 @@ class SwingKeyEventAdapter implements KeyEventSubject {
     }
 
     @Override
-    void register() {
+    void onInit() {
         this.frame.addKeyListener(keyListener)
     }
 
     @Override
-    void unregister() {
+    void onDestroy() {
         keysPressed.clear()
         this.source.onNext(keysPressed)
         this.frame.removeKeyListener(keyListener)

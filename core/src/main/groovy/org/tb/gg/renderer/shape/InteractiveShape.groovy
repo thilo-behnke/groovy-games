@@ -4,11 +4,11 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import org.tb.gg.di.Inject
 import org.tb.gg.di.definition.Service
-import org.tb.gg.global.lifecycle.Lifecycle
+import org.tb.gg.gameObject.lifecycle.Lifecycle
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
 
-class InteractiveShape<S extends Shape> implements Shape, Service {
+class InteractiveShape<S extends Shape> implements Shape, Lifecycle {
 
     @Inject
     private MouseEventProvider mouseEventProvider
@@ -40,7 +40,7 @@ class InteractiveShape<S extends Shape> implements Shape, Service {
     }
 
     @Override
-    void init() {
+    void onInit() {
         mouseMoveDisposable = mouseEventProvider.mousePosition
                 .subscribe {
                     isMouseInShape = isPointWithin(it.pos)
@@ -48,7 +48,7 @@ class InteractiveShape<S extends Shape> implements Shape, Service {
     }
 
     @Override
-    void destroy() {
+    void onDestroy() {
         mouseMoveDisposable.dispose()
     }
 }

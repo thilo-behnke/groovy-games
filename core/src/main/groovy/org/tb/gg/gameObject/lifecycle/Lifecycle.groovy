@@ -1,4 +1,4 @@
-package org.tb.gg.global.lifecycle
+package org.tb.gg.gameObject.lifecycle
 
 interface Lifecycle {
     void onInit()

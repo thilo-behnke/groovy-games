@@ -13,4 +13,14 @@ class NoopInputActionProvider implements InputActionProvider {
     Set<String> activeActions() {
         return (Set<String>) []
     }
+
+    @Override
+    void onInit() {
+
+    }
+
+    @Override
+    void onDestroy() {
+
+    }
 }
