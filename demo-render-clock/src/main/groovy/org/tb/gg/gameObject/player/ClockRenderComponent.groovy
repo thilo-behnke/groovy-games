@@ -34,6 +34,16 @@ class ClockRenderComponent extends RenderComponent {
         )
     }
 
+    @Override
+    void onInit() {
+
+    }
+
+    @Override
+    void onDestroy() {
+
+    }
+
     private getClockCircle() {
         Clock parent = (Clock) parent
         Circle circle = new Circle(center: parent.center, radius: parent.radius)
