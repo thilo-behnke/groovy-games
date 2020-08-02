@@ -3,9 +3,9 @@ package org.tb.gg.collision
 import groovy.util.logging.Log4j
 import org.tb.gg.di.Inject
 import org.tb.gg.engine.helper.Updateable
+import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.GameObjectProvider
 
-@Log4j
 class DefaultCollisionRegistry implements CollisionRegistry {
     @Inject
     private CollisionDetector collisionDetector
@@ -18,12 +18,19 @@ class DefaultCollisionRegistry implements CollisionRegistry {
     void update(Long timestamp, Long delta) {
         // TODO: Don't do this every tick
         collisions = collisionDetector.detect(gameObjectProvider.getGameObjects())
-        log.info(collisions)
     }
 
     @Override
     Set<Collision> getCollisions() {
         return collisions
+    }
+
+    @Override
+    boolean hasCollision(GameObject gameObject) {
+        // TODO: Find special collection type for this.
+        return collisions.find{
+            it.a == gameObject || it.b == gameObject
+        }
     }
 
     @Override
