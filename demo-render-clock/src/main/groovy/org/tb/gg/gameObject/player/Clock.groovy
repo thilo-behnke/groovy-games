@@ -1,6 +1,7 @@
 package org.tb.gg.gameObject.player
 
 import org.tb.gg.gameObject.GameObject
+import org.tb.gg.gameObject.components.NoopInputComponent
 import org.tb.gg.global.geom.CircleDesc
 import org.tb.gg.global.geom.CircleOperations
 import org.tb.gg.global.geom.Vector
@@ -29,6 +30,7 @@ class Clock extends GameObject {
         def clockStart = CircleOperations.getPointOnCircleInRadians(circleDesc, MathConstants.PI / 2)
         def clock = new Clock(circleDesc, clockStart)
         clock.setRenderComponent(new ClockRenderComponent ())
+        clock.setInputComponent(new NoopInputComponent())
         return clock
     }
 
