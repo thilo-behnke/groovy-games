@@ -17,6 +17,16 @@ class RenderComponentSpec extends Specification {
         RenderNode getRenderNode() {
             return node
         }
+
+        @Override
+        void onInit() {
+
+        }
+
+        @Override
+        void onDestroy() {
+
+        }
     }
 
     RenderDestination renderDestinationMock

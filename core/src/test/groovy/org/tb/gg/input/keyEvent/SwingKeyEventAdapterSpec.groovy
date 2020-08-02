@@ -52,8 +52,7 @@ class SwingKeyEventAdapterSpec extends Specification {
     def 'should register a keyListener on awt JFrame when registered'() {
         when:
         subscribeKeyPresses()
-        // TODO: Why does this not work in given?
-        keyEventJwtAdapter.register()
+        keyEventJwtAdapter.onInit()
         then:
         assertKeyPressesReceived(new HashSet<Key>())
         1 * jFrameMock.addKeyListener(*_)
@@ -62,7 +61,7 @@ class SwingKeyEventAdapterSpec extends Specification {
     def 'should not emit a received key press it is not being listened to'() {
         when:
         subscribeKeyPresses()
-        keyEventJwtAdapter.register()
+        keyEventJwtAdapter.onInit()
         sendUpKeyPressed()
         then:
         assertKeyPressesReceived(new HashSet<Key>())
@@ -71,7 +70,7 @@ class SwingKeyEventAdapterSpec extends Specification {
     def 'should emit a received key press if it is being listened to'() {
         when:
         subscribeKeyPresses()
-        keyEventJwtAdapter.register()
+        keyEventJwtAdapter.onInit()
         listenToUp()
         sendUpKeyPressed()
         then:
@@ -81,7 +80,7 @@ class SwingKeyEventAdapterSpec extends Specification {
     def 'should emit a received key press if it is being listened to, but still ignore other key presses'() {
         when:
         subscribeKeyPresses()
-        keyEventJwtAdapter.register()
+        keyEventJwtAdapter.onInit()
         listenToUp()
         sendUpKeyPressed()
         sendDownKeyPressed()
@@ -92,7 +91,7 @@ class SwingKeyEventAdapterSpec extends Specification {
     def 'should emit a received key press it is being listened to AFTER it was pressed'() {
         when:
         subscribeKeyPresses()
-        keyEventJwtAdapter.register()
+        keyEventJwtAdapter.onInit()
         sendUpKeyPressed()
         listenToUp()
         then:
@@ -102,7 +101,7 @@ class SwingKeyEventAdapterSpec extends Specification {
     def 'should be able to listen to multiple keys'() {
         when:
         subscribeKeyPresses()
-        keyEventJwtAdapter.register()
+        keyEventJwtAdapter.onInit()
         listenToUp()
         listenToDown()
         sendUpKeyPressed()
@@ -114,7 +113,7 @@ class SwingKeyEventAdapterSpec extends Specification {
     def 'should remove pressed key once released'() {
         when:
         subscribeKeyPresses()
-        keyEventJwtAdapter.register()
+        keyEventJwtAdapter.onInit()
         listenToUp()
         sendUpKeyPressed()
         sendUpKeyReleased()
@@ -125,7 +124,7 @@ class SwingKeyEventAdapterSpec extends Specification {
     def 'should remove pressed key once released and not update other key presses'() {
         when:
         subscribeKeyPresses()
-        keyEventJwtAdapter.register()
+        keyEventJwtAdapter.onInit()
         listenToUpAndDown()
         sendUpKeyPressed()
         sendDownKeyPressed()
