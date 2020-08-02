@@ -12,7 +12,7 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @Unroll
-class InteractiveShapeSpec extends Specification {
+class InteractiveShapeMouseClickSpec extends Specification {
 
     InteractiveShape interactiveShape
     MouseEventProvider mouseEventProvider
@@ -21,16 +21,14 @@ class InteractiveShapeSpec extends Specification {
     TestObserver<MouseEvent> mouseClickTestObserver
 
     Subject<MouseEvent> mouseClickSubject
-    Subject<MouseEvent> mousePositionSubject
 
     void setup() {
         dummyShape = Mock(Shape)
 
         mouseEventProvider = Mock(MouseEventProvider)
         mouseClickSubject = BehaviorSubject.create()
-        mousePositionSubject = BehaviorSubject.create()
         mouseEventProvider.mouseClicks >> mouseClickSubject
-        mouseEventProvider.mousePosition >> mousePositionSubject
+        mouseEventProvider.mousePosition >> Observable.empty()
 
         ServiceProvider.setService(mouseEventProvider, 'MouseEventProvider')
 
@@ -43,12 +41,9 @@ class InteractiveShapeSpec extends Specification {
     void cleanup() {
         mouseClickTestObserver.dispose()
         mouseClickSubject.onComplete()
-        mousePositionSubject.onComplete()
         // TODO: It would be great if this could be integrated into Spock.
         ServiceProvider.reset()
     }
-
-    // Mouse clicks.
 
     def 'no mouse clicks sent by provider'() {
         expect:
@@ -84,7 +79,46 @@ class InteractiveShapeSpec extends Specification {
         mouseClickTestObserver.assertValues(event1, event3)
     }
 
-    // Mouse position.
+    private mockMouseEvent(Vector pos, boolean isPointWithinShape) {
+        dummyShape.isPointWithin(pos) >> isPointWithinShape
+        new MouseEvent(pos: pos)
+    }
+
+    private sendMouseClicks(MouseEvent ...events) {
+        events.each {
+            mouseClickSubject.onNext(it)
+        }
+    }
+}
+
+@Unroll
+class InteractiveShapeMousePositionSpec extends Specification {
+
+    InteractiveShape interactiveShape
+    MouseEventProvider mouseEventProvider
+    Shape dummyShape
+
+    Subject<MouseEvent> mousePositionSubject
+
+    void setup() {
+        dummyShape = Mock(Shape)
+
+        mouseEventProvider = Mock(MouseEventProvider)
+        mousePositionSubject = BehaviorSubject.create()
+        mouseEventProvider.mouseClicks >> Observable.empty()
+        mouseEventProvider.mousePosition >> mousePositionSubject
+
+        ServiceProvider.setService(mouseEventProvider, 'MouseEventProvider')
+
+        interactiveShape = InteractiveShape.of(dummyShape)
+        interactiveShape.onInit()
+    }
+
+    void cleanup() {
+        mousePositionSubject.onComplete()
+        // TODO: It would be great if this could be integrated into Spock.
+        ServiceProvider.reset()
+    }
 
     def 'no mouse positions sent by provider, mouse is not within shape'() {
         expect:
@@ -123,12 +157,6 @@ class InteractiveShapeSpec extends Specification {
     private mockMouseEvent(Vector pos, boolean isPointWithinShape) {
         dummyShape.isPointWithin(pos) >> isPointWithinShape
         new MouseEvent(pos: pos)
-    }
-
-    private sendMouseClicks(MouseEvent ...events) {
-        events.each {
-            mouseClickSubject.onNext(it)
-        }
     }
 
     private sendMousePosition(MouseEvent ...events) {
