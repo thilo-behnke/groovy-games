@@ -8,7 +8,7 @@ import org.tb.gg.gameObject.lifecycle.Lifecycle
 import org.tb.gg.renderer.destination.RenderDestination
 
 @EqualsAndHashCode(includes='id')
-abstract class GameObject implements Updateable, Lifecycle {
+class GameObject implements Updateable, Lifecycle {
     // TODO: Automatically generate.
     Long id
 

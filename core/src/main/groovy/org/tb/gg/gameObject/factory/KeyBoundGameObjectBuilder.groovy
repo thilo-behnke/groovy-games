@@ -11,13 +11,13 @@ import org.tb.gg.input.actions.KeyPressInputActionProvider
 import org.tb.gg.input.actions.factory.AbstractInputActionProviderFactory
 import org.tb.gg.input.actions.factory.InputActionProviderArgs
 
-class KeyBoundGameObjectBuilder implements Builder<GameObject> {
+class KeyBoundGameObjectBuilder<T extends GameObject> implements Builder<GameObject> {
     private GameObject gameObject
     private KeyPressInputActionProvider keyPressInputActionProvider
     private Class<? extends InputComponent> inputComponentClazz
     private Map<Key, String> defaultKeyMapping
 
-    KeyBoundGameObjectBuilder(Class<? extends GameObject> clazz) {
+    KeyBoundGameObjectBuilder(Class<T> clazz) {
         gameObject = clazz.getConstructor().newInstance()
     }
 
@@ -44,7 +44,7 @@ class KeyBoundGameObjectBuilder implements Builder<GameObject> {
     }
 
     @Override
-    GameObject build() {
+    T build() {
         if(!gameObject.renderComponent || !keyPressInputActionProvider || !inputComponentClazz) {
             throw new IllegalStateException("A key bound game object must have a render component, actions and input component class!")
         }
@@ -54,6 +54,6 @@ class KeyBoundGameObjectBuilder implements Builder<GameObject> {
         keyPressInputActionProvider.overrideKeyMappings(defaultKeyMapping)
         def inputComponent = inputComponentClazz.getConstructor(KeyPressInputActionProvider).newInstance(keyPressInputActionProvider)
         gameObject.inputComponent = inputComponent
-        return gameObject
+        return (T) gameObject
     }
 }
