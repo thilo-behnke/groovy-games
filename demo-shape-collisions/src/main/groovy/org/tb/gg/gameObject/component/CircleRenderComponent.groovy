@@ -22,7 +22,8 @@ class CircleRenderComponent extends RenderComponent {
 
     @Override
     void onInit() {
-
+        def circleGameObject = (CircleGameObject) parent
+        circle = InteractiveShape.of(new Circle(center: circleGameObject.center, radius: circleGameObject.radius))
     }
 
     @Override
