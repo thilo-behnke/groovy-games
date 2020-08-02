@@ -18,6 +18,3 @@ gameEngine.addScene(defaultScene)
 gameEngine.changeScene(defaultScene.name)
 
 gameEngine.start()
-
-// TODO: 1) Click listener on canvas
-// TODO: 2) Check if click is in rect (=button)

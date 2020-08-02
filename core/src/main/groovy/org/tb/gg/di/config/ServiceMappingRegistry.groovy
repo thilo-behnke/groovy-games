@@ -4,6 +4,8 @@ import com.google.common.collect.BiMap
 import com.google.common.collect.HashBiMap
 import org.tb.gg.di.definition.Service
 
+import javax.annotation.Nullable
+
 class ServiceMappingRegistry {
     BiMap<String, Class<? extends Service>> registeredServices = HashBiMap.create()
 
@@ -25,6 +27,7 @@ class ServiceMappingRegistry {
         return null
     }
 
+    @Nullable
     Class<? extends Service> getImplementationForBaseClass(String baseClassName) {
         return registeredServices.get(baseClassName)
     }
