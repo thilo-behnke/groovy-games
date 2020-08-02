@@ -31,7 +31,6 @@ class LineSpec extends Specification {
     }
 
     @Unroll
-    @Ignore
     def 'should identify points to be on the line'() {
         expect:
         line.isPointWithin(point)
