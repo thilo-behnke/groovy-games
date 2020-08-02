@@ -1,0 +1,3 @@
+services = {
+    myService(String.class)
+}

@@ -16,11 +16,61 @@ class ServiceConfigReaderSpec extends Specification {
         serviceConfigReader = new ServiceConfigReader(resourceProvider, serviceMappingRegistry)
     }
 
-    def 'should terminate without registering a service if no config file exists'() {
+    def 'no config file exists'() {
         when:
         serviceConfigReader.readConfigAndRegisterServices()
         then:
-        0 * serviceMappingRegistry.invokeMethod(_)
+        0 * serviceMappingRegistry.invokeMethod(*_)
+    }
+
+    def 'config file exists, but no services closure'() {
+        given:
+        stubServiceConfigFile('configWithoutServiceDeclaration.groovy')
+        when:
+        serviceConfigReader.readConfigAndRegisterServices()
+        then:
+        0 * serviceMappingRegistry.invokeMethod(*_)
+    }
+
+    def 'config file exists, but empty services closure'() {
+        given:
+        stubServiceConfigFile('configWithEmptyServiceDeclaration.groovy')
+        when:
+        serviceConfigReader.readConfigAndRegisterServices()
+        then:
+        0 * serviceMappingRegistry.invokeMethod(*_)
+    }
+
+    def 'single service declaration in config'() {
+        given:
+        stubServiceConfigFile('configWithSingleServiceDeclaration.groovy')
+        when:
+        serviceConfigReader.readConfigAndRegisterServices()
+        then:
+        1 * serviceMappingRegistry.invokeMethod('myService', [String.class])
+        0 * serviceMappingRegistry.invokeMethod(*_)
+    }
+
+    def 'multiple service declarations in config'() {
+        given:
+        stubServiceConfigFile('configWithMultipleServiceDeclarations.groovy')
+        when:
+        serviceConfigReader.readConfigAndRegisterServices()
+        then:
+        1 * serviceMappingRegistry.invokeMethod('myService', [String.class])
+        1 * serviceMappingRegistry.invokeMethod('myOtherService', [Long.class])
+        1 * serviceMappingRegistry.invokeMethod('andAThirdService', [Integer.class])
+        0 * serviceMappingRegistry.invokeMethod(*_)
+    }
+
+    private stubServiceConfigFile(String fileName) {
+        def configFile = loadConfigFile(fileName)
+        resourceProvider.getResourceFile('config.groovy') >> configFile
+    }
+
+    private loadConfigFile(String fileName) {
+        def resource = getClass().getClassLoader().getResource(fileName)
+        new File(resource.getFile());
     }
 
 

@@ -30,9 +30,12 @@ class ServiceConfigReader {
         def script = new GroovyShell(binding).parse(serviceConfig)
         script.run()
 
-        def services = (Closure) binding.getVariable('services')
-        services.delegate = serviceRegistry
-
-        services()
+        try {
+            def services = (Closure) binding.getVariable('services')
+            services.delegate = serviceRegistry
+            services()
+        } catch (MissingPropertyException ignored) {
+            log.warn("No services closure in file ${fileName}".toString())
+        }
     }
 }
