@@ -20,7 +20,7 @@ public class ServiceProvider {
     }
 
     public static void setService(Object service, String name) {
-        if(serviceMap.containsKey(name)) {
+        if (serviceMap.containsKey(name)) {
             return;
         }
         serviceMap.put(name, service);
