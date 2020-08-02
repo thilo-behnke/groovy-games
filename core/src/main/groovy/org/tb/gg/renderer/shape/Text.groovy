@@ -18,4 +18,19 @@ class Text implements Shape {
         // TODO: Given this definition, is text really a shape?
         return false
     }
+
+    @Override
+    Vector getClosestPointInDirectionFromCenter(Vector direction) {
+        return null
+    }
+
+    @Override
+    boolean doesOverlapWith(Shape shape) {
+        return false
+    }
+
+    @Override
+    Vector getCenter() {
+        return null
+    }
 }

@@ -5,8 +5,8 @@ import org.tb.gg.global.math.MathConstants
 
 @ToString
 class Vector {
-    private BigDecimal x
-    private BigDecimal y
+    final BigDecimal x
+    final BigDecimal y
 
     private final static unit = new Vector(x: 1, y: 1)
     private final static zero = new Vector(x: 0, y: 0)
@@ -84,6 +84,12 @@ class Vector {
             return new Vector(x: x, y: y)
         }
         return new Vector(x: x, y: y) / this.length()
+    }
+
+    // TODO: This gives one out of two possible perpendiculars. Is there a way to parameterize the method?
+    Vector perpendicular() {
+        def norm = normalize()
+        new Vector(x: norm.y, y: -norm.x)
     }
 
     static unitVector() {

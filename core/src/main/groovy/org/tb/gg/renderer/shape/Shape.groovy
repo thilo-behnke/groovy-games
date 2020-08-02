@@ -4,9 +4,12 @@ import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.renderObjects.Renderable
 
 interface Shape extends Renderable {
+    Vector getCenter()
 
-    abstract boolean isPointWithin(Vector pos);
+    Vector getClosestPointInDirectionFromCenter(Vector direction)
+
+    abstract boolean isPointWithin(Vector pos)
     // TODO: Implement for collision detection between shapes.
-//    boolean isShapeWithin(Shape shape);
-//    boolean doesOverlapWith(Shape shape);
+//    boolean isShapeWithin(Shape shape)
+    boolean doesOverlapWith(Shape shape)
 }
