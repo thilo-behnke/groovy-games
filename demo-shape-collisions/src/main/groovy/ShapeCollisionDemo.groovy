@@ -17,7 +17,6 @@ import org.tb.gg.renderer.renderObjects.RenderNode
 import org.tb.gg.renderer.shape.Circle
 
 GameEngine gameEngine = new GameEngineProvider().provideGameEngine()
-def gameObjectProvider = new GameObjectProvider()
 
 def circle1 = (CircleGameObject) new KeyBoundGameObjectBuilder<CircleGameObject>(CircleGameObject.class)
         .setRenderComponent(new CircleRenderComponent())
@@ -37,10 +36,11 @@ def circle2 = (CircleGameObject) new GameObjectBuilder<CircleGameObject>(CircleG
 circle2.center = Vector.unitVector() * 400.0
 circle2.radius = 100.0
 
-gameObjectProvider << circle1
-gameObjectProvider << circle2
+def defaultScene = new DefaultGameScene('default')
 
-def defaultScene = new DefaultGameScene('default', gameObjectProvider)
+defaultScene.accessGameObjectProvider() << circle1
+defaultScene.accessGameObjectProvider() << circle2
+
 gameEngine.addScene(defaultScene)
 gameEngine.changeScene(defaultScene.name)
 

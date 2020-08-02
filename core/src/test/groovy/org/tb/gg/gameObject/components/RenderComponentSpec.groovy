@@ -10,7 +10,7 @@ import spock.lang.Unroll
 
 @Unroll
 class RenderComponentSpec extends Specification {
-    class DummyRenderComponent extends RenderComponent {
+    class DummyRenderComponent extends RenderComponent implements NoCollisionDetection {
         RenderNode node
 
         @Override

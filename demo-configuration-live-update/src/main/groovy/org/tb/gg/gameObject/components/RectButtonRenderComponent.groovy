@@ -12,7 +12,7 @@ import org.tb.gg.renderer.shape.InteractiveShape
 import org.tb.gg.renderer.shape.Rect
 import org.tb.gg.renderer.shape.Text
 
-class RectButtonRenderComponent extends RenderComponent {
+class RectButtonRenderComponent extends RenderComponent implements NoCollisionDetection {
 
     @Inject
     private ConfigurationService configurationService

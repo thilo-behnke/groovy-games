@@ -10,7 +10,7 @@ import org.tb.gg.renderer.shape.Rect
 import org.tb.gg.renderer.shape.Text
 
 @Log4j
-class KeyboardRenderComponent extends RenderComponent {
+class KeyboardRenderComponent extends RenderComponent implements NoCollisionDetection {
 
     private final static FRAME_START = new Vector(x: -10, y: 0)
     private final static FRAME_DIM = new Vector(x: 100, y: 50)

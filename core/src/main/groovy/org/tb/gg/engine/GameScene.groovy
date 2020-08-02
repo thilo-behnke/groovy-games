@@ -1,5 +1,6 @@
 package org.tb.gg.engine
 
+import org.tb.gg.di.Inject
 import org.tb.gg.engine.helper.Updateable
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.GameObjectProvider
@@ -15,15 +16,16 @@ interface GameScene extends Updateable {
 
 @Log4j
 class DefaultGameScene implements GameScene {
-    public String name
+    @Inject
     private GameObjectProvider gameObjectProvider
+
+    public String name
     private DateProvider dateProvider
 
     private gameSceneState = GameSceneState.UNINITIALIZED
 
-    DefaultGameScene(String name, GameObjectProvider gameObjectProvider) {
+    DefaultGameScene(String name) {
         this.name = name
-        this.gameObjectProvider = gameObjectProvider
         this.dateProvider = dateProvider
     }
 
@@ -42,5 +44,10 @@ class DefaultGameScene implements GameScene {
     @Override
     Set<GameObject> getGameObjects() {
         return gameObjectProvider.getGameObjects()
+    }
+
+    // TODO: Find a better way to delegate - currently not possible because of inject ast transformation.
+    GameObjectProvider accessGameObjectProvider() {
+        return gameObjectProvider
     }
 }

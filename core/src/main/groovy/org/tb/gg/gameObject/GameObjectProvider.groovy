@@ -1,8 +1,10 @@
 package org.tb.gg.gameObject
 
+import org.tb.gg.di.definition.Singleton
+
 import java.util.concurrent.atomic.AtomicLong
 
-class GameObjectProvider {
+class GameObjectProvider implements Singleton {
 	private AtomicLong idCounter = new AtomicLong()
 
 	private Set<GameObject> gameObjects = []
@@ -27,5 +29,15 @@ class GameObjectProvider {
 
 	Set<GameObject> getGameObjects() {
         return gameObjects
+	}
+
+	@Override
+	void init() {
+
+	}
+
+	@Override
+	void destroy() {
+
 	}
 }
