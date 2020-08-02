@@ -23,12 +23,8 @@ class AbstractInputActionProviderFactory {
         @Override
         KeyPressInputActionProvider createProvider(InputActionProviderArgs providerArgs) {
             def keyEventSubject = new SwingKeyEventAdapter()
-            // TODO: How to get rid of register after constructor?
-            keyEventSubject.register()
             def inputActionRegistry = new InputActionRegistry(providerArgs.actions)
             def inputActionProvider = new KeyPressInputActionProvider(inputActionRegistry, keyEventSubject)
-            // TODO: How to get rid of init after constructor?
-            inputActionProvider.init()
             return inputActionProvider
         }
     }
