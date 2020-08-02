@@ -21,7 +21,6 @@ class Vector {
         y = yVal instanceof BigDecimal ? (BigDecimal) yVal : BigDecimal.valueOf(yVal)
     }
 
-
     // TODO: Typing does not work.
     BigDecimal getAt(int i) {
         switch (i) {
