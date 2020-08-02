@@ -1,5 +1,6 @@
 package org.tb.gg.global.geom
 
+import org.apache.tools.ant.taskdefs.condition.Equals
 import org.tb.gg.global.math.MathConstants
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
@@ -18,11 +19,12 @@ class Vector {
     private final static invertY = new Vector(x: 1, y: -1)
 
     Vector(Map map) {
+        // Default values if no x or y are given.
         def xVal = map.x ?: 0.0
         def yVal = map.y ?: 0.0
         // TODO: Handle different number types
-        x = map.x instanceof BigDecimal ? (BigDecimal) xVal : BigDecimal.valueOf(xVal).round(MathConstants.ctx)
-        y = map.y instanceof BigDecimal ? (BigDecimal) yVal : BigDecimal.valueOf(yVal).round(MathConstants.ctx)
+        x = xVal instanceof BigDecimal ? (BigDecimal) xVal : BigDecimal.valueOf(xVal)
+        y = yVal instanceof BigDecimal ? (BigDecimal) yVal : BigDecimal.valueOf(yVal)
     }
 
 
@@ -102,4 +104,26 @@ class Vector {
     static invertYVector() {
         return invertY
     }
+
+    /**
+     * Custom equals method for vector operations.
+     * Instead of an absolute comparision of the x and y components, are small error margin is considered.
+     * The reason for this implementation are operations sqrt that will lead to rounding issues.
+     *
+     * E.g. consider the case of comparing the length a normalized vector to the length of another vector.
+     *
+     * @param obj
+     * @return true if the x and y components of both vectors only differ in a small defined margin.
+     */
+    @Override
+    boolean equals(Object obj) {
+        if (!obj instanceof Vector) {
+            return false
+        }
+        Vector otherV = (Vector) obj
+        def xDiff = (otherV.x - x).abs()
+        def yDiff = (otherV.y - y).abs()
+        return xDiff < 1e-4 && yDiff < 1e-4
+    }
 }
+
