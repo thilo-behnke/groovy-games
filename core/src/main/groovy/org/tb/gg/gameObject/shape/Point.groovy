@@ -30,6 +30,6 @@ class Point implements Shape {
 
    @Override
    boolean doesOverlapWith(Shape shape) {
-      return false
+      return shape.isPointWithin(pos)
    }
 }

@@ -27,13 +27,13 @@ class Rect implements Shape {
 
     @Override
     boolean doesOverlapWith(Shape shape) {
-        // TODO: Can it be so tough?
+        // TODO: Implement.
         return false
     }
 
     @Override
     Vector getClosestPointInDirectionFromCenter(Vector direction) {
-        // TODO: Can it be so tough?
+        // TODO: Implement.
         return null
     }
 
