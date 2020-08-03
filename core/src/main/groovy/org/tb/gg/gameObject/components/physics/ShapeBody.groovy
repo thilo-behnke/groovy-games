@@ -17,6 +17,9 @@ class ShapeBody extends Body<Shape> {
 
     @Override
     boolean collidesWith(Shape structure) {
+        if (structure == null) {
+            return false
+        }
         return shape.doesOverlapWith(structure)
     }
 

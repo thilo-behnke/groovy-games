@@ -1,7 +1,6 @@
 import org.tb.gg.GameEngineProvider
 import org.tb.gg.engine.DefaultGameScene
 import org.tb.gg.engine.GameEngine
-import org.tb.gg.gameObject.GameObjectProvider
 import org.tb.gg.gameObject.Keyboard
 import org.tb.gg.gameObject.components.KeyboardInputComponent
 import org.tb.gg.gameObject.components.KeyboardRenderComponent

@@ -5,10 +5,13 @@ import org.tb.gg.gameObject.GameObject
 class UnoptimizedCollisionDetector implements CollisionDetector {
     @Override
     Set<Collision> detect(Set<GameObject> gameObjects) {
+        if(gameObjects.size() < 2) {
+            return []
+        }
         def combinations = GroovyCollections.combinations((Iterable) gameObjects)
         combinations
                 .collect { GameObject a, GameObject b ->
-                    if (a.physicsComponent.collidesWith(b.physicsComponent.getStructure())) {
+                    if (a.physicsComponent?.collidesWith(b.physicsComponent?.getStructure())) {
                         return new Collision(a: a, b: b)
                     }
                     return null

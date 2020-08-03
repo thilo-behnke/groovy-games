@@ -13,7 +13,7 @@ import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.gameObject.shape.Shape
 
 @EqualsAndHashCode(includes='id')
-class GameObject implements Updateable, Lifecycle {
+abstract class GameObject implements Updateable, Lifecycle {
     // TODO: Automatically generate.
     Long id
 
