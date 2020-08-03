@@ -29,7 +29,15 @@ def circle1 = (CircleGameObject) new KeyBoundGameObjectBuilder<CircleGameObject>
         .setDefaultKeyMapping(MovableCircleAction.values().collectEntries { it.keys.collectEntries() { key -> [(key): it.name()] } })
         .build()
 
-circle2 = (CircleGameObject) new GameObjectBuilder<CircleGameObject>(CircleGameObject.class)
+def circle2 = (CircleGameObject) new GameObjectBuilder<CircleGameObject>(CircleGameObject.class)
+        .setRenderComponent(new CircleRenderComponent())
+        .setPhysicsComponent(new ShapePhysicsComponent(new ShapeBody(
+                new Circle(center: Vector.unitVector() * 400.0, radius: 100.0)
+        )))
+        .setInputComponent(new NoopInputComponent())
+        .build()
+
+def line2 = (CircleGameObject) new GameObjectBuilder<CircleGameObject>(CircleGameObject.class)
         .setRenderComponent(new CircleRenderComponent())
         .setPhysicsComponent(new ShapePhysicsComponent(new ShapeBody(
                 new Circle(center: Vector.unitVector() * 400.0, radius: 100.0)

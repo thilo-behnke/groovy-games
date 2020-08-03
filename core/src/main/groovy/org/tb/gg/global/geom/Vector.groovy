@@ -73,6 +73,11 @@ class Vector {
         return new Vector(x: newX, y: newY)
     }
 
+    // TODO: Write tests.
+    BigDecimal cross(Vector b) {
+        x * b.y - y * b.x
+    }
+
     BigDecimal length() {
         def xPow = x.pow(2)
         def yPow = y.pow(2)
