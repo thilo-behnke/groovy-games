@@ -31,9 +31,4 @@ class Circle implements Shape {
         def centerToClosestPointOnShape = closestPointOnShape - center
         centerToClosestPointOnShape.length() < radius
     }
-
-    @Override
-    boolean collidesWith(Collidable collidable) {
-        return false
-    }
 }

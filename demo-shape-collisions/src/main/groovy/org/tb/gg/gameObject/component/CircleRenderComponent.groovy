@@ -20,11 +20,6 @@ class CircleRenderComponent extends RenderComponent {
     }
 
     @Override
-    boolean collidesWith(Collidable collidable) {
-        return circle.doesOverlapWith(collidable)
-    }
-
-    @Override
     void onInit() {
         def circleGameObject = (CircleGameObject) parent
         circle = InteractiveShape.of(new Circle(center: circleGameObject.center, radius: circleGameObject.radius))

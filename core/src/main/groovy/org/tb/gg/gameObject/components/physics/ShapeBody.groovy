@@ -6,7 +6,7 @@ import org.tb.gg.gameObject.shape.Shape
 class ShapeBody extends Body<Shape> {
     private Shape shape
 
-    Body(Shape shape) {
+    ShapeBody (Shape shape) {
         this.shape = shape
     }
 

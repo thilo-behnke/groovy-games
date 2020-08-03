@@ -26,7 +26,8 @@ class Rect implements Shape {
     }
 
     @Override
-    boolean doesOverlapWith(Collidable collidable) {
+    boolean doesOverlapWith(Shape shape) {
+        // TODO: Can it be so tough?
         return false
     }
 

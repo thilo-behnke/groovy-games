@@ -63,7 +63,7 @@ class Line implements Shape {
     }
 
     @Override
-    boolean doesOverlapWith(Collidable collidable) {
+    boolean doesOverlapWith(Shape shape) {
         return false
     }
 }
