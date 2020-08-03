@@ -8,9 +8,7 @@ class UnoptimizedCollisionDetector implements CollisionDetector {
         def combinations = GroovyCollections.combinations((Iterable) gameObjects)
         combinations
                 .collect { GameObject a, GameObject b ->
-                    def renderCompA = a.getRenderComponent()
-                    def renderCompB = b.getRenderComponent()
-                    if (renderCompA.doesOverlapWith(renderCompB)) {
+                    if (a.physicsComponent.collidesWith(b)) {
                         return new Collision(a: a, b: b)
                     }
                     return null

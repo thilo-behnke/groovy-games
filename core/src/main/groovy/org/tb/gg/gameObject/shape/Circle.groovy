@@ -1,4 +1,4 @@
-package org.tb.gg.renderer.shape
+package org.tb.gg.gameObject.shape
 
 import org.tb.gg.collision.Collidable
 import org.tb.gg.global.geom.Vector
@@ -25,10 +25,15 @@ class Circle implements Shape {
     }
 
     @Override
-    boolean doesOverlapWith(Collidable collidable) {
-        def shapeToCircle = center - collidable.center
-        def closestPointOnShape = collidable.getClosestPointInDirectionFromCenter(shapeToCircle)
+    boolean doesOverlapWith(Shape shape) {
+        def shapeToCircle = center - shape.center
+        def closestPointOnShape = shape.getClosestPointInDirectionFromCenter(shapeToCircle)
         def centerToClosestPointOnShape = closestPointOnShape - center
         centerToClosestPointOnShape.length() < radius
+    }
+
+    @Override
+    boolean collidesWith(Collidable collidable) {
+        return false
     }
 }

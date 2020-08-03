@@ -1,4 +1,4 @@
-package org.tb.gg.gameObject.components
+package org.tb.gg.gameObject.components.render
 
 import org.tb.gg.collision.Collidable
 import org.tb.gg.gameObject.GameObject
@@ -6,7 +6,6 @@ import org.tb.gg.gameObject.lifecycle.Lifecycle
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 import org.tb.gg.renderer.renderObjects.RenderNode
-import org.tb.gg.renderer.shape.Shape
 
 abstract class RenderComponent implements Lifecycle, Collidable {
     GameObject parent

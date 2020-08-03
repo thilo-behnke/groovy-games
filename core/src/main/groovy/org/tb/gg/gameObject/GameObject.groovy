@@ -1,11 +1,15 @@
 package org.tb.gg.gameObject
 
+
 import org.tb.gg.engine.helper.Updateable
-import org.tb.gg.gameObject.components.InputComponent
-import org.tb.gg.gameObject.components.RenderComponent
+import org.tb.gg.gameObject.components.input.InputComponent
+import org.tb.gg.gameObject.components.physics.Body
+import org.tb.gg.gameObject.components.physics.PhysicsComponent
+import org.tb.gg.gameObject.components.render.RenderComponent
 import groovy.transform.EqualsAndHashCode
 import org.tb.gg.gameObject.lifecycle.Lifecycle
 import org.tb.gg.renderer.destination.RenderDestination
+import org.tb.gg.gameObject.shape.Shape
 
 @EqualsAndHashCode(includes='id')
 class GameObject implements Updateable, Lifecycle {
@@ -13,10 +17,16 @@ class GameObject implements Updateable, Lifecycle {
     Long id
 
     RenderComponent renderComponent
+    PhysicsComponent physicsComponent
     InputComponent inputComponent
 
     void setInputComponent(InputComponent inputComponent) {
         this.inputComponent = inputComponent
+    }
+
+    void setPhysicsComponent(PhysicsComponent physicsComponent) {
+        physicsComponent.setParent(this)
+        this.physicsComponent = physicsComponent
     }
 
     void setRenderComponent(RenderComponent renderComponent) {

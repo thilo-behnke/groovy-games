@@ -1,5 +1,6 @@
 package org.tb.gg.renderer.shape
 
+import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.geom.Vector
 import spock.lang.Specification
 import spock.lang.Unroll

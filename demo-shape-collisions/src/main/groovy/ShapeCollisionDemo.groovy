@@ -2,19 +2,13 @@ import org.tb.gg.GameEngineProvider
 import org.tb.gg.engine.DefaultGameScene
 import org.tb.gg.engine.GameEngine
 import org.tb.gg.gameObject.CircleGameObject
-import org.tb.gg.gameObject.GameObject
-import org.tb.gg.gameObject.GameObjectProvider
 import org.tb.gg.gameObject.component.CircleRenderComponent
 import org.tb.gg.gameObject.component.MovableCircleAction
 import org.tb.gg.gameObject.component.MovableCircleInputComponent
-import org.tb.gg.gameObject.components.NoopInputComponent
-import org.tb.gg.gameObject.components.RenderComponent
+import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.factory.KeyBoundGameObjectBuilder
 import org.tb.gg.global.geom.Vector
-import org.tb.gg.input.Key
-import org.tb.gg.renderer.renderObjects.RenderNode
-import org.tb.gg.renderer.shape.Circle
 
 GameEngine gameEngine = new GameEngineProvider().provideGameEngine()
 

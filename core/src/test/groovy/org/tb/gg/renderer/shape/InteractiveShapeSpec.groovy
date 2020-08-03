@@ -5,6 +5,8 @@ import io.reactivex.rxjava3.observers.TestObserver
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.Subject
 import org.tb.gg.di.ServiceProvider
+import org.tb.gg.gameObject.shape.InteractiveShape
+import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider

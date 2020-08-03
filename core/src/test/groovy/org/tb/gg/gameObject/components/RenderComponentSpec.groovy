@@ -1,5 +1,6 @@
 package org.tb.gg.gameObject.components
 
+import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.DrawColor
 import org.tb.gg.renderer.options.RenderOptions
@@ -10,7 +11,7 @@ import spock.lang.Unroll
 
 @Unroll
 class RenderComponentSpec extends Specification {
-    class DummyRenderComponent extends RenderComponent implements NoCollisionDetection {
+    class DummyRenderComponent extends RenderComponent {
         RenderNode node
 
         @Override

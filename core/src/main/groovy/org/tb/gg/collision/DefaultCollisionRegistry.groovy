@@ -28,7 +28,7 @@ class DefaultCollisionRegistry implements CollisionRegistry {
     @Override
     boolean hasCollision(GameObject gameObject) {
         // TODO: Find special collection type for this.
-        return collisions.find{
+        return collisions.find {
             it.a == gameObject || it.b == gameObject
         }
     }

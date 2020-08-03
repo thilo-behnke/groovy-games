@@ -1,12 +1,11 @@
 package org.tb.gg.gameObject.factory
 
 import org.tb.gg.gameObject.GameObject
-import org.tb.gg.gameObject.components.InputComponent
-import org.tb.gg.gameObject.components.RenderComponent
-import org.tb.gg.global.geom.Vector
+import org.tb.gg.gameObject.components.input.InputComponent
+import org.tb.gg.gameObject.components.physics.PhysicsComponent
+import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.global.util.Builder
 import org.tb.gg.input.Key
-import org.tb.gg.input.actions.InputActionProvider
 import org.tb.gg.input.actions.KeyPressInputActionProvider
 import org.tb.gg.input.actions.factory.AbstractInputActionProviderFactory
 import org.tb.gg.input.actions.factory.InputActionProviderArgs
@@ -23,6 +22,11 @@ class KeyBoundGameObjectBuilder<T extends GameObject> implements Builder<GameObj
 
     KeyBoundGameObjectBuilder setRenderComponent(RenderComponent renderComponent) {
         gameObject.renderComponent = renderComponent
+        return this
+    }
+
+    KeyBoundGameObjectBuilder setPhysicsComponent(PhysicsComponent physicsComponent) {
+        gameObject.physicsComponent = physicsComponent
         return this
     }
 
@@ -45,8 +49,8 @@ class KeyBoundGameObjectBuilder<T extends GameObject> implements Builder<GameObj
 
     @Override
     T build() {
-        if(!gameObject.renderComponent || !keyPressInputActionProvider || !inputComponentClazz) {
-            throw new IllegalStateException("A key bound game object must have a render component, actions and input component class!")
+        if(!gameObject.renderComponent || !keyPressInputActionProvider || !inputComponentClazz || !gameObject.physicsComponent) {
+            throw new IllegalStateException("A key bound game object must have a render component, a physics component, actions and input component class!")
         }
         if(!defaultKeyMapping) {
             defaultKeyMapping = new HashMap<>()

@@ -1,16 +1,16 @@
 package org.tb.gg.gameObject.player
 
-import org.tb.gg.gameObject.components.NoCollisionDetection
-import org.tb.gg.gameObject.components.RenderComponent
+
+import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.global.geom.CircleOperations
 import org.tb.gg.renderer.options.DrawColor
 import org.tb.gg.renderer.options.RenderOptions
 import org.tb.gg.renderer.renderObjects.RenderNode
-import org.tb.gg.renderer.shape.Circle
-import org.tb.gg.renderer.shape.Line
-import org.tb.gg.renderer.shape.Point
+import org.tb.gg.gameObject.shape.Circle
+import org.tb.gg.gameObject.shape.Line
+import org.tb.gg.gameObject.shape.Point
 
-class ClockRenderComponent extends RenderComponent implements NoCollisionDetection {
+class ClockRenderComponent extends RenderComponent {
 
     private RenderNode minuteMarks
     private RenderNode hourMarks

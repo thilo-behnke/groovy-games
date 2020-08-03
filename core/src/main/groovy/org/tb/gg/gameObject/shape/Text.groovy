@@ -1,4 +1,4 @@
-package org.tb.gg.renderer.shape
+package org.tb.gg.gameObject.shape
 
 import org.tb.gg.collision.Collidable
 import org.tb.gg.global.geom.Vector
@@ -26,7 +26,7 @@ class Text implements Shape {
     }
 
     @Override
-    boolean doesOverlapWith(Collidable collidable) {
+    boolean doesOverlapWith(Shape shape) {
         return false
     }
 

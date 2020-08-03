@@ -1,4 +1,4 @@
-package org.tb.gg.renderer.shape
+package org.tb.gg.gameObject.shape
 
 import org.tb.gg.collision.Collidable
 import org.tb.gg.global.geom.Vector
