@@ -26,7 +26,7 @@ def circle1 = (CircleGameObject) new KeyBoundGameObjectBuilder<CircleGameObject>
                 InteractiveShape.of(new Circle(center: Vector.unitVector() * 200.0, radius: 100.0))
         )))
         .setInputComponentClass(MovableCircleInputComponent.class)
-        .setDefaultKeyMapping(MovableCircleAction.values().collectEntries { [(it.key): it.name()] })
+        .setDefaultKeyMapping(MovableCircleAction.values().collectEntries { it.keys.collectEntries() { key -> [(key): it.name()] } })
         .build()
 
 circle2 = (CircleGameObject) new GameObjectBuilder<CircleGameObject>(CircleGameObject.class)
