@@ -1,7 +1,7 @@
 package org.tb.gg.gameObject
 
 import org.tb.gg.gameObject.components.RectButtonRenderComponent
-import org.tb.gg.gameObject.components.NoopInputComponent
+import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.global.geom.Vector
 
 class RectButton extends GameObject {

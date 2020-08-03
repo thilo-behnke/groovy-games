@@ -1,5 +1,6 @@
-package org.tb.gg.renderer.shape
+package org.tb.gg.gameObject.shape
 
+import org.tb.gg.collision.Collidable
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
@@ -29,6 +30,26 @@ class Line implements Shape {
     }
 
     @Override
+    Vector getCenter() {
+        return start + ((end - start) / 2.0)
+    }
+
+    @Override
+    Vector getClosestPointInDirectionFromCenter(Vector direction) {
+        def centerToPoint = (center + direction)
+        def perpendicularToLine = (end - start).perpendicular()
+        def perpendicularFromPoint = centerToPoint + perpendicularToLine
+
+        if (isPointWithin(perpendicularFromPoint)) {
+            return perpendicularFromPoint
+        }
+        // If the perpendicular does not fall onto the line, take either the start or end, given what is closer.
+        def lengthPointToStart = (start - perpendicularFromPoint).length()
+        def lengthPointToEnd = (end - perpendicularFromPoint).length()
+        return lengthPointToStart < lengthPointToEnd ? start : end
+    }
+
+    @Override
     boolean isPointWithin(Vector pos) {
         if (pos == Vector.zeroVector() && (start == Vector.zeroVector() || end == Vector.zeroVector())) {
             return true
@@ -39,5 +60,10 @@ class Line implements Shape {
         }
         def betweenStartAndEnd = start.x <= pos.x && start.y <= pos.y && pos.x <= end.x && pos.y <= end.y
         return betweenStartAndEnd
+    }
+
+    @Override
+    boolean doesOverlapWith(Shape shape) {
+        return false
     }
 }

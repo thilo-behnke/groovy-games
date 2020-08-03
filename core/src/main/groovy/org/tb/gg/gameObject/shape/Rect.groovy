@@ -1,5 +1,6 @@
-package org.tb.gg.renderer.shape
+package org.tb.gg.gameObject.shape
 
+import org.tb.gg.collision.Collidable
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
@@ -24,8 +25,21 @@ class Rect implements Shape {
         centerToPoint.x.abs() <= dim.x / 2 && centerToPoint.y.abs() <= dim.y / 2
     }
 
-    // TODO: Add to shape interface + cache.
-    private getCenter() {
+    @Override
+    boolean doesOverlapWith(Shape shape) {
+        // TODO: Can it be so tough?
+        return false
+    }
+
+    @Override
+    Vector getClosestPointInDirectionFromCenter(Vector direction) {
+        // TODO: Can it be so tough?
+        return null
+    }
+
+    // TODO: Add cache.
+    @Override
+    Vector getCenter() {
         topLeft + dim * Vector.invertYVector() / 2.0
     }
 }

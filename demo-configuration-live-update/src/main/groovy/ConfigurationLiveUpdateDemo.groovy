@@ -7,12 +7,11 @@ import org.tb.gg.global.geom.Vector
 
 GameEngine gameEngine = new GameEngineProvider().provideGameEngine()
 
-def gameObjectProvider = new GameObjectProvider()
-def defaultScene = new DefaultGameScene('default', gameObjectProvider)
+def defaultScene = new DefaultGameScene('default')
 
 def button = RectButton.create(Vector.unitVector() * 500.0, Vector.unitVector() * 200.0)
 
-gameObjectProvider << button
+defaultScene.accessGameObjectProvider() << button
 
 gameEngine.addScene(defaultScene)
 gameEngine.changeScene(defaultScene.name)

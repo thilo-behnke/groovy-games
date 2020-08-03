@@ -1,5 +1,6 @@
 package org.tb.gg.gameObject.components
 
+import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.input.actions.KeyPressInputActionProvider
 
 class KeyboardInputComponent extends InputComponent {

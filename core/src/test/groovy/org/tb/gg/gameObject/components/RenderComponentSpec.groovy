@@ -1,5 +1,6 @@
 package org.tb.gg.gameObject.components
 
+import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.DrawColor
 import org.tb.gg.renderer.options.RenderOptions

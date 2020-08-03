@@ -2,12 +2,13 @@ package org.tb.gg.gameObject.components
 
 import groovy.util.logging.Log4j
 import org.tb.gg.gameObject.Keyboard
+import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.options.DrawColor
 import org.tb.gg.renderer.options.RenderOptions
 import org.tb.gg.renderer.renderObjects.RenderNode
-import org.tb.gg.renderer.shape.Rect
-import org.tb.gg.renderer.shape.Text
+import org.tb.gg.gameObject.shape.Rect
+import org.tb.gg.gameObject.shape.Text
 
 @Log4j
 class KeyboardRenderComponent extends RenderComponent {

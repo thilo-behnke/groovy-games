@@ -6,12 +6,10 @@ import org.tb.gg.gameObject.player.Clock
 
 GameEngine gameEngine = new GameEngineProvider().provideGameEngine()
 
-def gameObjectProvider = new GameObjectProvider()
-
 def clock = Clock.create()
 
-gameObjectProvider << clock
-def defaultScene = new DefaultGameScene('default', gameObjectProvider)
+def defaultScene = new DefaultGameScene('default')
+defaultScene.accessGameObjectProvider() << clock
 gameEngine.addScene(defaultScene)
 gameEngine.changeScene(defaultScene.name)
 

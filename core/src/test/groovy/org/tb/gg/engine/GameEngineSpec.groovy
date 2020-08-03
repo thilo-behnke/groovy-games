@@ -1,5 +1,6 @@
 package org.tb.gg.engine
 
+import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.GameObjectProvider
 import org.tb.gg.global.DateProvider
 import org.tb.gg.renderer.Renderer
@@ -25,6 +26,7 @@ class GameEngineSpec extends Specification {
         receivedUpdates = 0
         def dateProviderMock = Mock(DateProvider)
         def sceneProvider = new DefaultSceneProvider()
+        ServiceProvider.setService(new GameObjectProvider())
         executorService = new HaltingExecutorService()
         renderer = Mock(Renderer)
         gameEngine = new GameEngine(executorService, dateProviderMock, sceneProvider, renderer)
@@ -71,7 +73,7 @@ class GameEngineSpec extends Specification {
     }
 
     private configureGameEngineWithScene(activate = false) {
-        def scene = new DefaultGameScene('sceneOne', new GameObjectProvider())
+        def scene = new DefaultGameScene('sceneOne')
         gameEngine.addScene(scene)
         if(activate) {
             gameEngine.changeScene(scene.name)

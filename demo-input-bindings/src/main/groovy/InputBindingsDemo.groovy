@@ -1,7 +1,6 @@
 import org.tb.gg.GameEngineProvider
 import org.tb.gg.engine.DefaultGameScene
 import org.tb.gg.engine.GameEngine
-import org.tb.gg.gameObject.GameObjectProvider
 import org.tb.gg.gameObject.Keyboard
 import org.tb.gg.gameObject.components.KeyboardInputComponent
 import org.tb.gg.gameObject.components.KeyboardRenderComponent
@@ -11,8 +10,7 @@ import org.tb.gg.input.Key
 
 GameEngine gameEngine = new GameEngineProvider().provideGameEngine()
 
-def gameObjectProvider = new GameObjectProvider()
-def defaultScene = new DefaultGameScene('default', gameObjectProvider)
+def defaultScene = new DefaultGameScene('default')
 
 def keyboard = new KeyBoundGameObjectBuilder(Keyboard)
         .setRenderComponent(
@@ -46,8 +44,8 @@ def keyboard2 = new KeyBoundGameObjectBuilder(Keyboard)
         ])
         .build()
 
-gameObjectProvider << keyboard
-gameObjectProvider << keyboard2
+defaultScene.accessGameObjectProvider() << keyboard
+defaultScene.accessGameObjectProvider() << keyboard2
 
 gameEngine.addScene(defaultScene)
 gameEngine.changeScene(defaultScene.name)

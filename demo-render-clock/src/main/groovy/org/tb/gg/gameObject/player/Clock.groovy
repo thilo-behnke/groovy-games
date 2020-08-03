@@ -1,7 +1,7 @@
 package org.tb.gg.gameObject.player
 
 import org.tb.gg.gameObject.GameObject
-import org.tb.gg.gameObject.components.NoopInputComponent
+import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.global.geom.CircleDesc
 import org.tb.gg.global.geom.CircleOperations
 import org.tb.gg.global.geom.Vector

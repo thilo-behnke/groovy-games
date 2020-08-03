@@ -1,0 +1,18 @@
+apply plugin: 'groovy'
+
+version = "0.0.1"
+
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:3.0.2"
+    compile project(":core")
+}
+
+task runGame (dependsOn: 'classes', type: JavaExec) {
+    main = 'EntryPoint'
+    classpath = sourceSets.main.runtimeClasspath
+}

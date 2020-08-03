@@ -1,7 +1,7 @@
 package org.tb.gg.renderer.shape
 
+import org.tb.gg.gameObject.shape.Line
 import org.tb.gg.global.geom.Vector
-import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Unroll
 

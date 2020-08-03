@@ -1,4 +1,4 @@
-package org.tb.gg.gameObject.components
+package org.tb.gg.gameObject.components.input
 
 import org.tb.gg.gameObject.lifecycle.Lifecycle
 import org.tb.gg.input.actions.InputActionProvider
