@@ -15,14 +15,13 @@ class CircleRenderComponent extends RenderComponent {
     @Override
     RenderNode getRenderNode() {
         def circleGameObject = (CircleGameObject) parent
-        circle = InteractiveShape.of(new Circle(center: circleGameObject.center, radius: circleGameObject.radius))
-        return RenderNode.leaf(circle, new RenderOptions(drawColor: circleGameObject.collides ? DrawColor.RED : DrawColor.BLACK))
+        circle = (InteractiveShape) circleGameObject.physicsComponent.getStructure()
+        return RenderNode.leaf(circle, new RenderOptions(drawColor: circleGameObject.physicsComponent.collides ? DrawColor.RED : DrawColor.BLACK))
     }
 
     @Override
     void onInit() {
-        def circleGameObject = (CircleGameObject) parent
-        circle = InteractiveShape.of(new Circle(center: circleGameObject.center, radius: circleGameObject.radius))
+
     }
 
     @Override

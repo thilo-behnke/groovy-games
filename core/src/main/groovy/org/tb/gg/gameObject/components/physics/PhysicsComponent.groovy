@@ -6,6 +6,8 @@ import org.tb.gg.gameObject.GameObject
 abstract class PhysicsComponent<T> implements Collidable<T> {
     GameObject parent
 
+    Boolean collides
+
     abstract Body getBody()
     abstract T getStructure()
 }

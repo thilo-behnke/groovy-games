@@ -4,25 +4,22 @@ import org.tb.gg.collision.CollisionRegistry
 import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.component.MovableCircleAction
+import org.tb.gg.gameObject.shape.Circle
+import org.tb.gg.gameObject.shape.InteractiveShape
 import org.tb.gg.global.geom.Vector
 
 class CircleGameObject extends GameObject {
-    Vector center
-    BigDecimal radius
-
-    boolean collides = false
-
-    @Inject
-    private CollisionRegistry collisionRegistry
 
     @Override
     void update(Long timestamp, Long delta) {
         handleMovement(timestamp, delta)
-        checkForCollision()
     }
 
     private handleMovement(Long timestamp, Long delta) {
         def activeActions = inputComponent.getActiveActions().collect { MovableCircleAction.valueOf(it) }
+        // TODO: Too hard for such a small task. Improve typing.
+        def circle = (Circle) ((InteractiveShape) physicsComponent.getStructure()).getShape()
+        def center = circle.center
         def newX = center.x
         def newY = center.y
         // Update X.
@@ -37,11 +34,6 @@ class CircleGameObject extends GameObject {
         } else if (activeActions.contains(MovableCircleAction.DOWN)) {
             newY = newY - 1 * delta
         }
-        center = new Vector(x: newX, y: newY)
-    }
-
-    // TODO: Integrate this into either the gameobject or a subclass
-    private checkForCollision() {
-        collides = collisionRegistry.hasCollision(this)
+        circle.center = new Vector(x: newX, y: newY)
     }
 }
