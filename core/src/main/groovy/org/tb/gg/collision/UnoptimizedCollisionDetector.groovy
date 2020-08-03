@@ -1,14 +1,17 @@
 package org.tb.gg.collision
 
+import com.google.common.collect.Lists
+import com.google.common.collect.Sets
 import org.tb.gg.gameObject.GameObject
 
 class UnoptimizedCollisionDetector implements CollisionDetector {
     @Override
     Set<Collision> detect(Set<GameObject> gameObjects) {
-        if(gameObjects.size() < 2) {
+        if (gameObjects.size() < 2) {
             return []
         }
-        def combinations = GroovyCollections.combinations((Iterable) gameObjects)
+        // TODO: Permutations for each object with each object (beware of duplicates).
+        def combinations = []
         combinations
                 .collect { GameObject a, GameObject b ->
                     if (a.physicsComponent?.collidesWith(b.physicsComponent?.getStructure())) {

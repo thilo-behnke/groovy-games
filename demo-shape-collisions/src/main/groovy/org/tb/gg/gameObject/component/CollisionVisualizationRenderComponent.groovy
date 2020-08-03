@@ -9,8 +9,7 @@ import org.tb.gg.renderer.renderObjects.RenderNode
 import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.gameObject.shape.InteractiveShape
 
-class CircleRenderComponent extends RenderComponent {
-    InteractiveShape circle
+class CollisionVisualizationRenderComponent extends RenderComponent {
 
     @Override
     RenderNode getRenderNode() {
