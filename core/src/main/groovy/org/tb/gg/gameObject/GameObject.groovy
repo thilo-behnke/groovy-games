@@ -5,6 +5,7 @@ import org.tb.gg.engine.helper.Updateable
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.Body
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
+import org.tb.gg.gameObject.components.physics.ShapePhysicsComponent
 import org.tb.gg.gameObject.components.render.RenderComponent
 import groovy.transform.EqualsAndHashCode
 import org.tb.gg.gameObject.lifecycle.Lifecycle
@@ -17,14 +18,14 @@ class GameObject implements Updateable, Lifecycle {
     Long id
 
     RenderComponent renderComponent
-    PhysicsComponent physicsComponent
+    ShapePhysicsComponent physicsComponent
     InputComponent inputComponent
 
     void setInputComponent(InputComponent inputComponent) {
         this.inputComponent = inputComponent
     }
 
-    void setPhysicsComponent(PhysicsComponent physicsComponent) {
+    void setPhysicsComponent(ShapePhysicsComponent physicsComponent) {
         physicsComponent.setParent(this)
         this.physicsComponent = physicsComponent
     }
