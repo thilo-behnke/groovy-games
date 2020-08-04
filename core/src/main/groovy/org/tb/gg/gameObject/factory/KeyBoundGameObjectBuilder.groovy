@@ -7,6 +7,7 @@ import org.tb.gg.gameObject.components.physics.ShapePhysicsComponent
 import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.global.util.Builder
 import org.tb.gg.input.Key
+import org.tb.gg.input.actions.InputActionProvider
 import org.tb.gg.input.actions.KeyPressInputActionProvider
 import org.tb.gg.input.actions.factory.AbstractInputActionProviderFactory
 import org.tb.gg.input.actions.factory.InputActionProviderArgs

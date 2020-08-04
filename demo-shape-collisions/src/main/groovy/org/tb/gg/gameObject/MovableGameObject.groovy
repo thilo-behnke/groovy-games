@@ -9,7 +9,7 @@ import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.gameObject.shape.InteractiveShape
 import org.tb.gg.global.geom.Vector
 
-class CircleGameObject extends GameObject {
+class MovableGameObject extends GameObject {
 
     @Override
     void update(Long timestamp, Long delta) {
@@ -20,8 +20,8 @@ class CircleGameObject extends GameObject {
         def activeActions = inputComponent.getActiveActions().collect { MovableCircleAction.valueOf(it) }
         // TODO: Too hard for such a small task. Improve typing.
         def shape = physicsComponent.getStructure()
-        def circle = shape instanceof InteractiveShape ? (Circle) ((InteractiveShape) shape).getShape() : (Circle) shape
-        def center = circle.center
+//        def circle = shape instanceof InteractiveShape ? (Circle) ((InteractiveShape) shape).getShape() : (Circle) shape
+        def center = shape.center
         def newX = center.x
         def newY = center.y
         // Update X.
@@ -36,6 +36,6 @@ class CircleGameObject extends GameObject {
         } else if (activeActions.contains(MovableCircleAction.DOWN)) {
             newY = newY - 1 * delta
         }
-        circle.center = new Vector(x: newX, y: newY)
+        shape.center = new Vector(x: newX, y: newY)
     }
 }
