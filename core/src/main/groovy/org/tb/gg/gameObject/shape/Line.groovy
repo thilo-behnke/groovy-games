@@ -90,7 +90,7 @@ class Line implements Shape {
             return false
         }
         // t = (q − p) × s / (r × s)
-        def t = (start - line.start).cross(line.end) / endCrossProduct
+        def t = (line.start - start).cross(line.end) / endCrossProduct
         if (t < 0 || t > 1) {
             return false
         }
