@@ -18,9 +18,7 @@ class MovableGameObject extends GameObject {
 
     private handleMovement(Long timestamp, Long delta) {
         def activeActions = inputComponent.getActiveActions().collect { MovableCircleAction.valueOf(it) }
-        // TODO: Too hard for such a small task. Improve typing.
         def shape = physicsComponent.getStructure()
-//        def circle = shape instanceof InteractiveShape ? (Circle) ((InteractiveShape) shape).getShape() : (Circle) shape
         def center = shape.center
         def newX = center.x
         def newY = center.y

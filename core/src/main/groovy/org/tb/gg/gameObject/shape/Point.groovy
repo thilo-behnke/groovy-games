@@ -19,6 +19,11 @@ class Point implements Shape {
    }
 
    @Override
+   void setCenter(Vector pos) {
+      this.pos = pos
+   }
+
+   @Override
    Vector getClosestPointInDirectionFromCenter(Vector direction) {
        return pos
    }

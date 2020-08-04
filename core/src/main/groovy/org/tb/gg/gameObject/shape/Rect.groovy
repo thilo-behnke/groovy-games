@@ -42,4 +42,9 @@ class Rect implements Shape {
     Vector getCenter() {
         topLeft + dim * Vector.invertYVector() / 2.0
     }
+
+    @Override
+    void setCenter(Vector pos) {
+        topLeft = pos + center - dim * Vector.invertYVector() / 2.0
+    }
 }

@@ -18,6 +18,11 @@ class ShapeComposite implements Shape {
     }
 
     @Override
+    void setCenter(Vector pos) {
+        // TODO: Implement, complicated...
+    }
+
+    @Override
     Vector getClosestPointInDirectionFromCenter(Vector direction) {
         // TODO: Implement, complicated...
         return null

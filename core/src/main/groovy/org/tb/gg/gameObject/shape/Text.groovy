@@ -34,4 +34,9 @@ class Text implements Shape {
     Vector getCenter() {
         return null
     }
+
+    @Override
+    void setCenter(Vector pos) {
+
+    }
 }

@@ -9,6 +9,7 @@ import java.awt.Rectangle
 
 class Line implements Shape {
     Vector start
+    // TODO: Model with length instead of end.
     Vector end
 
     Line(Vector start, Vector end) {
@@ -34,6 +35,14 @@ class Line implements Shape {
     @Override
     Vector getCenter() {
         return start + ((end - start) / 2.0)
+    }
+
+    @Override
+    void setCenter(Vector vec) {
+        def newStart = vec + (start - center)
+        def newEnd = vec + (end - center)
+        start = newStart
+        end = newEnd
     }
 
     @Override
