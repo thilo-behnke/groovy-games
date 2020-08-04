@@ -13,9 +13,8 @@ class CollisionVisualizationRenderComponent extends RenderComponent {
 
     @Override
     RenderNode getRenderNode() {
-        def circleGameObject = (CircleGameObject) parent
-        def shape = circleGameObject.physicsComponent.getStructure()
-        return RenderNode.leaf(shape, new RenderOptions(drawColor: circleGameObject.physicsComponent.collides ? DrawColor.RED : DrawColor.BLACK))
+        def shape = parent.physicsComponent.getStructure()
+        return RenderNode.leaf(shape, new RenderOptions(drawColor: parent.physicsComponent.collides ? DrawColor.RED : DrawColor.BLACK))
     }
 
     @Override

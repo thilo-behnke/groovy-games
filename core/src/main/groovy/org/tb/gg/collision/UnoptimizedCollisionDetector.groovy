@@ -3,6 +3,7 @@ package org.tb.gg.collision
 import com.google.common.collect.Lists
 import com.google.common.collect.Sets
 import org.tb.gg.gameObject.GameObject
+import org.tb.gg.utils.CollectionUtils
 
 class UnoptimizedCollisionDetector implements CollisionDetector {
     @Override
@@ -11,7 +12,8 @@ class UnoptimizedCollisionDetector implements CollisionDetector {
             return []
         }
         // TODO: Permutations for each object with each object (beware of duplicates).
-        def combinations = []
+        def combinations = CollectionUtils.permutations(gameObjects, 2)
+
         combinations
                 .collect { GameObject a, GameObject b ->
                     if (a.physicsComponent?.collidesWith(b.physicsComponent?.getStructure())) {
