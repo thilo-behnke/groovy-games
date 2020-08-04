@@ -44,6 +44,17 @@ class LineSpec extends Specification {
     }
 
     @Unroll
+    def 'getCenter'() {
+        expect:
+        def line = new Line(start, end)
+        line.center == resultingCenter
+        where:
+        start                    | end                      || resultingCenter
+        new Vector(x: 22, y: 55) | new Vector(x: 30, y: 60) || new Vector(x: 26, y: 57.5)
+        new Vector(x: 0, y: 0)   | new Vector(x: -7, y: -7) || new Vector(x: -3.5, y: -3.5)
+    }
+
+    @Unroll
     def 'setCenter'() {
         expect:
         line.setCenter(newCenter)
