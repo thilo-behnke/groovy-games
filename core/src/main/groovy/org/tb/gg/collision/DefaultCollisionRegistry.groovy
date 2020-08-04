@@ -25,9 +25,6 @@ class DefaultCollisionRegistry implements CollisionRegistry {
             collision.a.physicsComponent.collides = true
             collision.b.physicsComponent.collides = true
         }
-        if(collisions.size()) {
-            System.println(collisions)
-        }
     }
 
     @Override
