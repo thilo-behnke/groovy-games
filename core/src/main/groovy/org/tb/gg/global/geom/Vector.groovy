@@ -105,6 +105,14 @@ class Vector {
         new Vector(x: norm.y, y: -norm.x)
     }
 
+    Vector projectOnto(Vector a) {
+        def aDot = a.dot(a)
+        if (!aDot) {
+            return a
+        }
+        return a * (a.dot(this) / aDot)
+    }
+
     static unitVector() {
         return unit
     }

@@ -49,8 +49,7 @@ class Line implements Shape {
     Vector getClosestPointInDirectionFromCenter(Vector direction) {
         def centerToEnd = end - center
         if (direction.length() < centerToEnd.length()) {
-            def dot = centerToEnd.dot(direction)
-            return center + centerToEnd * (dot / centerToEnd.dot(centerToEnd))
+            return center + direction.projectOnto(centerToEnd)
         }
 
         def fromCenter = center + direction
