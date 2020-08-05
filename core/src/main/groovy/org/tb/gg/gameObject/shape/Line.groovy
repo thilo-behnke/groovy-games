@@ -47,17 +47,16 @@ class Line implements Shape {
 
     @Override
     Vector getClosestPointInDirectionFromCenter(Vector direction) {
-        def centerToPoint = (center + direction)
-        def perpendicularToLine = (end - start).perpendicular()
-        def perpendicularFromPoint = centerToPoint + perpendicularToLine
-
-        if (isPointWithin(perpendicularFromPoint)) {
-            return perpendicularFromPoint
+        if (direction.length() < (end - start).length()) {
+            return center + direction.length()
         }
-        // If the perpendicular does not fall onto the line, take either the start or end, given what is closer.
-        def lengthPointToStart = (start - perpendicularFromPoint).length()
-        def lengthPointToEnd = (end - perpendicularFromPoint).length()
-        return lengthPointToStart < lengthPointToEnd ? start : end
+
+        def distanceToStart = (start - direction).length()
+        def distanceToEnd = (end - direction).length()
+        if(distanceToStart == distanceToEnd) {
+            return center
+        }
+        return distanceToStart < distanceToEnd ? start : end
     }
 
     @Override
