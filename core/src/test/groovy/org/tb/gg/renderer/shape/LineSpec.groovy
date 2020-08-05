@@ -75,6 +75,6 @@ class LineSpec extends Specification {
         point                    || closestPoint
         Vector.zeroVector()      || Vector.unitVector() * 2.0
         new Vector(x: 1, y: 1)   || new Vector(x: 3, y: 3)
-        new Vector(x: -1, y: -2) || new Vector(x: 0.41882336311736, y: 0.41882336311736)
+        new Vector(x: -1, y: -2) || new Vector(x: 0.500, y: 0.500)
     }
 }

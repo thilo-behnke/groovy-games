@@ -63,8 +63,8 @@ def line2 = new GameObjectBuilder(GameObject.class)
 def defaultScene = new DefaultGameScene('default')
 
 defaultScene.accessGameObjectProvider() << circle1
-defaultScene.accessGameObjectProvider() << circle2
-defaultScene.accessGameObjectProvider() << line1
+//defaultScene.accessGameObjectProvider() << circle2
+//defaultScene.accessGameObjectProvider() << line1
 defaultScene.accessGameObjectProvider() << line2
 
 gameEngine.addScene(defaultScene)

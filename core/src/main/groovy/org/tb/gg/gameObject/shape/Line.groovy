@@ -47,14 +47,15 @@ class Line implements Shape {
 
     @Override
     Vector getClosestPointInDirectionFromCenter(Vector direction) {
-        if (direction.length() < (end - center).length()) {
-            def directionOnLine = BigDecimal.valueOf(center.dot(direction).signum())
-            def normalizedVector = (end - start).normalize()
-            return center + normalizedVector * directionOnLine * direction.length()
+        def centerToEnd = end - center
+        if (direction.length() < centerToEnd.length()) {
+            def dot = centerToEnd.dot(direction)
+            return center + centerToEnd * (dot / centerToEnd.dot(centerToEnd))
         }
 
-        def distanceToStart = (start - direction).length()
-        def distanceToEnd = (end - direction).length()
+        def fromCenter = center + direction
+        def distanceToStart = (start - fromCenter).length()
+        def distanceToEnd = (end - fromCenter).length()
         if(distanceToStart == distanceToEnd) {
             return center
         }
