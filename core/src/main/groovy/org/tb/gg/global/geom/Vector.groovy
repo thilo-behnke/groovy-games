@@ -78,6 +78,10 @@ class Vector {
         x * b.y - y * b.x
     }
 
+    BigDecimal dot(Vector b) {
+        x * b.x + y * b.y
+    }
+
     BigDecimal length() {
         def xPow = x.pow(2)
         def yPow = y.pow(2)
@@ -89,6 +93,10 @@ class Vector {
             return new Vector(x: x, y: y)
         }
         return new Vector(x: x, y: y) / this.length()
+    }
+
+    Vector signum() {
+        return new Vector(x: x.signum(), y: y.signum())
     }
 
     // TODO: This gives one out of two possible perpendiculars. Is there a way to parameterize the method?
