@@ -9,6 +9,7 @@ dependencies {
     compile 'log4j:log4j:1.2.17'
     compile group: 'io.reactivex.rxjava3', name: 'rxjava', version: '3.0.4'
     compile group: 'com.google.guava', name: 'guava', version: '23.0'
+    compile 'ch.obermuhlner:big-math:2.3.0'
 
     testImplementation('org.spockframework:spock-core:2.0-M2-groovy-3.0')
 

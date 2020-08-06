@@ -1,5 +1,6 @@
 package org.tb.gg.global.geom
 
+import ch.obermuhlner.math.big.BigDecimalMath
 import groovy.transform.ToString
 import org.tb.gg.global.math.MathConstants
 
@@ -85,7 +86,7 @@ class Vector {
     BigDecimal length() {
         def xPow = x.pow(2)
         def yPow = y.pow(2)
-        (xPow + yPow).sqrt(MathConstants.ctx)
+        BigDecimalMath.sqrt(xPow + yPow, MathConstants.ctx)
     }
 
     Vector normalize() {
@@ -111,6 +112,13 @@ class Vector {
             return a
         }
         return a * (a.dot(this) / aDot)
+    }
+
+    BigDecimal angleBetween(Vector b) {
+//        def normalizedDot = normalize().dot(b.normalize()).round(MathConstants.ctx)
+//        def angle = BigDecimalMath.acos(normalizedDot, MathConstants.ctx)
+        def angle = BigDecimalMath.atan2(b.y, b.x, MathConstants.ctx) - BigDecimalMath.atan2(y, x, MathConstants.ctx)
+        return angle >= 0 ? angle : 2 * MathConstants.pi() + angle
     }
 
     static unitVector() {
