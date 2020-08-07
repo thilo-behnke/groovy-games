@@ -7,7 +7,7 @@ import org.tb.gg.gameObject.lifecycle.Lifecycle
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
 
-class InteractiveShape<S extends Shape> implements Shape, Lifecycle {
+class InteractiveShape<S extends Shape> extends Shape implements Lifecycle {
 
     @Inject
     private MouseEventProvider mouseEventProvider
@@ -18,7 +18,7 @@ class InteractiveShape<S extends Shape> implements Shape, Lifecycle {
     private Disposable mouseMoveDisposable
     boolean isMouseInShape
 
-    InteractiveShape(S shape) {
+    private InteractiveShape(S shape) {
         this.shape = shape
     }
 

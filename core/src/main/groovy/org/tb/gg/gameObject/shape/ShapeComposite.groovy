@@ -4,7 +4,7 @@ import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 
-class ShapeComposite implements Shape {
+class ShapeComposite extends Shape {
     private List<Shape> shapes
 
     ShapeComposite(List<Shape> shapes) {

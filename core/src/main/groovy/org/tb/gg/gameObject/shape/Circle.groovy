@@ -1,13 +1,17 @@
 package org.tb.gg.gameObject.shape
 
-
+import org.tb.gg.collision.ShapeCollisionDetector
+import org.tb.gg.di.Inject
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 
-class Circle implements Shape {
+class Circle extends Shape {
     Vector center
     BigDecimal radius
+
+    @Inject
+    private ShapeCollisionDetector shapeCollisionDetector
 
     @Override
     void render(RenderDestination renderDestination, RenderOptions options) {
@@ -17,5 +21,10 @@ class Circle implements Shape {
     @Override
     boolean isPointWithin(Vector pos) {
         return (pos - center).length() <= radius
+    }
+
+    @Override
+    boolean collidesWith(Shape shape) {
+        return shapeCollisionDetector.detectCollision(this, shape)
     }
 }

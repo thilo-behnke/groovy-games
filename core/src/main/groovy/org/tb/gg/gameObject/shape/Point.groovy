@@ -5,7 +5,7 @@ import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 
-class Point implements Shape {
+class Point extends Shape {
    Vector pos
 
    @Override

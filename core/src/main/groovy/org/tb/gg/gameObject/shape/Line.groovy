@@ -5,7 +5,7 @@ import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 
-class Line implements Shape {
+class Line extends Shape {
     Vector start
     // TODO: Model with length instead of end.
     Vector end

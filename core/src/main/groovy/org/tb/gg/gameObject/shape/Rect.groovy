@@ -6,7 +6,7 @@ import org.tb.gg.global.math.MathConstants
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 
-class Rect implements Shape {
+class Rect extends Shape {
     Vector topLeft
     Vector dim
 

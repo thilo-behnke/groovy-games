@@ -19,12 +19,4 @@ class ShapePhysicsComponent extends PhysicsComponent<Shape> {
     Shape getStructure() {
         return body.getStructure()
     }
-
-    @Override
-    boolean collidesWith(Shape structure) {
-        if (structure == null) {
-            return false
-        }
-        return body.collidesWith(structure)
-    }
 }

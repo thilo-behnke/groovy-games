@@ -1,5 +1,6 @@
 package org.tb.gg.collision
 
+import org.tb.gg.di.definition.Service
 import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.gameObject.shape.Line
 import org.tb.gg.gameObject.shape.Point
@@ -7,18 +8,51 @@ import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
 
-class ShapeCollisions {
+class ShapeCollisionDetector implements Service {
 
-    static boolean detectCollision(Circle a, Circle b) {
+    boolean detectCollision(Shape a, Shape b) {
+        if (a instanceof Circle && b instanceof Circle) {
+            return detectCollision((Circle) a, (Circle) b)
+        } else if (a instanceof Circle && b instanceof Rect) {
+            return detectCollision((Circle) a, (Rect) b)
+        } else if (a instanceof Circle && b instanceof Line) {
+            return detectCollision((Circle) a, (Line) b)
+        } else if (a instanceof Circle && b instanceof Point) {
+            return detectCollision((Circle) a, (Point) b)
+        }
+
+        if (a instanceof Rect && b instanceof Rect) {
+            return detectCollision((Rect) a, (Rect) b)
+        } else if (a instanceof Rect && b instanceof Line) {
+            return detectCollision((Rect) a, (Line) b)
+        } else if (a instanceof Rect && b instanceof Point) {
+            return detectCollision((Rect) a, (Point) b)
+        }
+
+        if (a instanceof Line && b instanceof Line) {
+            return detectCollision((Line) a, (Line) b)
+        } else if (a instanceof Line && b instanceof Point) {
+            return detectCollision((Line) a, (Point) b)
+        }
+
+        if (a instanceof Point && b instanceof Point) {
+            return detectCollision((Point) a, (Point) b)
+        }
+
+        throw new IllegalArgumentException("No implementation for collision check between ${a.class} and ${b.class}".toString())
+    }
+
+
+    boolean detectCollision(Circle a, Circle b) {
         (b.center - a.center).length() <= a.radius + b.radius
     }
 
-    static boolean detectCollision(Rect a, Rect b) {
+    boolean detectCollision(Rect a, Rect b) {
         // TODO: Implement
         return false
     }
 
-    static boolean detectCollision(Line lineA, Line lineB) {
+    boolean detectCollision(Line lineA, Line lineB) {
         // https://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
         // p + t r = q + u s
         def endCrossProduct = lineB.end.cross(lineA.end)
@@ -38,16 +72,16 @@ class ShapeCollisions {
         return true
     }
 
-    static boolean detectCollision(Point a, Point b) {
+    boolean detectCollision(Point a, Point b) {
         a.isPointWithin(b.center)
     }
 
-    static boolean detectCollision(Circle circle, Rect rect) {
+    boolean detectCollision(Circle circle, Rect rect) {
         def closestPointInRectToCircleCenter = circle.center.clampOnRange(rect.topLeft)
         return circle.isPointWithin(closestPointInRectToCircleCenter)
     }
 
-    static boolean detectCollision(Circle circle, Line line) {
+    boolean detectCollision(Circle circle, Line line) {
         if (circle.isPointWithin(line.start) || circle.isPointWithin(line.end) || circle.isPointWithin(line.center)) {
             return true
         }
@@ -59,26 +93,35 @@ class ShapeCollisions {
                 && lineDirection.isInSameDirection(lineCenterToClosestPoint)
     }
 
-    static Vector getClosestPointToCircleCenterOnLine(Circle circle, Line line) {
+    Vector getClosestPointToCircleCenterOnLine(Circle circle, Line line) {
         def circleCenterToCenter = circle.center - line.center
         circleCenterToCenter.projectOnto(line.end - line.start)
     }
 
-    static boolean detectCollision(Circle a, Point b) {
+    boolean detectCollision(Circle a, Point b) {
         a.isPointWithin(b.center)
     }
 
-    static boolean detectCollision(Rect a, Line b) {
+    boolean detectCollision(Rect a, Line b) {
         // TODO: Implement
         return false
     }
 
-    static boolean detectCollision(Rect a, Point b) {
+    boolean detectCollision(Rect a, Point b) {
         a.isPointWithin(b.center)
     }
 
-    static boolean detectCollision(Line a, Point b) {
+    boolean detectCollision(Line a, Point b) {
         a.isPointWithin(b.center)
     }
 
+    @Override
+    void init() {
+
+    }
+
+    @Override
+    void destroy() {
+
+    }
 }

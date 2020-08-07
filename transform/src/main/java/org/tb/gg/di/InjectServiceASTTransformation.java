@@ -39,6 +39,8 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
             ClassNode proxyClassNode = new ClassNode(ServiceProvider.class);
             MethodNode serviceGetter = new MethodNode(
                     "get" + serviceName,
+                    // TODO: Should not always be static - only if necessary.
+                    // TODO: Should this be protected?
                     Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC,
                     serviceClassNode,
                     Parameter.EMPTY_ARRAY,
