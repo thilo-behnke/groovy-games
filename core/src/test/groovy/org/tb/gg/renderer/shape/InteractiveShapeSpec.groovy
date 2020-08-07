@@ -7,11 +7,13 @@ import io.reactivex.rxjava3.subjects.Subject
 import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.components.input.NoopInputComponent
+import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.physics.ShapePhysicsComponent
 import org.tb.gg.gameObject.components.render.NoopRenderComponent
 import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.InteractiveGameObject
+import org.tb.gg.gameObject.shape.Point
 import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
@@ -34,6 +36,7 @@ class InteractiveGameObjectMouseClickSpec extends Specification {
         dummyGameObject = new GameObjectBuilder(GameObject.class)
                 .setRenderComponent(NoopRenderComponent.get())
                 .setInputComponent(NoopInputComponent.get())
+                .setPhysicsComponent(new ShapePhysicsComponent(new ShapeBody(new Point(pos: new Vector(x: 10, y: 20)))))
                 .build()
 
         mouseEventProvider = Mock(MouseEventProvider)
@@ -91,7 +94,7 @@ class InteractiveGameObjectMouseClickSpec extends Specification {
     }
 
     private mockMouseEvent(Vector pos, boolean isPointWithinShape) {
-        dummyGameObject.physicsComponent?.body?.getStructure()?.isPointWithin(pos) >> isPointWithinShape
+        dummyGameObject.physicsComponent.body.getStructure().isPointWithin(pos) >> isPointWithinShape
         new MouseEvent(pos: pos)
     }
 
