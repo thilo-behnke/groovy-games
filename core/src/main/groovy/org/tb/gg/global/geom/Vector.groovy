@@ -83,6 +83,27 @@ class Vector {
         x * b.x + y * b.y
     }
 
+    boolean isInSameDirection(Vector b) {
+        dot(b) > 0
+    }
+
+    Vector clampOnRange(Vector b) {
+        clampOnRange(b.x, b.y)
+    }
+
+    Vector clampOnRange(BigDecimal min, BigDecimal max) {
+        return new Vector(x: clamp(x, min, max), y: clamp(y, min, max))
+    }
+
+    private clamp(BigDecimal comp, BigDecimal min, BigDecimal max) {
+        if (x < min) {
+            return min
+        } else if (x > max) {
+            return max
+        }
+        return x
+    }
+
     BigDecimal length() {
         def xPow = x.pow(2)
         def yPow = y.pow(2)

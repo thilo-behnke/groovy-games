@@ -1,5 +1,6 @@
 package org.tb.gg.gameObject.shape
 
+import ch.obermuhlner.math.big.BigDecimalMath
 import org.tb.gg.collision.Collidable
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
@@ -105,5 +106,9 @@ class Line implements Shape {
             return false
         }
         return true
+    }
+
+    BigDecimal getLength() {
+       return (end - start).length()
     }
 }
