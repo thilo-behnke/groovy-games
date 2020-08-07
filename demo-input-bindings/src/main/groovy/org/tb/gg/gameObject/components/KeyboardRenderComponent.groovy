@@ -49,7 +49,8 @@ class KeyboardRenderComponent extends RenderComponent {
     private createTitleText() {
         def keyboard = (Keyboard) parent
         RenderNode.leaf(
-                new Text(pos: pos + new Vector(x: 0, y: TITLE_POS_Y), text: "Player: ${keyboard.id}"),
+                // TODO: Fix
+                new Text(pos + new Vector(x: 0, y: TITLE_POS_Y), "Player: ${keyboard.id}".toString()),
                 new RenderOptions(drawColor: DrawColor.BLACK)
         )
     }
@@ -57,6 +58,7 @@ class KeyboardRenderComponent extends RenderComponent {
     private createActiveActionsText() {
         def keyboard = (Keyboard) parent
         RenderNode.leaf(
+                // TODO: Fix
                 new Text(pos: pos + new Vector(x: 0, y: ACTIVE_ACTIONS_POS_Y), text: keyboard.activeActions.join(', ')), new RenderOptions(drawColor: DrawColor.BLACK)
         )
     }

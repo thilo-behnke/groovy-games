@@ -7,4 +7,5 @@ abstract class PhysicsComponent<T> {
     GameObject parent
 
     Boolean collides
+    // TODO: Setting to activate/deactivate collisions
 }

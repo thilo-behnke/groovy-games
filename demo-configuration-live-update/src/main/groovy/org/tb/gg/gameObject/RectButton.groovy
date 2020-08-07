@@ -12,15 +12,18 @@ class RectButton extends GameObject {
     Vector pos
     Vector dim
 
-    @Inject ConfigurationService configurationService
+    @Inject
+    ConfigurationService configurationService
 
-    static RectButton create(Vector pos, Vector dim) {
-       def button = InteractiveGameObject<RectButton>.of(new RectButton(pos: pos, dim: dim))
+    static InteractiveGameObject create(Vector pos, Vector dim) {
+        def button = new RectButton(pos: pos, dim: dim)
         button.setRenderComponent(new RectButtonRenderComponent(pos, dim))
-        button.setInputComponent(new NoopInputComponent())
+        button.setInputComponent(NoopInputComponent.get())
 
-        button.mouseClicks.subscribe {
-            switch(configurationService.windowMode) {
+        def interactiveButton = InteractiveGameObject<RectButton>.of(button)
+
+        interactiveButton.mouseClicks.subscribe {
+            switch (configurationService.windowMode) {
                 case ConfigurationSettings.WindowMode.WINDOWED:
                     configurationService.setFullScreen()
                     break
@@ -32,6 +35,6 @@ class RectButton extends GameObject {
             }
         }
 
-        return button as RectButton
+        return interactiveButton
     }
 }

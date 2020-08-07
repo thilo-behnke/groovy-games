@@ -57,8 +57,8 @@ class KeyBoundGameObjectBuilder<T extends GameObject> implements Builder<GameObj
 
     @Override
     T build() {
-        if(!gameObject.renderComponent || !gameObject.body || !keyPressInputActionProvider || !inputComponentClazz) {
-            throw new IllegalStateException("A key bound game object must have a render component, a body, actions and input component class!")
+        if(!gameObject.renderComponent || !keyPressInputActionProvider || !inputComponentClazz) {
+            throw new IllegalStateException("A key bound game object must have a render component, actions and input component class!")
         }
         if(!defaultKeyMapping) {
             defaultKeyMapping = new HashMap<>()
