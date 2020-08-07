@@ -1,13 +1,7 @@
 package org.tb.gg.collision
 
-
 import org.tb.gg.gameObject.GameObject
-import org.tb.gg.gameObject.shape.Circle
-import org.tb.gg.gameObject.shape.Line
-import org.tb.gg.gameObject.shape.Point
-import org.tb.gg.gameObject.shape.Rect
-import org.tb.gg.gameObject.shape.Shape
-import org.tb.gg.global.geom.Vector
+import org.tb.gg.gameObject.shape.*
 import org.tb.gg.utils.CollectionUtils
 
 class UnoptimizedCollisionDetector implements CollisionDetector {

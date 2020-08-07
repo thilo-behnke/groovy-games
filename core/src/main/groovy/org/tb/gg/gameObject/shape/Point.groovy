@@ -24,17 +24,7 @@ class Point implements Shape {
    }
 
    @Override
-   Vector getClosestPointInDirectionFromCenter(Vector direction) {
-       return pos
-   }
-
-   @Override
    boolean isPointWithin(Vector pos) {
       return this.pos == pos
-   }
-
-   @Override
-   boolean doesOverlapWith(Shape shape) {
-      return shape.isPointWithin(pos)
    }
 }

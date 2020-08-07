@@ -66,15 +66,4 @@ class LineSpec extends Specification {
         new Vector(x: 4, y: 4)    || new Vector(x: 2, y: 2)    | new Vector(x: 6, y: 6)
         new Vector(x: 883, y: 12) || new Vector(x: 881, y: 10) | new Vector(x: 885, y: 14)
     }
-
-    @Unroll
-    def 'getClosestPointInDirectionFromCenter'() {
-        expect:
-        line.getClosestPointInDirectionFromCenter(point) == closestPoint
-        where:
-        point                    || closestPoint
-        Vector.zeroVector()      || Vector.unitVector() * 2.0
-        new Vector(x: 1, y: 1)   || new Vector(x: 3, y: 3)
-        new Vector(x: -1, y: -2) || new Vector(x: 0.500, y: 0.500)
-    }
 }

@@ -23,19 +23,8 @@ class ShapeComposite implements Shape {
     }
 
     @Override
-    Vector getClosestPointInDirectionFromCenter(Vector direction) {
-        // TODO: Implement, complicated...
-        return null
-    }
-
-    @Override
     boolean isPointWithin(Vector pos) {
         return shapes.find { it.isPointWithin(pos) }
-    }
-
-    @Override
-    boolean doesOverlapWith(Shape shape) {
-        return shapes.find { it.doesOverlapWith(shape) }
     }
 
     @Override

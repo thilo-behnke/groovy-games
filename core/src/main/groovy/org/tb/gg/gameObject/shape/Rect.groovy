@@ -26,23 +26,6 @@ class Rect implements Shape {
         centerToPoint.x.abs() <= dim.x / 2 && centerToPoint.y.abs() <= dim.y / 2
     }
 
-    @Override
-    boolean doesOverlapWith(Shape shape) {
-        // TODO: Implement.
-        return false
-    }
-
-    @Override
-    Vector getClosestPointInDirectionFromCenter(Vector direction) {
-        def angle = center.angleBetween(direction)
-        // TODO: Implement intersection for lines.
-//        if(0 <= angle && angle <= (MathConstants.PI / 2).round(MathConstants.ctx)) {
-//            return new Line(topBorder.center, topBorder.end).doesOverlapWith()
-//        }
-        // TODO: Implement.
-        return null
-    }
-
     // TODO: Add cache.
     @Override
     Vector getCenter() {
