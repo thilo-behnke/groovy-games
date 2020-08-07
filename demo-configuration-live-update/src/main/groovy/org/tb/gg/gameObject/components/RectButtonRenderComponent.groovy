@@ -9,7 +9,7 @@ import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.options.DrawColor
 import org.tb.gg.renderer.options.RenderOptions
 import org.tb.gg.renderer.renderObjects.RenderNode
-import org.tb.gg.gameObject.shape.InteractiveShape
+import org.tb.gg.gameObject.shape.InteractiveGameObject
 import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.gameObject.shape.Text
 
@@ -18,24 +18,10 @@ class RectButtonRenderComponent extends RenderComponent {
     @Inject
     private ConfigurationService configurationService
 
-    private InteractiveShape rect
+    private Rect rect
 
     RectButtonRenderComponent(Vector pos, Vector dim) {
-        rect = InteractiveShape<Rect>.of(new Rect(pos, dim))
-
-        // TODO: How to unsubscribe?
-        rect.mouseClicks.subscribe {
-            switch(configurationService.windowMode) {
-                case ConfigurationSettings.WindowMode.WINDOWED:
-                    configurationService.setFullScreen()
-                    break
-                case ConfigurationSettings.WindowMode.FULLSCREEN:
-                    configurationService.setWindowed()
-                    break
-                default:
-                    break
-            }
-        }
+        rect = new Rect(pos, dim)
     }
 
     @Override

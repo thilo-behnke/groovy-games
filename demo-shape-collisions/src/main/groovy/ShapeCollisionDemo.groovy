@@ -14,7 +14,6 @@ import org.tb.gg.gameObject.components.physics.ShapePhysicsComponent
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.factory.KeyBoundGameObjectBuilder
 import org.tb.gg.gameObject.shape.Circle
-import org.tb.gg.gameObject.shape.InteractiveShape
 import org.tb.gg.gameObject.shape.Line
 import org.tb.gg.global.geom.Vector
 
@@ -26,7 +25,7 @@ def circle1 = (MovableGameObject) new KeyBoundGameObjectBuilder<MovableGameObjec
                 (HashSet<String>) MovableCircleAction.values()*.name()
         )
         .setPhysicsComponent(new ShapePhysicsComponent(new ShapeBody(
-                InteractiveShape.of(new Circle(center: Vector.unitVector() * 200.0, radius: 100.0))
+                new Circle(center: Vector.unitVector() * 200.0, radius: 100.0)
         )))
         .setInputComponentClass(MovableShapeInputComponent.class)
         .setDefaultKeyMapping(MovableCircleAction.values().collectEntries { it.keys.collectEntries() { key -> [(key): it.name()] } })

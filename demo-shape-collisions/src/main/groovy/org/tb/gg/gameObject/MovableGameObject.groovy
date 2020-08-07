@@ -1,12 +1,7 @@
 package org.tb.gg.gameObject
 
-import org.tb.gg.collision.CollisionRegistry
-import org.tb.gg.di.Inject
-import org.tb.gg.gameObject.GameObject
+
 import org.tb.gg.gameObject.component.MovableCircleAction
-import org.tb.gg.gameObject.components.physics.ShapeBody
-import org.tb.gg.gameObject.shape.Circle
-import org.tb.gg.gameObject.shape.InteractiveShape
 import org.tb.gg.global.geom.Vector
 
 class MovableGameObject extends GameObject {

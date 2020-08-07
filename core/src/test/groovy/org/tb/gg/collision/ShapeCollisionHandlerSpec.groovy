@@ -8,9 +8,15 @@ import spock.lang.Unroll
 @Unroll
 class ShapeCollisionHandlerSpec extends Specification {
 
+    ShapeCollisionDetector shapeCollisionDetector
+
+    void setup() {
+       shapeCollisionDetector = new ShapeCollisionDetector()
+    }
+
     def 'circle <-> circle'() {
         expect:
-        ShapeCollisionDetector.detectCollision(circle1, circle2) == doOverlap
+        shapeCollisionDetector.detectCollision(circle1, circle2) == doOverlap
         where:
         circle1                                            | circle2                                                    | doOverlap
         new Circle(center: Vector.unitVector(), radius: 5) | new Circle(center: Vector.unitVector(), radius: 2)         | true

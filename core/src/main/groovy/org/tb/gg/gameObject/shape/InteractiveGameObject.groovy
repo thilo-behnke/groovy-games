@@ -3,56 +3,50 @@ package org.tb.gg.gameObject.shape
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import org.tb.gg.di.Inject
+import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.lifecycle.Lifecycle
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
 
-class InteractiveShape<S extends Shape> extends Shape implements Lifecycle {
+class InteractiveGameObject<G extends GameObject> extends GameObject implements Lifecycle {
 
     @Inject
     private MouseEventProvider mouseEventProvider
 
-    @Delegate
-    private final S shape
+    private G gameObject
 
     private Disposable mouseMoveDisposable
     boolean isMouseInShape
 
-    private InteractiveShape(S shape) {
-        this.shape = shape
+    private InteractiveGameObject(G gameObject) {
+        this.gameObject = gameObject
     }
 
-    static of(Shape shape) {
-        def interactiveShape = new InteractiveShape(shape)
+    static InteractiveGameObject of(GameObject gameObject) {
+        def interactiveShape = new InteractiveGameObject(gameObject)
         return interactiveShape
-    }
-
-    S getShape() {
-        return shape
     }
 
     Observable<MouseEvent> getMouseClicks() {
         mouseEventProvider.mouseClicks
                 .filter {
-                    isPointWithin(it.pos)
+                    // TODO: The shape of the body should not be part of the physics component - think about game objects without physics components.
+                    gameObject.physicsComponent?.body?.getStructure()?.isPointWithin(it.pos)
                 }
     }
 
     @Override
-    boolean collidesWith(Shape shape) {
-        return shapeCollisionDetector.detectCollision(this.shape, shape)
-    }
-
-    @Override
     void onInit() {
+        gameObject.onInit()
         mouseMoveDisposable = mouseEventProvider.mousePosition
                 .subscribe {
-                    isMouseInShape = isPointWithin(it.pos)
+                    isMouseInShape = gameObject.physicsComponent?.body?.getStructure()?.isPointWithin(it.pos)
                 }
     }
 
     @Override
     void onDestroy() {
+        gameObject.onDestroy()
         mouseMoveDisposable.dispose()
     }
 }
