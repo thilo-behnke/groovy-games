@@ -16,7 +16,7 @@ class DefaultCollisionHandler implements CollisionHandler {
                     if(!a.physicsComponent || !b.physicsComponent) {
                         return null
                     }
-                    def areColliding = a.physicsComponent.getStructure().collidesWith(b.physicsComponent.getStructure())
+                    def areColliding = a.body.collidesWith(b.body.getStructure())
                     if (!areColliding) {
                         return null
                     }

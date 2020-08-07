@@ -3,6 +3,7 @@ package org.tb.gg.gameObject.factory
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
+import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.physics.ShapePhysicsComponent
 import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.global.util.Builder
@@ -13,6 +14,11 @@ class GameObjectBuilder<T extends GameObject> implements Builder<GameObject> {
 
     GameObjectBuilder(Class<T> clazz) {
         gameObject = clazz.getConstructor().newInstance()
+    }
+
+    GameObjectBuilder setBody(ShapeBody body) {
+        gameObject.body = body
+        return this
     }
 
     GameObjectBuilder setRenderComponent(RenderComponent renderComponent) {
@@ -31,8 +37,8 @@ class GameObjectBuilder<T extends GameObject> implements Builder<GameObject> {
     }
 
     T build() {
-        if(!gameObject.renderComponent || !gameObject.inputComponent) {
-            throw new IllegalStateException("A game object must have a render and an input component!")
+        if(!gameObject.renderComponent || !gameObject.inputComponent || !gameObject.body) {
+            throw new IllegalStateException("A game object must have a render an input component and a body!")
         }
         return (T) gameObject
     }

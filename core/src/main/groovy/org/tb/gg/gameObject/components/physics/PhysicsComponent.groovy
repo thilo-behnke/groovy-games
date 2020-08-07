@@ -7,7 +7,4 @@ abstract class PhysicsComponent<T> {
     GameObject parent
 
     Boolean collides
-
-    abstract Body getBody()
-    abstract T getStructure()
 }

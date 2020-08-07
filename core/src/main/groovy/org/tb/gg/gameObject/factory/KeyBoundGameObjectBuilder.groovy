@@ -3,6 +3,7 @@ package org.tb.gg.gameObject.factory
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
+import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.physics.ShapePhysicsComponent
 import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.global.util.Builder
@@ -20,6 +21,11 @@ class KeyBoundGameObjectBuilder<T extends GameObject> implements Builder<GameObj
 
     KeyBoundGameObjectBuilder(Class<T> clazz) {
         gameObject = clazz.getConstructor().newInstance()
+    }
+
+    KeyBoundGameObjectBuilder setBody(ShapeBody body) {
+        gameObject.body = body
+        return this
     }
 
     KeyBoundGameObjectBuilder setRenderComponent(RenderComponent renderComponent) {
@@ -51,8 +57,8 @@ class KeyBoundGameObjectBuilder<T extends GameObject> implements Builder<GameObj
 
     @Override
     T build() {
-        if(!gameObject.renderComponent || !keyPressInputActionProvider || !inputComponentClazz) {
-            throw new IllegalStateException("A key bound game object must have a render component, actions and input component class!")
+        if(!gameObject.renderComponent || !gameObject.body || !keyPressInputActionProvider || !inputComponentClazz) {
+            throw new IllegalStateException("A key bound game object must have a render component, a body, actions and input component class!")
         }
         if(!defaultKeyMapping) {
             defaultKeyMapping = new HashMap<>()

@@ -10,7 +10,7 @@ class CollisionVisualizationRenderComponent extends RenderComponent {
 
     @Override
     RenderNode getRenderNode() {
-        def shape = parent.physicsComponent.getStructure()
+        def shape = parent.body.getStructure()
         return RenderNode.leaf(shape, new RenderOptions(drawColor: parent.physicsComponent.collides ? DrawColor.RED : DrawColor.BLACK))
     }
 

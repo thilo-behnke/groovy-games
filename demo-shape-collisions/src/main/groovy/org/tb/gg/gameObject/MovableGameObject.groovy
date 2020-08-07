@@ -13,7 +13,7 @@ class MovableGameObject extends GameObject {
 
     private handleMovement(Long timestamp, Long delta) {
         def activeActions = inputComponent.getActiveActions().collect { MovableCircleAction.valueOf(it) }
-        def shape = physicsComponent.getStructure()
+        def shape = body.getStructure()
         def center = shape.center
         def newX = center.x
         def newY = center.y

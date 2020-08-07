@@ -20,43 +20,49 @@ import org.tb.gg.global.geom.Vector
 GameEngine gameEngine = new GameEngineProvider().provideGameEngine()
 
 def circle1 = (MovableGameObject) new KeyBoundGameObjectBuilder<MovableGameObject>(MovableGameObject.class)
+        .setBody(
+                new ShapeBody(
+                        new Circle(center: Vector.unitVector() * 200.0, radius: 100.0)
+                )
+        )
+        .setPhysicsComponent(new ShapePhysicsComponent())
         .setRenderComponent(new CollisionVisualizationRenderComponent())
         .setActions(
                 (HashSet<String>) MovableCircleAction.values()*.name()
         )
-        .setPhysicsComponent(new ShapePhysicsComponent(new ShapeBody(
-                new Circle(center: Vector.unitVector() * 200.0, radius: 100.0)
-        )))
         .setInputComponentClass(MovableShapeInputComponent.class)
         .setDefaultKeyMapping(MovableCircleAction.values().collectEntries { it.keys.collectEntries() { key -> [(key): it.name()] } })
         .build()
 
 def circle2 = (MovableGameObject) new GameObjectBuilder<MovableGameObject>(MovableGameObject.class)
-        .setRenderComponent(new CollisionVisualizationRenderComponent())
-        .setPhysicsComponent(new ShapePhysicsComponent(new ShapeBody(
+        .setBody(new ShapeBody(
                 new Circle(center: Vector.unitVector() * 400.0, radius: 100.0)
-        )))
-        .setInputComponent(new NoopInputComponent())
+        ))
+        .setPhysicsComponent(new ShapePhysicsComponent())
+        .setRenderComponent(new CollisionVisualizationRenderComponent())
+        .setInputComponent(NoopInputComponent.get())
         .build()
 
 def line1 = new KeyBoundGameObjectBuilder(MovableGameObject.class)
+        .setBody(new ShapeBody(
+                new Line(Vector.unitVector() * 300.0, Vector.unitVector() * 350.0)
+        ))
+        .setPhysicsComponent(new ShapePhysicsComponent())
         .setRenderComponent(new CollisionVisualizationRenderComponent())
         .setActions(
                 (HashSet<String>) MovableLineAction.values()*.name()
         )
-        .setPhysicsComponent(new ShapePhysicsComponent(new ShapeBody(
-                new Line(Vector.unitVector() * 300.0, Vector.unitVector() * 350.0)
-        )))
         .setInputComponentClass(MovableShapeInputComponent.class)
         .setDefaultKeyMapping(MovableLineAction.values().collectEntries { it.keys.collectEntries() { key -> [(key): it.name()] } })
         .build()
 
 def line2 = new GameObjectBuilder(GameObject.class)
-        .setRenderComponent(new CollisionVisualizationRenderComponent())
-        .setPhysicsComponent(new ShapePhysicsComponent(new ShapeBody(
+        .setBody(new ShapeBody(
                 new Line(Vector.unitVector() * 500.0, Vector.unitVector() * 650.0)
-        )))
-        .setInputComponent(new NoopInputComponent())
+        ))
+        .setPhysicsComponent(new ShapePhysicsComponent())
+        .setRenderComponent(new CollisionVisualizationRenderComponent())
+        .setInputComponent(NoopInputComponent.get())
         .build()
 
 def defaultScene = new DefaultGameScene('default')

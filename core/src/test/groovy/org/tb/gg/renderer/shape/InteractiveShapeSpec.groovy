@@ -27,16 +27,18 @@ class InteractiveGameObjectMouseClickSpec extends Specification {
     InteractiveGameObject interactiveGameObject
     MouseEventProvider mouseEventProvider
     GameObject dummyGameObject
+    ShapeBody mockBody
 
     TestObserver<MouseEvent> mouseClickTestObserver
 
     Subject<MouseEvent> mouseClickSubject
 
     void setup() {
+        mockBody = Mock(ShapeBody)
         dummyGameObject = new GameObjectBuilder(GameObject.class)
+                .setBody(mockBody)
                 .setRenderComponent(NoopRenderComponent.get())
                 .setInputComponent(NoopInputComponent.get())
-                .setPhysicsComponent(new ShapePhysicsComponent(new ShapeBody(new Point(pos: new Vector(x: 10, y: 20)))))
                 .build()
 
         mouseEventProvider = Mock(MouseEventProvider)
@@ -94,7 +96,7 @@ class InteractiveGameObjectMouseClickSpec extends Specification {
     }
 
     private mockMouseEvent(Vector pos, boolean isPointWithinShape) {
-        dummyGameObject.physicsComponent.body.getStructure().isPointWithin(pos) >> isPointWithinShape
+        mockBody.isPointWithin(pos) >> isPointWithinShape
         new MouseEvent(pos: pos)
     }
 
@@ -169,7 +171,7 @@ class InteractiveGameObjectMousePositionSpec extends Specification {
     }
 
     private mockMouseEvent(Vector pos, boolean isPointWithinShape) {
-        dummyGameObject.physicsComponent.body.getStructure().isPointWithin(pos) >> isPointWithinShape
+        dummyGameObject.body.isPointWithin(pos) >> isPointWithinShape
         new MouseEvent(pos: pos)
     }
 

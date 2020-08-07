@@ -30,8 +30,7 @@ class InteractiveGameObject<G extends GameObject> extends GameObject implements 
     Observable<MouseEvent> getMouseClicks() {
         mouseEventProvider.mouseClicks
                 .filter {
-                    // TODO: The shape of the body should not be part of the physics component - think about game objects without physics components.
-                    gameObject.physicsComponent?.body?.getStructure()?.isPointWithin(it.pos)
+                    gameObject.body.isPointWithin(it.pos)
                 }
     }
 
@@ -40,7 +39,7 @@ class InteractiveGameObject<G extends GameObject> extends GameObject implements 
         gameObject.onInit()
         mouseMoveDisposable = mouseEventProvider.mousePosition
                 .subscribe {
-                    isMouseInShape = gameObject.physicsComponent?.body?.getStructure()?.isPointWithin(it.pos)
+                    isMouseInShape = gameObject.body.isPointWithin(it.pos)
                 }
     }
 
