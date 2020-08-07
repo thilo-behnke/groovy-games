@@ -39,6 +39,11 @@ class InteractiveShape<S extends Shape> extends Shape implements Lifecycle {
     }
 
     @Override
+    boolean collidesWith(Shape shape) {
+        return shapeCollisionDetector.detectCollision(this.shape, shape)
+    }
+
+    @Override
     void onInit() {
         mouseMoveDisposable = mouseEventProvider.mousePosition
                 .subscribe {

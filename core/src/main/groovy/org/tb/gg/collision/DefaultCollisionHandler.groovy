@@ -16,7 +16,11 @@ class DefaultCollisionHandler implements CollisionHandler {
                     if(!a.physicsComponent || !b.physicsComponent) {
                         return null
                     }
-                    return a.physicsComponent.getStructure().collidesWith(b.physicsComponent.getStructure())
+                    def areColliding = a.physicsComponent.getStructure().collidesWith(b.physicsComponent.getStructure())
+                    if (!areColliding) {
+                        return null
+                    }
+                    return new Collision(a: a, b: b)
                 }
                 .findAll { it }
                 .collect { (Collision) it }

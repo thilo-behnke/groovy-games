@@ -10,9 +10,6 @@ class Circle extends Shape {
     Vector center
     BigDecimal radius
 
-    @Inject
-    private ShapeCollisionDetector shapeCollisionDetector
-
     @Override
     void render(RenderDestination renderDestination, RenderOptions options) {
         renderDestination.drawCircle(center, radius, options)
@@ -21,10 +18,5 @@ class Circle extends Shape {
     @Override
     boolean isPointWithin(Vector pos) {
         return (pos - center).length() <= radius
-    }
-
-    @Override
-    boolean collidesWith(Shape shape) {
-        return shapeCollisionDetector.detectCollision(this, shape)
     }
 }

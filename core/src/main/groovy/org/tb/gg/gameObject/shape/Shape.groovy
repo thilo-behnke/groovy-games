@@ -7,7 +7,7 @@ import org.tb.gg.renderer.renderObjects.Renderable
 
 abstract class Shape implements Renderable {
     @Inject
-    private ShapeCollisionDetector shapeCollisionDetector
+    protected ShapeCollisionDetector shapeCollisionDetector
 
     abstract Vector getCenter()
     abstract void setCenter(Vector pos)

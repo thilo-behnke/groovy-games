@@ -1,6 +1,7 @@
 package org.tb.gg.collision
 
 import org.tb.gg.di.definition.Service
+import org.tb.gg.di.definition.Singleton
 import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.gameObject.shape.Line
 import org.tb.gg.gameObject.shape.Point
@@ -8,7 +9,7 @@ import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
 
-class ShapeCollisionDetector implements Service {
+class ShapeCollisionDetector implements Singleton {
 
     boolean detectCollision(Shape a, Shape b) {
         if (a instanceof Circle && b instanceof Circle) {
