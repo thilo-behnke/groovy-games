@@ -8,13 +8,9 @@ import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
-import org.tb.gg.gameObject.components.physics.ShapePhysicsComponent
 import org.tb.gg.gameObject.components.render.NoopRenderComponent
-import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.gameObject.factory.GameObjectBuilder
-import org.tb.gg.gameObject.shape.InteractiveGameObject
-import org.tb.gg.gameObject.shape.Point
-import org.tb.gg.gameObject.shape.Shape
+import org.tb.gg.gameObject.InteractiveGameObject
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider

@@ -1,9 +1,8 @@
-package org.tb.gg.gameObject.shape
+package org.tb.gg.gameObject
 
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import org.tb.gg.di.Inject
-import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.lifecycle.Lifecycle
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
