@@ -5,6 +5,7 @@ import org.tb.gg.gameObject.shape.Line
 import org.tb.gg.gameObject.shape.Point
 import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.geom.Vector
+import spock.lang.Ignore
 import spock.lang.Specification
 
 class ShapeCollisionDetectorSpec extends Specification {
@@ -67,6 +68,37 @@ class ShapeCollisionDetectorSpec extends Specification {
         new Circle(center: Vector.unitVector(), radius: 3)        | new Rect(Vector.unitVector() * 5.0, Vector.unitVector() * 1.0)  | false
         new Circle(center: Vector.unitVector(), radius: 10)       | new Rect(Vector.unitVector() * 11.0, Vector.unitVector() * 1.0) | false
         new Circle(center: Vector.unitVector(), radius: 3)        | new Rect(Vector.unitVector() * -3.0, Vector.unitVector() * 1.0) | false
+    }
+
+    // TODO: Write tests
+    @Ignore
+    def 'rect <-> rect'() {
+        expect:
+        shapeCollisionDetector.detect(rect1, rect2) == doCollide
+        where:
+        rect1                                                    | rect2                                                    | doCollide
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Rect(Vector.zeroVector(), Vector.unitVector() * 5.0) | true
+    }
+
+    // TODO: Write tests
+    @Ignore
+    def 'rect <-> line'() {
+        expect:
+        shapeCollisionDetector.detect(rect, line) == doCollide
+        where:
+        rect                                                     | line                                               | doCollide
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(Vector.zeroVector(), Vector.unitVector()) | true
+    }
+
+    def 'rect <-> point'() {
+        expect:
+        shapeCollisionDetector.detect(rect, point) == doCollide
+        where:
+        rect                                                           | point                                      | doCollide
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0)       | new Point(pos: Vector.unitVector())        | true
+        new Rect(Vector.zeroVector(), Vector.unitVector() * 5.0)       | new Point(pos: new Vector(x: 1, y: -1))    | true
+        new Rect(Vector.zeroVector(), Vector.unitVector() * 5.0)       | new Point(pos: Vector.unitVector())        | false
+        new Rect(Vector.unitVector() * 3.0, Vector.unitVector() * 2.0) | new Point(pos: Vector.unitVector() * -2.0) | false
     }
 
 }

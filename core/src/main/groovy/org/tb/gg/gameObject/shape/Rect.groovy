@@ -22,8 +22,9 @@ class Rect extends Shape {
 
     @Override
     boolean isPointWithin(Vector pos) {
-        def centerToPoint = pos - getCenter()
-        centerToPoint.x.abs() <= dim.x / 2 && centerToPoint.y.abs() <= dim.y / 2
+        def topLeft = topLeft
+        def topRight = topRight
+        return topLeft.x <= pos.x && pos.x <= topRight.x && bottomLeft.y <= pos.y && pos.y <= topRight.y
     }
 
     // TODO: Add cache.
