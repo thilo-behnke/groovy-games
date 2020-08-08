@@ -10,7 +10,6 @@ GameEngine gameEngine = new GameEngineProvider().provideGameEngine()
 def defaultScene = new DefaultGameScene('default')
 
 def button = RectButton.create(Vector.unitVector() * 500.0, Vector.unitVector() * 200.0)
-def test = button.withTraits(InteractiveBody)
 
 defaultScene.accessGameObjectProvider() << button
 

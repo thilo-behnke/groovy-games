@@ -1,6 +1,7 @@
 package org.tb.gg.input.awt
 
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import org.tb.gg.di.Inject
 import org.tb.gg.env.EnvironmentService
@@ -56,8 +57,8 @@ class SwingMouseEventAdapter implements MouseEventProvider {
     private BehaviorSubject<MouseEvent> mouseDownSubject
     private BehaviorSubject<MouseEvent> mouseUpSubject
     private BehaviorSubject<MouseEvent> mouseClickSubject
-
     private Observable<MouseEvent> mouseMoveEvent
+    private Disposable mouseMoveEventDisposable
 
     private MouseEvent currentMousePosition
 
@@ -87,16 +88,21 @@ class SwingMouseEventAdapter implements MouseEventProvider {
                     return new MouseEvent(pos: new Vector(x: mousePos.x, y: jPanel.getHeight() - mousePos.y))
                 }
                 .doOnNext {mouseEvent ->
+                    // TODO: How to do this cleanly in a side effect func?
                     currentMousePosition = mouseEvent
                 }
-
         mouseListener = new SwingMouseListener(this)
         jFrame.addMouseListener(mouseListener)
+
+        // This class needs to provide the current position of the mouse synchronously, therefore subscribe here to make the observable hot.
+        mouseMoveEventDisposable = mouseMoveEvent.subscribe()
+
     }
 
     @Override
     void destroy() {
         jFrame.removeMouseListener(mouseListener)
+        mouseMoveEventDisposable.dispose()
     }
 
     protected alertMouseDown(java.awt.event.MouseEvent e) {

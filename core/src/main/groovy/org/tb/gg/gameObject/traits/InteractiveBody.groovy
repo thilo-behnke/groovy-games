@@ -21,7 +21,7 @@ trait InteractiveBody {
     }
 
     boolean getIsMouseInShape() {
-        if(mouseEventProvider.currentMousePosition == null) {
+        if (mouseEventProvider.currentMousePosition == null) {
             return false
         }
         body.isPointWithin(mouseEventProvider.getCurrentMousePosition().pos)
