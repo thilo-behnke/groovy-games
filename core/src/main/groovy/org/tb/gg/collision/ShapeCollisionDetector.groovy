@@ -24,13 +24,17 @@ class ShapeCollisionDetector implements Singleton {
 
         if (a instanceof Rect && b instanceof Rect) {
             return detectCollision((Rect) a, (Rect) b)
+        } else if (a instanceof Rect && b instanceof Circle) {
+            return detectCollision((Circle) b, (Rect) a)
         } else if (a instanceof Rect && b instanceof Line) {
             return detectCollision((Rect) a, (Line) b)
         } else if (a instanceof Rect && b instanceof Point) {
             return detectCollision((Rect) a, (Point) b)
         }
 
-        if (a instanceof Line && b instanceof Line) {
+        if (a instanceof Line && b instanceof Circle) {
+            return detectCollision((Circle) b, (Line) a)
+        } else if (a instanceof Line && b instanceof Line) {
             return detectCollision((Line) a, (Line) b)
         } else if (a instanceof Line && b instanceof Rect) {
             return detectCollision((Rect) b, (Line) a)
@@ -38,7 +42,13 @@ class ShapeCollisionDetector implements Singleton {
             return detectCollision((Line) a, (Point) b)
         }
 
-        if (a instanceof Point && b instanceof Point) {
+        if (a instanceof Point && b instanceof Circle) {
+            return detectCollision((Circle) b, (Point) a)
+        } else if (a instanceof Point && b instanceof Line) {
+            return detectCollision((Point) a, (Line) b)
+        } else if (a instanceof Point && b instanceof Rect) {
+            return detectCollision((Rect) b, (Point) a)
+        } else if (a instanceof Point && b instanceof Point) {
             return detectCollision((Point) a, (Point) b)
         }
 
