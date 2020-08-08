@@ -35,9 +35,6 @@ class MovableGameObject extends GameObject implements InteractiveBody {
 
     private handleMovement(Long timestamp, Long delta) {
         def activeActions = inputComponent.getActiveActions().collect { MovableCircleAction.valueOf(it) }
-        if(inputComponent instanceof MovableShapeInputComponent) {
-            System.println(inputComponent.getActiveActions())
-        }
         def shape = body.getStructure()
         def center = shape.center
         def newX = center.x

@@ -1,7 +1,6 @@
 package org.tb.gg.gameObject.traits
 
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.Disposable
 import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.input.mouseEvent.MouseEvent
