@@ -6,6 +6,9 @@ import org.tb.gg.config.ConfigurationSettings
 import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.components.RectButtonRenderComponent
 import org.tb.gg.gameObject.components.input.NoopInputComponent
+import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.shape.Rect
+import org.tb.gg.gameObject.traits.InteractiveBody
 import org.tb.gg.global.geom.Vector
 
 class RectButton extends GameObject implements InteractiveBody {
@@ -49,7 +52,8 @@ class RectButton extends GameObject implements InteractiveBody {
 
     static RectButton create(Vector pos, Vector dim) {
         def button = new RectButton(pos, dim)
-        button.setRenderComponent(new RectButtonRenderComponent(pos, dim))
+        button.setBody(new ShapeBody(new Rect(pos, dim)))
+        button.setRenderComponent(new RectButtonRenderComponent())
         button.setInputComponent(NoopInputComponent.get())
         return button
     }

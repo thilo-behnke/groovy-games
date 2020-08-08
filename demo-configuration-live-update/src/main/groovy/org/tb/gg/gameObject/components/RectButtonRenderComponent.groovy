@@ -11,22 +11,21 @@ import org.tb.gg.gameObject.shape.Text
 
 class RectButtonRenderComponent extends RenderComponent {
 
-    private Rect rect
-
-    RectButtonRenderComponent(Vector pos, Vector dim) {
-        rect = new Rect(pos, dim)
+    RectButtonRenderComponent() {
     }
 
     @Override
     RenderNode getRenderNode() {
         def button = (RectButton) parent
-        rect.topLeft = button.pos
-        rect.dim = button.dim
+        def rect = (Rect) parent.body.getStructure()
 
-        def boundary = RenderNode.leaf(this.rect, new RenderOptions(drawColor: button.isMouseInShape ? DrawColor.RED : DrawColor.YELLOW))
-        // TODO: Fix
-        def text = RenderNode.leaf(new Text(pos: rect.topLeft + rect.dim * new Vector(x: 0.3, y: 0.5) * Vector.invertYVector(), text: 'Click Me'))
-        return RenderNode.node([boundary, text])
+        def boundary = RenderNode.leaf(rect, new RenderOptions(drawColor: button.isMouseInShape ? DrawColor.RED : DrawColor.YELLOW))
+        def text = new Text(
+                rect.topLeft + rect.dim * new Vector(x: 0.3, y: 0.5) * Vector.invertYVector(),
+                rect.dim,
+                'Click Me')
+        def textNode = RenderNode.leaf(text)
+        return RenderNode.node([boundary, textNode])
     }
 
     @Override

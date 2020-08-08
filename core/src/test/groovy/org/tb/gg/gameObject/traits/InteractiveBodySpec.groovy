@@ -1,4 +1,4 @@
-package org.tb.gg.renderer.shape
+package org.tb.gg.gameObject.traits
 
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.observers.TestObserver
@@ -6,12 +6,9 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.Subject
 import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.GameObject
-import org.tb.gg.gameObject.InteractiveBody
 import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.render.NoopRenderComponent
-import org.tb.gg.gameObject.factory.GameObjectBuilder
-
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider

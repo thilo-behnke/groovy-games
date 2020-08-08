@@ -8,6 +8,7 @@ import org.tb.gg.renderer.options.RenderOptions
 class Text extends Rect {
     String text
 
+    // TODO: Can the text get the info of its dimensions implicitly from the renderer?
     Text(Vector topLeft, Vector dim, String text) {
         super(topLeft, dim)
         this.text = text

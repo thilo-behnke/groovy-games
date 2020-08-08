@@ -1,4 +1,4 @@
-package org.tb.gg.gameObject
+package org.tb.gg.gameObject.traits
 
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable

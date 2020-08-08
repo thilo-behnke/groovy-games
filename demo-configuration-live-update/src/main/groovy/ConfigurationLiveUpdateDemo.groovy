@@ -1,7 +1,7 @@
 import org.tb.gg.GameEngineProvider
 import org.tb.gg.engine.DefaultGameScene
 import org.tb.gg.engine.GameEngine
-import org.tb.gg.gameObject.InteractiveBody
+import org.tb.gg.gameObject.traits.InteractiveBody
 import org.tb.gg.gameObject.RectButton
 import org.tb.gg.global.geom.Vector
 
