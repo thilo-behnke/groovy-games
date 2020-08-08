@@ -8,7 +8,7 @@ import org.tb.gg.gameObject.components.RectButtonRenderComponent
 import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.global.geom.Vector
 
-class RectButton extends GameObject implements InteractiveGameObjectTrait {
+class RectButton extends GameObject implements InteractiveBody {
     Vector pos
     Vector dim
 

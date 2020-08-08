@@ -6,11 +6,12 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.Subject
 import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.GameObject
+import org.tb.gg.gameObject.InteractiveBody
 import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.render.NoopRenderComponent
 import org.tb.gg.gameObject.factory.GameObjectBuilder
-import org.tb.gg.gameObject.InteractiveGameObject
+
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
@@ -18,9 +19,8 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @Unroll
-class InteractiveGameObjectMouseClickSpec extends Specification {
+class InteractiveBodyMouseClickSpec extends Specification {
 
-    InteractiveGameObject interactiveGameObject
     MouseEventProvider mouseEventProvider
     GameObject dummyGameObject
     ShapeBody mockBody
@@ -31,11 +31,7 @@ class InteractiveGameObjectMouseClickSpec extends Specification {
 
     void setup() {
         mockBody = Mock(ShapeBody)
-        dummyGameObject = new GameObjectBuilder(GameObject.class)
-                .setBody(mockBody)
-                .setRenderComponent(NoopRenderComponent.get())
-                .setInputComponent(NoopInputComponent.get())
-                .build()
+        dummyGameObject = DummyGameObject.create(mockBody)
 
         mouseEventProvider = Mock(MouseEventProvider)
         mouseClickSubject = BehaviorSubject.create()
@@ -44,15 +40,14 @@ class InteractiveGameObjectMouseClickSpec extends Specification {
 
         ServiceProvider.setService(mouseEventProvider, 'MouseEventProvider')
 
-        interactiveGameObject = InteractiveGameObject.of(dummyGameObject)
-        interactiveGameObject.onInit()
-
-        mouseClickTestObserver = interactiveGameObject.mouseClicks.test()
+        dummyGameObject.onInit()
+        mouseClickTestObserver = dummyGameObject.mouseClicks.test()
     }
 
     void cleanup() {
         mouseClickTestObserver.dispose()
         mouseClickSubject.onComplete()
+        dummyGameObject.onDestroy()
         // TODO: It would be great if this could be integrated into Spock.
         ServiceProvider.reset()
     }
@@ -106,14 +101,16 @@ class InteractiveGameObjectMouseClickSpec extends Specification {
 @Unroll
 class InteractiveGameObjectMousePositionSpec extends Specification {
 
-    InteractiveGameObject interactiveGameObject
     MouseEventProvider mouseEventProvider
-    GameObject dummyGameObject
+    InteractiveBody dummyGameObject
+    ShapeBody mockBody
 
     Subject<MouseEvent> mousePositionSubject
 
     void setup() {
-        dummyGameObject = Mock(GameObject)
+        mockBody = Mock(ShapeBody)
+
+        dummyGameObject = DummyGameObject.create(mockBody)
 
         mouseEventProvider = Mock(MouseEventProvider)
         mousePositionSubject = BehaviorSubject.create()
@@ -121,20 +118,20 @@ class InteractiveGameObjectMousePositionSpec extends Specification {
         mouseEventProvider.mousePosition >> mousePositionSubject
 
         ServiceProvider.setService(mouseEventProvider, 'MouseEventProvider')
-
-        interactiveGameObject = InteractiveGameObject.of(dummyGameObject)
-        interactiveGameObject.onInit()
+        // TODO: Can this be done in Spock somehow?
+        dummyGameObject.onInit()
     }
 
     void cleanup() {
         mousePositionSubject.onComplete()
+        dummyGameObject.onDestroy()
         // TODO: It would be great if this could be integrated into Spock.
         ServiceProvider.reset()
     }
 
     def 'no mouse positions sent by provider, mouse is not within shape'() {
         expect:
-        !interactiveGameObject.isMouseInShape
+        !dummyGameObject.isMouseInShape
     }
 
     def 'single mouse position sent by provider, but not within shape'() {
@@ -143,7 +140,7 @@ class InteractiveGameObjectMousePositionSpec extends Specification {
         when:
         sendMousePosition(event)
         then:
-        !interactiveGameObject.isMouseInShape
+        !dummyGameObject.isMouseInShape
     }
 
     def 'single mouse position sent by provider, point is within shape'() {
@@ -152,7 +149,7 @@ class InteractiveGameObjectMousePositionSpec extends Specification {
         when:
         sendMousePosition(event)
         then:
-        interactiveGameObject.isMouseInShape
+        dummyGameObject.isMouseInShape
     }
 
     def 'multiple mouse positions sent by provider, only last event counts here'() {
@@ -163,7 +160,7 @@ class InteractiveGameObjectMousePositionSpec extends Specification {
         when:
         sendMousePosition(event1, event2, event3)
         then:
-        interactiveGameObject.isMouseInShape
+        dummyGameObject.isMouseInShape
     }
 
     private mockMouseEvent(Vector pos, boolean isPointWithinShape) {
@@ -175,5 +172,15 @@ class InteractiveGameObjectMousePositionSpec extends Specification {
         events.each {
             mousePositionSubject.onNext(it)
         }
+    }
+}
+
+class DummyGameObject extends GameObject implements InteractiveBody {
+    static create(ShapeBody body) {
+        def dummy = new DummyGameObject()
+        dummy.setBody(body)
+        dummy.setRenderComponent(NoopRenderComponent.get())
+        dummy.setInputComponent(NoopInputComponent.get())
+        return dummy
     }
 }
