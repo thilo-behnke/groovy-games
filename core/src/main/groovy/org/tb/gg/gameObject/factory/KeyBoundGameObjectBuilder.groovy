@@ -43,6 +43,12 @@ class KeyBoundGameObjectBuilder<T extends GameObject> implements Builder<GameObj
         return this
     }
 
+    KeyBoundGameObjectBuilder configureActions(Set<String> actions, Map<Key, String> defaultKeyMapping) {
+        setActions(actions)
+        setDefaultKeyMapping(defaultKeyMapping)
+        return this
+    }
+
     KeyBoundGameObjectBuilder setActions(Set<String> actions) {
         keyPressInputActionProvider = AbstractInputActionProviderFactory.factory().createProvider(
                 new InputActionProviderArgs(actions: actions)
@@ -57,10 +63,10 @@ class KeyBoundGameObjectBuilder<T extends GameObject> implements Builder<GameObj
 
     @Override
     T build() {
-        if(!gameObject.renderComponent || !keyPressInputActionProvider || !inputComponentClazz) {
+        if (!gameObject.renderComponent || !keyPressInputActionProvider || !inputComponentClazz) {
             throw new IllegalStateException("A key bound game object must have a render component, actions and input component class!")
         }
-        if(!defaultKeyMapping) {
+        if (!defaultKeyMapping) {
             defaultKeyMapping = new HashMap<>()
         }
         keyPressInputActionProvider.overrideKeyMappings(defaultKeyMapping)
