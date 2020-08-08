@@ -3,8 +3,8 @@ package org.tb.gg.gameObject
 
 import org.tb.gg.engine.helper.Updateable
 import org.tb.gg.gameObject.components.input.InputComponent
+import org.tb.gg.gameObject.components.physics.PhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
-import org.tb.gg.gameObject.components.physics.ShapePhysicsComponent
 import org.tb.gg.gameObject.components.render.RenderComponent
 import groovy.transform.EqualsAndHashCode
 import org.tb.gg.gameObject.lifecycle.Lifecycle
@@ -16,7 +16,7 @@ class GameObject implements Updateable, Lifecycle {
 
     ShapeBody body
     RenderComponent renderComponent
-    ShapePhysicsComponent physicsComponent
+    PhysicsComponent physicsComponent
     InputComponent inputComponent
 
     void setBody(ShapeBody body) {
@@ -27,7 +27,7 @@ class GameObject implements Updateable, Lifecycle {
         this.inputComponent = inputComponent
     }
 
-    void setPhysicsComponent(ShapePhysicsComponent physicsComponent) {
+    void setPhysicsComponent(PhysicsComponent physicsComponent) {
         physicsComponent.setParent(this)
         this.physicsComponent = physicsComponent
     }

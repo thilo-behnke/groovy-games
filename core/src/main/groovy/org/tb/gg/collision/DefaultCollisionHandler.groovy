@@ -13,6 +13,7 @@ class DefaultCollisionHandler implements CollisionHandler {
 
         combinations
                 .collect { GameObject a, GameObject b ->
+                    // TODO: This should be a flag on the physics component to decide whether collisions are checked or not.
                     if(!a.physicsComponent || !b.physicsComponent) {
                         return null
                     }

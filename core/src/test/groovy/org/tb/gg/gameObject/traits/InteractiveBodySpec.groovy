@@ -12,6 +12,7 @@ import org.tb.gg.gameObject.components.render.NoopRenderComponent
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
+import org.tb.gg.mocks.DummyGameObject
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -169,12 +170,3 @@ class InteractiveGameObjectMousePositionSpec extends Specification {
     }
 }
 
-class DummyGameObject extends GameObject implements InteractiveBody {
-    static create(ShapeBody body) {
-        def dummy = new DummyGameObject()
-        dummy.setBody(body)
-        dummy.setRenderComponent(NoopRenderComponent.get())
-        dummy.setInputComponent(NoopInputComponent.get())
-        return dummy
-    }
-}
