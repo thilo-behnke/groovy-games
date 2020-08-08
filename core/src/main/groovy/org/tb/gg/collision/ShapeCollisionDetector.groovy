@@ -65,22 +65,23 @@ class ShapeCollisionDetector implements Singleton {
     }
 
     private static boolean detectCollision(Line lineA, Line lineB) {
-        // https://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
-        // p + t r = q + u s
-        def endCrossProduct = lineB.end.cross(lineA.end)
-        if (endCrossProduct == 0) {
+        def lineAStartToLineBStart = (lineB.start - lineA.start).normalize()
+        def lineAStartToLineBEnd = (lineB.end - lineA.start).normalize()
+        def lineAStartToLineAEnd = (lineA.end - lineA.start).normalize()
+        def lineBStartToLineBEnd = (lineB.end - lineA.start).normalize()
+
+        def crossFromAStartToBStartAndBEnd = lineAStartToLineBStart.cross(lineAStartToLineBEnd).abs()
+        def crossFromAStartToBStartAndAEnd = lineAStartToLineBStart.cross(lineAStartToLineAEnd).abs()
+
+        if (crossFromAStartToBStartAndBEnd < crossFromAStartToBStartAndAEnd) {
             return false
         }
-        // u = (q − p) × r / (r × s)
-        def u = (lineA.start - lineB.start).cross(lineB.end) / endCrossProduct
-        if (u < 0 || u > 1) {
-            return false
+
+        def areOnSameLine = lineAStartToLineAEnd.normalize().abs() == lineBStartToLineBEnd.normalize().abs()
+        if (areOnSameLine) {
+            return lineA.isPointWithin(lineB.start) || lineA.isPointWithin(lineB.end)
         }
-        // t = (q − p) × s / (r × s)
-        def t = (lineA.start - lineB.start).cross(lineA.end) / endCrossProduct
-        if (t < 0 || t > 1) {
-            return false
-        }
+
         return true
     }
 

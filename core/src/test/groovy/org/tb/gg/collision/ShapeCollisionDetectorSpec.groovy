@@ -103,15 +103,21 @@ class ShapeCollisionDetectorSpec extends Specification {
         new Rect(Vector.unitVector() * -3.0, Vector.unitVector() * 2.0) | new Point(pos: Vector.unitVector() * 10.0) | false
     }
 
-    // TODO: Fix implementation and write tests.
-    @Ignore
     def 'line <-> line'() {
         expect:
         shapeCollisionDetector.detect(line1, line2) == doCollide
         where:
-        line1                                                     | line2                                              | doCollide
-        new Line(Vector.zeroVector(), Vector.unitVector())        | new Line(Vector.zeroVector(), Vector.unitVector()) | true
-        new Line(Vector.unitVector(), Vector.unitVector() * -1.0) | new Line(Vector.zeroVector(), Vector.unitVector()) | true
+        line1                                                     | line2                                                        | doCollide
+        new Line(Vector.zeroVector(), Vector.unitVector())        | new Line(Vector.zeroVector(), Vector.unitVector())           | true
+        new Line(Vector.unitVector(), Vector.unitVector() * -1.0) | new Line(Vector.zeroVector(), Vector.unitVector())           | true
+        new Line(Vector.zeroVector(), Vector.unitVector() * 2.0)  | new Line(new Vector(x: 0, y: 1), new Vector(x: 1, y: 0))     | true
+        new Line(Vector.zeroVector(), Vector.unitVector() * 2.0)  | new Line(new Vector(x: 0, y: 1.5), new Vector(x: 1.5, y: 0)) | true
+        new Line(Vector.zeroVector(), new Vector(x: -2, y: -3))   | new Line(new Vector(x: -1, y: -1), new Vector(x: -1, y: -4)) | true
+        new Line(Vector.zeroVector(), Vector.unitVector() * -2.0) | new Line(new Vector(x: -1, y: -1), new Vector(x: 4, y: 4))   | true
+        new Line(Vector.zeroVector(), new Vector(x: -2, y: -3))   | new Line(new Vector(x: -1, y: -1), new Vector(x: -3, y: -4)) | false
+        new Line(Vector.zeroVector(), Vector.unitVector() * 2.0)  | new Line(new Vector(x: 3, y: 3), new Vector(x: 4, y: 4))     | false
+        new Line(Vector.zeroVector(), Vector.unitVector() * -2.0) | new Line(new Vector(x: 1, y: 1), new Vector(x: 4, y: 4))     | false
+        new Line(Vector.unitVector(), new Vector(x: 2, y: 1))     | new Line(new Vector(x: 3, y: 3), new Vector(x: 4, y: 3))     | false
     }
 
     def 'line <-> point'() {
