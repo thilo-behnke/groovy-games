@@ -12,7 +12,7 @@ class Rect extends Shape {
 
     Rect(Vector topLeft, Vector dim) {
         this.topLeft = topLeft
-        this.dim = dim
+        this.dim = dim.abs()
     }
 
     @Override

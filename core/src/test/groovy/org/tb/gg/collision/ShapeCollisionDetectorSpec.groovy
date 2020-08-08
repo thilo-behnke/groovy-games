@@ -94,11 +94,13 @@ class ShapeCollisionDetectorSpec extends Specification {
         expect:
         shapeCollisionDetector.detect(rect, point) == doCollide
         where:
-        rect                                                           | point                                      | doCollide
-        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0)       | new Point(pos: Vector.unitVector())        | true
-        new Rect(Vector.zeroVector(), Vector.unitVector() * 5.0)       | new Point(pos: new Vector(x: 1, y: -1))    | true
-        new Rect(Vector.zeroVector(), Vector.unitVector() * 5.0)       | new Point(pos: Vector.unitVector())        | false
-        new Rect(Vector.unitVector() * 3.0, Vector.unitVector() * 2.0) | new Point(pos: Vector.unitVector() * -2.0) | false
+        rect                                                            | point                                      | doCollide
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0)        | new Point(pos: Vector.unitVector())        | true
+        new Rect(Vector.zeroVector(), Vector.unitVector() * 5.0)        | new Point(pos: new Vector(x: 1, y: -1))    | true
+        new Rect(Vector.unitVector() + 2.0, Vector.unitVector() * 2.0)  | new Point(pos: new Vector(x: 3, y: 3))     | true
+        new Rect(Vector.zeroVector(), Vector.unitVector() * 5.0)        | new Point(pos: Vector.unitVector())        | false
+        new Rect(Vector.unitVector() * 3.0, Vector.unitVector() * 2.0)  | new Point(pos: Vector.unitVector() * -2.0) | false
+        new Rect(Vector.unitVector() * -3.0, Vector.unitVector() * 2.0) | new Point(pos: Vector.unitVector() * 10.0) | false
     }
 
 }
