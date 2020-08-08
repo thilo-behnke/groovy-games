@@ -1,6 +1,6 @@
 package org.tb.gg.collision
 
-import org.tb.gg.di.definition.Service
+
 import org.tb.gg.di.definition.Singleton
 import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.gameObject.shape.Line
@@ -11,7 +11,7 @@ import org.tb.gg.global.geom.Vector
 
 class ShapeCollisionDetector implements Singleton {
 
-    boolean detectCollision(Shape a, Shape b) {
+    boolean detect(Shape a, Shape b) {
         if (a instanceof Circle && b instanceof Circle) {
             return detectCollision((Circle) a, (Circle) b)
         } else if (a instanceof Circle && b instanceof Rect) {
@@ -45,7 +45,7 @@ class ShapeCollisionDetector implements Singleton {
         if (a instanceof Point && b instanceof Circle) {
             return detectCollision((Circle) b, (Point) a)
         } else if (a instanceof Point && b instanceof Line) {
-            return detectCollision((Point) a, (Line) b)
+            return detect((Point) a, (Line) b)
         } else if (a instanceof Point && b instanceof Rect) {
             return detectCollision((Rect) b, (Point) a)
         } else if (a instanceof Point && b instanceof Point) {
@@ -55,17 +55,16 @@ class ShapeCollisionDetector implements Singleton {
         throw new IllegalArgumentException("No implementation for collision check between ${a.class} and ${b.class}".toString())
     }
 
-
-    boolean detectCollision(Circle a, Circle b) {
+    private static boolean detectCollision(Circle a, Circle b) {
         (b.center - a.center).length() <= a.radius + b.radius
     }
 
-    boolean detectCollision(Rect a, Rect b) {
+    private static boolean detectCollision(Rect a, Rect b) {
         // TODO: Implement
         return false
     }
 
-    boolean detectCollision(Line lineA, Line lineB) {
+    private static boolean detectCollision(Line lineA, Line lineB) {
         // https://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
         // p + t r = q + u s
         def endCrossProduct = lineB.end.cross(lineA.end)
@@ -85,16 +84,16 @@ class ShapeCollisionDetector implements Singleton {
         return true
     }
 
-    boolean detectCollision(Point a, Point b) {
+    private static boolean detectCollision(Point a, Point b) {
         a.isPointWithin(b.center)
     }
 
-    boolean detectCollision(Circle circle, Rect rect) {
-        def closestPointInRectToCircleCenter = circle.center.clampOnRange(rect.topLeft)
+    private static boolean detectCollision(Circle circle, Rect rect) {
+        def closestPointInRectToCircleCenter = circle.center.clampOnRange(rect.bottomLeft, rect.topRight)
         return circle.isPointWithin(closestPointInRectToCircleCenter)
     }
 
-    boolean detectCollision(Circle circle, Line line) {
+    private static boolean detectCollision(Circle circle, Line line) {
         if (circle.isPointWithin(line.start) || circle.isPointWithin(line.end) || circle.isPointWithin(line.center)) {
             return true
         }
@@ -106,25 +105,25 @@ class ShapeCollisionDetector implements Singleton {
                 && lineDirection.isInSameDirection(lineCenterToClosestPoint)
     }
 
-    Vector getClosestPointToCircleCenterOnLine(Circle circle, Line line) {
+    private static Vector getClosestPointToCircleCenterOnLine(Circle circle, Line line) {
         def circleCenterToCenter = circle.center - line.center
         circleCenterToCenter.projectOnto(line.end - line.start)
     }
 
-    boolean detectCollision(Circle a, Point b) {
+    private static boolean detectCollision(Circle a, Point b) {
         a.isPointWithin(b.center)
     }
 
-    boolean detectCollision(Rect a, Line b) {
+    private static boolean detectCollision(Rect a, Line b) {
         // TODO: Implement
         return false
     }
 
-    boolean detectCollision(Rect a, Point b) {
+    private static boolean detectCollision(Rect a, Point b) {
         a.isPointWithin(b.center)
     }
 
-    boolean detectCollision(Line a, Point b) {
+    private static boolean detectCollision(Line a, Point b) {
         a.isPointWithin(b.center)
     }
 

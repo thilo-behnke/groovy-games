@@ -58,10 +58,10 @@ class Rect extends Shape {
     }
 
     Vector getBottomLeft() {
-        return topLeft + new Vector(y: dim.y)
+        return topLeft + new Vector(y: -dim.y)
     }
 
     Vector getBottomRight() {
-        return topLeft + new Vector(x: dim.x, y: dim.y)
+        return topLeft + new Vector(x: dim.x, y: - dim.y)
     }
 }

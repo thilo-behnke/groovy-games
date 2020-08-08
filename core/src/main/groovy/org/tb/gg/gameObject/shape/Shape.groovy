@@ -14,6 +14,6 @@ abstract class Shape implements Renderable {
     abstract boolean isPointWithin(Vector pos)
 
     boolean collidesWith(Shape shape) {
-        return shapeCollisionDetector.detectCollision(this, shape)
+        return shapeCollisionDetector.detect(this, shape)
     }
 }

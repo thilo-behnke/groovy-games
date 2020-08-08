@@ -16,7 +16,7 @@ class ShapeCollisionHandlerSpec extends Specification {
 
     def 'circle <-> circle'() {
         expect:
-        shapeCollisionDetector.detectCollision(circle1, circle2) == doOverlap
+        shapeCollisionDetector.detect(circle1, circle2) == doOverlap
         where:
         circle1                                            | circle2                                                    | doOverlap
         new Circle(center: Vector.unitVector(), radius: 5) | new Circle(center: Vector.unitVector(), radius: 2)         | true

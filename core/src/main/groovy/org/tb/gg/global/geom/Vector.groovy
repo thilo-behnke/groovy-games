@@ -87,21 +87,17 @@ class Vector {
         dot(b) > 0
     }
 
-    Vector clampOnRange(Vector b) {
-        clampOnRange(b.x, b.y)
+    Vector clampOnRange(Vector min, Vector max) {
+        return new Vector(x: clamp(x, min.x, max.x), y: clamp(y, min.y, max.y))
     }
 
-    Vector clampOnRange(BigDecimal min, BigDecimal max) {
-        return new Vector(x: clamp(x, min, max), y: clamp(y, min, max))
-    }
-
-    private clamp(BigDecimal comp, BigDecimal min, BigDecimal max) {
-        if (x < min) {
+    private static clamp(BigDecimal comp, BigDecimal min, BigDecimal max) {
+        if (comp < min) {
             return min
-        } else if (x > max) {
+        } else if (comp > max) {
             return max
         }
-        return x
+        return comp
     }
 
     BigDecimal length() {
