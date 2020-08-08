@@ -26,8 +26,8 @@ class RectButton extends GameObject implements InteractiveBody {
     }
 
     @Override
-    void onInit() {
-        super.onInit()
+    void init() {
+        super.init()
 
         mouseClickDisposable = mouseClicks.subscribe {
             switch (configurationService.windowMode) {
@@ -44,8 +44,8 @@ class RectButton extends GameObject implements InteractiveBody {
     }
 
     @Override
-    void onDestroy() {
-        super.onDestroy()
+    void destroy() {
+        super.destroy()
 
         mouseClickDisposable.dispose()
     }

@@ -59,6 +59,8 @@ class SwingMouseEventAdapter implements MouseEventProvider {
 
     private Observable<MouseEvent> mouseMoveEvent
 
+    private MouseEvent currentMousePosition
+
     private JFrame jFrame
     private JPanel jPanel
     private MouseListener mouseListener
@@ -83,6 +85,9 @@ class SwingMouseEventAdapter implements MouseEventProvider {
                 .map { mousePosOpt ->
                     def mousePos = mousePosOpt.get()
                     return new MouseEvent(pos: new Vector(x: mousePos.x, y: jPanel.getHeight() - mousePos.y))
+                }
+                .doOnNext {mouseEvent ->
+                    currentMousePosition = mouseEvent
                 }
 
         mouseListener = new SwingMouseListener(this)
@@ -124,5 +129,10 @@ class SwingMouseEventAdapter implements MouseEventProvider {
     @Override
     Observable<MouseEvent> getMousePosition() {
         return mouseMoveEvent
+    }
+
+    @Override
+    MouseEvent getCurrentMousePosition() {
+        return currentMousePosition
     }
 }

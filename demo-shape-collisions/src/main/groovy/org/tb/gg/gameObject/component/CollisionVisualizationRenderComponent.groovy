@@ -15,12 +15,12 @@ class CollisionVisualizationRenderComponent extends RenderComponent {
     }
 
     @Override
-    void onInit() {
+    void init() {
 
     }
 
     @Override
-    void onDestroy() {
+    void destroy() {
 
     }
 }

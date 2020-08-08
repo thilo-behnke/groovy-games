@@ -9,4 +9,6 @@ interface MouseEventProvider extends Singleton {
     Observable<MouseEvent> getMouseUp()
     Observable<MouseEvent> getMouseClicks()
     Observable<MouseEvent> getMousePosition()
+
+    MouseEvent getCurrentMousePosition()
 }

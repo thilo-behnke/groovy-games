@@ -37,14 +37,14 @@ class InteractiveBodyMouseClickSpec extends Specification {
 
         ServiceProvider.setService(mouseEventProvider, 'MouseEventProvider')
 
-        dummyGameObject.onInit()
+        dummyGameObject.init()
         mouseClickTestObserver = dummyGameObject.mouseClicks.test()
     }
 
     void cleanup() {
         mouseClickTestObserver.dispose()
         mouseClickSubject.onComplete()
-        dummyGameObject.onDestroy()
+        dummyGameObject.destroy()
         // TODO: It would be great if this could be integrated into Spock.
         ServiceProvider.reset()
     }
@@ -102,7 +102,7 @@ class InteractiveGameObjectMousePositionSpec extends Specification {
     InteractiveBody dummyGameObject
     ShapeBody mockBody
 
-    Subject<MouseEvent> mousePositionSubject
+    MouseEvent currentMousePosition
 
     void setup() {
         mockBody = Mock(ShapeBody)
@@ -110,18 +110,15 @@ class InteractiveGameObjectMousePositionSpec extends Specification {
         dummyGameObject = DummyGameObject.create(mockBody)
 
         mouseEventProvider = Mock(MouseEventProvider)
-        mousePositionSubject = BehaviorSubject.create()
         mouseEventProvider.mouseClicks >> Observable.empty()
-        mouseEventProvider.mousePosition >> mousePositionSubject
+        mouseEventProvider.getCurrentMousePosition() >> {args -> currentMousePosition}
 
         ServiceProvider.setService(mouseEventProvider, 'MouseEventProvider')
         // TODO: Can this be done in Spock somehow?
-        dummyGameObject.onInit()
+        dummyGameObject.init()
     }
 
     void cleanup() {
-        mousePositionSubject.onComplete()
-        dummyGameObject.onDestroy()
         // TODO: It would be great if this could be integrated into Spock.
         ServiceProvider.reset()
     }
@@ -167,7 +164,7 @@ class InteractiveGameObjectMousePositionSpec extends Specification {
 
     private sendMousePosition(MouseEvent ...events) {
         events.each {
-            mousePositionSubject.onNext(it)
+            currentMousePosition = it
         }
     }
 }

@@ -15,12 +15,12 @@ class InputComponent implements Lifecycle {
     }
 
     @Override
-    void onInit() {
-        inputActionProvider.onInit()
+    void init() {
+        inputActionProvider.init()
     }
 
     @Override
-    void onDestroy() {
-        inputActionProvider.onDestroy()
+    void destroy() {
+        inputActionProvider.destroy()
     }
 }

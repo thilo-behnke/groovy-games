@@ -20,12 +20,12 @@ class RenderComponentSpec extends Specification {
         }
 
         @Override
-        void onInit() {
+        void init() {
 
         }
 
         @Override
-        void onDestroy() {
+        void destroy() {
 
         }
     }

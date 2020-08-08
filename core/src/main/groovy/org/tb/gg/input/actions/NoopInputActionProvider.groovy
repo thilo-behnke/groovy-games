@@ -15,12 +15,12 @@ class NoopInputActionProvider implements InputActionProvider {
     }
 
     @Override
-    void onInit() {
+    void init() {
 
     }
 
     @Override
-    void onDestroy() {
+    void destroy() {
 
     }
 }
