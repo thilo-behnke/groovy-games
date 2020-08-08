@@ -136,8 +136,6 @@ class Vector {
     }
 
     BigDecimal angleBetween(Vector b) {
-//        def normalizedDot = normalize().dot(b.normalize()).round(MathConstants.ctx)
-//        def angle = BigDecimalMath.acos(normalizedDot, MathConstants.ctx)
         def angle = BigDecimalMath.atan2(b.y, b.x, MathConstants.ctx) - BigDecimalMath.atan2(y, x, MathConstants.ctx)
         return angle >= 0 ? angle : 2 * MathConstants.pi() + angle
     }

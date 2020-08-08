@@ -15,6 +15,22 @@ class Line extends Shape {
         this.end = end
     }
 
+    void setStart(Vector start) {
+        if (start.x > end.x && start.y > end.y) {
+            this.start = end
+        } else {
+            this.start = start
+        }
+    }
+
+    void setEnd(Vector end) {
+        if (start.x > end.x && start.y > end.y) {
+            this.end = start
+        } else {
+            this.end = end
+        }
+    }
+
     Line scaleFromEnd(BigDecimal scaleFactor) {
         start = end + (start - end) * scaleFactor
         return this
@@ -45,18 +61,22 @@ class Line extends Shape {
 
     @Override
     boolean isPointWithin(Vector pos) {
-        if (pos == Vector.zeroVector() && (start == Vector.zeroVector() || end == Vector.zeroVector())) {
+        if (pos == start || pos == end) {
             return true
         }
-        def onSameLine = (end - start).normalize() == pos.normalize()
-        if (!onSameLine) {
+        def lineDirection = end - start
+        // Point needs to be on same infinite line as line segment.
+        if ((pos - start).normalize() != lineDirection.normalize()) {
             return false
         }
-        def betweenStartAndEnd = start.x <= pos.x && start.y <= pos.y && pos.x <= end.x && pos.y <= end.y
-        return betweenStartAndEnd
+        // Otherwise check the projection of the point onto the line.
+        def pointProjected = pos.projectOnto(lineDirection)
+        def startToPointProjected = pointProjected - start
+        return startToPointProjected.length() <= lineDirection.length()
+                && lineDirection.dot(startToPointProjected) >= 0
     }
 
     BigDecimal getLength() {
-       return (end - start).length()
+        return (end - start).length()
     }
 }

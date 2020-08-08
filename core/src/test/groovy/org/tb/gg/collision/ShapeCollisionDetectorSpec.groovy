@@ -103,4 +103,29 @@ class ShapeCollisionDetectorSpec extends Specification {
         new Rect(Vector.unitVector() * -3.0, Vector.unitVector() * 2.0) | new Point(pos: Vector.unitVector() * 10.0) | false
     }
 
+    // TODO: Fix implementation and write tests.
+    @Ignore
+    def 'line <-> line'() {
+        expect:
+        shapeCollisionDetector.detect(line1, line2) == doCollide
+        where:
+        line1                                                     | line2                                              | doCollide
+        new Line(Vector.zeroVector(), Vector.unitVector())        | new Line(Vector.zeroVector(), Vector.unitVector()) | true
+        new Line(Vector.unitVector(), Vector.unitVector() * -1.0) | new Line(Vector.zeroVector(), Vector.unitVector()) | true
+    }
+
+    def 'line <-> point'() {
+        expect:
+        shapeCollisionDetector.detect(line, point) == doCollide
+        where:
+        line                                                      | point                                     | doCollide
+        new Line(Vector.zeroVector(), Vector.unitVector())        | new Point(pos: Vector.zeroVector())       | true
+        new Line(Vector.unitVector(), Vector.unitVector() * -1.0) | new Point(pos: Vector.unitVector())       | true
+        new Line(Vector.zeroVector(), Vector.unitVector() * 2.0)  | new Point(pos: Vector.unitVector() * 2.0) | true
+        new Line(Vector.unitVector(), Vector.unitVector() * -1.0) | new Point(pos: Vector.unitVector() * 0.8) | true
+        new Line(Vector.unitVector(), Vector.unitVector() * -1.0) | new Point(pos: Vector.unitVector() * 2.0) | false
+        new Line(Vector.unitVector(), Vector.unitVector() * -1.0) | new Point(pos: Vector.unitVector() * 2.0) | false
+        new Line(Vector.unitVector(), Vector.unitVector() * 10.0) | new Point(pos: new Vector(x: 9, y: 10))   | false
+        new Line(new Vector(x: 4, y: 8), new Vector(x: 9, y: 4))  | new Point(pos: new Vector(x: 5, y: 5))    | false
+    }
 }
