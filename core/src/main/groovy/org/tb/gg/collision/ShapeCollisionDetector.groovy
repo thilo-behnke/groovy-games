@@ -32,6 +32,8 @@ class ShapeCollisionDetector implements Singleton {
 
         if (a instanceof Line && b instanceof Line) {
             return detectCollision((Line) a, (Line) b)
+        } else if (a instanceof Line && b instanceof Rect) {
+            return detectCollision((Rect) b, (Line) a)
         } else if (a instanceof Line && b instanceof Point) {
             return detectCollision((Line) a, (Point) b)
         }

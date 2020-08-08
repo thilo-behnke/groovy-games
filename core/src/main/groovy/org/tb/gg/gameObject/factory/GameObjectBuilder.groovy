@@ -1,5 +1,6 @@
 package org.tb.gg.gameObject.factory
 
+import groovy.transform.AutoClone
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent

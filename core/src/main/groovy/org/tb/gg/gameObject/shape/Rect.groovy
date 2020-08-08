@@ -34,7 +34,7 @@ class Rect extends Shape {
 
     @Override
     void setCenter(Vector pos) {
-        topLeft = pos + center - dim * Vector.invertYVector() / 2.0
+        topLeft = pos - dim * Vector.invertYVector() / 2.0
     }
 
     Line getTopBorder() {
