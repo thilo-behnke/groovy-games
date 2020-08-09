@@ -5,6 +5,7 @@ import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
+import org.tb.gg.input.mouseEvent.MouseRectangleEvent
 
 trait InteractiveBody {
     @Inject
@@ -17,6 +18,14 @@ trait InteractiveBody {
                 .filter {
                     body.isPointWithin(it.pos)
                 }
+    }
+
+    Observable<MouseRectangleEvent> getMouseRectangles() {
+        mouseEventProvider.mouseRectangles
+            .filter {
+                System.println(it.rect)
+                body.collidesWith(it.rect)
+            }
     }
 
     boolean getIsMouseInShape() {

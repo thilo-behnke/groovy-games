@@ -2,17 +2,19 @@ package org.tb.gg.input.awt
 
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.subjects.AsyncSubject
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 import org.tb.gg.di.Inject
 import org.tb.gg.env.EnvironmentService
+import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
-import org.tb.gg.renderer.destination.JPanelDestination
+import org.tb.gg.input.mouseEvent.MouseRectangleEvent
 
 import javax.swing.JFrame
 import javax.swing.JPanel
-import java.awt.MouseInfo
 import java.awt.event.MouseListener
 import java.util.concurrent.TimeUnit
 
@@ -57,6 +59,7 @@ class SwingMouseEventAdapter implements MouseEventProvider {
     private BehaviorSubject<MouseEvent> mouseDownSubject
     private BehaviorSubject<MouseEvent> mouseUpSubject
     private BehaviorSubject<MouseEvent> mouseClickSubject
+    private PublishSubject<MouseRectangleEvent> mouseRectanglesSubject
     private Observable<MouseEvent> mouseMoveEvent
     private Disposable mouseMoveEventDisposable
 
@@ -71,10 +74,22 @@ class SwingMouseEventAdapter implements MouseEventProvider {
         mouseDownSubject = BehaviorSubject.create()
         mouseUpSubject = BehaviorSubject.create()
         mouseClickSubject = BehaviorSubject.create()
+        mouseRectanglesSubject = PublishSubject.create()
 
         jFrame = (JFrame) environmentService.environment.environmentFrame
         jPanel = (JPanel) environmentService.environment.renderDestination
 
+        subscribeAndProcessMouseMoveEvents()
+        subscribeAndProcessRectangleEvents()
+
+        mouseListener = new SwingMouseListener(this)
+        jFrame.addMouseListener(mouseListener)
+
+        // This class needs to provide the current position of the mouse synchronously, therefore subscribe here to make the observable hot.
+        mouseMoveEventDisposable = mouseMoveEvent.subscribe()
+    }
+
+    private subscribeAndProcessMouseMoveEvents() {
         mouseMoveEvent = (Observable<MouseEvent>) Observable
                 .interval((1000 / 60).toInteger(), TimeUnit.MILLISECONDS)
                 .map {
@@ -87,16 +102,22 @@ class SwingMouseEventAdapter implements MouseEventProvider {
                     def mousePos = mousePosOpt.get()
                     return new MouseEvent(pos: new Vector(x: mousePos.x, y: jPanel.getHeight() - mousePos.y))
                 }
-                .doOnNext {mouseEvent ->
-                    // TODO: How to do this cleanly in a side effect func?
+                .doOnNext { mouseEvent ->
                     currentMousePosition = mouseEvent
                 }
-        mouseListener = new SwingMouseListener(this)
-        jFrame.addMouseListener(mouseListener)
+    }
 
-        // This class needs to provide the current position of the mouse synchronously, therefore subscribe here to make the observable hot.
-        mouseMoveEventDisposable = mouseMoveEvent.subscribe()
-
+    // TODO: This does not have to be in the swing adapter class, but could be a processing class on top.
+    private subscribeAndProcessRectangleEvents() {
+        mouseDown.switchMap { start ->
+            System.println(start)
+            mouseUp.take(1).map { stop ->
+                System.println(stop)
+                new MouseRectangleEvent(rect: new Rect(start.pos, stop.pos - start.pos))
+            }
+        }.doOnNext { MouseRectangleEvent event ->
+            mouseRectanglesSubject.onNext(event)
+        }.subscribe()
     }
 
     @Override
@@ -135,6 +156,11 @@ class SwingMouseEventAdapter implements MouseEventProvider {
     @Override
     Observable<MouseEvent> getMousePosition() {
         return mouseMoveEvent
+    }
+
+    @Override
+    Observable<MouseRectangleEvent> getMouseRectangles() {
+        return mouseRectanglesSubject
     }
 
     @Override

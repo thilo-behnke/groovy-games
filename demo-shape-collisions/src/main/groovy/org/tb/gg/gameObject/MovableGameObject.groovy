@@ -3,7 +3,6 @@ package org.tb.gg.gameObject
 import io.reactivex.rxjava3.disposables.Disposable
 import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.component.MovableCircleAction
-import org.tb.gg.gameObject.component.MovableShapeInputComponent
 import org.tb.gg.gameObject.services.InputComponentProvider
 import org.tb.gg.gameObject.traits.InteractiveBody
 import org.tb.gg.global.geom.Vector
@@ -24,6 +23,9 @@ class MovableGameObject extends GameObject implements InteractiveBody {
         super.init()
         mouseClickDisposable = getMouseClicks().subscribe {
             inputComponentProvider.setAssignedMovableGameObject(this)
+        }
+        getMouseRectangles().subscribe{
+            System.println(it)
         }
     }
 
