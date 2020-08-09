@@ -94,10 +94,10 @@ class ShapeCollisionDetectorSpec extends Specification {
         where:
         rect                                                     | line                                                            | doCollide
         new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(Vector.zeroVector(), Vector.unitVector())              | true
-//        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(new Vector(x: 1, y: 1), new Vector(x: 2, y: 1))        | true
-//        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(new Vector(x: 1, y: 3), new Vector(x: 2, y: 4))        | false
-//        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(Vector.unitVector() * 2.0, Vector.unitVector() * 5.0)  | false
-//        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(Vector.unitVector() * 5.0, new Vector(x: 5.0, y: 6.0)) | false
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(new Vector(x: 1, y: 1), new Vector(x: 2, y: 1))        | true
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(new Vector(x: 1, y: 3), new Vector(x: 2, y: 4))        | false
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(Vector.unitVector() * 2.0, Vector.unitVector() * 5.0)  | false
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(Vector.unitVector() * 5.0, new Vector(x: 5.0, y: 6.0)) | false
     }
 
     @Unroll
