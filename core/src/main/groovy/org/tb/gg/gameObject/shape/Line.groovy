@@ -15,22 +15,6 @@ class Line extends Shape {
         this.end = end
     }
 
-    void setStart(Vector start) {
-        if (start.x > end.x && start.y > end.y) {
-            this.start = end
-        } else {
-            this.start = start
-        }
-    }
-
-    void setEnd(Vector end) {
-        if (start.x > end.x && start.y > end.y) {
-            this.end = start
-        } else {
-            this.end = end
-        }
-    }
-
     Line scaleFromEnd(BigDecimal scaleFactor) {
         start = end + (start - end) * scaleFactor
         return this

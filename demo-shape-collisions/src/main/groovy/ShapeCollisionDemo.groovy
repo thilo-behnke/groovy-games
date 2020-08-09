@@ -77,7 +77,7 @@ defaultScene.accessGameObjectProvider() << line1
 defaultScene.accessGameObjectProvider() << line2
 defaultScene.accessGameObjectProvider() << rect1
 defaultScene.accessGameObjectProvider() << rect2
-defaultScene.accessGameObjectProvider() << text1
+//defaultScene.accessGameObjectProvider() << text1
 
 gameEngine.addScene(defaultScene)
 gameEngine.changeScene(defaultScene.name)

@@ -2,7 +2,7 @@ package org.tb.gg.gameObject.services
 
 import org.tb.gg.di.definition.Singleton
 import org.tb.gg.gameObject.MovableGameObject
-import org.tb.gg.gameObject.component.MovableCircleAction
+import org.tb.gg.gameObject.component.MovableGameObjectAction
 import org.tb.gg.gameObject.component.MovableShapeInputComponent
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.input.NoopInputComponent
@@ -29,10 +29,10 @@ class InputComponentProvider implements Singleton {
         inputComponent = new InputComponentBuilder()
                 .setInputComponentClass(MovableShapeInputComponent)
                 .setActions(
-                        (HashSet<String>) MovableCircleAction.values()*.name(),
+                        (HashSet<String>) MovableGameObjectAction.values()*.name(),
                 )
                 .setDefaultKeyMapping(
-                        MovableCircleAction.values().collectEntries { it.keys.collectEntries() { key -> [(key): it.name()] } }
+                        MovableGameObjectAction.values().collectEntries { it.keys.collectEntries() { key -> [(key): it.name()] } }
                 )
                 .build()
         inputComponent.init()
