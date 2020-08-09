@@ -71,12 +71,12 @@ def text1 = getBaseBuilder()
 
 def defaultScene = new DefaultGameScene('default')
 
-defaultScene.accessGameObjectProvider() << circle1
-defaultScene.accessGameObjectProvider() << circle2
+//defaultScene.accessGameObjectProvider() << circle1
+//defaultScene.accessGameObjectProvider() << circle2
 defaultScene.accessGameObjectProvider() << line1
 defaultScene.accessGameObjectProvider() << line2
-defaultScene.accessGameObjectProvider() << rect1
-defaultScene.accessGameObjectProvider() << rect2
+//defaultScene.accessGameObjectProvider() << rect1
+//defaultScene.accessGameObjectProvider() << rect2
 //defaultScene.accessGameObjectProvider() << text1
 
 gameEngine.addScene(defaultScene)
