@@ -1,12 +1,11 @@
 import org.tb.gg.GameEngineProvider
 import org.tb.gg.engine.DefaultGameScene
 import org.tb.gg.engine.GameEngine
-import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.MovableGameObject
 import org.tb.gg.gameObject.component.CollisionVisualizationRenderComponent
 import org.tb.gg.gameObject.components.input.NoopInputComponent
+import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
-import org.tb.gg.gameObject.components.physics.ShapePhysicsComponent
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.gameObject.shape.Line
@@ -18,7 +17,7 @@ GameEngine gameEngine = new GameEngineProvider().provideGameEngine()
 
 def getBaseBuilder = {
         new GameObjectBuilder<MovableGameObject>(MovableGameObject.class)
-                .setPhysicsComponent(new ShapePhysicsComponent())
+                .setPhysicsComponent(NoopPhysicsComponent.get())
                 .setRenderComponent(new CollisionVisualizationRenderComponent())
                 .setInputComponent(NoopInputComponent.get())
 }

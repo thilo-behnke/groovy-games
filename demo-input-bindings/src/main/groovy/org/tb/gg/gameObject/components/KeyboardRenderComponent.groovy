@@ -49,7 +49,6 @@ class KeyboardRenderComponent extends RenderComponent {
     private createTitleText() {
         def keyboard = (Keyboard) parent
         RenderNode.leaf(
-                // TODO: Fix
                 new Text(
                         pos + new Vector(x: 0, y: TITLE_POS_Y),
                         FRAME_DIM,

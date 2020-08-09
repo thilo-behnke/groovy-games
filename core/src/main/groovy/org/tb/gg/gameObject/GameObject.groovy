@@ -42,13 +42,6 @@ class GameObject implements Updateable, Lifecycle {
     }
 
     @Override
-    void update(Long timestamp, Long delta) {
-        def activeActions = inputComponent.getActiveActions()
-        // TODO: Update based on active actions.
-        // TODO: Integrate state machine.
-    }
-
-    @Override
     void init() {
         renderComponent.init()
         inputComponent.init()

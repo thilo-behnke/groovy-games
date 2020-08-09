@@ -4,7 +4,6 @@ import org.tb.gg.di.Inject
 import org.tb.gg.env.EnvironmentService
 import org.tb.gg.env.Graphics
 
-// TODO: It would be nice to inject the correct executor based on the environment - like a bean factory in spring.
 class ConfigurationExecutorFactory {
     @Inject
     private EnvironmentService environmentService

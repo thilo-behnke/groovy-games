@@ -4,11 +4,9 @@ import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
-import org.tb.gg.gameObject.components.physics.ShapePhysicsComponent
 import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.global.util.Builder
 import org.tb.gg.input.Key
-import org.tb.gg.input.actions.InputActionProvider
 import org.tb.gg.input.actions.KeyPressInputActionProvider
 import org.tb.gg.input.actions.factory.AbstractInputActionProviderFactory
 import org.tb.gg.input.actions.factory.InputActionProviderArgs
@@ -33,7 +31,7 @@ class KeyBoundGameObjectBuilder<T extends GameObject> implements Builder<GameObj
         return this
     }
 
-    KeyBoundGameObjectBuilder setPhysicsComponent(ShapePhysicsComponent physicsComponent) {
+    KeyBoundGameObjectBuilder setPhysicsComponent(PhysicsComponent physicsComponent) {
         gameObject.physicsComponent = physicsComponent
         return this
     }
