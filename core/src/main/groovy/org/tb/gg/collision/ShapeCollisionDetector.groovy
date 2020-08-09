@@ -8,6 +8,7 @@ import org.tb.gg.gameObject.shape.Point
 import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
+import org.tb.gg.global.math.MathConstants
 
 class ShapeCollisionDetector implements Singleton {
 
@@ -116,8 +117,16 @@ class ShapeCollisionDetector implements Singleton {
     }
 
     private static boolean detectCollision(Rect a, Line b) {
-        // TODO: Implement
-        return false
+        def perpendicularToLine = (b.end - b.start).rotate(MathConstants.HALF_PI)
+        def topLeft = a.topLeft
+        def topRight = a.topRight
+        def bottomRight = a.bottomLeft
+        def bottomLeft = a.bottomRight
+        def dp1 = perpendicularToLine.dot(topLeft)
+        def dp2 = perpendicularToLine.dot(topRight)
+        def dp3 = perpendicularToLine.dot(bottomRight)
+        def dp4 = perpendicularToLine.dot(bottomLeft)
+        return dp1 * dp2 <= 0 || dp2 * dp3 <= 0 || dp3 * dp4 <= 0
     }
 
     private static boolean detectCollision(Rect a, Point b) {

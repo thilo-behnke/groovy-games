@@ -7,6 +7,7 @@ import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.geom.Vector
 import spock.lang.Ignore
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class ShapeCollisionDetectorSpec extends Specification {
 
@@ -16,6 +17,7 @@ class ShapeCollisionDetectorSpec extends Specification {
         shapeCollisionDetector = new ShapeCollisionDetector()
     }
 
+    @Unroll
     def 'circle <-> circle'() {
         expect:
         shapeCollisionDetector.detect(circle1, circle2) == doCollide
@@ -31,6 +33,7 @@ class ShapeCollisionDetectorSpec extends Specification {
         new Circle(center: Vector.unitVector(), radius: 5) | new Circle(center: Vector.unitVector() * 22.0, radius: 10) | false
     }
 
+    @Unroll
     def 'circle <-> point'() {
         expect:
         shapeCollisionDetector.detect(circle, point) == doCollide
@@ -44,6 +47,7 @@ class ShapeCollisionDetectorSpec extends Specification {
         new Circle(center: Vector.unitVector(), radius: 10)      | new Point(pos: Vector.unitVector() * 20.0) | false
     }
 
+    @Unroll
     def 'circle <-> line'() {
         expect:
         shapeCollisionDetector.detect(circle, line) == doCollide
@@ -56,6 +60,7 @@ class ShapeCollisionDetectorSpec extends Specification {
         new Circle(center: Vector.zeroVector(), radius: 1) | new Line(Vector.unitVector() * 1.1, Vector.unitVector() * 4.4) | false
     }
 
+    @Unroll
     def 'circle <-> rect'() {
         expect:
         shapeCollisionDetector.detect(circle, rect) == doCollide
@@ -72,6 +77,7 @@ class ShapeCollisionDetectorSpec extends Specification {
 
     // TODO: Write tests
     @Ignore
+    @Unroll
     def 'rect <-> rect'() {
         expect:
         shapeCollisionDetector.detect(rect1, rect2) == doCollide
@@ -81,15 +87,20 @@ class ShapeCollisionDetectorSpec extends Specification {
     }
 
     // TODO: Write tests
-    @Ignore
+    @Unroll
     def 'rect <-> line'() {
         expect:
         shapeCollisionDetector.detect(rect, line) == doCollide
         where:
-        rect                                                     | line                                               | doCollide
-        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(Vector.zeroVector(), Vector.unitVector()) | true
+        rect                                                     | line                                                            | doCollide
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(Vector.zeroVector(), Vector.unitVector())              | true
+//        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(new Vector(x: 1, y: 1), new Vector(x: 2, y: 1))        | true
+//        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(new Vector(x: 1, y: 3), new Vector(x: 2, y: 4))        | false
+//        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(Vector.unitVector() * 2.0, Vector.unitVector() * 5.0)  | false
+//        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Line(Vector.unitVector() * 5.0, new Vector(x: 5.0, y: 6.0)) | false
     }
 
+    @Unroll
     def 'rect <-> point'() {
         expect:
         shapeCollisionDetector.detect(rect, point) == doCollide
@@ -103,6 +114,7 @@ class ShapeCollisionDetectorSpec extends Specification {
         new Rect(Vector.unitVector() * -3.0, Vector.unitVector() * 2.0) | new Point(pos: Vector.unitVector() * 10.0) | false
     }
 
+    @Unroll
     def 'line <-> line'() {
         expect:
         shapeCollisionDetector.detect(line1, line2) == doCollide
@@ -120,6 +132,7 @@ class ShapeCollisionDetectorSpec extends Specification {
         new Line(Vector.unitVector(), new Vector(x: 2, y: 1))     | new Line(new Vector(x: 3, y: 3), new Vector(x: 4, y: 3))     | false
     }
 
+    @Unroll
     def 'line <-> point'() {
         expect:
         shapeCollisionDetector.detect(line, point) == doCollide
