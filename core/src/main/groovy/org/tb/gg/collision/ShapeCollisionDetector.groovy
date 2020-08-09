@@ -62,8 +62,15 @@ class ShapeCollisionDetector implements Singleton {
     }
 
     private static boolean detectCollision(Rect a, Rect b) {
-        // TODO: Implement
-        return false
+        def rectAXRange = CollisionUtils.Range.create(a.topLeft.x, a.topRight.x)
+        def rectBXRange = CollisionUtils.Range.create(b.topLeft.x, b.topRight.x)
+        if (!CollisionUtils.doRangesOverlap(rectAXRange, rectBXRange)) {
+            return false
+        }
+        def rectAYRange = CollisionUtils.Range.create(a.bottomLeft.y, a.topLeft.y)
+        def rectBYRange = CollisionUtils.Range.create(b.bottomLeft.y, b.topLeft.y)
+
+        return CollisionUtils.doRangesOverlap(rectAYRange, rectBYRange)
     }
 
     private static boolean detectCollision(Line lineA, Line lineB) {
@@ -118,19 +125,19 @@ class ShapeCollisionDetector implements Singleton {
     }
 
     private static boolean detectCollision(Rect a, Line b) {
-        if(!checkLineRectCollision(a, b)) {
+        if (!checkLineRectCollision(a, b)) {
             return false
         }
         def rectXRange = CollisionUtils.Range.create(a.topLeft.x, a.topRight.x)
         def lineXRange = CollisionUtils.Range.create(b.start.x, b.end.x)
-        def doesXRangeOverlap = CollisionUtils.doRangesOverlap(rectXRange, lineXRange)
+        def doesXRangeOverlap = CollisionUtils.doRangesOverlap(lineXRange, rectXRange)
         if (!doesXRangeOverlap) {
             return false
         }
 
         def rectYRange = CollisionUtils.Range.create(a.bottomLeft.y, a.topLeft.y)
         def lineYRange = CollisionUtils.Range.create(b.start.y, b.end.y)
-        def doesYRangeOverlap = CollisionUtils.doRangesOverlap(rectYRange, lineYRange)
+        def doesYRangeOverlap = CollisionUtils.doRangesOverlap(lineYRange, rectYRange)
         return doesYRangeOverlap
     }
 

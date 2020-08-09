@@ -75,15 +75,14 @@ class ShapeCollisionDetectorSpec extends Specification {
         new Circle(center: Vector.unitVector(), radius: 3)        | new Rect(Vector.unitVector() * -3.0, Vector.unitVector() * 1.0) | false
     }
 
-    // TODO: Write tests
-    @Ignore
     @Unroll
     def 'rect <-> rect'() {
         expect:
         shapeCollisionDetector.detect(rect1, rect2) == doCollide
         where:
-        rect1                                                    | rect2                                                    | doCollide
-        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Rect(Vector.zeroVector(), Vector.unitVector() * 5.0) | true
+        rect1                                                    | rect2                                                        | doCollide
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Rect(Vector.zeroVector(), Vector.unitVector() * 5.0)     | true
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Rect(Vector.unitVector() * 2.0, Vector.unitVector() * 1.0) | false
     }
 
     @Unroll
