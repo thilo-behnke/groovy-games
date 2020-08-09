@@ -139,11 +139,11 @@ class ShapeCollisionDetector implements Singleton {
     }
 
     private static boolean checkLineRectCollision(Rect a, Line b) {
-        def perpendicularToLine = (b.end - b.start).rotate(MathConstants.HALF_PI)
-        def topLeft = a.topLeft
-        def topRight = a.topRight
-        def bottomRight = a.bottomLeft
-        def bottomLeft = a.bottomRight
+        def perpendicularToLine = (b.end - b.start).normalize().rotate(MathConstants.HALF_PI)
+        def topLeft = a.topLeft - b.start
+        def topRight = a.topRight - b.start
+        def bottomRight = a.bottomRight - b.start
+        def bottomLeft = a.bottomLeft - b.start
         def dp1 = perpendicularToLine.dot(topLeft)
         def dp2 = perpendicularToLine.dot(topRight)
         def dp3 = perpendicularToLine.dot(bottomRight)
