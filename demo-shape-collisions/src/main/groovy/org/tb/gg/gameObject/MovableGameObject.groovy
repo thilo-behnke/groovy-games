@@ -12,6 +12,7 @@ class MovableGameObject extends GameObject implements InteractiveBody {
     @Inject
     private InputComponentProvider inputComponentProvider
     private Disposable mouseClickDisposable
+    private Disposable mouseRectangleDisposable
 
     @Override
     void update(Long timestamp, Long delta) {
@@ -21,11 +22,12 @@ class MovableGameObject extends GameObject implements InteractiveBody {
     @Override
     void init() {
         super.init()
-        mouseClickDisposable = getMouseClicks().subscribe {
+        mouseClickDisposable = mouseClicks.subscribe {
             inputComponentProvider.setAssignedMovableGameObject(this)
         }
-        getMouseRectangles().subscribe{
-            System.println(it)
+        mouseRectangleDisposable = mouseRectangles.subscribe{
+            System.println("Mouse rectangle collision: " + this)
+            inputComponentProvider.setAssignedMovableGameObject(this)
         }
     }
 

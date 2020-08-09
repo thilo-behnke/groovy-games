@@ -23,7 +23,6 @@ trait InteractiveBody {
     Observable<MouseRectangleEvent> getMouseRectangles() {
         mouseEventProvider.mouseRectangles
             .filter {
-                System.println(it.rect)
                 body.collidesWith(it.rect)
             }
     }

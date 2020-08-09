@@ -56,12 +56,14 @@ class SwingMouseEventAdapter implements MouseEventProvider {
     @Inject
     private EnvironmentService environmentService
 
-    private BehaviorSubject<MouseEvent> mouseDownSubject
-    private BehaviorSubject<MouseEvent> mouseUpSubject
-    private BehaviorSubject<MouseEvent> mouseClickSubject
+    private PublishSubject<MouseEvent> mouseDownSubject
+    private PublishSubject<MouseEvent> mouseUpSubject
+    private PublishSubject<MouseEvent> mouseClickSubject
     private PublishSubject<MouseRectangleEvent> mouseRectanglesSubject
     private Observable<MouseEvent> mouseMoveEvent
+    private Observable<MouseRectangleEvent> mouseRectangleEvent
     private Disposable mouseMoveEventDisposable
+    private Disposable mouseRectangleDisposable
 
     private MouseEvent currentMousePosition
 
@@ -71,9 +73,9 @@ class SwingMouseEventAdapter implements MouseEventProvider {
 
     @Override
     void init() {
-        mouseDownSubject = BehaviorSubject.create()
-        mouseUpSubject = BehaviorSubject.create()
-        mouseClickSubject = BehaviorSubject.create()
+        mouseDownSubject = PublishSubject.create()
+        mouseUpSubject = PublishSubject.create()
+        mouseClickSubject = PublishSubject.create()
         mouseRectanglesSubject = PublishSubject.create()
 
         jFrame = (JFrame) environmentService.environment.environmentFrame
@@ -87,6 +89,7 @@ class SwingMouseEventAdapter implements MouseEventProvider {
 
         // This class needs to provide the current position of the mouse synchronously, therefore subscribe here to make the observable hot.
         mouseMoveEventDisposable = mouseMoveEvent.subscribe()
+        mouseRectangleDisposable = mouseRectangleEvent.subscribe()
     }
 
     private subscribeAndProcessMouseMoveEvents() {
@@ -109,21 +112,20 @@ class SwingMouseEventAdapter implements MouseEventProvider {
 
     // TODO: This does not have to be in the swing adapter class, but could be a processing class on top.
     private subscribeAndProcessRectangleEvents() {
-        mouseDown.switchMap { start ->
-            System.println(start)
+        mouseRectangleEvent = mouseDown.switchMap { start ->
             mouseUp.take(1).map { stop ->
-                System.println(stop)
                 new MouseRectangleEvent(rect: new Rect(start.pos, stop.pos - start.pos))
             }
         }.doOnNext { MouseRectangleEvent event ->
             mouseRectanglesSubject.onNext(event)
-        }.subscribe()
+        }
     }
 
     @Override
     void destroy() {
         jFrame.removeMouseListener(mouseListener)
         mouseMoveEventDisposable.dispose()
+        mouseRectangleDisposable.dispose()
     }
 
     protected alertMouseDown(java.awt.event.MouseEvent e) {
