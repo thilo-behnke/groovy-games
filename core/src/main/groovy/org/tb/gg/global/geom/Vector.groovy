@@ -101,6 +101,10 @@ class Vector {
         return new Vector(x: clamp(x, min.x, max.x), y: clamp(y, min.y, max.y))
     }
 
+    Vector scale(BigDecimal scaleFactor) {
+        multiply(scaleFactor)
+    }
+
     private static clamp(BigDecimal comp, BigDecimal min, BigDecimal max) {
         if (comp < min) {
             return min

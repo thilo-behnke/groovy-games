@@ -1,6 +1,6 @@
 package org.tb.gg.global.geom
 
-import ch.obermuhlner.math.big.BigDecimalMath
+
 import org.tb.gg.global.math.MathConstants
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -60,5 +60,18 @@ class VectorOperationSpec extends Specification {
         new Vector(x: 0, y: 1)   | MathConstants.PI      || new Vector(x: 0, y: -1)
         new Vector(x: 1, y: 1)   | MathConstants.PI      || new Vector(x: -1, y: -1)
         new Vector(x: -1, y: -1) | MathConstants.PI      || new Vector(x: 1, y: 1)
+    }
+
+    @Unroll
+    def 'scale'() {
+        expect:
+        a.scale(scaleFactor) == scaled
+        where:
+        a                         | scaleFactor || scaled
+        Vector.unitVector()       | 0.0         || Vector.zeroVector()
+        Vector.unitVector()       | 1.0         || Vector.unitVector()
+        Vector.unitVector()       | 0.5         || new Vector(x: 0.5, y: 0.5)
+        Vector.zeroVector()       | 10.0        || Vector.zeroVector()
+        Vector.unitVector() * 2.0 | 10.5        || new Vector(x: 21, y: 21)
     }
 }
