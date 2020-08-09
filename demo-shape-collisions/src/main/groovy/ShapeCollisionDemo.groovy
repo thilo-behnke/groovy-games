@@ -17,7 +17,7 @@ GameEngine gameEngine = new GameEngineProvider().provideGameEngine()
 
 def getBaseBuilder = {
         new GameObjectBuilder<MovableGameObject>(MovableGameObject.class)
-                .setPhysicsComponent(NoopPhysicsComponent.get())
+                .setPhysicsComponent(new NoopPhysicsComponent())
                 .setRenderComponent(new CollisionVisualizationRenderComponent())
                 .setInputComponent(NoopInputComponent.get())
 }

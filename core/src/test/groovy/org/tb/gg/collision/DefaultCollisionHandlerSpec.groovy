@@ -71,7 +71,7 @@ class DefaultCollisionHandlerSpec extends Specification {
 
     private static createGameObject(ShapeBody shapeBody, Integer id) {
         def obj = DummyGameObject.create(shapeBody)
-        obj.physicsComponent = NoopPhysicsComponent.get()
+        obj.physicsComponent = new NoopPhysicsComponent()
         obj.id = id
         return obj
     }

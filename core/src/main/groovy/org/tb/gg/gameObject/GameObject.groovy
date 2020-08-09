@@ -42,6 +42,10 @@ class GameObject implements Updateable, Lifecycle {
     }
 
     @Override
+    void update(Long timestamp, Long delta) {
+    }
+
+    @Override
     void init() {
         renderComponent.init()
         inputComponent.init()
