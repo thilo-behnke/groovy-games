@@ -115,7 +115,7 @@ class SwingMouseEventAdapter implements MouseEventProvider {
         mouseRectangleEvent = mouseDown.switchMap { start ->
             mouseUp.take(1).map { stop ->
                 new MouseRectangleEvent(rect: new Rect(start.pos, stop.pos - start.pos))
-            }
+            }.filter { it.rect.size > 0 }
         }.doOnNext { MouseRectangleEvent event ->
             mouseRectanglesSubject.onNext(event)
         }

@@ -38,6 +38,10 @@ class Rect extends Shape {
         topLeft = pos - dim * Vector.invertYVector() / 2.0
     }
 
+    BigDecimal getSize() {
+        return (dim.x * dim.y).abs()
+    }
+
     Line getTopBorder() {
         return new Line(topLeft, topRight)
     }
