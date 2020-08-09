@@ -103,7 +103,7 @@ class ShapeCollisionDetector implements Singleton {
         def closestPointOnLineToCircleCenter = getClosestPointToCircleCenterOnLine(circle, line)
         def lineCenterToClosestPoint = closestPointOnLineToCircleCenter - line.center
         return circle.isPointWithin(closestPointOnLineToCircleCenter)
-                && lineCenterToClosestPoint < line.length / 2
+                && lineCenterToClosestPoint.length() < line.length / 2
                 && lineDirection.isInSameDirection(lineCenterToClosestPoint)
     }
 
@@ -117,18 +117,15 @@ class ShapeCollisionDetector implements Singleton {
     }
 
     private static boolean detectCollision(Rect a, Line b) {
-        if (!checkLineRectCollision(a, b)) {
+        if(!checkLineRectCollision(a, b)) {
             return false
         }
         def rectMinX = a.topLeft.x
         def rectMaxX = a.topRight.x
         def lineMinX = b.start.x <= b.end.x ? b.start.x : b.end.x
-        def lineMaxX = b.end.x >= b.start.x ? b.end.x : b.start.x
-        // TODO: Overkill to handle the single axis collision that way - there should be an easier way to do this.
-        def doesXRangeOverlap = detectCollision(
-                new Line(new Vector(x: lineMinX, y: 0), new Vector(x: lineMaxX, y: 0)),
-                new Line(new Vector(x: rectMinX, y: 0), new Vector(x: rectMaxX, y: 0))
-        )
+        def lineMaxX = b.end.x > b.start.x ? b.end.x : b.start.x
+        // TODO: Refactor duplication - also can this be abstracted as an operation (overlapping ranges on axis)?
+        def doesXRangeOverlap = lineMinX >= rectMinX && lineMinX <= rectMaxX || lineMaxX >= rectMinX && lineMaxX <= rectMaxX
         if (!doesXRangeOverlap) {
             return false
         }
@@ -136,12 +133,8 @@ class ShapeCollisionDetector implements Singleton {
         def rectMinY = a.bottomLeft.y
         def rectMaxY = a.topLeft.y
         def lineMinY = b.start.y <= b.end.y ? b.start.y : b.end.y
-        def lineMaxY = b.end.y >= b.start.y ? b.end.y : b.start.y
-        def doesYRangeOverlap = detectCollision(
-                new Line(new Vector(x: 0, y: lineMinY), new Vector(x: 0, y: lineMaxY)),
-                new Line(new Vector(x: 0, y: rectMinY), new Vector(x: 0, y: rectMaxY))
-        )
-
+        def lineMaxY = b.end.y > b.start.y ? b.end.y : b.start.y
+        def doesYRangeOverlap = lineMinY >= rectMinY && lineMinY <= rectMaxY || lineMaxY >= rectMinY && lineMaxY <= rectMaxY
         return doesYRangeOverlap
     }
 
