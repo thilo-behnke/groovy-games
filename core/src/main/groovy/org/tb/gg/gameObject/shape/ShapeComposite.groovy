@@ -4,7 +4,7 @@ import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 
-class ShapeComposite implements Shape {
+class ShapeComposite extends Shape {
     private List<Shape> shapes
 
     ShapeComposite(List<Shape> shapes) {
@@ -18,19 +18,13 @@ class ShapeComposite implements Shape {
     }
 
     @Override
-    Vector getClosestPointInDirectionFromCenter(Vector direction) {
+    void setCenter(Vector pos) {
         // TODO: Implement, complicated...
-        return null
     }
 
     @Override
     boolean isPointWithin(Vector pos) {
         return shapes.find { it.isPointWithin(pos) }
-    }
-
-    @Override
-    boolean doesOverlapWith(Shape shape) {
-        return shapes.find { it.doesOverlapWith(shape) }
     }
 
     @Override

@@ -3,7 +3,7 @@ package org.tb.gg.gameObject.components.input
 import org.tb.gg.gameObject.lifecycle.Lifecycle
 import org.tb.gg.input.actions.InputActionProvider
 
-abstract class InputComponent implements Lifecycle {
+class InputComponent implements Lifecycle {
     private final InputActionProvider inputActionProvider
 
     InputComponent(InputActionProvider inputActionProvider) {
@@ -15,12 +15,12 @@ abstract class InputComponent implements Lifecycle {
     }
 
     @Override
-    void onInit() {
-        inputActionProvider.onInit()
+    void init() {
+        inputActionProvider.init()
     }
 
     @Override
-    void onDestroy() {
-        inputActionProvider.onDestroy()
+    void destroy() {
+        inputActionProvider.destroy()
     }
 }

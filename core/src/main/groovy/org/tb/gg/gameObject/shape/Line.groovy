@@ -1,12 +1,13 @@
 package org.tb.gg.gameObject.shape
 
-import org.tb.gg.collision.Collidable
+
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 
-class Line implements Shape {
+class Line extends Shape {
     Vector start
+    // TODO: Model with length instead of end.
     Vector end
 
     Line(Vector start, Vector end) {
@@ -35,35 +36,31 @@ class Line implements Shape {
     }
 
     @Override
-    Vector getClosestPointInDirectionFromCenter(Vector direction) {
-        def centerToPoint = (center + direction)
-        def perpendicularToLine = (end - start).perpendicular()
-        def perpendicularFromPoint = centerToPoint + perpendicularToLine
-
-        if (isPointWithin(perpendicularFromPoint)) {
-            return perpendicularFromPoint
-        }
-        // If the perpendicular does not fall onto the line, take either the start or end, given what is closer.
-        def lengthPointToStart = (start - perpendicularFromPoint).length()
-        def lengthPointToEnd = (end - perpendicularFromPoint).length()
-        return lengthPointToStart < lengthPointToEnd ? start : end
+    void setCenter(Vector vec) {
+        def newStart = vec + (start - center)
+        def newEnd = vec + (end - center)
+        start = newStart
+        end = newEnd
     }
 
     @Override
     boolean isPointWithin(Vector pos) {
-        if (pos == Vector.zeroVector() && (start == Vector.zeroVector() || end == Vector.zeroVector())) {
+        if (pos == start || pos == end) {
             return true
         }
-        def onSameLine = (end - start).normalize() == pos.normalize()
-        if (!onSameLine) {
+        def lineDirection = end - start
+        // Point needs to be on same infinite line as line segment.
+        if ((pos - start).normalize() != lineDirection.normalize()) {
             return false
         }
-        def betweenStartAndEnd = start.x <= pos.x && start.y <= pos.y && pos.x <= end.x && pos.y <= end.y
-        return betweenStartAndEnd
+        // Otherwise check the projection of the point onto the line.
+        def pointProjected = pos.projectOnto(lineDirection)
+        def startToPointProjected = pointProjected - start
+        return startToPointProjected.length() <= lineDirection.length()
+                && lineDirection.dot(startToPointProjected) >= 0
     }
 
-    @Override
-    boolean doesOverlapWith(Shape shape) {
-        return false
+    BigDecimal getLength() {
+        return (end - start).length()
     }
 }

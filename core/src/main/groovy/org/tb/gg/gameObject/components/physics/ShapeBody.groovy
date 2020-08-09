@@ -4,23 +4,15 @@ package org.tb.gg.gameObject.components.physics
 import org.tb.gg.gameObject.shape.Shape
 
 class ShapeBody extends Body<Shape> {
-    private Shape shape
+    @Delegate
+    Shape shape
 
     ShapeBody (Shape shape) {
         this.shape = shape
     }
 
-    @Override
     Shape getStructure() {
         return shape
-    }
-
-    @Override
-    boolean collidesWith(Shape structure) {
-        if (structure == null) {
-            return false
-        }
-        return shape.doesOverlapWith(structure)
     }
 
     @Override

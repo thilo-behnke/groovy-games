@@ -1,11 +1,11 @@
 package org.tb.gg.gameObject.shape
 
-import org.tb.gg.collision.Collidable
+
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 
-class Point implements Shape {
+class Point extends Shape {
    Vector pos
 
    @Override
@@ -19,17 +19,12 @@ class Point implements Shape {
    }
 
    @Override
-   Vector getClosestPointInDirectionFromCenter(Vector direction) {
-       return pos
+   void setCenter(Vector pos) {
+      this.pos = pos
    }
 
    @Override
    boolean isPointWithin(Vector pos) {
       return this.pos == pos
-   }
-
-   @Override
-   boolean doesOverlapWith(Shape shape) {
-      return false
    }
 }

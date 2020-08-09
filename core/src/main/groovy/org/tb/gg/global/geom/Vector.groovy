@@ -1,5 +1,6 @@
 package org.tb.gg.global.geom
 
+import ch.obermuhlner.math.big.BigDecimalMath
 import groovy.transform.ToString
 import org.tb.gg.global.math.MathConstants
 
@@ -73,10 +74,50 @@ class Vector {
         return new Vector(x: newX, y: newY)
     }
 
+    Vector rotate(BigDecimal radians) {
+        def newX = (x * BigDecimalMath.cos(radians, MathConstants.ctx) - y * BigDecimalMath.sin(radians, MathConstants.ctx)).round(MathConstants.ctx)
+        def newY = (x * BigDecimalMath.sin(radians, MathConstants.ctx) + y * BigDecimalMath.cos(radians, MathConstants.ctx)).round(MathConstants.ctx)
+        return new Vector(x: newX, y: newY)
+    }
+
+    Vector abs() {
+        return new Vector(x: x.abs(), y: y.abs())
+    }
+
+    // TODO: Write tests.
+    BigDecimal cross(Vector b) {
+        x * b.y - y * b.x
+    }
+
+    BigDecimal dot(Vector b) {
+        x * b.x + y * b.y
+    }
+
+    boolean isInSameDirection(Vector b) {
+        dot(b) > 0
+    }
+
+    Vector clampOnRange(Vector min, Vector max) {
+        return new Vector(x: clamp(x, min.x, max.x), y: clamp(y, min.y, max.y))
+    }
+
+    Vector scale(BigDecimal scaleFactor) {
+        multiply(scaleFactor)
+    }
+
+    private static clamp(BigDecimal comp, BigDecimal min, BigDecimal max) {
+        if (comp < min) {
+            return min
+        } else if (comp > max) {
+            return max
+        }
+        return comp
+    }
+
     BigDecimal length() {
         def xPow = x.pow(2)
         def yPow = y.pow(2)
-        (xPow + yPow).sqrt(MathConstants.ctx)
+        BigDecimalMath.sqrt(xPow + yPow, MathConstants.ctx)
     }
 
     Vector normalize() {
@@ -86,10 +127,27 @@ class Vector {
         return new Vector(x: x, y: y) / this.length()
     }
 
+    Vector signum() {
+        return new Vector(x: x.signum(), y: y.signum())
+    }
+
     // TODO: This gives one out of two possible perpendiculars. Is there a way to parameterize the method?
     Vector perpendicular() {
         def norm = normalize()
         new Vector(x: norm.y, y: -norm.x)
+    }
+
+    Vector projectOnto(Vector a) {
+        def aDot = a.dot(a)
+        if (!aDot) {
+            return a
+        }
+        return a * (a.dot(this) / aDot)
+    }
+
+    BigDecimal angleBetween(Vector b) {
+        def angle = BigDecimalMath.atan2(b.y, b.x, MathConstants.ctx) - BigDecimalMath.atan2(y, x, MathConstants.ctx)
+        return angle >= 0 ? angle : 2 * MathConstants.pi() + angle
     }
 
     static unitVector() {

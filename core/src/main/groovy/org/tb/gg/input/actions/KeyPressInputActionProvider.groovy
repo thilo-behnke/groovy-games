@@ -1,8 +1,6 @@
 package org.tb.gg.input.actions
 
 import groovy.util.logging.Log4j
-import org.tb.gg.di.definition.Service
-import org.tb.gg.gameObject.lifecycle.Lifecycle
 import org.tb.gg.input.Key
 import org.tb.gg.input.exception.IllegalKeyAssignmentException
 import org.tb.gg.input.keyEvent.KeyEventSubject
@@ -42,8 +40,8 @@ class KeyPressInputActionProvider implements InputActionProvider {
     }
 
     @Override
-    void onInit() {
-        keyEventSubject.onInit()
+    void init() {
+        keyEventSubject.init()
         pressedKeyDisposable = this.keyEventSubject.pressedKeys()
                 .map { keys ->
                     def mappedToActions = keys
@@ -61,8 +59,8 @@ class KeyPressInputActionProvider implements InputActionProvider {
     }
 
     @Override
-    void onDestroy() {
-        keyEventSubject.onDestroy()
+    void destroy() {
+        keyEventSubject.destroy()
         pressedKeyDisposable.dispose()
     }
 }

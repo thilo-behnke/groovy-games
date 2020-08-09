@@ -1,14 +1,13 @@
 package org.tb.gg.collision
 
-import groovy.util.logging.Log4j
+
 import org.tb.gg.di.Inject
-import org.tb.gg.engine.helper.Updateable
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.GameObjectProvider
 
 class DefaultCollisionRegistry implements CollisionRegistry {
     @Inject
-    private CollisionDetector collisionDetector
+    private CollisionHandler collisionDetector
     @Inject
     private GameObjectProvider gameObjectProvider
 

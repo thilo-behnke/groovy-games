@@ -1,7 +1,6 @@
 package org.tb.gg.engine
 
-import org.tb.gg.collision.CollisionDetector
-import org.tb.gg.di.Inject
+
 import org.tb.gg.global.DateProvider
 
 import groovy.util.logging.Log4j

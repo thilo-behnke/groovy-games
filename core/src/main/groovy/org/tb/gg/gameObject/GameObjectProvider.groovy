@@ -16,13 +16,13 @@ class GameObjectProvider implements Singleton {
 	Set<GameObject> addGameObject(GameObject gameObject) {
 		def id = idCounter.incrementAndGet()
 		gameObject.setId(id)
-		gameObject.onInit()
+		gameObject.init()
 
 		return gameObjects << gameObject
 	}
 
 	boolean removeGameObject(GameObject gameObject) {
-		gameObject.onDestroy()
+		gameObject.destroy()
 		gameObjects.remove(gameObject)
 	}
 

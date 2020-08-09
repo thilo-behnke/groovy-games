@@ -1,8 +1,5 @@
 package org.tb.gg.env
 
-import org.tb.gg.di.definition.Singleton
-
-// TODO: Singleton service - but now for given interface.
 class SystemPropertiesEnvironmentAnalyzer implements EnvironmentAnalyzer {
     @Override
     Graphics getGraphics() {
