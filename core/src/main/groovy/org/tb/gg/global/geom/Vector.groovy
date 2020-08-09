@@ -74,6 +74,12 @@ class Vector {
         return new Vector(x: newX, y: newY)
     }
 
+    Vector rotate(BigDecimal radians) {
+        def newX = x * BigDecimalMath.cos(radians, MathConstants.ctx) - y * BigDecimalMath.sin(radians, MathConstants.ctx)
+        def newY = x * BigDecimalMath.sin(radians, MathConstants.ctx) + y * BigDecimalMath.cos(radians, MathConstants.ctx)
+        return new Vector(x: newX, y: newY)
+    }
+
     Vector abs() {
         return new Vector(x: x.abs(), y: y.abs())
     }

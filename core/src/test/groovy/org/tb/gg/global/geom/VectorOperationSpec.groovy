@@ -47,4 +47,18 @@ class VectorOperationSpec extends Specification {
         new Vector(x: 1, y: 0) | new Vector(x: 0, y: -1)  || (MathConstants.PI * 3 / 2).round(MathConstants.ctx)
         new Vector(x: 1, y: 0) | new Vector(x: 1, y: -1)  || (MathConstants.PI * 7 / 4).round(MathConstants.ctx)
     }
+
+    @Unroll
+    def 'rotate'() {
+        expect:
+        a.rotate(radians) == rotated
+        where:
+        a                        | radians               || rotated
+        Vector.unitVector()      | 0.0                   || Vector.unitVector()
+        new Vector(x: 1, y: 0)   | MathConstants.HALF_PI || new Vector(x: 0, y: 1)
+        new Vector(x: 0, y: 1)   | MathConstants.HALF_PI || new Vector(x: -1, y: 0)
+        new Vector(x: 0, y: 1)   | MathConstants.PI      || new Vector(x: 0, y: -1)
+        new Vector(x: 1, y: 1)   | MathConstants.PI      || new Vector(x: -1, y: -1)
+        new Vector(x: -1, y: -1) | MathConstants.PI      || new Vector(x: 1, y: 1)
+    }
 }
