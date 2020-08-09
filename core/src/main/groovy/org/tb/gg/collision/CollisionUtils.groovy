@@ -15,5 +15,6 @@ class CollisionUtils {
 
     static boolean doRangesOverlap(Range rangeA, Range rangeB) {
         rangeA.min >= rangeB.min && rangeA.min <= rangeB.max || rangeA.max >= rangeB.min && rangeA.max <= rangeB.max
+                || rangeB.min >= rangeA.min && rangeB.min <= rangeA.max || rangeB.max >= rangeA.min && rangeB.max <= rangeA.max
     }
 }

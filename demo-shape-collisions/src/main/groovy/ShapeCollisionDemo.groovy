@@ -53,6 +53,12 @@ def rect1 = getBaseBuilder()
         ))
         .build()
 
+def rect2 = getBaseBuilder()
+        .setBody(new ShapeBody(
+                new Rect(Vector.unitVector() * 400.0, Vector.unitVector() * 220.0)
+        ))
+        .build()
+
 def text1 = getBaseBuilder()
         .setBody(new ShapeBody(
                 new Text(
@@ -70,6 +76,7 @@ def defaultScene = new DefaultGameScene('default')
 //defaultScene.accessGameObjectProvider() << line1
 defaultScene.accessGameObjectProvider() << line2
 defaultScene.accessGameObjectProvider() << rect1
+defaultScene.accessGameObjectProvider() << rect2
 //defaultScene.accessGameObjectProvider() << text1
 
 gameEngine.addScene(defaultScene)
