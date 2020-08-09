@@ -74,21 +74,25 @@ class ShapeCollisionDetector implements Singleton {
     }
 
     private static boolean detectCollision(Line lineA, Line lineB) {
-        def lineAStartToLineBStart = (lineB.start - lineA.start).normalize()
-        def lineAStartToLineBEnd = (lineB.end - lineA.start).normalize()
-        def lineAStartToLineAEnd = (lineA.end - lineA.start).normalize()
-        def lineBStartToLineBEnd = (lineB.end - lineA.start).normalize()
-
-        def crossFromAStartToBStartAndBEnd = lineAStartToLineBStart.cross(lineAStartToLineBEnd).abs()
-        def crossFromAStartToBStartAndAEnd = lineAStartToLineBStart.cross(lineAStartToLineAEnd).abs()
-
-        if (crossFromAStartToBStartAndBEnd < crossFromAStartToBStartAndAEnd) {
-            return false
-        }
-
-        def areOnSameLine = lineAStartToLineAEnd.normalize().abs() == lineBStartToLineBEnd.normalize().abs()
+        def lineADirectionNorm = (lineA.start - lineA.end).normalize()
+        def lineBDirectionNorm = (lineB.start - lineB.end).normalize()
+        def lineADirectionNormInverted = (lineA.end - lineA.start).normalize()
+        def lineBDirectionNormInverted = (lineB.end - lineB.start).normalize()
+        // TODO: Is there no easier way to check this that two lines are on the same axis?
+        def areOnSameLine = lineADirectionNorm == lineBDirectionNorm || lineADirectionNorm == lineBDirectionNormInverted || lineADirectionNormInverted == lineBDirectionNormInverted || lineADirectionNormInverted == lineBDirectionNormInverted
         if (areOnSameLine) {
             return lineA.isPointWithin(lineB.start) || lineA.isPointWithin(lineB.end)
+        }
+
+        def lineAPerpendicular = (lineA.end - lineA.start).rotate(MathConstants.HALF_PI)
+        def onDifferentSidesOfAxisA = lineAPerpendicular.dot(lineB.start - lineA.start) * lineAPerpendicular.dot(lineB.end - lineA.start) < 0
+        if (!onDifferentSidesOfAxisA) {
+            return false
+        }
+        def lineBPerpendicular = (lineB.end - lineB.start).rotate(MathConstants.HALF_PI)
+        def onDifferentSidesOfAxisB = lineBPerpendicular.dot(lineA.start - lineB.start) * lineBPerpendicular.dot(lineA.end - lineB.start) < 0
+        if (!onDifferentSidesOfAxisB) {
+            return false
         }
 
         return true
