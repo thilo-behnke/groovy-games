@@ -80,9 +80,13 @@ class ShapeCollisionDetectorSpec extends Specification {
         expect:
         shapeCollisionDetector.detect(rect1, rect2) == doCollide
         where:
-        rect1                                                    | rect2                                                        | doCollide
-        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Rect(Vector.zeroVector(), Vector.unitVector() * 5.0)     | true
-        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Rect(Vector.unitVector() * 2.0, Vector.unitVector() * 1.0) | false
+        rect1                                                          | rect2                                                           | doCollide
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0)       | new Rect(Vector.zeroVector(), Vector.unitVector() * 5.0)        | true
+        new Rect(Vector.unitVector() * 2.0, Vector.unitVector() * 2.0) | new Rect(Vector.unitVector() * 2.5, Vector.unitVector() * 5.0)  | true
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0)       | new Rect(Vector.unitVector() * 2.0, Vector.unitVector() * 1.0)  | true
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0)       | new Rect(Vector.unitVector() * 2.1, Vector.unitVector() * 1.0)  | false
+        new Rect(Vector.unitVector(), Vector.unitVector() * 2.0)       | new Rect(Vector.unitVector() * 2.0, Vector.unitVector() * 0.9)  | false
+        new Rect(Vector.unitVector() * 2.0, Vector.unitVector() * 5.0) | new Rect(Vector.unitVector() * -2.0, Vector.unitVector() * 1.0) | false
     }
 
     @Unroll
