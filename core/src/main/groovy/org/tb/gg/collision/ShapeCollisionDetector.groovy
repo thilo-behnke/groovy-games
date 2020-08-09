@@ -9,6 +9,7 @@ import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.global.math.MathConstants
+import org.tb.gg.utils.CollectionUtils
 
 class ShapeCollisionDetector implements Singleton {
 
@@ -120,21 +121,16 @@ class ShapeCollisionDetector implements Singleton {
         if(!checkLineRectCollision(a, b)) {
             return false
         }
-        def rectMinX = a.topLeft.x
-        def rectMaxX = a.topRight.x
-        def lineMinX = b.start.x <= b.end.x ? b.start.x : b.end.x
-        def lineMaxX = b.end.x > b.start.x ? b.end.x : b.start.x
-        // TODO: Refactor duplication - also can this be abstracted as an operation (overlapping ranges on axis)?
-        def doesXRangeOverlap = lineMinX >= rectMinX && lineMinX <= rectMaxX || lineMaxX >= rectMinX && lineMaxX <= rectMaxX
+        def rectXRange = CollisionUtils.Range.create(a.topLeft.x, a.topRight.x)
+        def lineXRange = CollisionUtils.Range.create(b.start.x, b.end.x)
+        def doesXRangeOverlap = CollisionUtils.doRangesOverlap(rectXRange, lineXRange)
         if (!doesXRangeOverlap) {
             return false
         }
 
-        def rectMinY = a.bottomLeft.y
-        def rectMaxY = a.topLeft.y
-        def lineMinY = b.start.y <= b.end.y ? b.start.y : b.end.y
-        def lineMaxY = b.end.y > b.start.y ? b.end.y : b.start.y
-        def doesYRangeOverlap = lineMinY >= rectMinY && lineMinY <= rectMaxY || lineMaxY >= rectMinY && lineMaxY <= rectMaxY
+        def rectYRange = CollisionUtils.Range.create(a.bottomLeft.y, a.topLeft.y)
+        def lineYRange = CollisionUtils.Range.create(b.start.y, b.end.y)
+        def doesYRangeOverlap = CollisionUtils.doRangesOverlap(rectYRange, lineYRange)
         return doesYRangeOverlap
     }
 

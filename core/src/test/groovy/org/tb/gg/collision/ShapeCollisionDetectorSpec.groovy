@@ -86,7 +86,6 @@ class ShapeCollisionDetectorSpec extends Specification {
         new Rect(Vector.unitVector(), Vector.unitVector() * 2.0) | new Rect(Vector.zeroVector(), Vector.unitVector() * 5.0) | true
     }
 
-    // TODO: Write tests
     @Unroll
     def 'rect <-> line'() {
         expect:
