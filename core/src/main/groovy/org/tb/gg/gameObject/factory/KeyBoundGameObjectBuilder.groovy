@@ -2,6 +2,7 @@ package org.tb.gg.gameObject.factory
 
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.components.input.InputComponent
+import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.render.RenderComponent
@@ -66,6 +67,9 @@ class KeyBoundGameObjectBuilder<T extends GameObject> implements Builder<GameObj
         }
         if (!defaultKeyMapping) {
             defaultKeyMapping = new HashMap<>()
+        }
+        if (!gameObject.physicsComponent) {
+            gameObject.physicsComponent = new NoopPhysicsComponent()
         }
         keyPressInputActionProvider.overrideKeyMappings(defaultKeyMapping)
         def inputComponent = inputComponentClazz.getConstructor(KeyPressInputActionProvider).newInstance(keyPressInputActionProvider)
