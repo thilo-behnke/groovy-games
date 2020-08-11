@@ -1,4 +1,7 @@
-apply plugin: 'groovy'
+plugins {
+    id "groovy"
+    id "com.diffplug.spotless" version "5.1.1"
+}
 
 version = "0.0.1"
 
@@ -15,6 +18,24 @@ dependencies {
 
     testCompile "org.spockframework:spock-core"
     testCompile group: 'net.bytebuddy', name: 'byte-buddy-gradle-plugin', version: '1.10.13'
+}
+
+spotless {
+    groovy {
+        importOrder() // standard import order
+        //        importOrder('java', 'javax', 'com.acme', '') // or importOrderFile
+
+        excludeJava() // excludes all Java sources within the Groovy source dirs from formatting
+        // the Groovy Eclipse formatter extends the Java Eclipse formatter,
+        // so it formats Java files by default (unless `excludeJava` is used).
+        greclipse() // has its own section below
+
+        //        licenseHeader '/* (C) $YEAR */' // or licenseHeaderFile
+    }
+    groovyGradle {
+        target '*.gradle' // default target of groovyGradle
+        greclipse()
+    }
 }
 
 test {
