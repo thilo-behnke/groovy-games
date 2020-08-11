@@ -84,15 +84,28 @@ class PlayerGameObject extends GameObject {
         if (goal == null) {
             return
         }
+        def turnDirection = getTurnDirection(goal)
+        def turnAngle = turnDirection * MathConstants.PI / 60
 
-        def angle1 = goal.angleBetween(orientation)
-        def angle2 = orientation.angleBetween(goal)
+        orientation = orientation.rotate(turnAngle)
+    }
 
-        def shorterDirectionToGoal = angle1 >= angle2 ? orientation - goal : goal - orientation
-        def rotationDirection = shorterDirectionToGoal.dot(orientation.rotate(MathConstants.HALF_PI)) >= 0 ? 1 : -1
+    private getTurnDirection(Vector goal) {
+        def perpendicularToOrientation = orientation.rotate(MathConstants.HALF_PI)
+        def goalDot = perpendicularToOrientation.dot(goal)
+        def currentOrientationDot = perpendicularToOrientation.dot(orientation)
 
-        orientation = orientation.rotate(1000.0 / 60.0 * rotationDirection)
+        // No turn because goal is already reached.
+        if (goalDot.abs() <= 1e-2) {
+            System.println('no turn')
+            return 0
+        }
 
-        return
+        // Opposite direction of current direction, turn direction is arbitrary.
+        if (goalDot - currentOrientationDot <= 1e-2) {
+            return -1
+        }
+        // Regular case, turn in the closest direction of the goal.
+        return goalDot > 0 ? 1 : -1
     }
 }
