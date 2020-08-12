@@ -12,6 +12,6 @@ def player = PlayerGameObject.create()
 defaultScene.accessGameObjectProvider() << player
 
 gameEngine.addScene(defaultScene)
-gameEngine.changeScene(defaultScene.name)
+gameEngine.changeActiveScene(defaultScene.name)
 
 gameEngine.start()

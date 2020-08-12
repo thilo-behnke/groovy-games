@@ -60,7 +60,6 @@ class PlayerGameObject extends GameObject {
     }
 
     private updateOrientation(List<PlayerAction> activeActions, Long timestamp, Long delta) {
-        // TODO: Update orientation
         def goal = null
 
         if (activeActions.containsAll([PlayerAction.LOOK_UP, PlayerAction.LOOK_RIGHT])) {
@@ -106,5 +105,9 @@ class PlayerGameObject extends GameObject {
 
         // Regular case, turn in the closest direction of the goal.
         return goalDot > 0 ? 1 : -1
+    }
+
+    private shoot() {
+
     }
 }

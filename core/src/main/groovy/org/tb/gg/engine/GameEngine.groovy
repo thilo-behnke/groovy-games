@@ -1,6 +1,6 @@
 package org.tb.gg.engine
 
-
+import org.tb.gg.di.Inject
 import org.tb.gg.global.DateProvider
 
 import groovy.util.logging.Log4j
@@ -14,6 +14,8 @@ enum GameEngineState {
 @Log4j
 class GameEngine {
 
+    @Inject @Delegate SceneManager sceneManager
+
     private static final defaultExecutionRuleEngine = new GameEngineExecutionRuleEngine()
     private DateProvider dateProvider
     private SceneProvider sceneProvider
@@ -21,13 +23,11 @@ class GameEngine {
     private Renderer renderer
     private GameEngineExecutionRuleEngine executionRuleEngine
 
-    // TODO: This should be an array of scenes.
-    private Optional<GameScene> activeScene = Optional.empty()
-
     private state = GameEngineState.UNINITIALIZED
     private long lastTimestamp
 
-    GameEngine(HaltingExecutorService executorService, DateProvider dateProvider, SceneProvider sceneProvider, Renderer renderer) {
+    // TODO: Migrate to injection.
+    GameEngine(HaltingExecutorService executorService, DateProvider dateProvider, Renderer renderer) {
         this.dateProvider = dateProvider
         this.sceneProvider = sceneProvider
         this.executorService = executorService
@@ -44,20 +44,20 @@ class GameEngine {
     }
 
     private startGameLoop() {
-        while(state == GameEngineState.RUNNING || state == GameEngineState.PAUSED) {
-            if(stopIfExecutionConditionIsMet()) {
+        while (state == GameEngineState.RUNNING || state == GameEngineState.PAUSED) {
+            if (stopIfExecutionConditionIsMet()) {
                 break
             }
-            if(state != GameEngineState.PAUSED && haltIfExecutionConditionIsMet()) {
+            if (state != GameEngineState.PAUSED && haltIfExecutionConditionIsMet()) {
                 break
             }
-            if(state == GameEngineState.RUNNING) {
+            if (state == GameEngineState.RUNNING) {
                 // TODO: This should not be one task, but multiple per cycle:
                 // - Render (Scene dependent)
                 // - GameObject updates (Scene dependent)
                 // - Inputs
                 // - etc.
-                executorService.submit({updateGame()})
+                executorService.submit({ updateGame() })
             }
         }
     }
@@ -70,7 +70,7 @@ class GameEngine {
     }
 
     private haltIfExecutionConditionIsMet() {
-        if(executionRuleEngine.shouldHalt()) {
+        if (executionRuleEngine.shouldHalt()) {
             halt()
             return true
         }
@@ -80,7 +80,7 @@ class GameEngine {
         long now = dateProvider.now()
         long delta = now - (lastTimestamp ?: now)
         // TODO: Make refresh period configurable.
-        if(lastTimestamp && delta < 1000 / 60) {
+        if (lastTimestamp && delta < 1000 / 60) {
             return
         }
         updateScenes(now, delta)
@@ -92,12 +92,12 @@ class GameEngine {
 
     private updateScenes(long now, long delta) {
         log.debug("Updating active scenes. Time: ${now}. Delta: ${delta}".toString())
-        activeScene.ifPresent{scene -> scene.update(now, delta)}
+        sceneManager.activeScene.ifPresent { scene -> scene.update(now, delta) }
     }
 
     private renderScenes() {
         log.debug("Rendering updated scenes.")
-        activeScene.ifPresent({renderer.render(new HashSet<GameScene>([it]))})
+        sceneManager.activeScene.ifPresent({ renderer.render(new HashSet<GameScene>([it])) })
     }
 
     private updateExecutionRuleEngine(long now, long delta) {
@@ -115,47 +115,12 @@ class GameEngine {
     }
 
     void stop() {
-        sceneProvider.getAll().each {scene -> removeScene(scene.name)}
+        sceneProvider.getAll().each { scene -> sceneManager.removeScene(scene.name) }
         state = GameEngineState.STOPPED
         executorService.shutdown()
     }
 
     boolean isRunning() {
         return this.state == GameEngineState.RUNNING
-    }
-
-    void addScene(GameScene scene) {
-        sceneProvider.add(scene)
-    }
-
-    void changeScene(String name, boolean stopActiveScene = true) {
-        Optional<GameScene> sceneOpt = sceneProvider.get(name)
-        if(!sceneOpt.isPresent()) {
-            log.debug("Tried to start a scene with name ${name}, but no such scene exists.")
-            return
-        }
-
-        GameScene scene = sceneOpt.get()
-        if(activeScene.isPresent() && activeScene.get().name == name) {
-            return
-        }
-        if(stopActiveScene) {
-            activeScene.ifPresent{s -> s.setState(GameSceneState.STOPPED)}
-        } else {
-            activeScene.ifPresent{s -> s.setState(GameSceneState.PAUSED)}
-        }
-        activeScene = Optional.of(scene)
-        scene.setState(GameSceneState.RUNNING)
-    }
-
-    void removeScene(String name) {
-        Optional<GameScene> sceneOpt = sceneProvider.get(name)
-        if(!sceneOpt.isPresent()) {
-            log.debug("Tried to stop a scene with name ${name}, but no such scene exists.")
-            return
-        }
-        GameScene scene = sceneOpt.get()
-        scene.setState(GameSceneState.STOPPED)
-        sceneProvider.remove(name)
     }
 }
