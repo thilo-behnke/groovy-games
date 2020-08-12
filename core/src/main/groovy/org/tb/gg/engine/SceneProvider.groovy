@@ -3,7 +3,7 @@ package org.tb.gg.engine
 import org.tb.gg.di.definition.Singleton
 import org.tb.gg.engine.exception.DuplicateGameSceneException
 
-class SceneProvider {
+class SceneProvider implements Singleton {
     private Map<String, GameScene> scenes = [:]
 
     void add(GameScene scene) {
@@ -25,10 +25,12 @@ class SceneProvider {
         return scenes.values()
     }
 
+    @Override
     void init() {
 
     }
 
+    @Override
     void destroy() {
 
     }

@@ -25,11 +25,10 @@ class GameEngineSpec extends Specification {
     def setup() {
         receivedUpdates = 0
         def dateProviderMock = Mock(DateProvider)
-        def sceneProvider = new DefaultSceneProvider()
         ServiceProvider.setService(new GameObjectProvider())
         executorService = new HaltingExecutorService()
         renderer = Mock(Renderer)
-        gameEngine = new GameEngine(executorService, dateProviderMock, sceneProvider, renderer)
+        gameEngine = new GameEngine(executorService, dateProviderMock, renderer)
         pauseAfterEveryCycle(1)
     }
 

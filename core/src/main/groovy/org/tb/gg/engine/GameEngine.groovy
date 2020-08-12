@@ -1,9 +1,8 @@
 package org.tb.gg.engine
 
+import groovy.util.logging.Log4j
 import org.tb.gg.di.Inject
 import org.tb.gg.global.DateProvider
-
-import groovy.util.logging.Log4j
 import org.tb.gg.renderer.Renderer
 import org.tb.gg.utils.HaltingExecutorService
 
@@ -14,11 +13,10 @@ enum GameEngineState {
 @Log4j
 class GameEngine {
 
-    @Inject @Delegate SceneManager sceneManager
+    @Inject SceneManager sceneManager
 
     private static final defaultExecutionRuleEngine = new GameEngineExecutionRuleEngine()
     private DateProvider dateProvider
-    private SceneProvider sceneProvider
     private HaltingExecutorService executorService
     private Renderer renderer
     private GameEngineExecutionRuleEngine executionRuleEngine
@@ -29,7 +27,6 @@ class GameEngine {
     // TODO: Migrate to injection.
     GameEngine(HaltingExecutorService executorService, DateProvider dateProvider, Renderer renderer) {
         this.dateProvider = dateProvider
-        this.sceneProvider = sceneProvider
         this.executorService = executorService
         this.renderer = renderer
     }
@@ -115,7 +112,6 @@ class GameEngine {
     }
 
     void stop() {
-        sceneProvider.getAll().each { scene -> sceneManager.removeScene(scene.name) }
         state = GameEngineState.STOPPED
         executorService.shutdown()
     }
