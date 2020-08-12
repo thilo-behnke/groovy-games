@@ -32,13 +32,11 @@ class BulletGameObject extends GameObject implements Perishable {
         physicsComponent.update(timestamp, delta)
 
         // TODO: How to model this better?
-        if (shouldPerish(timestamp)) {
-            perish(this)
-        }
+        checkIfShouldBePerished({this::shouldBePerished(timestamp)})
     }
 
     @Override
-    boolean shouldPerish(Long timestamp) {
+    boolean shouldBePerished(Long timestamp) {
         return timestamp - spawnedAt > TIME_TO_LIVE_MS
     }
 }

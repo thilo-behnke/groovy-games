@@ -30,6 +30,7 @@ class GameScene {
         if(gameSceneState == GameSceneState.RUNNING) {
             // TODO: Not the right place - maybe a scene should only update its own game objects?
             def gameObjects = gameObjectProvider.getGameObjects()
+            // TODO: Remove perished game objects - but is here the right place?
             // TODO: Copy to avoid concurrent modification - but is this the right way?
             new HashSet<>(gameObjects).each { obj -> obj.update(timestamp, delta)}
             collisionRegistry.update(timestamp, delta)
