@@ -49,7 +49,7 @@ class KeyBoundGameObjectBuilder<T extends GameObject> implements Builder<GameObj
     }
 
     KeyBoundGameObjectBuilder setActions(Set<String> actions) {
-        keyPressInputActionProvider = new AbstractInputActionProviderFactory().factory().createProvider(
+        keyPressInputActionProvider = AbstractInputActionProviderFactory.factory().createProvider(
                 new InputActionProviderArgs(actions: actions)
         )
         return this

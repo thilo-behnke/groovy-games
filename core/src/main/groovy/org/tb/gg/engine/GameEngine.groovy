@@ -26,9 +26,10 @@ class GameEngine {
     private state = GameEngineState.UNINITIALIZED
     private long lastTimestamp
 
-    // TODO: Dep injection will not work if there are constructor args.
+    // TODO: Migrate to injection.
     GameEngine(HaltingExecutorService executorService, DateProvider dateProvider, Renderer renderer) {
         this.dateProvider = dateProvider
+        this.sceneProvider = sceneProvider
         this.executorService = executorService
         this.renderer = renderer
     }

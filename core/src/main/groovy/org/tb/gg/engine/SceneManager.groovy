@@ -2,10 +2,9 @@ package org.tb.gg.engine
 
 import groovy.util.logging.Log4j
 import org.tb.gg.di.Inject
-import org.tb.gg.di.definition.Singleton
 
 @Log4j
-class SceneManager implements Singleton {
+class SceneManager {
 
     @Inject SceneProvider sceneProvider
 
@@ -44,15 +43,5 @@ class SceneManager implements Singleton {
 
     Optional<GameScene> getActiveScene() {
         return activeScene
-    }
-
-    @Override
-    void init() {
-
-    }
-
-    @Override
-    void destroy() {
-
     }
 }

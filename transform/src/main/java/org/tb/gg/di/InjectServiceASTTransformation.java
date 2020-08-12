@@ -2,10 +2,7 @@ package org.tb.gg.di;
 
 import groovyjarjarasm.asm.Opcodes;
 import org.codehaus.groovy.ast.*;
-import org.codehaus.groovy.ast.expr.ArgumentListExpression;
-import org.codehaus.groovy.ast.expr.ClassExpression;
-import org.codehaus.groovy.ast.expr.ConstantExpression;
-import org.codehaus.groovy.ast.expr.MethodCallExpression;
+import org.codehaus.groovy.ast.expr.*;
 import org.codehaus.groovy.ast.stmt.ExpressionStatement;
 import org.codehaus.groovy.ast.stmt.ReturnStatement;
 import org.codehaus.groovy.control.CompilePhase;
@@ -13,14 +10,16 @@ import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.codehaus.groovy.ast.ClassHelper.make;
 
 
 @SuppressWarnings("unused")
-@GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
+@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public class InjectServiceASTTransformation extends AbstractASTTransformation {
     static final Class<Inject> MY_CLASS = Inject.class;
     static final ClassNode MY_TYPE = make(MY_CLASS);
@@ -45,7 +44,7 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
             MethodNode serviceGetter = new MethodNode(
                     "get" + serviceName,
                     // TODO: field.getModifiers would be better, but returns private - what is the problem?
-                    Opcodes.ACC_PROTECTED,
+                    Opcodes.ACC_PROTECTED + Opcodes.ACC_STATIC,
                     serviceClassNode,
                     Parameter.EMPTY_ARRAY,
                     ClassNode.EMPTY_ARRAY,
