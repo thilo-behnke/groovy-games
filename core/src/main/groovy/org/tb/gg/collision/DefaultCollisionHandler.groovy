@@ -12,11 +12,10 @@ class DefaultCollisionHandler implements CollisionHandler {
         def combinations = CollectionUtils.permutations(gameObjects, 2)
 
         combinations
+                .findAll { GameObject a, GameObject b ->
+                    return a.physicsComponent?.shouldCollide() && b.physicsComponent?.shouldCollide()
+                }
                 .collect { GameObject a, GameObject b ->
-                    // TODO: This should be a flag on the physics component to decide whether collisions are checked or not.
-                    if(!a.physicsComponent || !b.physicsComponent) {
-                        return null
-                    }
                     def areColliding = a.body.collidesWith(b.body.getStructure())
                     if (!areColliding) {
                         return null
