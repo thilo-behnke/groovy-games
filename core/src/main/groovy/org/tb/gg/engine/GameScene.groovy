@@ -9,15 +9,8 @@ import org.tb.gg.gameObject.GameObjectProvider
 import org.tb.gg.global.DateProvider
 import groovy.util.logging.Log4j
 
-interface GameScene extends Updateable {
-    String name = 'default'
-
-    void setState(GameSceneState sceneState)
-    Set<GameObject> getGameObjects()
-}
-
 @Log4j
-class DefaultGameScene implements GameScene {
+class GameScene {
     @Inject
     private GameObjectProvider gameObjectProvider
     @Inject
@@ -28,26 +21,25 @@ class DefaultGameScene implements GameScene {
 
     private gameSceneState = GameSceneState.UNINITIALIZED
 
-    DefaultGameScene(String name) {
+    GameScene(String name) {
         this.name = name
         this.dateProvider = dateProvider
     }
 
-    @Override
     void update(Long timestamp, Long delta) {
         if(gameSceneState == GameSceneState.RUNNING) {
             // TODO: Not the right place - maybe a scene should only update its own game objects?
-            gameObjectProvider.getGameObjects().each { obj -> obj.update(timestamp, delta)}
+            def gameObjects = gameObjectProvider.getGameObjects()
+            // TODO: Copy to avoid concurrent modification - but is this the right way?
+            new HashSet<>(gameObjects).each { obj -> obj.update(timestamp, delta)}
             collisionRegistry.update(timestamp, delta)
         }
     }
 
-    @Override
     void setState(GameSceneState state) {
         gameSceneState = state
     }
 
-    @Override
     Set<GameObject> getGameObjects() {
         return gameObjectProvider.getGameObjects()
     }

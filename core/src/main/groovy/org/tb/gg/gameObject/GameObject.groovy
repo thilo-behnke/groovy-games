@@ -8,11 +8,14 @@ import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.render.RenderComponent
 import groovy.transform.EqualsAndHashCode
 import org.tb.gg.gameObject.lifecycle.Lifecycle
+import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 
 @EqualsAndHashCode(includes='id')
 class GameObject implements Updateable, Lifecycle {
     Long id
+
+    Vector orientation
 
     ShapeBody body
     RenderComponent renderComponent

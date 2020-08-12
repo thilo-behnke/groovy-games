@@ -1,4 +1,4 @@
-package org.tb.gg.gameObject.component
+package org.tb.gg.gameObject.component.player
 
 
 import org.tb.gg.gameObject.components.render.RenderComponent

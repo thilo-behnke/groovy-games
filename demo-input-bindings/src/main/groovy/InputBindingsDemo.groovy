@@ -1,7 +1,7 @@
 import org.tb.gg.GameEngineProvider
-import org.tb.gg.engine.DefaultGameScene
 import org.tb.gg.engine.Game
 import org.tb.gg.engine.GameEngine
+import org.tb.gg.engine.GameScene
 import org.tb.gg.gameObject.Keyboard
 import org.tb.gg.gameObject.components.KeyboardInputComponent
 import org.tb.gg.gameObject.components.KeyboardRenderComponent
@@ -13,7 +13,7 @@ class InputBindingsEntrypoint implements Game {
 
     @Override
     void runGame() {
-        def defaultScene = new DefaultGameScene('default')
+        def defaultScene = new GameScene('default')
 
         def keyboard = new KeyBoundGameObjectBuilder(Keyboard)
                 .setRenderComponent(

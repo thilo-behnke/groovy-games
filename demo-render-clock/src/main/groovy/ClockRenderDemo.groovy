@@ -1,5 +1,5 @@
 import org.tb.gg.GameEngineProvider
-import org.tb.gg.engine.DefaultGameScene
+import org.tb.gg.engine.GameScene
 import org.tb.gg.engine.Game
 import org.tb.gg.engine.GameEngine
 import org.tb.gg.gameObject.GameObjectProvider
@@ -11,7 +11,7 @@ class ClockRenderEntryPoint implements Game {
     void runGame() {
         def clock = Clock.create()
 
-        def defaultScene = new DefaultGameScene('default')
+        def defaultScene = new GameScene('default')
         defaultScene.accessGameObjectProvider() << clock
 
         addScene(defaultScene, true)

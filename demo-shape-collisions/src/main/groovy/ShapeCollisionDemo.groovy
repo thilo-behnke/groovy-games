@@ -1,5 +1,5 @@
 import org.tb.gg.GameEngineProvider
-import org.tb.gg.engine.DefaultGameScene
+import org.tb.gg.engine.GameScene
 import org.tb.gg.engine.GameEngine
 import org.tb.gg.gameObject.MovableGameObject
 import org.tb.gg.gameObject.component.CollisionVisualizationRenderComponent
@@ -68,7 +68,7 @@ def text1 = getBaseBuilder()
         ))
         .build()
 
-def defaultScene = new DefaultGameScene('default')
+def defaultScene = new GameScene('default')
 
 defaultScene.accessGameObjectProvider() << circle1
 defaultScene.accessGameObjectProvider() << circle2

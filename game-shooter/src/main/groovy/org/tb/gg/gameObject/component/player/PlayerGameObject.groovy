@@ -1,17 +1,19 @@
-package org.tb.gg.gameObject.component
+package org.tb.gg.gameObject.component.player
 
+import org.tb.gg.di.Inject
+import org.tb.gg.engine.SceneManager
 import org.tb.gg.gameObject.GameObject
+import org.tb.gg.gameObject.component.guns.BulletGameObject
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.factory.KeyBoundGameObjectBuilder
-import org.tb.gg.gameObject.shape.Circle
-import org.tb.gg.gameObject.shape.Line
 import org.tb.gg.gameObject.shape.Rect
-import org.tb.gg.global.geom.CircleOperations
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.global.math.MathConstants
 
 class PlayerGameObject extends GameObject {
-    Vector orientation
+
+    @Inject
+    SceneManager sceneManager
 
     static PlayerGameObject create() {
         def player = (PlayerGameObject) new KeyBoundGameObjectBuilder(PlayerGameObject)
@@ -37,6 +39,7 @@ class PlayerGameObject extends GameObject {
 
         updateMovement(activeActions, timestamp, delta)
         updateOrientation(activeActions, timestamp, delta)
+        shoot(activeActions)
     }
 
     private updateMovement(List<PlayerAction> activeActions, Long timestamp, Long delta) {
@@ -107,7 +110,11 @@ class PlayerGameObject extends GameObject {
         return goalDot > 0 ? 1 : -1
     }
 
-    private shoot() {
-
+    private shoot(List<PlayerAction> activeActions) {
+        if (!activeActions.contains(PlayerAction.SHOOT)) {
+            return
+        }
+        def bullet = BulletGameObject.create(body.center, orientation.normalize())
+        sceneManager.getActiveScene().ifPresent { it.accessGameObjectProvider().addGameObject(bullet) }
     }
 }
