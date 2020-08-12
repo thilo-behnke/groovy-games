@@ -39,7 +39,7 @@ class PlayerGameObject extends GameObject {
 
         updateMovement(activeActions, timestamp, delta)
         updateOrientation(activeActions, timestamp, delta)
-        shoot(activeActions)
+        shoot(activeActions, timestamp)
     }
 
     private updateMovement(List<PlayerAction> activeActions, Long timestamp, Long delta) {
@@ -110,11 +110,11 @@ class PlayerGameObject extends GameObject {
         return goalDot > 0 ? 1 : -1
     }
 
-    private shoot(List<PlayerAction> activeActions) {
+    private shoot(List<PlayerAction> activeActions, Long timestamp) {
         if (!activeActions.contains(PlayerAction.SHOOT)) {
             return
         }
-        def bullet = BulletGameObject.create(body.center, orientation.normalize())
+        def bullet = BulletGameObject.create(timestamp, body.center, orientation.normalize())
         sceneManager.getActiveScene().ifPresent { it.accessGameObjectProvider().addGameObject(bullet) }
     }
 }
