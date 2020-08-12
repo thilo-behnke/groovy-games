@@ -13,7 +13,7 @@ class BulletGameObject extends GameObject {
                 .setBody(new ShapeBody(new Rect(pos, new Vector(x: 10, y: 10))))
                 .setInputComponent(NoopInputComponent.get())
                 .setRenderComponent(new BulletRenderComponent())
-                .setPhysicsComponent(new BulletPhysicsComponent())
+                .setPhysicsComponent(new BulletPhysicsComponent(orientation))
                 .build()
         bullet.setOrientation(orientation)
         return bullet
@@ -22,5 +22,7 @@ class BulletGameObject extends GameObject {
     @Override
     void update(Long timestamp, Long delta) {
         super.update(timestamp, delta)
+
+        physicsComponent.update(timestamp, delta)
     }
 }

@@ -7,4 +7,8 @@ class NoopPhysicsComponent extends PhysicsComponent {
     boolean shouldCollide() {
         return false
     }
+
+    @Override
+    void update(Long timestamp, Long delta) {
+    }
 }
