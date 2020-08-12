@@ -10,11 +10,6 @@ import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 
-import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import static org.codehaus.groovy.ast.ClassHelper.make;
 
 
@@ -28,13 +23,14 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
     public void visit(ASTNode[] nodes, SourceUnit source) {
         init(nodes, source);
         AnnotatedNode parent = (AnnotatedNode) nodes[1];
-        AnnotationNode annotationNode = (AnnotationNode) nodes[0];
-        if (!MY_TYPE.equals(annotationNode.getClassNode())) {
+        AnnotationNode anno = (AnnotationNode) nodes[0];
+        if (!MY_TYPE.equals(anno.getClassNode())) {
             return;
         }
 
         if (parent instanceof FieldNode) {
             FieldNode fieldNode = (FieldNode) parent;
+            // TODO: It would be nice to allow implicit injection by leaving out the Class return type, but how to find the matching class for the getter including the package path?
             ClassNode serviceClassNode = fieldNode.getType();
             String serviceName = fieldNode.getName().substring(0, 1).toUpperCase() + fieldNode.getName().substring(1);
             ClassNode clazz = fieldNode.getDeclaringClass();
@@ -43,7 +39,7 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
             ClassNode proxyClassNode = new ClassNode(ServiceProvider.class);
             MethodNode serviceGetter = new MethodNode(
                     "get" + serviceName,
-                    // TODO: field.getModifiers would be better, but returns private - what is the problem?
+                    // TODO: Should not always be static - only if necessary.
                     Opcodes.ACC_PROTECTED + Opcodes.ACC_STATIC,
                     serviceClassNode,
                     Parameter.EMPTY_ARRAY,
@@ -59,21 +55,11 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
                             )
                     )
             );
-            serviceGetter.addAnnotations(getOtherAnnotationsOfNode(fieldNode));
             Class<?> annotation = serviceClassNode.isInterface() ? InjectedDynamic.class : Injected.class;
             // 3. Add annotation to later identify the injected getter.
             serviceGetter.addAnnotation(new AnnotationNode(new ClassNode(annotation)));
             // 4. Add getter for service
             clazz.addMethod(serviceGetter);
         }
-    }
-
-    private List<AnnotationNode> getOtherAnnotationsOfNode(FieldNode node) {
-        return node.getAnnotations().stream()
-                .filter(annotationNode -> {
-                    // TODO: No better way to compare classes than by name?
-                    return !annotationNode.getClassNode().getTypeClass().getName().equals(Inject.class.getName());
-                })
-                .collect(Collectors.toList());
     }
 }
