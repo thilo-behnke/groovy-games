@@ -18,7 +18,7 @@ class InputComponentBuilder implements Builder<InputComponent> {
     }
 
     InputComponentBuilder setActions(Set<String> actions) {
-        keyPressInputActionProvider = AbstractInputActionProviderFactory.factory().createProvider(
+        keyPressInputActionProvider = new AbstractInputActionProviderFactory().factory().createProvider(
                 new InputActionProviderArgs(actions: actions)
         )
         return this
