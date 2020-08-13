@@ -1,6 +1,6 @@
 package org.tb.gg.gameObject
 
-
+import org.tb.gg.di.Inject
 import org.tb.gg.engine.helper.Updateable
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
@@ -8,11 +8,15 @@ import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.render.RenderComponent
 import groovy.transform.EqualsAndHashCode
 import org.tb.gg.gameObject.lifecycle.Lifecycle
+import org.tb.gg.global.DateProvider
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 
 @EqualsAndHashCode(includes='id')
 class GameObject implements Updateable, Lifecycle {
+    // TODO: Refactor - this is needed for the TimePerishable ast transformation atm.
+    @Inject DateProvider dateProvider
+
     Long id
 
     Vector orientation

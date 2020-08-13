@@ -24,42 +24,41 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
         init(nodes, source);
         AnnotatedNode parent = (AnnotatedNode) nodes[1];
         AnnotationNode anno = (AnnotationNode) nodes[0];
-        if (!MY_TYPE.equals(anno.getClassNode())) {
+
+        if (!MY_TYPE.equals(anno.getClassNode()) || !(parent instanceof FieldNode)) {
             return;
         }
 
-        if (parent instanceof FieldNode) {
-            FieldNode fieldNode = (FieldNode) parent;
-            // TODO: It would be nice to allow implicit injection by leaving out the Class return type, but how to find the matching class for the getter including the package path?
-            ClassNode serviceClassNode = fieldNode.getType();
-            String serviceName = fieldNode.getName().substring(0, 1).toUpperCase() + fieldNode.getName().substring(1);
-            ClassNode clazz = fieldNode.getDeclaringClass();
-            // 1. Remove property, no longer needed.
-            clazz.removeField(fieldNode.getName());
-            ClassNode proxyClassNode = new ClassNode(ServiceProvider.class);
-            MethodNode serviceGetter = new MethodNode(
-                    "get" + serviceName,
-                    // TODO: Should not always be static - only if necessary.
-                    Opcodes.ACC_PROTECTED + Opcodes.ACC_STATIC,
-                    serviceClassNode,
-                    Parameter.EMPTY_ARRAY,
-                    ClassNode.EMPTY_ARRAY,
-                    // 2. Getter returns static proxy access to service, e.g. Proxy.get('<service>')
-                    new ReturnStatement(
-                            new ExpressionStatement(
-                                    new MethodCallExpression(
-                                            new ClassExpression(proxyClassNode),
-                                            "getService",
-                                            new ArgumentListExpression(new ConstantExpression(serviceClassNode.getNameWithoutPackage()))
-                                    )
-                            )
-                    )
-            );
-            Class<?> annotation = serviceClassNode.isInterface() ? InjectedDynamic.class : Injected.class;
-            // 3. Add annotation to later identify the injected getter.
-            serviceGetter.addAnnotation(new AnnotationNode(new ClassNode(annotation)));
-            // 4. Add getter for service
-            clazz.addMethod(serviceGetter);
-        }
+        FieldNode fieldNode = (FieldNode) parent;
+        // TODO: It would be nice to allow implicit injection by leaving out the Class return type, but how to find the matching class for the getter including the package path?
+        ClassNode serviceClassNode = fieldNode.getType();
+        String serviceName = fieldNode.getName().substring(0, 1).toUpperCase() + fieldNode.getName().substring(1);
+        ClassNode clazz = fieldNode.getDeclaringClass();
+        // 1. Remove property, no longer needed.
+        clazz.removeField(fieldNode.getName());
+        ClassNode proxyClassNode = new ClassNode(ServiceProvider.class);
+        MethodNode serviceGetter = new MethodNode(
+                "get" + serviceName,
+                // TODO: Should not always be static - only if necessary.
+                Opcodes.ACC_PROTECTED + Opcodes.ACC_STATIC,
+                serviceClassNode,
+                Parameter.EMPTY_ARRAY,
+                ClassNode.EMPTY_ARRAY,
+                // 2. Getter returns static proxy access to service, e.g. Proxy.get('<service>')
+                new ReturnStatement(
+                        new ExpressionStatement(
+                                new MethodCallExpression(
+                                        new ClassExpression(proxyClassNode),
+                                        "getService",
+                                        new ArgumentListExpression(new ConstantExpression(serviceClassNode.getNameWithoutPackage()))
+                                )
+                        )
+                )
+        );
+        Class<?> annotation = serviceClassNode.isInterface() ? InjectedDynamic.class : Injected.class;
+        // 3. Add annotation to later identify the injected getter.
+        serviceGetter.addAnnotation(new AnnotationNode(new ClassNode(annotation)));
+        // 4. Add getter for service
+        clazz.addMethod(serviceGetter);
     }
 }

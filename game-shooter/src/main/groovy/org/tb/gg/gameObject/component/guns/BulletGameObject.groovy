@@ -2,6 +2,7 @@ package org.tb.gg.gameObject.component.guns
 
 
 import org.tb.gg.gameObject.GameObject
+import org.tb.gg.gameObject.PerishAfterTTL
 import org.tb.gg.gameObject.component.ShooterCollisionGroup
 import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
@@ -10,10 +11,8 @@ import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.gameObject.traits.TimePerishable
 import org.tb.gg.global.geom.Vector
 
-class BulletGameObject extends GameObject implements TimePerishable {
-    private final static TIME_TO_LIVE_MS = 2_000
-    Long spawnedAt
-
+@PerishAfterTTL(10_000L)
+class BulletGameObject extends GameObject {
     static BulletGameObject create(Long timestamp, Vector pos, Vector orientation) {
         def physicsComp = new BulletPhysicsComponent(orientation)
         physicsComp.setCollisionGroups([ShooterCollisionGroup.ENEMIES.toString()].toSet())
@@ -24,7 +23,6 @@ class BulletGameObject extends GameObject implements TimePerishable {
                 .setPhysicsComponent(physicsComp)
                 .build()
         bullet.setOrientation(orientation)
-        bullet.setSpawnedAt(timestamp)
         return bullet
     }
 
@@ -33,11 +31,5 @@ class BulletGameObject extends GameObject implements TimePerishable {
         super.update(timestamp, delta)
 
         physicsComponent.update(timestamp, delta)
-
-    }
-
-    @Override
-    boolean shouldPerish(Long timestamp, Long delta) {
-        return timestamp - spawnedAt > TIME_TO_LIVE_MS
     }
 }
