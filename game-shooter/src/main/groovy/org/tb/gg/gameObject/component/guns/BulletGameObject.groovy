@@ -12,7 +12,7 @@ import org.tb.gg.gameObject.traits.TimePerishable
 import org.tb.gg.global.geom.Vector
 
 @PerishAfterTTL(10_000L)
-class BulletGameObject extends GameObject {
+class BulletGameObject extends GameObject implements TimePerishable {
     static BulletGameObject create(Long timestamp, Vector pos, Vector orientation) {
         def physicsComp = new BulletPhysicsComponent(orientation)
         physicsComp.setCollisionGroups([ShooterCollisionGroup.ENEMIES.toString()].toSet())

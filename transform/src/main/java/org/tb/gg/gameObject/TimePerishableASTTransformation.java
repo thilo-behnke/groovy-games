@@ -8,12 +8,11 @@ import org.codehaus.groovy.ast.stmt.ReturnStatement;
 import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.syntax.Token;
-import org.codehaus.groovy.syntax.Types;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 
 @SuppressWarnings("unused")
-@GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
+@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public class TimePerishableASTTransformation extends AbstractASTTransformation {
     @Override
     public void visit(ASTNode[] nodes, SourceUnit source) {
@@ -25,7 +24,18 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
         }
         ClassNode classNode = (ClassNode) parent;
 
-        FieldNode dateProvider = classNode.getField("dateProvider");
+        Parameter[] shouldPerishParams = new Parameter[]{
+                new Parameter(new ClassNode(Long.class), "timestamp"),
+                new Parameter(new ClassNode(Long.class), "delta")
+        };
+
+        MethodNode existingShouldPerish = classNode.getMethod("shouldPerish", shouldPerishParams);
+        if (existingShouldPerish != null) {
+            classNode.removeMethod(existingShouldPerish);
+        }
+
+        // TODO: Not so nice that the object has to have the date provider injected...
+        MethodCallExpression dateProvider = new MethodCallExpression(new ClassExpression(classNode), "getDateProvider", ArgumentListExpression.EMPTY_ARGUMENTS);
 
         FieldNode spawnedAt = new FieldNode("spawnedAt", Opcodes.ACC_PRIVATE, new ClassNode(Long.class), classNode, null);
         classNode.addField(spawnedAt);
@@ -40,7 +50,7 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
                                         spawnedAt
                                 ),
                                 Token.newSymbol("=", 0, 0),
-                                new MethodCallExpression(new FieldExpression(dateProvider), "now", ArgumentListExpression.EMPTY_ARGUMENTS)
+                                new MethodCallExpression(dateProvider, "now", ArgumentListExpression.EMPTY_ARGUMENTS)
                         )
                 ))
         );
@@ -60,13 +70,11 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
                 "shouldPerish",
                 Opcodes.ACC_PUBLIC,
                 new ClassNode(boolean.class),
-                new Parameter[]{
-                        new Parameter(new ClassNode(Long.class), "timestamp"),
-                        new Parameter(new ClassNode(Long.class), "delta")
-                },
+                shouldPerishParams,
                 ClassNode.EMPTY_ARRAY,
                 new ReturnStatement(new ExpressionStatement(diffLargerThanTTL))
         );
 
+        classNode.addMethod(shouldPerish);
     }
 }
