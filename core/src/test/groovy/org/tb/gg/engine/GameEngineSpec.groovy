@@ -16,31 +16,38 @@ class GameEngineSpec extends Specification {
     GameEngine gameEngine
     ExecutorService executorService
     Renderer renderer
+    SceneManager sceneManager
 
     Set<GameScene> scenes = []
-    GameScene activeScene
 
     int receivedUpdates = 0
 
     def setup() {
         receivedUpdates = 0
-        def dateProviderMock = Mock(DateProvider)
+        sceneManager = new SceneManager()
+        ServiceProvider.setService(sceneManager)
+        ServiceProvider.setService(new SceneProvider())
         ServiceProvider.setService(new GameObjectProvider())
+
+        def dateProviderMock = Mock(DateProvider)
         executorService = new HaltingExecutorService()
         renderer = Mock(Renderer)
-        gameEngine = new GameEngine(executorService, dateProviderMock, renderer)
-        pauseAfterEveryCycle(1)
-    }
 
-    private boolean pauseAfterEveryCycle(nrOfCycles = 1) {
-        def executionRuleEngine = new GameEngineExecutionRuleEngine()
-//        executionRuleEngine << ShutdownAfterFixedNumberOfCyclesExecutionRule.nrOfCycles(1)
-        executionRuleEngine << new HaltEveryCycleExecutionRule()
-        gameEngine.setExecutionRuleEngine(executionRuleEngine)
+        gameEngine = new GameEngine(executorService, dateProviderMock, renderer)
+
+        pauseAfterEveryCycle(1)
     }
 
     def cleanup() {
         gameEngine.stop()
+        ServiceProvider.reset()
+    }
+
+    private void pauseAfterEveryCycle(nrOfCycles = 1) {
+        def executionRuleEngine = new GameEngineExecutionRuleEngine()
+//        executionRuleEngine << ShutdownAfterFixedNumberOfCyclesExecutionRule.nrOfCycles(1)
+        executionRuleEngine << new HaltEveryCycleExecutionRule()
+        gameEngine.setExecutionRuleEngine(executionRuleEngine)
     }
 
     def 'running the game loop without scenes'() {
@@ -73,11 +80,7 @@ class GameEngineSpec extends Specification {
 
     private configureGameEngineWithScene(activate = false) {
         def scene = new GameScene('sceneOne')
-        gameEngine.addScene(scene)
-        if(activate) {
-            gameEngine.changeScene(scene.name)
-            activeScene = scene
-        }
+        sceneManager.addScene(scene, activate)
         return scene.name
     }
 

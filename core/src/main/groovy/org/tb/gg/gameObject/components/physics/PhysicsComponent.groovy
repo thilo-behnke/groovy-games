@@ -6,11 +6,10 @@ import org.tb.gg.global.geom.Vector
 
 abstract class PhysicsComponent<T> implements Updateable {
     GameObject parent
-    Boolean collides
+    Set<String> collisionGroups = new HashSet<>()
 
     Vector velocity
-
-    abstract boolean shouldCollide()
+    Boolean collides
 
     @Override
     void update(Long timestamp, Long delta) {
