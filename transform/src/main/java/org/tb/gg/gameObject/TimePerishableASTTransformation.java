@@ -29,11 +29,6 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
                 new Parameter(new ClassNode(Long.class), "delta")
         };
 
-        MethodNode existingShouldPerish = classNode.getMethod("shouldPerish", shouldPerishParams);
-        if (existingShouldPerish != null) {
-            classNode.removeMethod(existingShouldPerish);
-        }
-
         // TODO: Not so nice that the object has to have the date provider injected...
         MethodCallExpression dateProvider = new MethodCallExpression(new ClassExpression(classNode), "getDateProvider", ArgumentListExpression.EMPTY_ARGUMENTS);
 
@@ -66,6 +61,7 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
                 new FieldExpression(ttl)
         );
 
+        // TODO: This method seems ok but causes a "bad type on operand stack" error - what is the problem here?
         MethodNode shouldPerish = new MethodNode(
                 "shouldPerish",
                 Opcodes.ACC_PUBLIC,
@@ -74,6 +70,14 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
                 ClassNode.EMPTY_ARRAY,
                 new ReturnStatement(new ExpressionStatement(diffLargerThanTTL))
         );
+
+
+        MethodNode existingShouldPerish = classNode.getMethod("shouldPerish", shouldPerishParams);
+        System.out.println(existingShouldPerish);
+        if (existingShouldPerish != null) {
+//            shouldPerish.addAnnotations(existingShouldPerish.getAnnotations());
+            classNode.removeMethod(existingShouldPerish);
+        }
 
         classNode.addMethod(shouldPerish);
     }
