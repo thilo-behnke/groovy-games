@@ -5,6 +5,8 @@ import org.tb.gg.di.Inject
 import org.tb.gg.global.DateProvider
 import org.tb.gg.renderer.Renderer
 import org.tb.gg.utils.HaltingExecutorService
+import org.tb.gg.world.WorldState
+import org.tb.gg.world.WorldStateProvider
 
 enum GameEngineState {
     UNINITIALIZED, RUNNING, STOPPED, PAUSED
@@ -14,6 +16,7 @@ enum GameEngineState {
 class GameEngine {
 
     @Inject SceneManager sceneManager
+    @Inject WorldStateProvider worldStateProvider
 
     private static final defaultExecutionRuleEngine = new GameEngineExecutionRuleEngine()
     private DateProvider dateProvider
@@ -80,6 +83,10 @@ class GameEngine {
         if (lastTimestamp && delta < 1000 / 60) {
             return
         }
+
+        def worldState = new WorldState(currentLoopTimestamp: now)
+        worldStateProvider.set(worldState)
+
         updateScenes(now, delta)
         renderScenes()
         updateExecutionRuleEngine(now, delta)

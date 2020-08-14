@@ -5,7 +5,6 @@ import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.*;
 import org.codehaus.groovy.ast.stmt.ExpressionStatement;
 import org.codehaus.groovy.ast.stmt.ReturnStatement;
-import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.syntax.Token;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
@@ -24,11 +23,6 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
         }
         ClassNode classNode = (ClassNode) parent;
 
-        Parameter[] shouldPerishParams = new Parameter[]{
-                new Parameter(new ClassNode(Long.class), "timestamp"),
-                new Parameter(new ClassNode(Long.class), "delta")
-        };
-
         FieldNode spawnedAt = new FieldNode("spawnedAt", Opcodes.ACC_PRIVATE, new ClassNode(Long.class), classNode, null);
         classNode.addField(spawnedAt);
 
@@ -42,7 +36,7 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
                                         spawnedAt
                                 ),
                                 Token.newSymbol("=", 0, 0),
-                                new MethodCallExpression(new ClassExpression(classNode), "now", ArgumentListExpression.EMPTY_ARGUMENTS)
+                                new MethodCallExpression(new ClassExpression(classNode), "getTimestamp", ArgumentListExpression.EMPTY_ARGUMENTS)
                         )
                 ))
         );
@@ -62,13 +56,13 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
                 "shouldPerish",
                 Opcodes.ACC_PUBLIC,
                 new ClassNode(Boolean.class),
-                shouldPerishParams,
+                Parameter.EMPTY_ARRAY,
                 ClassNode.EMPTY_ARRAY,
                 new ReturnStatement(new ExpressionStatement(diffLargerThanTTL))
         );
 
 
-        MethodNode existingShouldPerish = classNode.getMethod("shouldPerish", shouldPerishParams);
+        MethodNode existingShouldPerish = classNode.getMethod("shouldPerish", Parameter.EMPTY_ARRAY);
         if (existingShouldPerish != null) {
             classNode.removeMethod(existingShouldPerish);
         }
