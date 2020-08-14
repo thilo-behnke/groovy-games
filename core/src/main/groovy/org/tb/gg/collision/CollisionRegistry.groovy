@@ -3,8 +3,9 @@ package org.tb.gg.collision
 import org.tb.gg.di.definition.Singleton
 import org.tb.gg.engine.helper.Updateable
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.gameObject.GameObject
 
 interface CollisionRegistry extends Singleton, Updateable {
     Set<Collision> getCollisions()
-    boolean hasCollision(BaseGameObject gameObject)
+    Set<Collision> getCollisions(GameObject gameObject)
 }
