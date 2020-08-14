@@ -10,14 +10,15 @@ import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.render.NoopRenderComponent
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Point
+import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.world.WorldState
 import org.tb.gg.world.WorldStateProvider
 import spock.lang.Specification
 
-class TimePerishableSpec extends Specification {
+class OutOfBoundsPerishableSpec extends Specification {
 
-    GameObject gameObject
+    BaseGameObject gameObject
     WorldStateProvider worldStateProvider
     WorldState initialWorldState
 
@@ -30,28 +31,29 @@ class TimePerishableSpec extends Specification {
         ServiceProvider.reset()
     }
 
-    def 'before time runs out'() {
-        expect:
+    def 'game object is in bounds'() {
+        when:
+        gameObject.setBody(new ShapeBody(new Point(pos: new Vector(x: 103, y: 91))))
+        then:
         !gameObject.shouldPerish()
     }
 
-    def 'after time runs out'() {
+    def 'game object is out of bounds'() {
         when:
-        initialWorldState.currentLoopTimestamp = initialWorldState.currentLoopTimestamp + 10_001L
-        worldStateProvider.get() >> initialWorldState
+        gameObject.setBody(new ShapeBody(new Point(pos: new Vector(x: 200, y: 101))))
         then:
         gameObject.shouldPerish()
     }
 
     private initializeServices() {
-        initialWorldState = new WorldState(currentLoopTimestamp: 1597442901002)
+        initialWorldState = new WorldState(bounds: new Rect(new Vector(x: 100, y: 100), new Vector(x: 10, y: 10)))
         worldStateProvider = Mock(WorldStateProvider)
         ServiceProvider.setService(worldStateProvider, 'WorldStateProvider')
         worldStateProvider.get() >> initialWorldState
     }
 
     private initializeGameObject() {
-        gameObject = new GameObjectBuilder(TimePerishableGameObject)
+        gameObject = new GameObjectBuilder(OutOfBoundsGameObject)
                 .setPhysicsComponent(new NoopPhysicsComponent())
                 .setInputComponent(NoopInputComponent.get())
                 .setRenderComponent(NoopRenderComponent.get())
@@ -60,6 +62,4 @@ class TimePerishableSpec extends Specification {
     }
 }
 
-@PerishAfterTTL(10_000L)
-class TimePerishableGameObject extends BaseGameObject implements TimePerishable {}
-
+class OutOfBoundsGameObject extends BaseGameObject implements OutOfBoundsPerishable {}

@@ -14,9 +14,6 @@ trait OutOfBoundsPerishable implements Perishable, GameObject {
     }
 
     private boolean isInBounds() {
-        System.println(worldStateProvider.get().bounds.topLeft)
-        System.println(worldStateProvider.get().bounds.dim)
-        System.println(getBody().center)
         worldStateProvider.get().bounds.isPointWithin(getBody().center)
     }
 }
