@@ -14,8 +14,6 @@ import org.tb.gg.renderer.destination.RenderDestination
 
 @EqualsAndHashCode(includes='id')
 class GameObject implements Updateable, Lifecycle {
-    // TODO: Refactor - this is needed for the TimePerishable ast transformation atm.
-    @Inject DateProvider dateProvider
 
     Long id
 

@@ -12,7 +12,7 @@ import org.codehaus.groovy.transform.AbstractASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 
 @SuppressWarnings("unused")
-@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
+@GroovyASTTransformation()
 public class TimePerishableASTTransformation extends AbstractASTTransformation {
     @Override
     public void visit(ASTNode[] nodes, SourceUnit source) {
@@ -29,9 +29,6 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
                 new Parameter(new ClassNode(Long.class), "delta")
         };
 
-        // TODO: Not so nice that the object has to have the date provider injected...
-        MethodCallExpression dateProvider = new MethodCallExpression(new ClassExpression(classNode), "getDateProvider", ArgumentListExpression.EMPTY_ARGUMENTS);
-
         FieldNode spawnedAt = new FieldNode("spawnedAt", Opcodes.ACC_PRIVATE, new ClassNode(Long.class), classNode, null);
         classNode.addField(spawnedAt);
 
@@ -45,7 +42,7 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
                                         spawnedAt
                                 ),
                                 Token.newSymbol("=", 0, 0),
-                                new MethodCallExpression(dateProvider, "now", ArgumentListExpression.EMPTY_ARGUMENTS)
+                                new MethodCallExpression(new ClassExpression(classNode), "now", ArgumentListExpression.EMPTY_ARGUMENTS)
                         )
                 ))
         );
