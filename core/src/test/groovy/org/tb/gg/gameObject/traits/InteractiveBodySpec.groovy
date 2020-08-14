@@ -5,10 +5,8 @@ import io.reactivex.rxjava3.observers.TestObserver
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.Subject
 import org.tb.gg.di.ServiceProvider
-import org.tb.gg.gameObject.GameObject
-import org.tb.gg.gameObject.components.input.NoopInputComponent
+import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.components.physics.ShapeBody
-import org.tb.gg.gameObject.components.render.NoopRenderComponent
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
@@ -20,7 +18,7 @@ import spock.lang.Unroll
 class InteractiveBodyMouseClickSpec extends Specification {
 
     MouseEventProvider mouseEventProvider
-    GameObject dummyGameObject
+    BaseGameObject dummyGameObject
     ShapeBody mockBody
 
     TestObserver<MouseEvent> mouseClickTestObserver

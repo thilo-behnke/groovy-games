@@ -1,8 +1,9 @@
 package org.tb.gg.world
 
-import groovy.transform.Immutable
+import org.tb.gg.gameObject.shape.Rect
+import org.tb.gg.global.geom.Vector
 
-@Immutable
 class WorldState {
     long currentLoopTimestamp
+    Rect bounds
 }

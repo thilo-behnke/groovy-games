@@ -1,6 +1,6 @@
 package org.tb.gg.gameObject
 
-class Keyboard extends GameObject {
+class Keyboard extends BaseGameObject {
     Set<String> activeActions
 
     @Override

@@ -12,6 +12,7 @@ trait TimePerishable implements Perishable {
         return false
     }
 
+    @SuppressWarnings('unused')
     private static long getTimestamp() {
         return worldStateProvider.get().currentLoopTimestamp
     }

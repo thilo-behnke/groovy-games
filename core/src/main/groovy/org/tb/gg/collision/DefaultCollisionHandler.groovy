@@ -1,21 +1,21 @@
 package org.tb.gg.collision
 
-import org.tb.gg.gameObject.GameObject
+import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.utils.CollectionUtils
 
 class DefaultCollisionHandler implements CollisionHandler {
     @Override
-    Set<Collision> detect(Set<GameObject> gameObjects) {
+    Set<Collision> detect(Set<BaseGameObject> gameObjects) {
         if (gameObjects.size() < 2) {
             return []
         }
         def combinations = CollectionUtils.permutations(gameObjects, 2)
 
         combinations
-                .findAll { GameObject a, GameObject b ->
+                .findAll { BaseGameObject a, BaseGameObject b ->
                     return !a.physicsComponent?.collisionGroups?.intersect(b.physicsComponent?.collisionGroups)?.isEmpty()
                 }
-                .collect { GameObject a, GameObject b ->
+                .collect { BaseGameObject a, BaseGameObject b ->
                     def areColliding = a.body.collidesWith(b.body.getStructure())
                     if (!areColliding) {
                         return null

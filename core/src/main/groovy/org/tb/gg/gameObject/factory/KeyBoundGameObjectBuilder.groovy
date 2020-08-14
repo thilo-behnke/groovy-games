@@ -1,6 +1,6 @@
 package org.tb.gg.gameObject.factory
 
-import org.tb.gg.gameObject.GameObject
+import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
@@ -12,8 +12,8 @@ import org.tb.gg.input.actions.KeyPressInputActionProvider
 import org.tb.gg.input.actions.factory.AbstractInputActionProviderFactory
 import org.tb.gg.input.actions.factory.InputActionProviderArgs
 
-class KeyBoundGameObjectBuilder<T extends GameObject> implements Builder<GameObject> {
-    private GameObject gameObject
+class KeyBoundGameObjectBuilder<T extends BaseGameObject> implements Builder<BaseGameObject> {
+    private BaseGameObject gameObject
     private KeyPressInputActionProvider keyPressInputActionProvider
     private Class<? extends InputComponent> inputComponentClazz
     private Map<Key, String> defaultKeyMapping

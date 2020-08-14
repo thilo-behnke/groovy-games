@@ -1,7 +1,7 @@
 package org.tb.gg.collision
 
 import groovyjarjarantlr4.v4.runtime.misc.Tuple2
-import org.tb.gg.gameObject.GameObject
+import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.shape.Point
@@ -30,7 +30,7 @@ class DefaultCollisionHandlerSpec extends Specification {
         given:
         def gameObjects = createCollidingGameObjects(5, [])
         when:
-        def res = defaultCollisionHandler.detect((Set<GameObject>) gameObjects)
+        def res = defaultCollisionHandler.detect((Set<BaseGameObject>) gameObjects)
         then:
         res == (Set) []
     }
@@ -39,7 +39,7 @@ class DefaultCollisionHandlerSpec extends Specification {
         given:
         def gameObjects = createCollidingGameObjects(5, [new Tuple2<>(1, 2)])
         when:
-        def res = defaultCollisionHandler.detect((Set<GameObject>) gameObjects)
+        def res = defaultCollisionHandler.detect((Set<BaseGameObject>) gameObjects)
         then:
         res == (Set) [new Collision(a: gameObjects[1], b: gameObjects[2])]
     }
@@ -48,7 +48,7 @@ class DefaultCollisionHandlerSpec extends Specification {
         given:
         def gameObjects = createCollidingGameObjects(50, [new Tuple2<>(10, 2), new Tuple2<Integer, Integer>(30, 4)])
         when:
-        def res = defaultCollisionHandler.detect((Set<GameObject>) gameObjects)
+        def res = defaultCollisionHandler.detect((Set<BaseGameObject>) gameObjects)
         then:
         res == (Set) [
                 new Collision(a: gameObjects[2], b: gameObjects[10]),

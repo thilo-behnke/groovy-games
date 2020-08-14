@@ -1,16 +1,16 @@
 package org.tb.gg.gameObject.factory
 
 
-import org.tb.gg.gameObject.GameObject
+import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.global.util.Builder
 
-class GameObjectBuilder<T extends GameObject> implements Builder<GameObject> {
+class GameObjectBuilder<T extends BaseGameObject> implements Builder<BaseGameObject> {
 
-    private GameObject gameObject
+    private BaseGameObject gameObject
 
     GameObjectBuilder(Class<T> clazz) {
         gameObject = clazz.getConstructor().newInstance()

@@ -1,14 +1,12 @@
 package org.tb.gg.collision
 
 import groovy.transform.EqualsAndHashCode
-import groovy.transform.Immutable
-import groovy.transform.ImmutableOptions
 import groovy.transform.ToString
-import org.tb.gg.gameObject.GameObject
+import org.tb.gg.gameObject.BaseGameObject
 
 @EqualsAndHashCode
 @ToString
 class Collision {
-    GameObject a
-    GameObject b
+    BaseGameObject a
+    BaseGameObject b
 }

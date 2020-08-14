@@ -1,8 +1,12 @@
 package org.tb.gg.engine
 
 import groovy.util.logging.Log4j
+import org.tb.gg.config.ConfigurationService
+import org.tb.gg.config.ConfigurationSettings
 import org.tb.gg.di.Inject
+import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.DateProvider
+import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.Renderer
 import org.tb.gg.utils.HaltingExecutorService
 import org.tb.gg.world.WorldState
@@ -17,6 +21,7 @@ class GameEngine {
 
     @Inject SceneManager sceneManager
     @Inject WorldStateProvider worldStateProvider
+    @Inject ConfigurationService configurationService
 
     private static final defaultExecutionRuleEngine = new GameEngineExecutionRuleEngine()
     private DateProvider dateProvider
@@ -84,8 +89,16 @@ class GameEngine {
             return
         }
 
-        def worldState = new WorldState(currentLoopTimestamp: now)
-        worldStateProvider.set(worldState)
+        if (!worldStateProvider.get()) {
+            // TODO: Should not be resolution but bounds of screen (currently not implemented).
+            def resolution = configurationService.getResolution()
+            def dims = new Vector(x: resolution.getV1(), y: resolution.getV2())
+            def bounds = new Rect(new Vector(x: 0, y: dims.y), dims)
+            def worldState = new WorldState(currentLoopTimestamp: now, bounds: bounds)
+            worldStateProvider.set(worldState)
+        } else {
+            worldStateProvider.get().currentLoopTimestamp = now
+        }
 
         updateScenes(now, delta)
         renderScenes()

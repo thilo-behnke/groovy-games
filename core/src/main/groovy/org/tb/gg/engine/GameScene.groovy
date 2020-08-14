@@ -3,8 +3,7 @@ package org.tb.gg.engine
 
 import org.tb.gg.collision.CollisionRegistry
 import org.tb.gg.di.Inject
-import org.tb.gg.engine.helper.Updateable
-import org.tb.gg.gameObject.GameObject
+import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.GameObjectProvider
 import org.tb.gg.global.DateProvider
 import groovy.util.logging.Log4j
@@ -35,10 +34,10 @@ class GameScene {
         }
     }
 
-    private Set<GameObject> updateGameObjects() {
+    private Set<BaseGameObject> updateGameObjects() {
         def gameObjects = gameObjectProvider.getGameObjects()
         def gameObjectsToDestroy = gameObjects.findAll { it.shouldPerish() }
-        def nrDestroyed = gameObjectProvider.removeGameObjects(gameObjectsToDestroy as GameObject[])
+        def nrDestroyed = gameObjectProvider.removeGameObjects(gameObjectsToDestroy as BaseGameObject[])
         if (nrDestroyed) {
             log.info("Destroyed ${nrDestroyed} game objects on scene update.".toString())
         }
@@ -49,7 +48,7 @@ class GameScene {
         gameSceneState = state
     }
 
-    Set<GameObject> getGameObjects() {
+    Set<BaseGameObject> getGameObjects() {
         return gameObjectProvider.getGameObjects()
     }
 
