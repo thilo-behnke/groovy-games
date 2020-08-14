@@ -18,6 +18,7 @@ class ClasspathServiceScanner implements ServiceScanner {
         removeConcreteServiceImplementations(implementingServices)
     }
 
+    // TODO: Isn't this really loading all classes unfiltered? The last collect could be removed.
     private Set<Class<? extends Service>> findAllServicesInClassPath() {
         ClassPath.from(loader).getTopLevelClasses()
                 .findAll { it.getPackageName().startsWith("org.tb.gg") }

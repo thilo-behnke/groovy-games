@@ -65,7 +65,7 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
         MethodNode shouldPerish = new MethodNode(
                 "shouldPerish",
                 Opcodes.ACC_PUBLIC,
-                new ClassNode(boolean.class),
+                new ClassNode(Boolean.class),
                 shouldPerishParams,
                 ClassNode.EMPTY_ARRAY,
                 new ReturnStatement(new ExpressionStatement(diffLargerThanTTL))
