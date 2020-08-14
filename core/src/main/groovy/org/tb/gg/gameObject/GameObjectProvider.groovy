@@ -21,9 +21,12 @@ class GameObjectProvider implements Singleton {
 		return gameObjects << gameObject
 	}
 
-	boolean removeGameObject(GameObject gameObject) {
-		gameObject.destroy()
-		gameObjects.remove(gameObject)
+	int removeGameObjects(GameObject ...toRemove) {
+		toRemove.each {
+			it.destroy()
+			gameObjects.remove(it)
+		}
+		return toRemove.size()
 	}
 
 

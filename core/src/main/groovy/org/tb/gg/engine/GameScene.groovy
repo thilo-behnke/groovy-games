@@ -27,14 +27,22 @@ class GameScene {
     }
 
     void update(Long timestamp, Long delta) {
-        if(gameSceneState == GameSceneState.RUNNING) {
-            // TODO: Not the right place - maybe a scene should only update its own game objects?
-            def gameObjects = gameObjectProvider.getGameObjects()
-            // TODO: Remove perished game objects - but is here the right place?
+        if (gameSceneState == GameSceneState.RUNNING) {
+            def gameObjects = updateGameObjects()
             // TODO: Copy to avoid concurrent modification - but is this the right way?
-            new HashSet<>(gameObjects).each { obj -> obj.update(timestamp, delta)}
+            new HashSet<>(gameObjects).each { obj -> obj.update(timestamp, delta) }
             collisionRegistry.update(timestamp, delta)
         }
+    }
+
+    private Set<GameObject> updateGameObjects() {
+        def gameObjects = gameObjectProvider.getGameObjects()
+        def gameObjectsToDestroy = gameObjects.findAll { it.shouldPerish() }
+        def nrDestroyed = gameObjectProvider.removeGameObjects(gameObjectsToDestroy as GameObject[])
+        if (nrDestroyed) {
+            log.info("Destroyed ${nrDestroyed} game objects on scene update.".toString())
+        }
+        return gameObjectProvider.getGameObjects()
     }
 
     void setState(GameSceneState state) {

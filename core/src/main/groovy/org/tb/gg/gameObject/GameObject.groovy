@@ -8,16 +8,17 @@ import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.render.RenderComponent
 import groovy.transform.EqualsAndHashCode
 import org.tb.gg.gameObject.lifecycle.Lifecycle
+import org.tb.gg.gameObject.traits.Perishable
 import org.tb.gg.global.DateProvider
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 
 @EqualsAndHashCode(includes='id')
-class GameObject implements Updateable, Lifecycle {
-
+class GameObject implements Updateable, Lifecycle, Perishable {
     Long id
 
     Vector orientation
+    Boolean shouldBeDestroyed
 
     ShapeBody body
     RenderComponent renderComponent
@@ -48,6 +49,11 @@ class GameObject implements Updateable, Lifecycle {
 
     @Override
     void update(Long timestamp, Long delta) {
+    }
+
+    @Override
+    Boolean shouldPerish() {
+        return shouldBeDestroyed
     }
 
     @Override
