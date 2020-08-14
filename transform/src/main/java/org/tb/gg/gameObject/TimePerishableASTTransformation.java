@@ -61,7 +61,6 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
                 new FieldExpression(ttl)
         );
 
-        // TODO: This method seems ok but causes a "bad type on operand stack" error - what is the problem here?
         MethodNode shouldPerish = new MethodNode(
                 "shouldPerish",
                 Opcodes.ACC_PUBLIC,
@@ -73,9 +72,7 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
 
 
         MethodNode existingShouldPerish = classNode.getMethod("shouldPerish", shouldPerishParams);
-        System.out.println(existingShouldPerish);
         if (existingShouldPerish != null) {
-//            shouldPerish.addAnnotations(existingShouldPerish.getAnnotations());
             classNode.removeMethod(existingShouldPerish);
         }
 
