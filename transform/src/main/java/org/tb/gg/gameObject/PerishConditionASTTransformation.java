@@ -28,11 +28,11 @@ public class PerishConditionASTTransformation extends AbstractASTTransformation 
         }
 
         ClassNode classNode = (ClassNode) parent;
-        List<Class> perishableImplementations = Arrays.stream(classNode.getInterfaces())
+        List<ClassNode> perishableImplementations = Arrays.stream(classNode.getInterfaces())
                 .map(impl -> {
                     Set<ClassNode> interfaces = impl.getPlainNodeReference().getAllInterfaces();
-                    if (!impl.getTypeClass().equals(Perishable.class) && interfaces.contains(new ClassNode(Perishable.class))) {
-                        return impl.getTypeClass();
+                    if (!impl.getPlainNodeReference().equals(new ClassNode(Perishable.class)) && interfaces.contains(new ClassNode(Perishable.class))) {
+                        return impl.getPlainNodeReference();
                     }
                     return null;
                 })
@@ -40,7 +40,7 @@ public class PerishConditionASTTransformation extends AbstractASTTransformation 
                 .collect(Collectors.toList());
 
         List<BooleanExpression> shouldPerishExpressions = perishableImplementations.stream()
-                .map(impl -> classNode.getMethod("shouldPerish__" + impl.getSimpleName(), Parameter.EMPTY_ARRAY))
+                .map(impl -> classNode.getMethod("shouldPerish__" + impl.getNameWithoutPackage(), Parameter.EMPTY_ARRAY))
                 .map(methodNode -> new BooleanExpression(new MethodCallExpression(new VariableExpression("this"), methodNode.getName(), ArgumentListExpression.EMPTY_ARGUMENTS)))
                 .collect(Collectors.toList());
 
