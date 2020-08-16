@@ -9,4 +9,13 @@ import org.tb.gg.gameObject.BaseGameObject
 class Collision {
     BaseGameObject a
     BaseGameObject b
+
+    BaseGameObject getAt(int index) {
+        if (index == 0) {
+            return a
+        } else if (index == 1) {
+            return b
+        }
+        return null
+    }
 }
