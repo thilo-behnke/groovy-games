@@ -1,6 +1,6 @@
 package org.tb.gg.gameObject.traits
 
-import org.tb.gg.collision.Collision
+
 import org.tb.gg.collision.CollisionRegistry
 import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.GameObject
@@ -12,20 +12,19 @@ trait CollisionPerishable implements Perishable, GameObject {
     // TODO: Combine multiple perishable traits by ast transformation.
     @Override
     Boolean shouldPerish() {
-        def collisions = getCollision()
-        // TODO: Implement.
-        return false
+        // TODO: Inefficient, is iterated over twice.
+        def collidingGameObjects = getCollidingGameObjects()
+        collidingGameObjects.any { GameObject collidingGameObject ->
+           physicsComponent.collidesWithGroups.contains(collidingGameObject.physicsComponent.collisionGroup)
+        }
     }
 
-    // TODO: Generate with AST transformation.
-    private Set<String> getRelevantCollisionGroups() {
-        physicsComponent.getCollisionGroups()
-    }
-
-    private Set<Collision> getCollision() {
+    private Set<GameObject> getCollidingGameObjects() {
         if (!getPhysicsComponent().collides) {
             return null
         }
-        return collisionRegistry.getCollisions(this)
+        collisionRegistry.getCollisions(this).collect { GameObject a, GameObject b ->
+            a == this ? b : a
+        }
     }
 }

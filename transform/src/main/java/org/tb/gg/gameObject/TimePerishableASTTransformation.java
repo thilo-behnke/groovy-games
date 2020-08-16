@@ -15,6 +15,7 @@ import org.codehaus.groovy.transform.GroovyASTTransformation;
 public class TimePerishableASTTransformation extends AbstractASTTransformation {
     @Override
     public void visit(ASTNode[] nodes, SourceUnit source) {
+        System.out.println("test2");
         AnnotatedNode parent = (AnnotatedNode) nodes[1];
         AnnotationNode anno = (AnnotationNode) nodes[0];
 

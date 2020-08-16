@@ -13,7 +13,7 @@ class DefaultCollisionHandler implements CollisionHandler {
 
         combinations
                 .findAll { BaseGameObject a, BaseGameObject b ->
-                    return !a.physicsComponent?.collisionGroups?.intersect(b.physicsComponent?.collisionGroups)?.isEmpty()
+                    return !a.physicsComponent?.collidesWithGroups?.intersect(b.physicsComponent?.collidesWithGroups)?.isEmpty()
                 }
                 .collect { BaseGameObject a, BaseGameObject b ->
                     def areColliding = a.body.collidesWith(b.body.getStructure())

@@ -6,7 +6,8 @@ import org.tb.gg.global.geom.Vector
 
 abstract class PhysicsComponent<T> implements Updateable {
     BaseGameObject parent
-    Set<String> collisionGroups = new HashSet<>()
+    String collisionGroup = 'NONE'
+    Set<String> collidesWithGroups = new HashSet<>()
 
     Vector velocity
     Boolean collides

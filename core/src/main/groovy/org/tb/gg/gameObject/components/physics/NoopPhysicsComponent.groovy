@@ -2,7 +2,7 @@ package org.tb.gg.gameObject.components.physics
 
 class NoopPhysicsComponent extends PhysicsComponent {
     NoopPhysicsComponent() {
-        setCollisionGroups((Set<String>) ['NONE'])
+        setCollidesWithGroups((Set<String>) ['NONE'])
     }
 
     @Override

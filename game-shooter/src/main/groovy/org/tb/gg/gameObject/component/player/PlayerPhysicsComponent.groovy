@@ -5,8 +5,10 @@ import org.tb.gg.gameObject.components.physics.PhysicsComponent
 
 class PlayerPhysicsComponent extends PhysicsComponent {
     PlayerPhysicsComponent() {
-        setCollisionGroups([
-                ShooterCollisionGroup.ENEMIES
+        setCollisionGroup(ShooterCollisionGroup.PLAYER.toString())
+        setCollidesWithGroups([
+                ShooterCollisionGroup.ENEMY,
+                ShooterCollisionGroup.ENEMY_BULLET
         ].collect { it.toString() }.toSet())
     }
 }

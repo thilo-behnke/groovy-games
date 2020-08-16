@@ -1,6 +1,7 @@
 package org.tb.gg.gameObject.traits
 
 import org.tb.gg.di.Inject
+import org.tb.gg.gameObject.PerishCondition
 import org.tb.gg.global.DateProvider
 import org.tb.gg.world.WorldStateProvider;
 
