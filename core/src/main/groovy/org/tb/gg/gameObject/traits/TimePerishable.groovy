@@ -1,20 +1,20 @@
 package org.tb.gg.gameObject.traits
 
 import org.tb.gg.di.Inject
-import org.tb.gg.gameObject.PerishCondition
-import org.tb.gg.global.DateProvider
+import org.tb.gg.gameObject.Perishable
 import org.tb.gg.world.WorldStateProvider;
 
 trait TimePerishable implements Perishable {
-    @Inject private static WorldStateProvider worldStateProvider
+    @Inject private WorldStateProvider worldStateProvider
 
     // Will be replaced by ast transformation.
-    Boolean shouldPerish() {
-        return false
-    }
+//    @Override
+//    Boolean shouldPerish() {
+//        return false
+//    }
 
     @SuppressWarnings('unused')
-    private static long getTimestamp() {
+    private long getTimestamp() {
         return worldStateProvider.get().currentLoopTimestamp
     }
 }

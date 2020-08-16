@@ -12,10 +12,9 @@ import org.codehaus.groovy.transform.GroovyASTTransformation;
 
 @SuppressWarnings("unused")
 @GroovyASTTransformation()
-public class TimePerishableASTTransformation extends AbstractASTTransformation {
+public class PerishAfterTTLASTTransformation extends AbstractASTTransformation {
     @Override
     public void visit(ASTNode[] nodes, SourceUnit source) {
-        System.out.println("test2");
         AnnotatedNode parent = (AnnotatedNode) nodes[1];
         AnnotationNode anno = (AnnotationNode) nodes[0];
 
@@ -37,7 +36,7 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
                                         spawnedAt
                                 ),
                                 Token.newSymbol("=", 0, 0),
-                                new MethodCallExpression(new ClassExpression(classNode), "getTimestamp", ArgumentListExpression.EMPTY_ARGUMENTS)
+                                new MethodCallExpression(new VariableExpression("this"), "getTimestamp", ArgumentListExpression.EMPTY_ARGUMENTS)
                         )
                 ))
         );
@@ -53,21 +52,15 @@ public class TimePerishableASTTransformation extends AbstractASTTransformation {
                 new FieldExpression(ttl)
         );
 
-        MethodNode shouldPerish = new MethodNode(
-                "shouldPerish",
-                Opcodes.ACC_PUBLIC,
+        MethodNode shouldPerishTimePerishable = new MethodNode(
+                "shouldPerish__TimePerishable",
+                Opcodes.ACC_PRIVATE,
                 new ClassNode(Boolean.class),
                 Parameter.EMPTY_ARRAY,
                 ClassNode.EMPTY_ARRAY,
                 new ReturnStatement(new ExpressionStatement(diffLargerThanTTL))
         );
 
-
-        MethodNode existingShouldPerish = classNode.getMethod("shouldPerish", Parameter.EMPTY_ARRAY);
-        if (existingShouldPerish != null) {
-            classNode.removeMethod(existingShouldPerish);
-        }
-
-        classNode.addMethod(shouldPerish);
+        classNode.addMethod(shouldPerishTimePerishable);
     }
 }
