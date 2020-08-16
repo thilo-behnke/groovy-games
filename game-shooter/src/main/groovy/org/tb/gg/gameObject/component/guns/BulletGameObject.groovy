@@ -3,7 +3,7 @@ package org.tb.gg.gameObject.component.guns
 
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.PerishAfterTTL
-import org.tb.gg.gameObject.PerishCondition
+import org.tb.gg.gameObject.PerishConditions
 import org.tb.gg.gameObject.PerishWhenOutOfBounds
 import org.tb.gg.gameObject.component.ShooterCollisionGroup
 import org.tb.gg.gameObject.components.input.NoopInputComponent
@@ -17,8 +17,6 @@ import org.tb.gg.global.geom.Vector
 
 @PerishAfterTTL(10_000L)
 @PerishWhenOutOfBounds
-// TODO: This could also be added by a global AST transformation to all classes implementing a perishable implementor.
-@PerishCondition
 class BulletGameObject extends BaseGameObject implements TimePerishable, OutOfBoundsPerishable, CollisionPerishable {
     static BulletGameObject create(Long timestamp, Vector pos, Vector orientation) {
         def physicsComp = new BulletPhysicsComponent(orientation)
@@ -42,9 +40,4 @@ class BulletGameObject extends BaseGameObject implements TimePerishable, OutOfBo
 
         physicsComponent.update(timestamp, delta)
     }
-
-//    @Override
-//    Boolean shouldPerish() {
-//        return CollisionPerishable.super.shouldPerish() || OutOfBoundsPerishable.super.shouldPerish()
-//    }
 }

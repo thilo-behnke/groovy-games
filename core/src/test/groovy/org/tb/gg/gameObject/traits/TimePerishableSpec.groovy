@@ -4,8 +4,7 @@ import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.PerishAfterTTL
-import org.tb.gg.gameObject.PerishCondition
-import org.tb.gg.gameObject.PerishConditionSpec
+import org.tb.gg.gameObject.PerishConditions
 import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
@@ -63,6 +62,6 @@ class TimePerishableSpec extends Specification {
 }
 
 @PerishAfterTTL(10_000L)
-@PerishCondition
+@PerishConditions
 class TimePerishableGameObject extends BaseGameObject implements TimePerishable {}
 

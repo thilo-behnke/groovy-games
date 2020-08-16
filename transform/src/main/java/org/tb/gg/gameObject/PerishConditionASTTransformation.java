@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 public class PerishConditionASTTransformation extends AbstractASTTransformation {
     @Override
     public void visit(ASTNode[] nodes, SourceUnit source) {
+        // TODO: This is not executed, because the PerishConditions annotation is added to late?
+        System.out.println("local");
         AnnotatedNode parent = (AnnotatedNode) nodes[1];
         AnnotationNode anno = (AnnotationNode) nodes[0];
 
