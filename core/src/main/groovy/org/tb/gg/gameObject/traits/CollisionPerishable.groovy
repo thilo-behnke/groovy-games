@@ -8,18 +8,16 @@ import org.tb.gg.gameObject.Perishable
 
 trait CollisionPerishable implements Perishable, GameObject {
 
-    @Inject CollisionRegistry collisionRegistry
+    @Inject
+    CollisionRegistry collisionRegistry
 
     @SuppressWarnings('unused')
     Boolean shouldPerish__CollisionPerishable() {
-        // TODO: Inefficient, is iterated over twice.
-        def collidingGameObjects = getCollidingGameObjects()
-        collidingGameObjects.any { GameObject collidingGameObject ->
-           physicsComponent.collidesWithGroups.contains(collidingGameObject.physicsComponent.collisionGroup)
-        }
+        def collidingGameObject = getCollidingGameObject()
+        return collidingGameObject != null
     }
 
-    Set<GameObject> getCollidingGameObjects() {
+    GameObject getCollidingGameObject() {
         if (!getPhysicsComponent().collides) {
             return null
         }
@@ -27,6 +25,9 @@ trait CollisionPerishable implements Perishable, GameObject {
             def a = collision.a
             def b = collision.b
             a == this ? b : a
+        }
+        .find { GameObject collidingGameObject ->
+            physicsComponent.collidesWithGroups.contains(collidingGameObject.physicsComponent.collisionGroup)
         }
     }
 }
