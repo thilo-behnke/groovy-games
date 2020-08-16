@@ -4,6 +4,8 @@ import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.PerishAfterTTL
+import org.tb.gg.gameObject.PerishCondition
+import org.tb.gg.gameObject.PerishWhenOutOfBounds
 import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
@@ -62,4 +64,6 @@ class OutOfBoundsPerishableSpec extends Specification {
     }
 }
 
+@PerishWhenOutOfBounds
+@PerishCondition
 class OutOfBoundsGameObject extends BaseGameObject implements OutOfBoundsPerishable {}

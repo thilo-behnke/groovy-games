@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 public class PerishConditionASTTransformation extends AbstractASTTransformation {
     @Override
     public void visit(ASTNode[] nodes, SourceUnit source) {
-        System.out.println(source.getName());
-
         AnnotatedNode parent = (AnnotatedNode) nodes[1];
         AnnotationNode anno = (AnnotationNode) nodes[0];
 
@@ -30,9 +28,6 @@ public class PerishConditionASTTransformation extends AbstractASTTransformation 
         }
 
         ClassNode classNode = (ClassNode) parent;
-        System.out.println(Arrays.stream(classNode.getInterfaces()).map(impl -> impl.getPlainNodeReference().getAllInterfaces())
-                .collect(Collectors.toList())
-        );
         List<Class> perishableImplementations = Arrays.stream(classNode.getInterfaces())
                 .map(impl -> {
                     Set<ClassNode> interfaces = impl.getPlainNodeReference().getAllInterfaces();
@@ -44,14 +39,10 @@ public class PerishConditionASTTransformation extends AbstractASTTransformation 
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        System.out.println(perishableImplementations);
-
         List<BooleanExpression> shouldPerishExpressions = perishableImplementations.stream()
                 .map(impl -> classNode.getMethod("shouldPerish__" + impl.getSimpleName(), Parameter.EMPTY_ARRAY))
                 .map(methodNode -> new BooleanExpression(new MethodCallExpression(new VariableExpression("this"), methodNode.getName(), ArgumentListExpression.EMPTY_ARGUMENTS)))
                 .collect(Collectors.toList());
-
-        System.out.println(shouldPerishExpressions);
 
         Optional<BooleanExpression> combinedShouldPerishBooleanExpressionOpt = shouldPerishExpressions.stream()
                 .reduce((BooleanExpression acc, BooleanExpression booleanExpression) -> new BooleanExpression(new BinaryExpression(acc, Token.newSymbol("||", 0, 0), booleanExpression)));
