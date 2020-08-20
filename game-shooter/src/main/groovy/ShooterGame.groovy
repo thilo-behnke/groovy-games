@@ -2,7 +2,7 @@
 
 import org.tb.gg.engine.GameScene
 import org.tb.gg.engine.Game
-import org.tb.gg.gameObject.component.enemies.RegularEnemyGameObject
+import org.tb.gg.gameObject.component.enemies.OneHitEnemyGameObject
 import org.tb.gg.gameObject.component.player.PlayerGameObject
 import org.tb.gg.global.geom.Vector
 
@@ -16,7 +16,7 @@ class GameEntryPoint implements Game {
 
         Thread.start { gameEngine.start() }
 
-        def enemy = RegularEnemyGameObject.create(new Vector(x: 200, y: 200))
+        def enemy = OneHitEnemyGameObject.create(new Vector(x: 200, y: 200))
         defaultScene.accessGameObjectProvider() << enemy
     }
 }
