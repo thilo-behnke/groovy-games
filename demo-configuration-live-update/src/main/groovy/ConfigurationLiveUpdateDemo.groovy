@@ -1,19 +1,24 @@
 import org.tb.gg.GameEngineProvider
-import org.tb.gg.engine.DefaultGameScene
+import org.tb.gg.engine.Game
 import org.tb.gg.engine.GameEngine
+import org.tb.gg.engine.GameScene
 import org.tb.gg.gameObject.traits.InteractiveBody
 import org.tb.gg.gameObject.RectButton
 import org.tb.gg.global.geom.Vector
 
-GameEngine gameEngine = new GameEngineProvider().provideGameEngine()
+class ConfigurationLiveUpdateDemoEntrypoint implements Game {
 
-def defaultScene = new DefaultGameScene('default')
+    @Override
+    void runGame() {
+        def defaultScene = new GameScene('default')
 
-def button = RectButton.create(Vector.unitVector() * 500.0, Vector.unitVector() * 200.0)
+        def button = RectButton.create(Vector.unitVector() * 500.0, Vector.unitVector() * 200.0)
+        defaultScene.accessGameObjectProvider() << button
+        addScene(defaultScene, true)
 
-defaultScene.accessGameObjectProvider() << button
+        gameEngine.start()
+    }
+}
 
-gameEngine.addScene(defaultScene)
-gameEngine.changeScene(defaultScene.name)
-
-gameEngine.start()
+def game = new ConfigurationLiveUpdateDemoEntrypoint()
+game.runGame()

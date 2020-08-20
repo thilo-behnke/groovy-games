@@ -1,14 +1,14 @@
 package org.tb.gg.gameObject.components.render
 
 
-import org.tb.gg.gameObject.GameObject
+import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.lifecycle.Lifecycle
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 import org.tb.gg.renderer.renderObjects.RenderNode
 
 abstract class RenderComponent implements Lifecycle {
-    GameObject parent
+    BaseGameObject parent
 
     abstract RenderNode getRenderNode()
 

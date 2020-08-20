@@ -31,7 +31,7 @@ class SwingKeyEventAdapterSpec extends Specification {
         // TODO: Hotfix, This should also be handled by DI.
         def environmentService = Mock(EnvironmentService)
         environmentService.getEnvironment() >> {args -> new EnvironmentSettings(graphics: org.tb.gg.env.Graphics.SWING, environmentFrame: jFrameMock)}
-        ServiceProvider.setService(environmentService, EnvironmentService.getSimpleName())
+        ServiceProvider.registerSingletonService(environmentService, EnvironmentService.getSimpleName())
 
         keyEventJwtAdapter = new SwingKeyEventAdapter()
     }

@@ -2,52 +2,59 @@ package org.tb.gg
 
 import org.tb.gg.di.DependencyInjectionHandler
 import org.tb.gg.di.Inject
-import org.tb.gg.engine.DefaultSceneProvider
+import org.tb.gg.di.definition.Service
 import org.tb.gg.engine.GameEngine
 import org.tb.gg.engine.GameEngineExecutionRuleEngine
-import org.tb.gg.env.EnvironmentAnalyzer
 import org.tb.gg.env.EnvironmentService
-import org.tb.gg.env.SystemPropertiesEnvironmentAnalyzer
 import org.tb.gg.global.DefaultDateProvider
-import org.tb.gg.input.actions.KeyPressInputActionProvider
-import org.tb.gg.input.actions.InputActionRegistry
-import org.tb.gg.input.awt.SwingKeyEventAdapter
 import org.tb.gg.renderer.DefaultRenderer
 import org.tb.gg.utils.HaltingExecutorService
 
 class GameEngineProvider {
-    private DependencyInjectionHandler dependencyInjectionHandler = new DependencyInjectionHandler()
-
     @Inject
-    private EnvironmentService environmentService
+    private static EnvironmentService environmentService
+
+    private static GameEngine gameEngine
+    private static List<Service> services
 
     // TODO: It would be great to have something here like in Spring, e.g. auto detect files with ending Scene and startup the game that way.
-    GameEngine provideGameEngine() {
+    static GameEngine provideGameEngine() {
+        if (gameEngine) {
+            return gameEngine
+        }
         // TODO: First inject static services, then inject dynamic services (dependent on environment or other settings).
         configureDependencyInjection()
-        bootstrap()
+        initialize()
+        bootstrapGameEngine()
     }
 
-    private void configureDependencyInjection() {
-        def services = dependencyInjectionHandler.injectDependencies()
-        // TODO: Find better place for lifecycle management.
+    static void shutdownGameEngine() {
+        gameEngine.stop()
+        services.each { it.destroy() }
+    }
+
+    private static void configureDependencyInjection() {
+        services = new DependencyInjectionHandler().injectDependencies()
+    }
+
+    private static void initialize() {
         services.each {
             it.init()
         }
     }
 
-    private GameEngine bootstrap() {
+    private static GameEngine bootstrapGameEngine() {
         def dateProvider = new DefaultDateProvider()
-        def sceneProvider = new DefaultSceneProvider()
         def executorService = new HaltingExecutorService()
         def executionRuleEngine = new GameEngineExecutionRuleEngine()
 //        executionRuleEngine << ShutdownAfterFixedNumberOfCyclesExecutionRule.nrOfCycles(10000)
 
         def renderer = new DefaultRenderer(renderDestination: environmentService.environment.renderDestination)
 
-        def gameEngine = new GameEngine(executorService, dateProvider, sceneProvider, renderer)
+        def gameEngine = new GameEngine(executorService, dateProvider, renderer)
         gameEngine.setExecutionRuleEngine(executionRuleEngine)
 
+        this.gameEngine = gameEngine
         return gameEngine
     }
 }

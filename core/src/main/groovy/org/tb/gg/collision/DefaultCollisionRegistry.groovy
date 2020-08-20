@@ -2,6 +2,7 @@ package org.tb.gg.collision
 
 
 import org.tb.gg.di.Inject
+import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.GameObjectProvider
 
@@ -32,9 +33,9 @@ class DefaultCollisionRegistry implements CollisionRegistry {
     }
 
     @Override
-    boolean hasCollision(GameObject gameObject) {
+    Set<Collision> getCollisions(GameObject gameObject) {
         // TODO: Find special collection type for this.
-        return collisions.find {
+        return collisions.findAll {
             it.a == gameObject || it.b == gameObject
         }
     }

@@ -22,8 +22,6 @@ class Rect extends Shape {
 
     @Override
     boolean isPointWithin(Vector pos) {
-        def topLeft = topLeft
-        def topRight = topRight
         return topLeft.x <= pos.x && pos.x <= topRight.x && bottomLeft.y <= pos.y && pos.y <= topRight.y
     }
 

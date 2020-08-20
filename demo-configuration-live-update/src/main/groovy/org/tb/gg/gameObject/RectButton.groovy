@@ -11,7 +11,7 @@ import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.gameObject.traits.InteractiveBody
 import org.tb.gg.global.geom.Vector
 
-class RectButton extends GameObject implements InteractiveBody {
+class RectButton extends BaseGameObject implements InteractiveBody {
     Vector pos
     Vector dim
 

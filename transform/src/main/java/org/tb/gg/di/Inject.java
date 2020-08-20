@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 // Needs to be runtime, because otherwise injection won't work with traits!
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
-@GroovyASTTransformationClass("org.tb.gg.di.InjectServiceASTTransformation")
+@GroovyASTTransformationClass("org.tb.gg.di.InjectSingletonASTTransformation")
 public @interface Inject {
 }

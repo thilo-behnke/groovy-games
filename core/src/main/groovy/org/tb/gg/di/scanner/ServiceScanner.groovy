@@ -3,5 +3,5 @@ package org.tb.gg.di.scanner
 import org.tb.gg.di.definition.Service
 
 interface ServiceScanner {
-    Set<Class<? extends Service>> scanForServices(Class<? extends Service> subClass)
+    Set<Class<? extends Service>> scanForServices()
 }

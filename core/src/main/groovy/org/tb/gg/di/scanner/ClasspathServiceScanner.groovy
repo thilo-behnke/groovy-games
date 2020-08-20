@@ -3,21 +3,20 @@ package org.tb.gg.di.scanner
 import com.google.common.reflect.ClassPath
 import org.tb.gg.di.definition.Service
 
-class ClasspathServiceScanner implements ServiceScanner {
+abstract class ClasspathServiceScanner implements ServiceScanner {
     final ClassLoader loader
 
     ClasspathServiceScanner() {
         this.loader = Thread.currentThread().getContextClassLoader();
     }
 
-    @Override
-    Set<Class<? extends Service>> scanForServices(Class<? extends Service> subClass) {
+    protected Set<Class<? extends Service>> scanForServices(Class<? extends Service> subClass) {
         subClass = subClass ?: Service.class
         def services = findAllServicesInClassPath()
-        def implementingServices = findServicesAssignableFromSubClass(services, subClass)
-        removeConcreteServiceImplementations(implementingServices)
+        findServicesAssignableFromSubClass(services, subClass)
     }
 
+    // TODO: Isn't this really loading all classes unfiltered? The last collect could be removed.
     private Set<Class<? extends Service>> findAllServicesInClassPath() {
         ClassPath.from(loader).getTopLevelClasses()
                 .findAll { it.getPackageName().startsWith("org.tb.gg") }
@@ -33,9 +32,5 @@ class ClasspathServiceScanner implements ServiceScanner {
         services.findAll {
             subClass.isAssignableFrom(it) && it.getName() != subClass.getName()
         }
-    }
-
-    private static Set<Class<? extends Service>> removeConcreteServiceImplementations(Set<Class<? extends Service>> services) {
-        services.findAll{!services.find{service -> it != service && service.isAssignableFrom(it)}}
     }
 }

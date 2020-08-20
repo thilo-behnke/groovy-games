@@ -9,7 +9,7 @@ import org.tb.gg.gameObject.traits.InteractiveBody
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.global.math.MathConstants
 
-class MovableGameObject extends GameObject implements InteractiveBody {
+class MovableGameObject extends BaseGameObject implements InteractiveBody {
 
     @Inject
     private InputComponentProvider inputComponentProvider
