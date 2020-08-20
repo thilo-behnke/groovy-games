@@ -8,6 +8,7 @@ import java.util.Map;
 public class ServiceProvider {
     private static final Map<String, Object> singletonServiceMap = new HashMap<>();
     private static final Map<String, List<Object>> multiInstanceServiceMap = new HashMap<>();
+    private static final List<Object> EMPTY_LIST = new ArrayList<Object>();
 
     public static Map<String, Object> getServices() {
         return singletonServiceMap;
@@ -19,7 +20,7 @@ public class ServiceProvider {
     }
 
     public static List<Object> getMultiInstanceServices(String serviceName) {
-        return multiInstanceServiceMap.get(serviceName);
+        return multiInstanceServiceMap.getOrDefault(serviceName, EMPTY_LIST);
     }
 
     public static void registerSingletonService(Object service) {
