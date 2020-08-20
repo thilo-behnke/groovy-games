@@ -14,6 +14,7 @@ abstract class AbstractInjectASTTransformation extends AbstractASTTransformation
         if (!getType().equals(anno.getClassNode()) || !(parent instanceof FieldNode)) {
             return;
         }
+        validateTransformation(nodes, source);
 
         FieldNode fieldNode = (FieldNode) parent;
         // TODO: It would be nice to allow implicit injection by leaving out the Class return type, but how to find the matching class for the getter including the package path?
@@ -32,6 +33,7 @@ abstract class AbstractInjectASTTransformation extends AbstractASTTransformation
         clazz.addMethod(serviceGetter);
     }
 
+    abstract void validateTransformation(ASTNode[] nodes, SourceUnit source) throws IllegalArgumentException;
     abstract ClassNode getType();
     abstract MethodNode getterImplementation(String serviceName, ClassNode serviceClassNode);
 }

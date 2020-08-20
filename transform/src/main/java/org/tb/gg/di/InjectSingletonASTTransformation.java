@@ -10,6 +10,9 @@ import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 
+import java.util.Collection;
+import java.util.List;
+
 import static org.codehaus.groovy.ast.ClassHelper.make;
 
 
@@ -45,5 +48,13 @@ public class InjectSingletonASTTransformation extends AbstractInjectASTTransform
     @Override
     ClassNode getType() {
         return MY_TYPE;
+    }
+
+    @Override
+    void validateTransformation(ASTNode[] nodes, SourceUnit source) throws IllegalArgumentException {
+        FieldNode parent = (FieldNode) nodes[1];
+        if (parent.getType().implementsInterface(new ClassNode(Collection.class))) {
+            throw new IllegalArgumentException("Invalid use of Inject annotation. Not valid for collection types. Provided here for field " + parent + " with type " + parent.getType());
+        }
     }
 }
