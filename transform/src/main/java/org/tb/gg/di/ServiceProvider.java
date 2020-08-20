@@ -18,6 +18,10 @@ public class ServiceProvider {
         return singletonServiceMap.get(serviceName);
     }
 
+    public static List<Object> getMultiInstanceServices(String serviceName) {
+        return multiInstanceServiceMap.get(serviceName);
+    }
+
     public static void registerSingletonService(Object service) {
         registerSingletonService(service, service.getClass().getSimpleName());
     }

@@ -89,6 +89,14 @@ class GameEngine {
             return
         }
 
+        updateWorldStateProvider(now, delta)
+        updateScenes(now, delta)
+        renderScenes()
+        updateExecutionRuleEngine(now, delta)
+        lastTimestamp = now
+    }
+
+    private updateWorldStateProvider(long now, long delta) {
         if (!worldStateProvider.get()) {
             // TODO: Should not be resolution but bounds of screen (currently not implemented).
             def resolution = configurationService.getResolution()
@@ -99,13 +107,7 @@ class GameEngine {
         } else {
             worldStateProvider.get().currentLoopTimestamp = now
         }
-
-        updateScenes(now, delta)
-        renderScenes()
-        updateExecutionRuleEngine(now, delta)
-        lastTimestamp = now
     }
-
 
     private updateScenes(long now, long delta) {
         log.debug("Updating active scenes. Time: ${now}. Delta: ${delta}".toString())
