@@ -28,6 +28,7 @@ public class GlobalPerishConditionsASTTransformation extends AbstractASTTransfor
         List<ClassNode> classesInSource = source.getAST().getClasses();
         return classesInSource.stream()
                 .filter(it -> !it.isAbstract() && !it.isInterface())
+                .filter(this::doesNotAlreadyHavePerishableConditionsAnnotation)
                 .filter(this::implementsPerishableCondition)
                 .collect(Collectors.toList());
     }
@@ -36,5 +37,9 @@ public class GlobalPerishConditionsASTTransformation extends AbstractASTTransfor
         return classNode.getAllInterfaces()
                 .stream()
                 .anyMatch(implementedInterface -> implementedInterface.getAnnotations().stream().anyMatch(anno -> anno.getClassNode().equals(new ClassNode(PerishCondition.class))));
+    }
+
+    private boolean doesNotAlreadyHavePerishableConditionsAnnotation(ClassNode classNode) {
+        return classNode.getAnnotations().stream().noneMatch(anno -> anno.getClassNode().equals(new ClassNode(PerishConditions.class)));
     }
 }
