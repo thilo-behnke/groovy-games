@@ -4,6 +4,7 @@ import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
 
+@SuppressWarnings("unused")
 abstract class AbstractInjectASTTransformation extends AbstractASTTransformation {
     @Override
     public void visit(ASTNode[] nodes, SourceUnit source) {
