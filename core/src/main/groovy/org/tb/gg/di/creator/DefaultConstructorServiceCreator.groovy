@@ -18,20 +18,22 @@ class DefaultConstructorServiceCreator implements ServiceCreator {
 
     @Override
     List<Service> createServices(Set<Class<? extends Service>> serviceClasses) {
+        // TODO: Could each be done in separate threads.
         (List<Service>) serviceCreationOrderResolver.determineCreationOrder(serviceClasses).collect { pipe ->
-            // TODO: Could each be done in separate threads.
-            pipe.collect { serviceClass ->
-                def serviceInstance = serviceClass.getConstructor().newInstance()
-                if (Singleton.isAssignableFrom(serviceClass)) {
-                    registerSingleton((Singleton) serviceInstance)
-                } else if (MultiInstanceService.isAssignableFrom(serviceClass)) {
-                    registerMultiInstanceService((MultiInstanceService) serviceInstance)
-                } else {
-                    throw new IllegalArgumentException("Unknown service implementation provided, don't know how to register: ${serviceClass}")
-                }
-                return serviceInstance
-            }
+            pipe.collect { createAndRegisterService(it) }
         }.flatten()
+    }
+
+    Service createAndRegisterService(Class<? extends Service> serviceClass) {
+        def serviceInstance = serviceClass.getConstructor().newInstance()
+        if (Singleton.isAssignableFrom(serviceClass)) {
+            registerSingleton((Singleton) serviceInstance)
+        } else if (MultiInstanceService.isAssignableFrom(serviceClass)) {
+            registerMultiInstanceService((MultiInstanceService) serviceInstance)
+        } else {
+            throw new IllegalArgumentException("Unknown service implementation provided, don't know how to register: ${serviceClass}")
+        }
+        return serviceInstance
     }
 
     private getBaseClassNameIfServiceImplementation(Class<? extends Service> serviceClass) {
