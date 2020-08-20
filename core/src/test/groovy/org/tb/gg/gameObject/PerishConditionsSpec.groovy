@@ -38,9 +38,9 @@ class PerishConditionSpec extends Specification {
 }
 
 
-@PerishConditions
 class ClassWithMultiplePerishConditions extends BaseGameObject implements PerishCondition1, PerishCondition2 {}
 
+@PerishCondition
 trait PerishCondition1 implements Perishable {
     def perishConditionProp1 = false
 
@@ -49,6 +49,7 @@ trait PerishCondition1 implements Perishable {
     }
 }
 
+@PerishCondition
 trait PerishCondition2 implements Perishable {
     def perishConditionProp2 = false
 
