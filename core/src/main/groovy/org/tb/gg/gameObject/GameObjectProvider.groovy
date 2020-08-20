@@ -7,13 +7,13 @@ import java.util.concurrent.atomic.AtomicLong
 class GameObjectProvider implements Singleton {
 	private AtomicLong idCounter = new AtomicLong()
 
-	private Set<BaseGameObject> gameObjects = []
+	private Set<GameObject> gameObjects = []
 
-	Set<BaseGameObject> leftShift(BaseGameObject gameObject) {
+	Set<GameObject> leftShift(GameObject gameObject) {
         addGameObject(gameObject)
 	}
 
-	Set<BaseGameObject> addGameObject(BaseGameObject gameObject) {
+	Set<GameObject> addGameObject(GameObject gameObject) {
 		def id = idCounter.incrementAndGet()
 		gameObject.setId(id)
 		gameObject.init()
@@ -21,7 +21,7 @@ class GameObjectProvider implements Singleton {
 		return gameObjects << gameObject
 	}
 
-	int removeGameObjects(BaseGameObject ...toRemove) {
+	int removeGameObjects(GameObject ...toRemove) {
 		toRemove.each {
 			it.destroy()
 			gameObjects.remove(it)
@@ -30,7 +30,7 @@ class GameObjectProvider implements Singleton {
 	}
 
 
-	Set<BaseGameObject> getGameObjects() {
+	Set<GameObject> getGameObjects() {
         return gameObjects
 	}
 

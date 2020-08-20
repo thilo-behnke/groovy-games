@@ -20,6 +20,11 @@ class BaseGameObject implements GameObject {
     PhysicsComponent physicsComponent
     InputComponent inputComponent
 
+    @Override
+    void setId(long id) {
+        this.id = id
+    }
+
     void setBody(ShapeBody body) {
         this.body = body
     }

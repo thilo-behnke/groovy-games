@@ -5,6 +5,7 @@ import org.tb.gg.collision.CollisionRegistry
 import org.tb.gg.di.Inject
 import org.tb.gg.di.MultiInject
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.GameObjectProvider
 import org.tb.gg.global.DateProvider
 import groovy.util.logging.Log4j
@@ -28,6 +29,10 @@ class GameScene {
 
     void update(Long timestamp, Long delta) {
         if (gameSceneState == GameSceneState.RUNNING) {
+            def spawned = (Set<GameObject>) spawners.<Spawner<? extends GameObject>, List<GameObject>>collectMany {(Set<GameObject>) it.spawn()}
+            spawned.each {
+                gameObjectProvider << it
+            }
             def gameObjects = updateGameObjects()
             // TODO: Copy to avoid concurrent modification - but is this the right way?
             new HashSet<>(gameObjects).each { obj -> obj.update(timestamp, delta) }

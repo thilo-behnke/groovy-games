@@ -8,6 +8,7 @@ import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.gameObject.lifecycle.Lifecycle
 
 interface GameObject extends Updateable, Lifecycle, Perishable  {
+    void setId(long id)
     ShapeBody getBody()
     RenderComponent getRenderComponent()
     PhysicsComponent getPhysicsComponent()
