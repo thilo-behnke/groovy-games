@@ -3,8 +3,10 @@ package org.tb.gg.gameObject.factory
 
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.components.input.InputComponent
+import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.render.DefaultRenderComponent
 import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.global.util.Builder
 
@@ -37,8 +39,14 @@ class GameObjectBuilder<T extends BaseGameObject> implements Builder<BaseGameObj
     }
 
     T build() {
-        if(!gameObject.renderComponent || !gameObject.inputComponent || !gameObject.body) {
-            throw new IllegalStateException("A game object must have a render an input component and a body!")
+        if (!gameObject.renderComponent) {
+            gameObject.renderComponent = new DefaultRenderComponent();
+        }
+        if (!gameObject.inputComponent) {
+            gameObject.inputComponent = NoopInputComponent.get();
+        }
+        if (!gameObject.body) {
+            throw new IllegalStateException("A game object must have a body!")
         }
         return (T) gameObject
     }

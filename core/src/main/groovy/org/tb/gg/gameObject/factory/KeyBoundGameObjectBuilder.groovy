@@ -5,6 +5,7 @@ import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.render.DefaultRenderComponent
 import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.global.util.Builder
 import org.tb.gg.input.Key
@@ -12,6 +13,7 @@ import org.tb.gg.input.actions.KeyPressInputActionProvider
 import org.tb.gg.input.actions.factory.AbstractInputActionProviderFactory
 import org.tb.gg.input.actions.factory.InputActionProviderArgs
 
+// TODO: Refactor into one with normal GameObjectBuilder.
 class KeyBoundGameObjectBuilder<T extends BaseGameObject> implements Builder<BaseGameObject> {
     private BaseGameObject gameObject
     private KeyPressInputActionProvider keyPressInputActionProvider
@@ -62,7 +64,10 @@ class KeyBoundGameObjectBuilder<T extends BaseGameObject> implements Builder<Bas
 
     @Override
     T build() {
-        if (!gameObject.renderComponent || !keyPressInputActionProvider || !inputComponentClazz) {
+        if (!gameObject.renderComponent) {
+            gameObject.renderComponent = new DefaultRenderComponent();
+        }
+        if (!keyPressInputActionProvider || !inputComponentClazz) {
             throw new IllegalStateException("A key bound game object must have a render component, actions and input component class!")
         }
         if (!defaultKeyMapping) {

@@ -1,8 +1,10 @@
 package org.tb.gg.collision
 
+import groovy.util.logging.Log4j
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.utils.CollectionUtils
 
+@Log4j
 class DefaultCollisionHandler implements CollisionHandler {
     @Override
     Set<Collision> detect(Set<BaseGameObject> gameObjects) {
@@ -13,14 +15,18 @@ class DefaultCollisionHandler implements CollisionHandler {
 
         combinations
                 .findAll { BaseGameObject a, BaseGameObject b ->
-                    return !a.physicsComponent?.collidesWithGroups?.intersect(b.physicsComponent?.collidesWithGroups)?.isEmpty()
+                    return a.physicsComponent?.collidesWithGroups?.contains(b.physicsComponent?.collisionGroup)
+                    || b.physicsComponent?.collidesWithGroups?.contains(a.physicsComponent?.collisionGroup)
                 }
                 .collect { BaseGameObject a, BaseGameObject b ->
                     def areColliding = a.body.collidesWith(b.body.getStructure())
                     if (!areColliding) {
                         return null
                     }
-                    return new Collision(a: a, b: b)
+
+                    def collision = new Collision(a: a, b: b)
+                    log.info("Collision detected: ${collision}".toString())
+                    return collision
                 }
                 .findAll { it }
                 .collect { (Collision) it }
