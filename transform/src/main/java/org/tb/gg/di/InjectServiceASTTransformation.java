@@ -49,7 +49,7 @@ public class InjectServiceASTTransformation extends AbstractASTTransformation {
                         new ExpressionStatement(
                                 new MethodCallExpression(
                                         new ClassExpression(proxyClassNode),
-                                        "getService",
+                                        "getSingletonService",
                                         new ArgumentListExpression(new ConstantExpression(serviceClassNode.getNameWithoutPackage()))
                                 )
                         )

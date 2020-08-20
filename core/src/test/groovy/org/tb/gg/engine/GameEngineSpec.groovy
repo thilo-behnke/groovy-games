@@ -25,9 +25,9 @@ class GameEngineSpec extends Specification {
     def setup() {
         receivedUpdates = 0
         sceneManager = new SceneManager()
-        ServiceProvider.setService(sceneManager)
-        ServiceProvider.setService(new SceneProvider())
-        ServiceProvider.setService(new GameObjectProvider())
+        ServiceProvider.registerSingletonService(sceneManager)
+        ServiceProvider.registerSingletonService(new SceneProvider())
+        ServiceProvider.registerSingletonService(new GameObjectProvider())
 
         def dateProviderMock = Mock(DateProvider)
         executorService = new HaltingExecutorService()

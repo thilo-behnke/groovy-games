@@ -47,7 +47,7 @@ class TimePerishableSpec extends Specification {
     private initializeServices() {
         initialWorldState = new WorldState(currentLoopTimestamp: 1597442901002)
         worldStateProvider = Mock(WorldStateProvider)
-        ServiceProvider.setService(worldStateProvider, 'WorldStateProvider')
+        ServiceProvider.registerSingletonService(worldStateProvider, 'WorldStateProvider')
         worldStateProvider.get() >> initialWorldState
     }
 

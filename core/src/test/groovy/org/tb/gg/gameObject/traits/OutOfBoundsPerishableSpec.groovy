@@ -4,7 +4,6 @@ import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.PerishConditions
 import org.tb.gg.gameObject.PerishWhenOutOfBounds
-import org.tb.gg.gameObject.Perishable
 import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
@@ -49,7 +48,7 @@ class OutOfBoundsPerishableSpec extends Specification {
     private initializeServices() {
         initialWorldState = new WorldState(bounds: new Rect(new Vector(x: 100, y: 100), new Vector(x: 10, y: 10)))
         worldStateProvider = Mock(WorldStateProvider)
-        ServiceProvider.setService(worldStateProvider, 'WorldStateProvider')
+        ServiceProvider.registerSingletonService(worldStateProvider, 'WorldStateProvider')
         worldStateProvider.get() >> initialWorldState
     }
 

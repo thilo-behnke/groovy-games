@@ -34,7 +34,7 @@ class InteractiveBodyMouseClickSpec extends Specification {
         mouseEventProvider.mouseClicks >> mouseClickSubject
         mouseEventProvider.mousePosition >> Observable.empty()
 
-        ServiceProvider.setService(mouseEventProvider, 'MouseEventProvider')
+        ServiceProvider.registerSingletonService(mouseEventProvider, 'MouseEventProvider')
 
         dummyGameObject.init()
         mouseClickTestObserver = dummyGameObject.mouseClicks.test()
@@ -112,7 +112,7 @@ class InteractiveGameObjectMousePositionSpec extends Specification {
         mouseEventProvider.mouseClicks >> Observable.empty()
         mouseEventProvider.getCurrentMousePosition() >> {args -> currentMousePosition}
 
-        ServiceProvider.setService(mouseEventProvider, 'MouseEventProvider')
+        ServiceProvider.registerSingletonService(mouseEventProvider, 'MouseEventProvider')
         // TODO: Can this be done in Spock somehow?
         dummyGameObject.init()
     }

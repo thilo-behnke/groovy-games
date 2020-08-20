@@ -3,6 +3,7 @@ package org.tb.gg.di.creator
 import org.tb.gg.di.ServiceCreationOrderResolver
 import org.tb.gg.di.ServiceProvider
 import org.tb.gg.di.config.ServiceMappingRegistry
+import org.tb.gg.di.definition.MultiInstanceService
 import org.tb.gg.di.definition.Service
 
 class DefaultConstructorServiceCreator implements ServiceCreator {
@@ -20,11 +21,18 @@ class DefaultConstructorServiceCreator implements ServiceCreator {
             // TODO: Could each be done in separate threads.
             pipe.collect { serviceClass ->
                 def serviceInstance = serviceClass.getConstructor().newInstance()
-                def baseServiceClassName = getBaseClassNameIfServiceImplementation(serviceClass)
-                if (baseServiceClassName) {
-                    ServiceProvider.setService(serviceInstance, baseServiceClassName)
-                } else {
-                    ServiceProvider.setService(serviceInstance)
+                if (org.tb.gg.di.definition.Singleton.isAssignableFrom(serviceClass)) {
+                    def baseServiceClassName = getBaseClassNameIfServiceImplementation(serviceClass)
+                    if (baseServiceClassName) {
+                        ServiceProvider.registerSingletonService(serviceInstance, baseServiceClassName)
+                    } else {
+                        ServiceProvider.registerSingletonService(serviceInstance)
+                    }
+                } else if (MultiInstanceService.isAssignableFrom(serviceClass)) {
+                    // TODO: Not a great solution, but works for now...
+                    def multiInstanceInterface = serviceClass.getInterfaces().find { MultiInstanceService.isAssignableFrom(it) }
+                    System.out.println(multiInstanceInterface)
+                    ServiceProvider.registerMultiInstanceService(serviceInstance, multiInstanceInterface.getSimpleName())
                 }
                 return serviceInstance
             }

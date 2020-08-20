@@ -1,3 +1,5 @@
+
+
 import org.tb.gg.engine.GameScene
 import org.tb.gg.engine.Game
 import org.tb.gg.gameObject.component.enemies.RegularEnemyGameObject
@@ -12,10 +14,10 @@ class GameEntryPoint implements Game {
         defaultScene.accessGameObjectProvider() << player
         sceneManager.addScene(defaultScene, true)
 
+        Thread.start { gameEngine.start() }
+
         def enemy = RegularEnemyGameObject.create(new Vector(x: 200, y: 200))
         defaultScene.accessGameObjectProvider() << enemy
-
-        gameEngine.start()
     }
 }
 
