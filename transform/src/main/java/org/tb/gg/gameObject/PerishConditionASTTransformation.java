@@ -16,7 +16,7 @@ import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-@GroovyASTTransformation()
+@GroovyASTTransformation
 public class PerishConditionASTTransformation extends AbstractASTTransformation {
     @Override
     public void visit(ASTNode[] nodes, SourceUnit source) {

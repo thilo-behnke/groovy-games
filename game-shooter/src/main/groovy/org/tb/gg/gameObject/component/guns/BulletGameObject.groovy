@@ -3,7 +3,6 @@ package org.tb.gg.gameObject.component.guns
 
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.PerishAfterTTL
-import org.tb.gg.gameObject.PerishConditions
 import org.tb.gg.gameObject.PerishWhenOutOfBounds
 import org.tb.gg.gameObject.component.ShooterCollisionGroup
 import org.tb.gg.gameObject.components.input.NoopInputComponent
