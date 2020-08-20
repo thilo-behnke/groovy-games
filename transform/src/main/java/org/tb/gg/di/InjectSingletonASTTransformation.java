@@ -15,7 +15,7 @@ import static org.codehaus.groovy.ast.ClassHelper.make;
 
 @SuppressWarnings("unused")
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
-public class InjectServiceASTTransformation extends AbstractASTTransformation {
+public class InjectSingletonASTTransformation extends AbstractASTTransformation {
     static final Class<Inject> MY_CLASS = Inject.class;
     static final ClassNode MY_TYPE = make(MY_CLASS);
 
