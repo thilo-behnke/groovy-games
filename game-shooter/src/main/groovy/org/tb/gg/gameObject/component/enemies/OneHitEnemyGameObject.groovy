@@ -11,12 +11,7 @@ import org.tb.gg.global.geom.Vector
 
 class OneHitEnemyGameObject extends BaseGameObject implements CollisionPerishable {
     static OneHitEnemyGameObject create(Vector pos) {
-        def physicsComp = new BulletPhysicsComponent(Vector.zeroVector())
-        physicsComp.setCollisionGroup(ShooterCollisionGroup.ENEMY.toString())
-        physicsComp.setCollidesWithGroups([
-                ShooterCollisionGroup.PLAYER_BULLET.toString(),
-                ShooterCollisionGroup.PLAYER.toString(),
-        ].toSet())
+        def physicsComp = OneHitEnemyPhysicsComponent.create(Vector.zeroVector())
         def bullet = (OneHitEnemyGameObject) new GameObjectBuilder<>(OneHitEnemyGameObject)
                 .setBody(new ShapeBody(new Circle(center: pos, radius: 20)))
                 .setPhysicsComponent(physicsComp)

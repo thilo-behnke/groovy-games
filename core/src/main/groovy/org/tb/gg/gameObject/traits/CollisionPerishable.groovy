@@ -30,7 +30,7 @@ trait CollisionPerishable implements Perishable, GameObject {
             a == this ? b : a
         }
         .find { GameObject collidingGameObject ->
-            physicsComponent.collidesWithGroups.contains(collidingGameObject.physicsComponent.collisionGroup)
+            physicsComponent.collisionSettings.collidesWithGroups.contains(collidingGameObject.physicsComponent.collisionSettings.collisionGroup)
         }
     }
 }

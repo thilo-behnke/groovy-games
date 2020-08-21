@@ -54,7 +54,7 @@ class OutOfBoundsPerishableSpec extends Specification {
 
     private initializeGameObject() {
         gameObject = new GameObjectBuilder(OutOfBoundsGameObject)
-                .setPhysicsComponent(new NoopPhysicsComponent())
+                .setPhysicsComponent(NoopPhysicsComponent.get())
                 .setInputComponent(NoopInputComponent.get())
                 .setRenderComponent(NoopRenderComponent.get())
                 .setBody(new ShapeBody(new Point(pos: Vector.unitVector())))
