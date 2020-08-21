@@ -1,5 +1,6 @@
 import org.tb.gg.collision.DefaultCollisionRegistry
 import org.tb.gg.collision.DefaultCollisionHandler
+import org.tb.gg.events.DefaultEventManager
 import org.tb.gg.global.DefaultDateProvider
 import org.tb.gg.input.awt.SwingMouseEventAdapter
 
@@ -8,4 +9,5 @@ services = {
     mouseEventProvider(SwingMouseEventAdapter)
     collisionRegistry(DefaultCollisionRegistry)
     collisionHandler(DefaultCollisionHandler)
+    eventManager(DefaultEventManager)
 }
