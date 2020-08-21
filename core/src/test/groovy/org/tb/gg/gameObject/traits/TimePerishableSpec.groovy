@@ -53,7 +53,7 @@ class TimePerishableSpec extends Specification {
 
     private initializeGameObject() {
         gameObject = new GameObjectBuilder(TimePerishableGameObject)
-                .setPhysicsComponent(new NoopPhysicsComponent())
+                .setPhysicsComponent(NoopPhysicsComponent.get())
                 .setInputComponent(NoopInputComponent.get())
                 .setRenderComponent(NoopRenderComponent.get())
                 .setBody(new ShapeBody(new Point(pos: Vector.unitVector())))
