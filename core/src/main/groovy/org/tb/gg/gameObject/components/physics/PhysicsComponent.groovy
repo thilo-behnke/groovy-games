@@ -11,7 +11,7 @@ class PhysicsComponent<C extends CollisionSettings, S extends PhysicStats> imple
     BaseGameObject parent
     Boolean collides
 
-    protected PhysicsComponent(CollisionSettings collisionSettings = NoopCollisionSettings.get(), PhysicStats physicStats) {
+    PhysicsComponent(CollisionSettings collisionSettings = NoopCollisionSettings.get(), PhysicStats physicStats) {
         this.collisionSettings = collisionSettings as C
         this.physicStats = physicStats as S
     }
