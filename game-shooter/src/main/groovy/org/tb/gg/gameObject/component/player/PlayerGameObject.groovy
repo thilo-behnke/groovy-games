@@ -20,7 +20,7 @@ class PlayerGameObject extends BaseGameObject {
                 .setBody(new ShapeBody(new Rect(new Vector(x: 100, y: 100), new Vector(x: 20, y: 30))))
                 .setInputComponentClass(PlayerInputComponent)
                 .setRenderComponent(new PlayerRenderComponent())
-                .setPhysicsComponent(new PlayerPhysicsComponent())
+                .setPhysicsComponent(PlayerPhysicsComponent.create())
                 .setActions(PlayerAction.values().collect { it.toString() }.toSet())
                 .setDefaultKeyMapping(PlayerAction.values().collectEntries { it.keys.collectEntries { key -> [(key): it.toString()] } })
                 .build()

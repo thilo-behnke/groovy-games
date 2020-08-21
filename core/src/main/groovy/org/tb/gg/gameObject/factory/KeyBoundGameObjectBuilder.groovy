@@ -74,7 +74,7 @@ class KeyBoundGameObjectBuilder<T extends BaseGameObject> implements Builder<Bas
             defaultKeyMapping = new HashMap<>()
         }
         if (!gameObject.physicsComponent) {
-            gameObject.physicsComponent = new NoopPhysicsComponent()
+            gameObject.physicsComponent = NoopPhysicsComponent.get()
         }
         keyPressInputActionProvider.overrideKeyMappings(defaultKeyMapping)
         def inputComponent = inputComponentClazz.getConstructor(KeyPressInputActionProvider).newInstance(keyPressInputActionProvider)
