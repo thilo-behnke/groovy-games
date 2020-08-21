@@ -2,7 +2,7 @@ package org.tb.gg.collision
 
 import groovyjarjarantlr4.v4.runtime.misc.Tuple2
 import org.tb.gg.gameObject.BaseGameObject
-import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
+import org.tb.gg.gameObject.components.physics.CollisionSettings
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.shape.Point
@@ -72,17 +72,13 @@ class DefaultCollisionHandlerSpec extends Specification {
 
     private static createGameObject(ShapeBody shapeBody, Integer id) {
         def obj = DummyGameObject.create(shapeBody)
-        obj.physicsComponent = new DummyPhysicsComponent()
+        obj.physicsComponent = new PhysicsComponent(
+                collisionSettings: new CollisionSettings(
+                        collisionGroup: 'SOME',
+                        collidesWithGroups: ['SOME']
+                )
+        )
         obj.id = id
         return obj
     }
-
-    static class DummyPhysicsComponent extends PhysicsComponent {
-        DummyPhysicsComponent() {
-            setCollisionGroup('SOME')
-            setCollidesWithGroups(['SOME'] as Set)
-        }
-    }
-
-
 }

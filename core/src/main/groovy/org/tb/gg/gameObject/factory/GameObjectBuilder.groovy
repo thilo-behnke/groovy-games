@@ -47,7 +47,7 @@ class GameObjectBuilder<T extends BaseGameObject> implements Builder<BaseGameObj
             gameObject.inputComponent = NoopInputComponent.get();
         }
         if (!gameObject.physicsComponent) {
-            gameObject.physicsComponent = new NoopPhysicsComponent();
+            gameObject.physicsComponent = NoopPhysicsComponent.get();
         }
         if (!gameObject.body) {
             throw new IllegalStateException("A game object must have a body!")
