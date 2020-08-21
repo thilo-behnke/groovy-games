@@ -18,8 +18,7 @@ class DefaultCollisionHandler implements CollisionHandler {
                     if (!a.body || !b.body) {
                         return false
                     }
-                    return a.physicsComponent.collidesWithGroups.contains(b.physicsComponent.collisionGroup)
-                            || b.physicsComponent.collidesWithGroups.contains(a.physicsComponent.collisionGroup)
+                    return a.physicsComponent.collidesWith(b.physicsComponent)
                 }
                 .collect { BaseGameObject a, BaseGameObject b ->
                     def areColliding = a.body.collidesWith(b.body.getStructure())
