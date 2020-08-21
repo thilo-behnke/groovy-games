@@ -2,13 +2,9 @@ package org.tb.gg.collision
 
 import groovyjarjarantlr4.v4.runtime.misc.Tuple2
 import org.tb.gg.gameObject.BaseGameObject
-<<<<<<< HEAD
-import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
-=======
 import org.tb.gg.gameObject.components.physics.CollisionSettings
 import org.tb.gg.gameObject.components.physics.PhysicStats
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
->>>>>>> 44d34bf... improve physics component creation by separating collision and physics properties into separate objects
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.shape.Point
 import org.tb.gg.global.geom.Vector
