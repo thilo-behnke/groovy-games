@@ -1,6 +1,6 @@
-package org.tb.gg.collision
+package org.tb.gg.collision.handler
 
-
+import org.tb.gg.collision.Collision
 import org.tb.gg.di.MultiInject
 
 class CollisionHandlerReferrer {

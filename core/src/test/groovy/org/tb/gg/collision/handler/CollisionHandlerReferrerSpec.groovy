@@ -1,24 +1,24 @@
-package org.tb.gg.collision
+package org.tb.gg.collision.handler
 
+import org.tb.gg.collision.Collision
 import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.BaseGameObject
-import org.tb.gg.gameObject.GameObject
 import spock.lang.Specification
 
 class CollisionHandlerReferrerSpec extends Specification {
 
     CollisionHandlerReferrer collisionHandlerReferrer
 
-    CollisionHandlerAB collisionHandlerAB
-    CollisionHandlerBA collisionHandlerBA
-    CollisionHandlerCA collisionHandlerCA
+    ABCollisionHandler collisionHandlerAB
+    BACollisionHandler collisionHandlerBA
+    CACollisionHandler collisionHandlerCA
 
     def setup() {
         collisionHandlerReferrer = new CollisionHandlerReferrer()
 
-        collisionHandlerAB = Spy(CollisionHandlerAB)
-        collisionHandlerBA = Spy(CollisionHandlerBA)
-        collisionHandlerCA = Spy(CollisionHandlerCA)
+        collisionHandlerAB = Spy(ABCollisionHandler)
+        collisionHandlerBA = Spy(BACollisionHandler)
+        collisionHandlerCA = Spy(CACollisionHandler)
     }
 
     def cleanup() {
@@ -29,9 +29,9 @@ class CollisionHandlerReferrerSpec extends Specification {
         when:
         collisionHandlerReferrer.handleCollision(getCollisionAB())
         then:
-        0 * collisionHandlerAB.handleCollisionImplementation()
-        0 * collisionHandlerBA.handleCollisionImplementation()
-        0 * collisionHandlerCA.handleCollisionImplementation()
+        0 * collisionHandlerAB.handleCollision()
+        0 * collisionHandlerBA.handleCollision()
+        0 * collisionHandlerCA.handleCollision()
     }
 
     def 'no fitting collision handler for collision'() {
@@ -41,9 +41,9 @@ class CollisionHandlerReferrerSpec extends Specification {
         when:
         collisionHandlerReferrer.handleCollision(collision)
         then:
-        0 * collisionHandlerAB.handleCollisionImplementation()
-        0 * collisionHandlerBA.handleCollisionImplementation()
-        0 * collisionHandlerCA.handleCollisionImplementation()
+        0 * collisionHandlerAB.handleCollision()
+        0 * collisionHandlerBA.handleCollision()
+        0 * collisionHandlerCA.handleCollision()
     }
 
     def 'trigger fitting collision handlers for collision (multiple registered)'() {
@@ -53,9 +53,9 @@ class CollisionHandlerReferrerSpec extends Specification {
         when:
         collisionHandlerReferrer.handleCollision(collision)
         then:
-        1 * collisionHandlerAB.handleCollisionImplementation()
-        1 * collisionHandlerBA.handleCollisionImplementation()
-        0 * collisionHandlerCA.handleCollisionImplementation()
+        1 * collisionHandlerAB.handleCollision()
+        1 * collisionHandlerBA.handleCollision()
+        0 * collisionHandlerCA.handleCollision()
     }
 
     private getCollisionAB() {
@@ -73,9 +73,9 @@ class CollisionHandlerReferrerSpec extends Specification {
     }
 }
 
-class CollisionHandlerAB implements CollisionHandler<GameObjectA, GameObjectB> {
+class ABCollisionHandler implements CollisionHandler<GameObjectA, GameObjectB> {
     @Override
-    void handleCollisionImplementation(GameObjectA a, GameObjectB b) {
+    void handleCollision(GameObjectA a, GameObjectB b) {
 
     }
 
@@ -90,9 +90,9 @@ class CollisionHandlerAB implements CollisionHandler<GameObjectA, GameObjectB> {
     }
 }
 
-class CollisionHandlerBA implements CollisionHandler<GameObjectB, GameObjectA> {
+class BACollisionHandler implements CollisionHandler<GameObjectB, GameObjectA> {
     @Override
-    void handleCollisionImplementation(GameObjectB a, GameObjectA b) {
+    void handleCollision(GameObjectB a, GameObjectA b) {
 
     }
 
@@ -107,9 +107,9 @@ class CollisionHandlerBA implements CollisionHandler<GameObjectB, GameObjectA> {
     }
 }
 
-class CollisionHandlerCA implements CollisionHandler<GameObjectC, GameObjectA> {
+class CACollisionHandler implements CollisionHandler<GameObjectC, GameObjectA> {
     @Override
-    void handleCollisionImplementation(GameObjectC a, GameObjectA b) {
+    void handleCollision(GameObjectC a, GameObjectA b) {
 
     }
 

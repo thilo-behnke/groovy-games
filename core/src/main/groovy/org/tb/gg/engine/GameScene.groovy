@@ -1,6 +1,6 @@
 package org.tb.gg.engine
 
-import org.tb.gg.collision.CollisionHandler
+
 import org.tb.gg.collision.CollisionRegistry
 import org.tb.gg.di.Inject
 import org.tb.gg.di.MultiInject
