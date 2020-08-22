@@ -5,7 +5,7 @@ import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.utils.CollectionUtils
 
 @Log4j
-class DefaultCollisionHandler implements CollisionHandler {
+class DefaultCollisionDetector implements CollisionDetector {
     @Override
     Set<Collision> detect(Set<BaseGameObject> gameObjects) {
         if (gameObjects.size() < 2) {

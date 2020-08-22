@@ -11,12 +11,12 @@ import org.tb.gg.global.geom.Vector
 import org.tb.gg.mocks.DummyGameObject
 import spock.lang.Specification
 
-class DefaultCollisionHandlerSpec extends Specification {
+class DefaultCollisionDetectorSpec extends Specification {
 
-    DefaultCollisionHandler defaultCollisionHandler
+    DefaultCollisionDetector defaultCollisionHandler
 
     void setup() {
-        defaultCollisionHandler = new DefaultCollisionHandler()
+        defaultCollisionHandler = new DefaultCollisionDetector()
     }
 
     def 'empty set of game objects'() {
