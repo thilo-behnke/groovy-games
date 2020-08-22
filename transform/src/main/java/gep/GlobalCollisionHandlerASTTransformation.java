@@ -2,10 +2,7 @@ package gep;
 
 import groovyjarjarasm.asm.Opcodes;
 import org.codehaus.groovy.ast.*;
-import org.codehaus.groovy.ast.expr.BinaryExpression;
-import org.codehaus.groovy.ast.expr.BooleanExpression;
-import org.codehaus.groovy.ast.expr.ConstantExpression;
-import org.codehaus.groovy.ast.expr.EmptyExpression;
+import org.codehaus.groovy.ast.expr.*;
 import org.codehaus.groovy.ast.stmt.ReturnStatement;
 import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.control.CompilePhase;
@@ -17,7 +14,7 @@ import org.tb.gg.collision.handler.CollisionHandler;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@GroovyASTTransformation(phase = CompilePhase.CLASS_GENERATION)
+@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransformation {
 
     @Override
@@ -48,11 +45,11 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
         System.out.println(objectB.getType());
 
         collisionHandler.addField(
-                new FieldNode("objectTypeA", Opcodes.ACC_PUBLIC, new ClassNode(Class.class), collisionHandler, new ConstantExpression(objectA.getType()))
+                new FieldNode("objectTypeA", Opcodes.ACC_PUBLIC, new ClassNode(Class.class), collisionHandler, new ClassExpression(objectA.getType().getPlainNodeReference()))
         );
 
         collisionHandler.addField(
-                new FieldNode("objectTypeB", Opcodes.ACC_PUBLIC, new ClassNode(Class.class), collisionHandler, new ConstantExpression(objectB.getType()))
+                new FieldNode("objectTypeB", Opcodes.ACC_PUBLIC, new ClassNode(Class.class), collisionHandler, new ClassExpression(objectB.getType().getPlainNodeReference()))
         );
     }
 
