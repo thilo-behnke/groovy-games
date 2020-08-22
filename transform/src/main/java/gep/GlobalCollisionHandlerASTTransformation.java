@@ -37,8 +37,9 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
         if (genericsTypes.length < 2) {
             throw new IllegalStateException("CollisionHandler must have 2 generic types!");
         }
-        ClassNode objectA = genericsTypes[0].getUpperBounds()[0].getPlainNodeReference();
-        ClassNode objectB = genericsTypes[1].getUpperBounds()[0].getPlainNodeReference();
+        Parameter[] handleCollisionParameters = collisionHandler.getMethods("handleCollision").get(0).getParameters();
+        ClassNode objectA = handleCollisionParameters[0].getType();
+        ClassNode objectB = handleCollisionParameters[1].getType();
 
         collisionHandler.addField(
                 new FieldNode("objectTypeA", Opcodes.ACC_PUBLIC, new ClassNode(Class.class), collisionHandler, new ClassExpression(objectA))
