@@ -8,6 +8,6 @@ services = {
     dateProvider(DefaultDateProvider)
     mouseEventProvider(SwingMouseEventAdapter)
     collisionRegistry(DefaultCollisionRegistry)
-    collisionHandler(DefaultCollisionDetector)
+    collisionDetector(DefaultCollisionDetector)
     eventManager(DefaultEventManager)
 }
