@@ -84,7 +84,7 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
     }
 }
 
-class ABCollisionHandler extends GameObjectCollisionHandler<GameObjectA, GameObjectB> {
+class ABCollisionHandler implements GameObjectCollisionHandler<GameObjectA, GameObjectB> {
     @Override
     void handleCollision(GameObjectA a, GameObjectB b) {
         handleCollisionHook(a, b)
@@ -105,7 +105,7 @@ class ABCollisionHandler extends GameObjectCollisionHandler<GameObjectA, GameObj
     }
 }
 
-class BACollisionHandler extends GameObjectCollisionHandler<GameObjectB, GameObjectA> {
+class BACollisionHandler implements GameObjectCollisionHandler<GameObjectB, GameObjectA> {
     @Override
     void handleCollision(GameObjectB a, GameObjectA b) {
         handleCollisionHook(a, b)
@@ -126,7 +126,7 @@ class BACollisionHandler extends GameObjectCollisionHandler<GameObjectB, GameObj
     }
 }
 
-class CACollisionHandler extends GameObjectCollisionHandler<GameObjectC, GameObjectA> {
+class CACollisionHandler implements GameObjectCollisionHandler<GameObjectC, GameObjectA> {
 
     @Override
     void handleCollision(GameObjectC a, GameObjectA b) {

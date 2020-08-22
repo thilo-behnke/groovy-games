@@ -1,13 +1,18 @@
 package org.tb.gg.collision
 
-
+import org.tb.gg.collision.handler.CollisionHandler
+import org.tb.gg.collision.handler.CollisionHandlerReferrer
+import org.tb.gg.collision.handler.GameObjectCollisionHandler
 import org.tb.gg.di.Inject
+import org.tb.gg.di.MultiInject
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.GameObjectProvider
 
 class DefaultCollisionRegistry implements CollisionRegistry {
     @Inject
     private CollisionDetector collisionDetector
+    @Inject
+    private CollisionHandlerReferrer collisionHandlerReferrer
     @Inject
     private GameObjectProvider gameObjectProvider
 
@@ -23,6 +28,8 @@ class DefaultCollisionRegistry implements CollisionRegistry {
         collisions.each { collision ->
             collision.a.physicsComponent.collides = true
             collision.b.physicsComponent.collides = true
+
+            collisionHandlerReferrer.handleCollision(collision)
         }
     }
 
