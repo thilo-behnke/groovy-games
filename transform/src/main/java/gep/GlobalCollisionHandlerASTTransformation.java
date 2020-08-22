@@ -51,13 +51,16 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
     }
 
     private void addInverseImplementationCheckToHandleCollision(ClassNode collisionHandler) {
+        ClassNode upperGenericBound = collisionHandler.getSuperClass().getGenericsTypes()[0].getUpperBounds()[0];
+        Parameter[] handleCollisionParameters = {new Parameter(upperGenericBound, "a"), new Parameter(upperGenericBound, "b")};
+
         MethodNode handleCollision = collisionHandler.getMethods("handleCollision").get(0);
         MethodNode handleCollisionImplementation = new MethodNode("handleCollisionImplementation", handleCollision.getModifiers(), handleCollision.getReturnType(), handleCollision.getParameters(), handleCollision.getExceptions(), handleCollision.getCode());
 
         collisionHandler.removeMethod(handleCollision);
 
         Statement inverseImplementationCheck = createInverseImplementationCheck(collisionHandler);
-        MethodNode handleCollisionInverseCheck = new MethodNode("handleCollision", handleCollision.getModifiers(), handleCollision.getReturnType(), handleCollision.getParameters(), handleCollision.getExceptions(), inverseImplementationCheck);
+        MethodNode handleCollisionInverseCheck = new MethodNode("handleCollision", handleCollision.getModifiers(), handleCollision.getReturnType(), handleCollisionParameters, handleCollision.getExceptions(), inverseImplementationCheck);
         collisionHandler.addMethod(handleCollisionInverseCheck);
 
         collisionHandler.addMethod(handleCollisionImplementation);
@@ -72,16 +75,16 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
         // TODO: How to get instanceof to work? Would be better than class.equals(class).
         BooleanExpression defaultTypeCheck = new BooleanExpression(
                 new BinaryExpression(
-                        new MethodCallExpression(objectX, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeA)})),
+                        new MethodCallExpression(new FieldExpression(objectTypeA), "isInstance", new ArgumentListExpression(new VariableExpression[]{objectX})),
                         Token.newSymbol("&&", 0, 0),
-                        new MethodCallExpression(objectY, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeB)}))
+                        new MethodCallExpression(new FieldExpression(objectTypeB), "isInstance", new ArgumentListExpression(new VariableExpression[]{objectY}))
                 )
         );
         BooleanExpression invertedTypeCheck = new BooleanExpression(
                 new BinaryExpression(
-                        new MethodCallExpression(objectY, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeA)})),
+                        new MethodCallExpression(new FieldExpression(objectTypeA), "isInstance", new ArgumentListExpression(new VariableExpression[]{objectY})),
                         Token.newSymbol("&&", 0, 0),
-                        new MethodCallExpression(objectX, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeB)}))
+                        new MethodCallExpression(new FieldExpression(objectTypeB), "isInstance", new ArgumentListExpression(new VariableExpression[]{objectX}))
                 )
         );
         MethodCallExpression regularHandleCollision = new MethodCallExpression(new VariableExpression("this"), "handleCollisionImplementation", new ArgumentListExpression(new VariableExpression[]{objectX, objectY}));

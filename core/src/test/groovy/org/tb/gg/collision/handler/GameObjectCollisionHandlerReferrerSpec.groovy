@@ -3,6 +3,7 @@ package org.tb.gg.collision.handler
 import org.tb.gg.collision.Collision
 import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.gameObject.GameObject
 import spock.lang.Specification
 
 class GameObjectCollisionHandlerReferrerSpec extends Specification {
@@ -68,7 +69,7 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
 
     private registerCollisionHandlers() {
         [collisionHandlerAB, collisionHandlerBA, collisionHandlerCA].each {
-            ServiceProvider.registerMultiInstanceService(it, 'CollisionHandler')
+            ServiceProvider.registerMultiInstanceService(it, 'GameObjectCollisionHandler')
         }
     }
 }
@@ -110,9 +111,9 @@ class BACollisionHandler extends GameObjectCollisionHandler<GameObjectB, GameObj
 }
 
 class CACollisionHandler extends GameObjectCollisionHandler<GameObjectC, GameObjectA> {
+
     @Override
     void handleCollision(GameObjectC a, GameObjectA b) {
-
     }
 
     @Override
