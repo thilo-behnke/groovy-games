@@ -69,19 +69,21 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
         FieldNode objectTypeB = collisionHandler.getField("objectTypeB");
         VariableExpression objectX = new VariableExpression("a");
         VariableExpression objectY = new VariableExpression("b");
+
+
         // TODO: How to get instanceof to work? Would be better than class.equals(class).
         BooleanExpression defaultTypeCheck = new BooleanExpression(
                 new BinaryExpression(
-                        new MethodCallExpression(objectX, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeA)})),
+                        new BinaryExpression(objectX, Token.newKeyword("instanceof", 0, 0), new ClassExpression(objectTypeB.getType())),
                         Token.newSymbol("&&", 0, 0),
-                        new MethodCallExpression(objectY, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeB)}))
+                        new BinaryExpression(objectY, Token.newKeyword("instanceof", 0, 0), new ClassExpression(objectTypeB.getType()))
                 )
         );
         BooleanExpression invertedTypeCheck = new BooleanExpression(
                 new BinaryExpression(
-                        new MethodCallExpression(objectY, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeA)})),
+                        new BinaryExpression(objectY, Token.newKeyword("instanceof", 0, 0), new ClassExpression(objectTypeA.getType())),
                         Token.newSymbol("&&", 0, 0),
-                        new MethodCallExpression(objectX, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeB)}))
+                        new BinaryExpression(objectX, Token.newKeyword("instanceof", 0, 0), new ClassExpression(objectTypeB.getType()))
                 )
         );
         MethodCallExpression regularHandleCollision = new MethodCallExpression(new VariableExpression("this"), "handleCollisionImplementation", new ArgumentListExpression(new VariableExpression[]{objectX, objectY}));
@@ -92,7 +94,7 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
                 new IfStatement(
                         invertedTypeCheck,
                         new ExpressionStatement(invertedHandleCollision),
-                        // Create fall through if the collision handler doesn't match the provided objects.
+                        // Create fall through for the case that the collision handler doesn't match the provided objects.
                         new ExpressionStatement(new EmptyExpression())
                 )
         );
