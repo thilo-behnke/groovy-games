@@ -5,19 +5,23 @@ import org.tb.gg.gameObject.GameObject
 
 trait CollisionHandler<S extends GameObject, T extends GameObject> implements MultiInstanceService {
 
+    private final TYPE_A = this.class.getGenericInterfaces()
+
     void handleCollision(GameObject a, GameObject b) {
-        if (a instanceof S && b instanceof T) {
-            handleCollisionImplementation(a, b)
-        } else if (a instanceof T && b instanceof S) {
-            handleCollisionImplementation(b, a)
-        } else {
-            throw new IllegalArgumentException("Collision handler does not handle collision between ${a.class} and ${b.class}.")
-        }
+        System.println(TYPE_A)
+//        if (a instanceof S && b instanceof T) {
+//            handleCollisionImplementation(a, b)
+//        } else if (a instanceof T && b instanceof S) {
+//            handleCollisionImplementation(b, a)
+//        } else {
+//            throw new IllegalArgumentException("Collision handler does not handle collision between ${a.class} and ${b.class}.")
+//        }
     }
 
     abstract void handleCollisionImplementation(S a, T b)
 
     boolean validForTypes(GameObject a, GameObject b) {
-        a instanceof S && b instanceof T || a instanceof T && b instanceof S
+//        a instanceof S && b instanceof T || a instanceof T && b instanceof S
+        return true
     }
 }

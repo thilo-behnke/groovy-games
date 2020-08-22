@@ -42,6 +42,7 @@ public class ServiceProvider {
     public static void reset() {
         // TODO: What to do with services in the Map? Type is unclear here to call destroy on each...
         singletonServiceMap.clear();
+        multiInstanceServiceMap.clear();
     }
 
 }

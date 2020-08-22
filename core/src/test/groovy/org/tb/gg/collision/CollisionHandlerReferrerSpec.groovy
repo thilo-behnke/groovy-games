@@ -16,9 +16,9 @@ class CollisionHandlerReferrerSpec extends Specification {
     def setup() {
         collisionHandlerReferrer = new CollisionHandlerReferrer()
 
-        collisionHandlerAB = Mock(CollisionHandlerAB)
-        collisionHandlerBA = Mock(CollisionHandlerBA)
-        collisionHandlerCA = Mock(CollisionHandlerCA)
+        collisionHandlerAB = Spy(CollisionHandlerAB)
+        collisionHandlerBA = Spy(CollisionHandlerBA)
+        collisionHandlerCA = Spy(CollisionHandlerCA)
     }
 
     def cleanup() {
@@ -68,7 +68,7 @@ class CollisionHandlerReferrerSpec extends Specification {
 
     private registerCollisionHandlers() {
         [collisionHandlerAB, collisionHandlerBA, collisionHandlerCA].each {
-            ServiceProvider.registerMultiInstanceService(it, it.class.getSimpleName())
+            ServiceProvider.registerMultiInstanceService(it, 'CollisionHandler')
         }
     }
 }

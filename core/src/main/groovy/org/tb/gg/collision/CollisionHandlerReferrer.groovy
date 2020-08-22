@@ -14,6 +14,8 @@ class CollisionHandlerReferrer {
     }
 
     private getMatchingCollisionHandlers(Collision collision) {
-        collisionHandlers.findAll { it.validForTypes(collision.a, collision.b) }
+        collisionHandlers.findAll {
+            it.validForTypes(collision.a, collision.b)
+        }
     }
 }
