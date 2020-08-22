@@ -5,7 +5,7 @@ import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.BaseGameObject
 import spock.lang.Specification
 
-class CollisionHandlerReferrerSpec extends Specification {
+class GameObjectCollisionHandlerReferrerSpec extends Specification {
 
     CollisionHandlerReferrer collisionHandlerReferrer
 
@@ -73,7 +73,7 @@ class CollisionHandlerReferrerSpec extends Specification {
     }
 }
 
-class ABCollisionHandler implements CollisionHandler<GameObjectA, GameObjectB> {
+class ABCollisionHandler extends GameObjectCollisionHandler<GameObjectA, GameObjectB> {
     @Override
     void handleCollision(GameObjectA a, GameObjectB b) {
 
@@ -90,7 +90,7 @@ class ABCollisionHandler implements CollisionHandler<GameObjectA, GameObjectB> {
     }
 }
 
-class BACollisionHandler implements CollisionHandler<GameObjectB, GameObjectA> {
+class BACollisionHandler extends GameObjectCollisionHandler<GameObjectB, GameObjectA> {
     @Override
     void handleCollision(GameObjectB a, GameObjectA b) {
 
@@ -107,7 +107,7 @@ class BACollisionHandler implements CollisionHandler<GameObjectB, GameObjectA> {
     }
 }
 
-class CACollisionHandler implements CollisionHandler<GameObjectC, GameObjectA> {
+class CACollisionHandler extends GameObjectCollisionHandler<GameObjectC, GameObjectA> {
     @Override
     void handleCollision(GameObjectC a, GameObjectA b) {
 

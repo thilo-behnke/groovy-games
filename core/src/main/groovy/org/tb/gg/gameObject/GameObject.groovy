@@ -7,7 +7,7 @@ import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.gameObject.lifecycle.Lifecycle
 
-interface GameObject extends Updateable, Lifecycle, Perishable  {
+interface GameObject extends Updateable, Lifecycle, Perishable {
     Long getId()
     void setId(long id)
     ShapeBody getBody()

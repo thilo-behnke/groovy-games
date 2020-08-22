@@ -4,7 +4,7 @@ import org.tb.gg.collision.Collision
 import org.tb.gg.di.MultiInject
 
 class CollisionHandlerReferrer {
-    @MultiInject private List<CollisionHandler> collisionHandlers
+    @MultiInject private List<GameObjectCollisionHandler> collisionHandlers
 
     void handleCollision(Collision collision) {
         def handlers = getMatchingCollisionHandlers(collision)
