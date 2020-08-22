@@ -54,9 +54,10 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
         when:
         collisionHandlerReferrer.handleCollision(collision)
         then:
-        1 * collisionHandlerAB.handleCollision()
-        1 * collisionHandlerBA.handleCollision()
-        0 * collisionHandlerCA.handleCollision()
+        // TODO: Add method to collision handlers to check if they really were triggered.
+        1 * collisionHandlerAB.handleCollision(collision.a, collision.b)
+        1 * collisionHandlerBA.handleCollision(collision.a, collision.b)
+        1 * collisionHandlerCA.handleCollision(collision.a, collision.b)
     }
 
     private getCollisionAB() {
