@@ -3,11 +3,11 @@ package gep;
 import groovyjarjarasm.asm.Opcodes;
 import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.*;
-import org.codehaus.groovy.ast.stmt.EmptyStatement;
-import org.codehaus.groovy.ast.stmt.ReturnStatement;
-import org.codehaus.groovy.ast.stmt.Statement;
+import org.codehaus.groovy.ast.stmt.*;
 import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
+import org.codehaus.groovy.syntax.Token;
+import org.codehaus.groovy.syntax.Types;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.tb.gg.collision.handler.CollisionHandler;
@@ -66,7 +66,29 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
 
     private Statement createInverseImplementationCheck(ClassNode collisionHandler) {
 //        BooleanExpression defaultCase = new BooleanExpression(new BinaryExpression());
-        return new EmptyStatement();
+        FieldNode objectTypeA = collisionHandler.getField("objectTypeA");
+        FieldNode objectTypeB = collisionHandler.getField("objectTypeB");
+        VariableExpression objectX = new VariableExpression("a");
+        VariableExpression objectY = new VariableExpression("b");
+        // TODO: How to get instanceof to work? Would be better than class.equals(class).
+        BooleanExpression defaultTypeCheck = new BooleanExpression(
+                new BinaryExpression(
+                        new MethodCallExpression(objectX, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeA)})),
+                        Token.newSymbol("&&", 0, 0),
+                        new MethodCallExpression(objectY, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeB)}))
+                        )
+        );
+        BooleanExpression invertedTypeCheck = new BooleanExpression(
+                new BinaryExpression(
+                        new MethodCallExpression(objectY, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeA)})),
+                        Token.newSymbol("&&", 0, 0),
+                        new MethodCallExpression(objectX, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeB)}))
+                )
+        );
+        MethodCallExpression regularHandleCollision = new MethodCallExpression(new VariableExpression("this"), "handleCollisionImplementation", new ArgumentListExpression(new VariableExpression[]{objectX, objectY}));
+        MethodCallExpression invertedHandleCollision = new MethodCallExpression(new VariableExpression("this"), "handleCollisionImplementation", new ArgumentListExpression(new VariableExpression[]{objectY, objectX}));
+        IfStatement defaultTypeCheckIfStmt = new IfStatement(defaultTypeCheck, new ExpressionStatement(regularHandleCollision), new ExpressionStatement(invertedHandleCollision));
+        return defaultTypeCheckIfStmt;
     }
 
     private List<ClassNode> findCollisionHandlers(SourceUnit source) {
