@@ -24,7 +24,6 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
         if (collisionHandlers.isEmpty()) {
             return;
         }
-        System.out.println(collisionHandlers);
 
         collisionHandlers.forEach(collisionHandler -> {
             addGenericParametersToClass(collisionHandler);
@@ -76,7 +75,7 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
                         new MethodCallExpression(objectX, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeA)})),
                         Token.newSymbol("&&", 0, 0),
                         new MethodCallExpression(objectY, "equals", new ArgumentListExpression(new FieldExpression[]{new FieldExpression(objectTypeB)}))
-                        )
+                )
         );
         BooleanExpression invertedTypeCheck = new BooleanExpression(
                 new BinaryExpression(
@@ -87,7 +86,14 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
         );
         MethodCallExpression regularHandleCollision = new MethodCallExpression(new VariableExpression("this"), "handleCollisionImplementation", new ArgumentListExpression(new VariableExpression[]{objectX, objectY}));
         MethodCallExpression invertedHandleCollision = new MethodCallExpression(new VariableExpression("this"), "handleCollisionImplementation", new ArgumentListExpression(new VariableExpression[]{objectY, objectX}));
-        IfStatement defaultTypeCheckIfStmt = new IfStatement(defaultTypeCheck, new ExpressionStatement(regularHandleCollision), new ExpressionStatement(invertedHandleCollision));
+        IfStatement defaultTypeCheckIfStmt = new IfStatement(
+                defaultTypeCheck,
+                new ExpressionStatement(regularHandleCollision),
+                new IfStatement(
+                        invertedTypeCheck,
+                        new ExpressionStatement(invertedHandleCollision),
+                        new ThrowStatement(new ConstructorCallExpression(new ClassNode(IllegalArgumentException.class), ArgumentListExpression.EMPTY_ARGUMENTS)))
+        );
         return defaultTypeCheckIfStmt;
     }
 
