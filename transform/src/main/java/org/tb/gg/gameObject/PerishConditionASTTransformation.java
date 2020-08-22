@@ -4,8 +4,10 @@ import groovy.transform.CompileStatic;
 import groovyjarjarasm.asm.Opcodes;
 import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.*;
+import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.ast.stmt.ExpressionStatement;
 import org.codehaus.groovy.ast.stmt.ReturnStatement;
+import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.syntax.Token;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
@@ -44,12 +46,27 @@ public class PerishConditionASTTransformation extends AbstractASTTransformation 
                 .map(methodNode -> new BooleanExpression(new MethodCallExpression(new VariableExpression("this"), methodNode.getName(), ArgumentListExpression.EMPTY_ARGUMENTS)))
                 .collect(Collectors.toList());
 
+
         Optional<BooleanExpression> combinedShouldPerishBooleanExpressionOpt = shouldPerishExpressions.stream()
                 .reduce((BooleanExpression acc, BooleanExpression booleanExpression) -> new BooleanExpression(new BinaryExpression(acc, Token.newSymbol("||", 0, 0), booleanExpression)));
 
         if (combinedShouldPerishBooleanExpressionOpt.isEmpty()) {
             return;
         }
+
+        ReturnStatement shouldPerishReturnStatement = new ReturnStatement(combinedShouldPerishBooleanExpressionOpt.get());
+
+        // Remove existing shouldPerish stub if exists.
+        MethodNode existingShouldPerish = classNode.getMethod("shouldPerish", Parameter.EMPTY_ARRAY);
+        if (existingShouldPerish != null) {
+            List<Statement> statements = new ArrayList<>();
+            statements.add(existingShouldPerish.getCode());
+            statements.add(shouldPerishReturnStatement);
+            BlockStatement combinedStatement = new BlockStatement(statements, new VariableScope());
+
+            classNode.removeMethod(existingShouldPerish);
+        }
+
         MethodNode shouldPerish = new MethodNode(
                 "shouldPerish",
                 Opcodes.ACC_PUBLIC,
@@ -59,11 +76,6 @@ public class PerishConditionASTTransformation extends AbstractASTTransformation 
                 new ReturnStatement(combinedShouldPerishBooleanExpressionOpt.get())
         );
 
-        // Remove existing shouldPerish stub if exists.
-        MethodNode existingShouldPerish = classNode.getMethod("shouldPerish", Parameter.EMPTY_ARRAY);
-        if (existingShouldPerish != null) {
-            classNode.removeMethod(existingShouldPerish);
-        }
 
         classNode.addMethod(shouldPerish);
     }

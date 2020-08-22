@@ -16,7 +16,7 @@ import org.tb.gg.global.geom.Vector
 
 @PerishAfterTTL(10_000L)
 @PerishWhenOutOfBounds
-class BulletGameObject extends BaseGameObject implements TimePerishable, OutOfBoundsPerishable, CollisionPerishable {
+class BulletGameObject extends BaseGameObject implements TimePerishable, OutOfBoundsPerishable {
     @Delegate
     BulletProperties bulletProperties;
 
