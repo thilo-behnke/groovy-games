@@ -2,6 +2,7 @@ package org.tb.gg.collision
 
 import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.gameObject.GameObject
 import spock.lang.Specification
 
 class CollisionHandlerReferrerSpec extends Specification {
@@ -28,9 +29,9 @@ class CollisionHandlerReferrerSpec extends Specification {
         when:
         collisionHandlerReferrer.handleCollision(getCollisionAB())
         then:
-        0 * collisionHandlerAB.handleCollision()
-        0 * collisionHandlerBA.handleCollision()
-        0 * collisionHandlerCA.handleCollision()
+        0 * collisionHandlerAB.handleCollisionImplementation()
+        0 * collisionHandlerBA.handleCollisionImplementation()
+        0 * collisionHandlerCA.handleCollisionImplementation()
     }
 
     def 'no fitting collision handler for collision'() {
@@ -40,9 +41,9 @@ class CollisionHandlerReferrerSpec extends Specification {
         when:
         collisionHandlerReferrer.handleCollision(collision)
         then:
-        0 * collisionHandlerAB.handleCollision()
-        0 * collisionHandlerBA.handleCollision()
-        0 * collisionHandlerCA.handleCollision()
+        0 * collisionHandlerAB.handleCollisionImplementation()
+        0 * collisionHandlerBA.handleCollisionImplementation()
+        0 * collisionHandlerCA.handleCollisionImplementation()
     }
 
     def 'trigger fitting collision handlers for collision (multiple registered)'() {
@@ -52,9 +53,9 @@ class CollisionHandlerReferrerSpec extends Specification {
         when:
         collisionHandlerReferrer.handleCollision(collision)
         then:
-        1 * collisionHandlerAB.handleCollision()
-        1 * collisionHandlerBA.handleCollision()
-        0 * collisionHandlerCA.handleCollision()
+        1 * collisionHandlerAB.handleCollisionImplementation()
+        1 * collisionHandlerBA.handleCollisionImplementation()
+        0 * collisionHandlerCA.handleCollisionImplementation()
     }
 
     private getCollisionAB() {
@@ -74,7 +75,7 @@ class CollisionHandlerReferrerSpec extends Specification {
 
 class CollisionHandlerAB implements CollisionHandler<GameObjectA, GameObjectB> {
     @Override
-    void handleCollision(GameObjectA a, GameObjectB b) {
+    void handleCollisionImplementation(GameObjectA a, GameObjectB b) {
 
     }
 
@@ -91,7 +92,7 @@ class CollisionHandlerAB implements CollisionHandler<GameObjectA, GameObjectB> {
 
 class CollisionHandlerBA implements CollisionHandler<GameObjectB, GameObjectA> {
     @Override
-    void handleCollision(GameObjectB a, GameObjectA b) {
+    void handleCollisionImplementation(GameObjectB a, GameObjectA b) {
 
     }
 
@@ -108,7 +109,7 @@ class CollisionHandlerBA implements CollisionHandler<GameObjectB, GameObjectA> {
 
 class CollisionHandlerCA implements CollisionHandler<GameObjectC, GameObjectA> {
     @Override
-    void handleCollision(GameObjectC a, GameObjectA b) {
+    void handleCollisionImplementation(GameObjectC a, GameObjectA b) {
 
     }
 
