@@ -30,9 +30,9 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
         when:
         collisionHandlerReferrer.handleCollision(getCollisionAB())
         then:
-        0 * collisionHandlerAB.handleCollision()
-        0 * collisionHandlerBA.handleCollision()
-        0 * collisionHandlerCA.handleCollision()
+        0 * collisionHandlerAB.handleCollision(*_)
+        0 * collisionHandlerBA.handleCollision(*_)
+        0 * collisionHandlerCA.handleCollision(*_)
     }
 
     def 'no fitting collision handler for collision'() {
@@ -42,9 +42,14 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
         when:
         collisionHandlerReferrer.handleCollision(collision)
         then:
-        0 * collisionHandlerAB.handleCollision()
-        0 * collisionHandlerBA.handleCollision()
-        0 * collisionHandlerCA.handleCollision()
+        1 * collisionHandlerAB.handleCollision(collision.a, collision.b)
+        0 * collisionHandlerAB.handleCollisionHook(collision.a, collision.b)
+        then:
+        1 * collisionHandlerBA.handleCollision(collision.a, collision.b)
+        0 * collisionHandlerBA.handleCollisionHook(collision.a, collision.b)
+        then:
+        1 * collisionHandlerCA.handleCollision(collision.a, collision.b)
+        0 * collisionHandlerCA.handleCollisionHook(collision.a, collision.b)
     }
 
     def 'trigger fitting collision handlers for collision (multiple registered)'() {
@@ -54,10 +59,14 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
         when:
         collisionHandlerReferrer.handleCollision(collision)
         then:
-        // TODO: Add method to collision handlers to check if they really were triggered.
         1 * collisionHandlerAB.handleCollision(collision.a, collision.b)
+        1 * collisionHandlerAB.handleCollisionHook(collision.a, collision.b)
+        then:
         1 * collisionHandlerBA.handleCollision(collision.a, collision.b)
+        1 * collisionHandlerBA.handleCollisionHook(collision.b, collision.a)
+        then:
         1 * collisionHandlerCA.handleCollision(collision.a, collision.b)
+        0 * collisionHandlerCA.handleCollisionHook(collision.a, collision.b)
     }
 
     private getCollisionAB() {
@@ -78,9 +87,10 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
 class ABCollisionHandler extends GameObjectCollisionHandler<GameObjectA, GameObjectB> {
     @Override
     void handleCollision(GameObjectA a, GameObjectB b) {
-        def n = 5
-        def i = 10
-        i instanceof List
+        handleCollisionHook(a, b)
+    }
+
+    void handleCollisionHook(GameObjectA a, GameObjectB b) {
     }
 
     @Override
@@ -97,7 +107,10 @@ class ABCollisionHandler extends GameObjectCollisionHandler<GameObjectA, GameObj
 class BACollisionHandler extends GameObjectCollisionHandler<GameObjectB, GameObjectA> {
     @Override
     void handleCollision(GameObjectB a, GameObjectA b) {
+        handleCollisionHook(a, b)
+    }
 
+    void handleCollisionHook(GameObjectB a, GameObjectA b) {
     }
 
     @Override
@@ -115,6 +128,10 @@ class CACollisionHandler extends GameObjectCollisionHandler<GameObjectC, GameObj
 
     @Override
     void handleCollision(GameObjectC a, GameObjectA b) {
+        handleCollisionHook(a, b)
+    }
+
+    void handleCollisionHook(GameObjectC a, GameObjectA b) {
     }
 
     @Override
