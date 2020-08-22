@@ -3,7 +3,7 @@ package org.tb.gg
 import groovy.util.logging.Log4j
 import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.GameObject
-import org.tb.gg.gameObject.component.enemies.OneHitEnemyGameObject
+import org.tb.gg.gameObject.component.enemies.EnemyGameObject
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.spawner.Spawner
 import org.tb.gg.world.WorldStateProvider
@@ -20,7 +20,9 @@ class EnemySpawner implements Spawner<GameObject> {
             def y = worldStateProvider.get().currentLoopTimestamp % worldStateProvider.get().bounds.topRight.y.toLong()
             def pos = new Vector(x: x, y: y)
             log.info("EnemySpawner triggered, spawning enemy at ${pos}.".toString())
-            return [OneHitEnemyGameObject.create(pos)]
+            def enemy = EnemyGameObject.create(pos)
+            enemy.setHp(100)
+            return [enemy]
         }
         return []
     }
