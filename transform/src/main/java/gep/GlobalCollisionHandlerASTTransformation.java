@@ -37,19 +37,15 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
         if (genericsTypes.length < 2) {
             throw new IllegalStateException("CollisionHandler must have 2 generic types!");
         }
-        GenericsType objectA = genericsTypes[0];
-        GenericsType objectB = genericsTypes[1];
-
-        // TODO: This is always object - how to get the real generics type from the superclass?
-        System.out.println(objectA.getType());
-        System.out.println(objectB.getType());
+        ClassNode objectA = genericsTypes[0].getUpperBounds()[0].getPlainNodeReference();
+        ClassNode objectB = genericsTypes[1].getUpperBounds()[0].getPlainNodeReference();
 
         collisionHandler.addField(
-                new FieldNode("objectTypeA", Opcodes.ACC_PUBLIC, new ClassNode(Class.class), collisionHandler, new ClassExpression(objectA.getType().getPlainNodeReference()))
+                new FieldNode("objectTypeA", Opcodes.ACC_PUBLIC, new ClassNode(Class.class), collisionHandler, new ClassExpression(objectA))
         );
 
         collisionHandler.addField(
-                new FieldNode("objectTypeB", Opcodes.ACC_PUBLIC, new ClassNode(Class.class), collisionHandler, new ClassExpression(objectB.getType().getPlainNodeReference()))
+                new FieldNode("objectTypeB", Opcodes.ACC_PUBLIC, new ClassNode(Class.class), collisionHandler, new ClassExpression(objectB))
         );
     }
 
