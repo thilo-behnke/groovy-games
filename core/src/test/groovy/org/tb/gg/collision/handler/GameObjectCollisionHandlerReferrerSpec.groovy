@@ -76,7 +76,9 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
 class ABCollisionHandler extends GameObjectCollisionHandler<GameObjectA, GameObjectB> {
     @Override
     void handleCollision(GameObjectA a, GameObjectB b) {
-
+        def n = 5
+        def i = 10
+        def res = n * i
     }
 
     @Override

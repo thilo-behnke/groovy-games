@@ -3,6 +3,7 @@ package gep;
 import groovyjarjarasm.asm.Opcodes;
 import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.*;
+import org.codehaus.groovy.ast.stmt.EmptyStatement;
 import org.codehaus.groovy.ast.stmt.ReturnStatement;
 import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.control.CompilePhase;
@@ -27,7 +28,7 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
 
         collisionHandlers.forEach(collisionHandler -> {
             addGenericParametersToClass(collisionHandler);
-//            addInverseImplementationCheckToHandleCollision(collisionHandler);
+            addInverseImplementationCheckToHandleCollision(collisionHandler);
         });
 
     }
@@ -55,16 +56,17 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
         MethodNode handleCollisionImplementation = new MethodNode("handleCollisionImplementation", handleCollision.getModifiers(), handleCollision.getReturnType(), handleCollision.getParameters(), handleCollision.getExceptions(), handleCollision.getCode());
 
         collisionHandler.removeMethod(handleCollision);
-        collisionHandler.addMethod(handleCollisionImplementation);
 
         Statement inverseImplementationCheck = createInverseImplementationCheck(collisionHandler);
         MethodNode handleCollisionInverseCheck = new MethodNode("handleCollision", handleCollision.getModifiers(), handleCollision.getReturnType(), handleCollision.getParameters(), handleCollision.getExceptions(), inverseImplementationCheck);
         collisionHandler.addMethod(handleCollisionInverseCheck);
+
+        collisionHandler.addMethod(handleCollisionImplementation);
     }
 
     private Statement createInverseImplementationCheck(ClassNode collisionHandler) {
 //        BooleanExpression defaultCase = new BooleanExpression(new BinaryExpression());
-        return new ReturnStatement(new ConstantExpression(false));
+        return new EmptyStatement();
     }
 
     private List<ClassNode> findCollisionHandlers(SourceUnit source) {
