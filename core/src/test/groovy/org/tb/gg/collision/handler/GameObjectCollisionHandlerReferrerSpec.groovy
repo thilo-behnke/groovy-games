@@ -78,7 +78,7 @@ class ABCollisionHandler extends GameObjectCollisionHandler<GameObjectA, GameObj
     void handleCollision(GameObjectA a, GameObjectB b) {
         def n = 5
         def i = 10
-        def res = n * i
+        i instanceof List
     }
 
     @Override

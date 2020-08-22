@@ -92,7 +92,9 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
                 new IfStatement(
                         invertedTypeCheck,
                         new ExpressionStatement(invertedHandleCollision),
-                        new ThrowStatement(new ConstructorCallExpression(new ClassNode(IllegalArgumentException.class), ArgumentListExpression.EMPTY_ARGUMENTS)))
+                        // Create fall through if the collision handler doesn't match the provided objects.
+                        new ExpressionStatement(new EmptyExpression())
+                )
         );
         return defaultTypeCheckIfStmt;
     }
