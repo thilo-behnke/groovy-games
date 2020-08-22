@@ -3,7 +3,6 @@ package org.tb.gg.collision.handler
 import org.tb.gg.collision.Collision
 import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.BaseGameObject
-import org.tb.gg.gameObject.GameObject
 import spock.lang.Specification
 
 class GameObjectCollisionHandlerReferrerSpec extends Specification {
@@ -22,6 +21,7 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
         collisionHandlerCA = Spy(CACollisionHandler)
     }
 
+    @SuppressWarnings("unused")
     def cleanup() {
         ServiceProvider.reset()
     }
@@ -69,11 +69,11 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
         0 * collisionHandlerCA.handleCollisionHook(collision.a, collision.b)
     }
 
-    private getCollisionAB() {
+    private static getCollisionAB() {
         new Collision(a: new GameObjectA(), b: new GameObjectB())
     }
 
-    private getCollisionBC() {
+    private static getCollisionBC() {
         new Collision(a: new GameObjectB(), b: new GameObjectC())
     }
 
@@ -90,6 +90,7 @@ class ABCollisionHandler extends GameObjectCollisionHandler<GameObjectA, GameObj
         handleCollisionHook(a, b)
     }
 
+    @SuppressWarnings("unused")
     void handleCollisionHook(GameObjectA a, GameObjectB b) {
     }
 
@@ -110,6 +111,7 @@ class BACollisionHandler extends GameObjectCollisionHandler<GameObjectB, GameObj
         handleCollisionHook(a, b)
     }
 
+    @SuppressWarnings("unused")
     void handleCollisionHook(GameObjectB a, GameObjectA b) {
     }
 
@@ -131,6 +133,7 @@ class CACollisionHandler extends GameObjectCollisionHandler<GameObjectC, GameObj
         handleCollisionHook(a, b)
     }
 
+    @SuppressWarnings("unused")
     void handleCollisionHook(GameObjectC a, GameObjectA b) {
     }
 
