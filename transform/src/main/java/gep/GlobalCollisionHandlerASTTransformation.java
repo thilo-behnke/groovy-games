@@ -17,7 +17,7 @@ import org.tb.gg.collision.handler.CollisionHandler;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
+@GroovyASTTransformation(phase = CompilePhase.CLASS_GENERATION)
 public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransformation {
 
     @Override
@@ -37,12 +37,15 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
 
     private void addGenericParametersToClass(ClassNode collisionHandler) {
         GenericsType[] genericsTypes = collisionHandler.getSuperClass().getGenericsTypes();
-        System.out.println(collisionHandler.getSuperClass().getGenericsTypes().length);
         if (genericsTypes.length < 2) {
             throw new IllegalStateException("CollisionHandler must have 2 generic types!");
         }
         GenericsType objectA = genericsTypes[0];
         GenericsType objectB = genericsTypes[1];
+
+        // TODO: This is always object - how to get the real generics type from the superclass?
+        System.out.println(objectA.getType());
+        System.out.println(objectB.getType());
 
         collisionHandler.addField(
                 new FieldNode("objectTypeA", Opcodes.ACC_PUBLIC, new ClassNode(Class.class), collisionHandler, new ConstantExpression(objectA.getType()))
