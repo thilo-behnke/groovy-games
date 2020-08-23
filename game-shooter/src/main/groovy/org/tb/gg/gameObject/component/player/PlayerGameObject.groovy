@@ -1,9 +1,13 @@
 package org.tb.gg.gameObject.component.player
 
-
+import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.gameObject.component.guns.AutomaticGunProperties
 import org.tb.gg.gameObject.component.guns.Gun
-import org.tb.gg.gameObject.component.guns.Pistol
+import org.tb.gg.gameObject.component.guns.AutomaticGun
+import org.tb.gg.gameObject.component.guns.GunFactory
+import org.tb.gg.gameObject.component.guns.GunProperties
+import org.tb.gg.gameObject.component.guns.GunType
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.factory.KeyBoundGameObjectBuilder
 import org.tb.gg.gameObject.shape.Rect
@@ -11,10 +15,13 @@ import org.tb.gg.global.geom.Vector
 import org.tb.gg.global.math.MathConstants
 
 class PlayerGameObject extends BaseGameObject {
+    @Inject GunFactory gunFactory
+
     private Gun gun
 
     static PlayerGameObject create() {
         def pos = new Vector(x: 100, y: 100)
+        def orientation = new Vector(x: 0, y: 50.0)
         def player = (PlayerGameObject) new KeyBoundGameObjectBuilder(PlayerGameObject)
                 .setBody(new ShapeBody(new Rect(pos, new Vector(x: 20, y: 30))))
                 .setInputComponentClass(PlayerInputComponent)
@@ -23,8 +30,9 @@ class PlayerGameObject extends BaseGameObject {
                 .setActions(PlayerAction.values().collect { it.toString() }.toSet())
                 .setDefaultKeyMapping(PlayerAction.values().collectEntries { it.keys.collectEntries { key -> [(key): it.toString()] } })
                 .build()
-        player.gun = Pistol.create(pos, player.orientation)
-        player.setOrientation(new Vector(x: 0, y: 50.0))
+
+        player.gun = AutomaticGun.create(AutomaticGun, AutomaticGun.PISTOL_PROPERTIES, new GunProperties(pos: pos, orientation: orientation))
+        player.setOrientation(orientation)
         return player
     }
 
