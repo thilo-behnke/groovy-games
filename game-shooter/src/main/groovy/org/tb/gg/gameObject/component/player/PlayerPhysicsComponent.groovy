@@ -28,4 +28,6 @@ class PlayerPhysicsComponent extends PhysicsComponent {
                 new PhysicStats(velocity: Vector.zeroVector())
         )
     }
+
+    // TODO: Instead of directly updating the player pos, use velocity and use a hook to also update the gun position, etc.
 }
