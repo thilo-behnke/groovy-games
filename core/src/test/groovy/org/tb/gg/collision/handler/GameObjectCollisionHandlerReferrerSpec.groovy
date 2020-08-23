@@ -8,6 +8,7 @@ import spock.lang.Specification
 class GameObjectCollisionHandlerReferrerSpec extends Specification {
 
     CollisionHandlerReferrer collisionHandlerReferrer
+    CollisionTypeHandler collisionTypeHandler
 
     ABCollisionHandler collisionHandlerAB
     BACollisionHandler collisionHandlerBA
@@ -15,6 +16,9 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
 
     def setup() {
         collisionHandlerReferrer = new CollisionHandlerReferrer()
+
+        collisionTypeHandler = Mock(CollisionTypeHandler)
+        ServiceProvider.registerSingletonService(collisionTypeHandler, CollisionTypeHandler.class.getSimpleName())
 
         collisionHandlerAB = Spy(ABCollisionHandler)
         collisionHandlerBA = Spy(BACollisionHandler)
@@ -33,6 +37,7 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
         0 * collisionHandlerAB.handleCollision(*_)
         0 * collisionHandlerBA.handleCollision(*_)
         0 * collisionHandlerCA.handleCollision(*_)
+        1 * collisionTypeHandler.handleCollisionByType(*_)
     }
 
     def 'no fitting collision handler for collision'() {
@@ -50,6 +55,8 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
         then:
         1 * collisionHandlerCA.handleCollision(collision.a, collision.b)
         0 * collisionHandlerCA.handleCollisionHook(collision.a, collision.b)
+        then:
+        1 * collisionTypeHandler.handleCollisionByType(collision)
     }
 
     def 'trigger fitting collision handlers for collision (multiple registered)'() {
@@ -67,6 +74,8 @@ class GameObjectCollisionHandlerReferrerSpec extends Specification {
         then:
         1 * collisionHandlerCA.handleCollision(collision.a, collision.b)
         0 * collisionHandlerCA.handleCollisionHook(collision.a, collision.b)
+        then:
+        1 * collisionTypeHandler.handleCollisionByType(collision)
     }
 
     private static getCollisionAB() {

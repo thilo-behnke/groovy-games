@@ -44,7 +44,7 @@ class DefaultCollisionDetectorSpec extends Specification {
         when:
         def res = defaultCollisionHandler.detect((Set<BaseGameObject>) gameObjects)
         then:
-        res == (Set) [new Collision(a: gameObjects[1], b: gameObjects[2])]
+        res == (Set) [new Collision(a: gameObjects[1], b: gameObjects[2], type: CollisionType.OVERLAP)]
     }
 
     def 'lots of game objects, multiple are colliding'() {
@@ -54,8 +54,8 @@ class DefaultCollisionDetectorSpec extends Specification {
         def res = defaultCollisionHandler.detect((Set<BaseGameObject>) gameObjects)
         then:
         res == (Set) [
-                new Collision(a: gameObjects[2], b: gameObjects[10]),
-                new Collision(a: gameObjects[4], b: gameObjects[30])
+                new Collision(a: gameObjects[2], b: gameObjects[10], type: CollisionType.OVERLAP),
+                new Collision(a: gameObjects[4], b: gameObjects[30], type: CollisionType.OVERLAP)
         ]
     }
 
