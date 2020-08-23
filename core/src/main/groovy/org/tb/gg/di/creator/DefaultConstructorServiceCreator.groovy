@@ -6,6 +6,7 @@ import org.tb.gg.di.config.ServiceMappingRegistry
 import org.tb.gg.di.definition.MultiInstanceService
 import org.tb.gg.di.definition.Service
 import org.tb.gg.di.definition.Singleton
+import org.tb.gg.utils.ReflectionUtils
 
 class DefaultConstructorServiceCreator implements ServiceCreator {
     private ServiceCreationOrderResolver serviceCreationOrderResolver
@@ -50,8 +51,8 @@ class DefaultConstructorServiceCreator implements ServiceCreator {
     }
 
     private registerMultiInstanceService(MultiInstanceService multiInstanceService) {
-        def multiInstanceInterface = multiInstanceService.class.getInterfaces()
-                .findAll { MultiInstanceService.isAssignableFrom(it) }
+        def multiInstanceInterface = ReflectionUtils.getAllInterfaces(multiInstanceService.class, true)
+                .findAll { MultiInstanceService.isAssignableFrom(it) && it != MultiInstanceService }
                 .collect { new Tuple2<Class<?>, Integer>(it, it.getInterfaces().size()) }
                 .sort { a, b -> a.getV2() <=> b.getV2() }
                 .collect { it.getV1() }

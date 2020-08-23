@@ -18,7 +18,7 @@ import org.tb.gg.global.geom.Vector
 @PerishWhenOutOfBounds
 class BulletGameObject extends BaseGameObject implements TimePerishable, OutOfBoundsPerishable {
     @Delegate
-    BulletProperties bulletProperties;
+    BulletProperties bulletProperties = new BulletProperties()
 
     static BulletGameObject create(Long timestamp, Vector pos, Vector orientation) {
         def physicsComp = BulletPhysicsComponent.create(orientation)
