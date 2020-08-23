@@ -13,11 +13,6 @@ class PhysicsComponent<C extends CollisionSettings, S extends PhysicStats> imple
     BaseGameObject parent
     Boolean collides
 
-    PhysicsComponent(CollisionSettings collisionSettings = NoopCollisionSettings.get(), PhysicStats physicStats) {
-        this.collisionSettings = collisionSettings as C
-        this.physicStats = physicStats as S
-    }
-
     @Override
     void update(Long timestamp, Long delta) {
         def body = parent.body

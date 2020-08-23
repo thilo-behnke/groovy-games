@@ -9,13 +9,15 @@ class DefaultCollisionTypeHandler implements CollisionTypeHandler {
         if (collision.type == CollisionType.OVERLAP) {
             return
         }
-        def objectWithHigherVelocity = collision.a.physicsComponent.physicStats.velocity.abs().sum() >= collision.b.physicsComponent.physicStats.velocity.abs().sum() ? collision.a : collision.b
+        def objectWithHigherVelocity = collision.a.physicsComponent.velocity.abs().sum() >= collision.b.physicsComponent.velocity.abs().sum() ? collision.a : collision.b
         if (objectWithHigherVelocity == collision.a) {
             // Slightly move a away from b.
-            collision.a.body.center = collision.a.body.center - collision.a.physicsComponent.velocity.normalize() * 10.0
+            def newCenter = collision.a.body.center - collision.a.physicsComponent.velocity.normalize() * 10.0
+            collision.a.body.setCenter(newCenter)
         } else {
             // Slightly move b away from a.
-            collision.b.body.center = collision.b.body.center - collision.b.physicsComponent.velocity.normalize() * 10.0
+            def newCenter = collision.b.body.center - collision.b.physicsComponent.velocity.normalize() * 10.0
+            collision.b.body.setCenter(newCenter)
         }
     }
 

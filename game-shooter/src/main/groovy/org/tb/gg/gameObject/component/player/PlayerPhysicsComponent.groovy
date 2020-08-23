@@ -11,7 +11,9 @@ import org.tb.gg.global.geom.Vector
 class PlayerPhysicsComponent extends PhysicsComponent {
 
     PlayerPhysicsComponent(CollisionSettings collisionSettings, PhysicStats physicStats) {
-        super(collisionSettings, physicStats)
+        super()
+        setCollisionSettings(collisionSettings)
+        setPhysicStats(physicStats)
     }
 
     static PlayerPhysicsComponent create() {

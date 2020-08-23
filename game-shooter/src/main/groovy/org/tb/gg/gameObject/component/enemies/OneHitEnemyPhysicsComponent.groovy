@@ -10,7 +10,9 @@ import org.tb.gg.global.geom.Vector
 
 class OneHitEnemyPhysicsComponent extends PhysicsComponent {
     private OneHitEnemyPhysicsComponent(CollisionSettings collisionSettings, PhysicStats physicStats) {
-        super(collisionSettings, physicStats)
+        super()
+        setCollisionSettings(collisionSettings)
+        setPhysicStats(physicStats)
     }
 
     static OneHitEnemyPhysicsComponent create(Vector velocity) {

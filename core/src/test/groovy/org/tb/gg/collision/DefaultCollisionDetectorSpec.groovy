@@ -75,10 +75,14 @@ class DefaultCollisionDetectorSpec extends Specification {
     private static createGameObject(ShapeBody shapeBody, Integer id) {
         def obj = DummyGameObject.create(shapeBody)
         obj.physicsComponent = new PhysicsComponent(
+        )
+        obj.physicsComponent.setCollisionSettings(
                 new CollisionSettings(
                         collisionGroup: 'SOME',
                         collidesWithGroups: [new CollisionDefinition(collisionGroup: 'SOME')]
-                ),
+                )
+        )
+        obj.physicsComponent.setPhysicStats(
                 new PhysicStats(velocity: Vector.zeroVector())
         )
         obj.id = id

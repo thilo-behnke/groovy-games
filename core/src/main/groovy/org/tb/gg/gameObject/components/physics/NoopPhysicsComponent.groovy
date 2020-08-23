@@ -6,7 +6,9 @@ class NoopPhysicsComponent extends PhysicsComponent {
     private static NoopPhysicsComponent noop
 
     private NoopPhysicsComponent(collisionSettings, physicStats) {
-        super(collisionSettings, physicStats)
+        super()
+        setCollisionSettings(collisionSettings)
+        setPhysicStats(physicStats)
     }
 
     static NoopPhysicsComponent get() {

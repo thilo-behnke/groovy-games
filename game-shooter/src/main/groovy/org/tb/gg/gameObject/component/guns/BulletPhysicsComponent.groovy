@@ -10,7 +10,9 @@ import org.tb.gg.global.geom.Vector
 
 class BulletPhysicsComponent extends PhysicsComponent {
     private BulletPhysicsComponent(CollisionSettings collisionSettings, PhysicStats physicStats) {
-        super(collisionSettings, physicStats)
+        super()
+        setCollisionSettings(collisionSettings)
+        setPhysicStats(physicStats)
     }
 
     static BulletPhysicsComponent create(Vector startVelocity) {
