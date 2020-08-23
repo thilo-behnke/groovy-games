@@ -84,6 +84,10 @@ class Vector {
         return new Vector(x: x.abs(), y: y.abs())
     }
 
+    BigDecimal sum() {
+        x + y
+    }
+
     // TODO: Write tests.
     BigDecimal cross(Vector b) {
         x * b.y - y * b.x
