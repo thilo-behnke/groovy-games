@@ -22,6 +22,7 @@ class EnemySpawner implements Spawner<GameObject> {
             log.info("EnemySpawner triggered, spawning enemy at ${pos}.".toString())
             def enemy = EnemyGameObject.create(pos)
             enemy.setHp(100)
+            enemy.setScore(50)
             return [enemy]
         }
         return []
