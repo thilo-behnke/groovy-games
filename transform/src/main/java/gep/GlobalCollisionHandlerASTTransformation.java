@@ -12,9 +12,7 @@ import org.codehaus.groovy.transform.AbstractASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.tb.gg.collision.handler.CollisionHandler;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
@@ -26,19 +24,16 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
         if (collisionHandlers.isEmpty()) {
             return;
         }
-        System.out.println(collisionHandlers);
 
         collisionHandlers.forEach(collisionHandler -> {
             addGenericParametersToClass(collisionHandler);
-            System.out.println("test1");
             addInverseImplementationCheckToHandleCollision(collisionHandler);
-            System.out.println("test2");
         });
 
     }
 
     private void addGenericParametersToClass(ClassNode collisionHandler) {
-        GenericsType[] genericsTypes = collisionHandler.getAllInterfaces().stream().filter(it -> it.implementsInterface(new ClassNode(CollisionHandler.class))).findFirst().get().getGenericsTypes();
+        GenericsType[] genericsTypes = collisionHandler.getSuperClass().getGenericsTypes();
         if (genericsTypes.length < 2) {
             throw new IllegalStateException("CollisionHandler must have 2 generic types!");
         }
@@ -56,8 +51,8 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
     }
 
     private void addInverseImplementationCheckToHandleCollision(ClassNode collisionHandler) {
-        // TODO: How to get the lowest bound of the generic parameter?
-        Parameter[] handleCollisionParameters = {new Parameter(new ClassNode(Object.class), "a"), new Parameter(new ClassNode(Object.class), "b")};
+        ClassNode upperGenericBound = collisionHandler.getSuperClass().getGenericsTypes()[0].getUpperBounds()[0];
+        Parameter[] handleCollisionParameters = {new Parameter(upperGenericBound, "a"), new Parameter(upperGenericBound, "b")};
 
         MethodNode handleCollision = collisionHandler.getMethods("handleCollision").get(0);
         MethodNode handleCollisionImplementation = new MethodNode("handleCollisionImplementation", handleCollision.getModifiers(), handleCollision.getReturnType(), handleCollision.getParameters(), handleCollision.getExceptions(), handleCollision.getCode());
@@ -77,6 +72,7 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
         FieldNode objectTypeB = collisionHandler.getField("objectTypeB");
         VariableExpression objectX = new VariableExpression("a");
         VariableExpression objectY = new VariableExpression("b");
+        // TODO: How to get instanceof to work? Would be better than class.equals(class).
         BooleanExpression defaultTypeCheck = new BooleanExpression(
                 new BinaryExpression(
                         new MethodCallExpression(new FieldExpression(objectTypeA), "isInstance", new ArgumentListExpression(new VariableExpression[]{objectX})),
@@ -116,7 +112,7 @@ public class GlobalCollisionHandlerASTTransformation extends AbstractASTTransfor
         if (classNode.isAbstract() || classNode.isInterface()) {
             return false;
         }
-        return classNode.getAllInterfaces().stream().anyMatch(it -> it.equals(new ClassNode(CollisionHandler.class)));
+        return classNode.getSuperClass().getAllInterfaces().stream().anyMatch(it -> it.equals(new ClassNode(CollisionHandler.class)));
     }
 
 }
