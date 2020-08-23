@@ -115,6 +115,7 @@ class PlayerGameObject extends BaseGameObject {
             return
         }
         def bullet = BulletGameObject.create(timestamp, body.center, orientation.normalize())
+        bullet.setDamage(5)
         sceneManager.getActiveScene().ifPresent { it.accessGameObjectProvider().addGameObject(bullet) }
     }
 }

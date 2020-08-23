@@ -31,7 +31,15 @@ class PerishConditionSpec extends Specification {
 
     def 'perish condition 1 and 2 are true -> should perish'() {
         when:
+        gameObject.perishConditionProp1 = true
         gameObject.perishConditionProp2 = true
+        then:
+        gameObject.shouldPerish()
+    }
+
+    def 'perish condition 1 and 2 are false, but shouldBeDestroyed in BaseGameObject is true -> should perish'() {
+        when:
+        gameObject.shouldBeDestroyed = true
         then:
         gameObject.shouldPerish()
     }

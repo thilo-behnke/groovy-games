@@ -2,12 +2,13 @@ package org.tb.gg.collision
 
 import groovy.util.logging.Log4j
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.gameObject.GameObject
 import org.tb.gg.utils.CollectionUtils
 
 @Log4j
-class DefaultCollisionHandler implements CollisionHandler {
+class DefaultCollisionDetector implements CollisionDetector {
     @Override
-    Set<Collision> detect(Set<BaseGameObject> gameObjects) {
+    Set<Collision> detect(Set<GameObject> gameObjects) {
         if (gameObjects.size() < 2) {
             return []
         }

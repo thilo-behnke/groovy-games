@@ -13,9 +13,12 @@ import org.tb.gg.spawner.Spawner
 
 @Log4j
 class GameScene {
-    @Inject private GameObjectProvider gameObjectProvider
-    @Inject private CollisionRegistry collisionRegistry
-    @MultiInject private List<Spawner> spawners
+    @Inject
+    private GameObjectProvider gameObjectProvider
+    @Inject
+    private CollisionRegistry collisionRegistry
+    @MultiInject
+    private List<Spawner> spawners
 
     public String name
     private DateProvider dateProvider
@@ -29,7 +32,8 @@ class GameScene {
 
     void update(Long timestamp, Long delta) {
         if (gameSceneState == GameSceneState.RUNNING) {
-            def spawned = (Set<GameObject>) spawners.<Spawner<? extends GameObject>, List<GameObject>>collectMany {(Set<GameObject>) it.spawn()}
+            // TODO: How to get rid of the casting here?
+            def spawned = (Set<GameObject>) spawners.collectMany { Spawner<? extends GameObject> spawner -> (Set<GameObject>) spawner.spawn() }.collect { (GameObject) it }
             spawned.each {
                 gameObjectProvider << it
             }
@@ -40,7 +44,7 @@ class GameScene {
         }
     }
 
-    private Set<BaseGameObject> updateGameObjects() {
+    private Set<GameObject> updateGameObjects() {
         def gameObjects = gameObjectProvider.getGameObjects()
         def gameObjectsToDestroy = gameObjects.findAll { it.shouldPerish() }
         def nrDestroyed = gameObjectProvider.removeGameObjects(gameObjectsToDestroy as BaseGameObject[])
@@ -54,7 +58,7 @@ class GameScene {
         gameSceneState = state
     }
 
-    Set<BaseGameObject> getGameObjects() {
+    Set<GameObject> getGameObjects() {
         return gameObjectProvider.getGameObjects()
     }
 
