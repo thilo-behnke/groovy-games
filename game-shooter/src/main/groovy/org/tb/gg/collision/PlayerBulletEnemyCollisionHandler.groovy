@@ -10,6 +10,10 @@ class PlayerBulletEnemyCollisionHandler extends GameObjectCollisionHandler<Bulle
     @Override
     void handleCollision(BulletGameObject a, EnemyGameObject b) {
         log.debug("Handling bullet <> enemy collision for ${a} and ${b}".toString())
+        handleDamage(a, b)
+    }
+
+    private static handleDamage(BulletGameObject a, EnemyGameObject b) {
         a.shouldBeDestroyed = true
         b.hp = b.hp - a.damage
         if (b.hp <= 0) {
