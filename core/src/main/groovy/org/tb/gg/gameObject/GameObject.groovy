@@ -6,10 +6,13 @@ import org.tb.gg.gameObject.components.physics.PhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.gameObject.lifecycle.Lifecycle
+import org.tb.gg.global.geom.Vector
 
 interface GameObject extends Updateable, Lifecycle, Perishable {
     Long getId()
     void setId(long id)
+    void setOrientation(Vector orientation)
+    Vector getOrientation()
     ShapeBody getBody()
     RenderComponent getRenderComponent()
     PhysicsComponent getPhysicsComponent()

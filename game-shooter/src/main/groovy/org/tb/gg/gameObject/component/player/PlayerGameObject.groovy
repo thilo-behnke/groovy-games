@@ -1,9 +1,9 @@
 package org.tb.gg.gameObject.component.player
 
-import org.tb.gg.di.Inject
-import org.tb.gg.engine.SceneManager
+
 import org.tb.gg.gameObject.BaseGameObject
-import org.tb.gg.gameObject.component.guns.BulletGameObject
+import org.tb.gg.gameObject.component.guns.Gun
+import org.tb.gg.gameObject.component.guns.Pistol
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.factory.KeyBoundGameObjectBuilder
 import org.tb.gg.gameObject.shape.Rect
@@ -11,24 +11,29 @@ import org.tb.gg.global.geom.Vector
 import org.tb.gg.global.math.MathConstants
 
 class PlayerGameObject extends BaseGameObject {
-
-    @Inject
-    SceneManager sceneManager
-
-    private static final long SHOOT_DELAY_MS = 200
-    private long lastShot = 0
+    private Gun gun
 
     static PlayerGameObject create() {
+        def pos = new Vector(x: 100, y: 100)
         def player = (PlayerGameObject) new KeyBoundGameObjectBuilder(PlayerGameObject)
-                .setBody(new ShapeBody(new Rect(new Vector(x: 100, y: 100), new Vector(x: 20, y: 30))))
+                .setBody(new ShapeBody(new Rect(pos, new Vector(x: 20, y: 30))))
                 .setInputComponentClass(PlayerInputComponent)
                 .setRenderComponent(new PlayerRenderComponent())
                 .setPhysicsComponent(PlayerPhysicsComponent.create())
                 .setActions(PlayerAction.values().collect { it.toString() }.toSet())
                 .setDefaultKeyMapping(PlayerAction.values().collectEntries { it.keys.collectEntries { key -> [(key): it.toString()] } })
                 .build()
+        player.gun = Pistol.create(pos, player.orientation)
         player.setOrientation(new Vector(x: 0, y: 50.0))
         return player
+    }
+
+    @Override
+    void setOrientation(Vector orientation) {
+        super.setOrientation(orientation)
+        if (gun) {
+            gun.setOrientation(orientation)
+        }
     }
 
     @Override
@@ -42,7 +47,7 @@ class PlayerGameObject extends BaseGameObject {
 
         updateMovement(activeActions, timestamp, delta)
         updateOrientation(activeActions, timestamp, delta)
-        shoot(activeActions, timestamp)
+        shoot(activeActions)
     }
 
     private updateMovement(List<PlayerAction> activeActions, Long timestamp, Long delta) {
@@ -62,7 +67,14 @@ class PlayerGameObject extends BaseGameObject {
         } else if (activeActions.contains(PlayerAction.MOVE_DOWN)) {
             newY = newY - 1 * delta
         }
-        shape.center = new Vector(x: newX, y: newY)
+        updatePos(new Vector(x: newX, y: newY))
+    }
+
+    private updatePos(Vector pos) {
+        body.center = pos
+        if (gun) {
+            gun.body.center = pos
+        }
     }
 
     private updateOrientation(List<PlayerAction> activeActions, Long timestamp, Long delta) {
@@ -113,17 +125,10 @@ class PlayerGameObject extends BaseGameObject {
         return goalDot > 0 ? 1 : -1
     }
 
-    private shoot(List<PlayerAction> activeActions, Long timestamp) {
+    private shoot(List<PlayerAction> activeActions) {
         if (!activeActions.contains(PlayerAction.SHOOT)) {
             return
         }
-        if (timestamp - lastShot < SHOOT_DELAY_MS) {
-            return
-        }
-        lastShot = timestamp
-
-        def bullet = BulletGameObject.create(timestamp, body.center, orientation.normalize())
-        bullet.setDamage(5)
-        sceneManager.getActiveScene().ifPresent { it.accessGameObjectProvider().addGameObject(bullet) }
+        gun.shoot()
     }
 }

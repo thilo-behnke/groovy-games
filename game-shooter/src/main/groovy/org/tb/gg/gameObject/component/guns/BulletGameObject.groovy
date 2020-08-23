@@ -20,7 +20,7 @@ class BulletGameObject extends BaseGameObject implements TimePerishable, OutOfBo
     @Delegate
     BulletProperties bulletProperties = new BulletProperties()
 
-    static BulletGameObject create(Long timestamp, Vector pos, Vector orientation) {
+    static BulletGameObject create(Vector pos, Vector orientation) {
         def physicsComp = BulletPhysicsComponent.create(orientation)
         def bullet = (BulletGameObject) new GameObjectBuilder<>(BulletGameObject)
                 .setBody(new ShapeBody(new Rect(pos, new Vector(x: 10, y: 10))))
