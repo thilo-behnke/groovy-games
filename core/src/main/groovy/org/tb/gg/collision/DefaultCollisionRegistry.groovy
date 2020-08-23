@@ -4,6 +4,7 @@ import org.tb.gg.collision.handler.CollisionHandlerReferrer
 import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.GameObjectProvider
+import org.tb.gg.global.Direction
 
 class DefaultCollisionRegistry implements CollisionRegistry {
     @Inject
@@ -19,10 +20,11 @@ class DefaultCollisionRegistry implements CollisionRegistry {
     void update(Long timestamp, Long delta) {
         // TODO: Don't do this every tick
         gameObjectProvider.getGameObjects().each {
-            it.physicsComponent?.collides = false
+            it.physicsComponent.collisions.reset()
         }
         collisions = collisionDetector.detect(gameObjectProvider.getGameObjects())
         collisions.each { collision ->
+            collision.a.body.center
             collision.a.physicsComponent.collides = true
             collision.b.physicsComponent.collides = true
 

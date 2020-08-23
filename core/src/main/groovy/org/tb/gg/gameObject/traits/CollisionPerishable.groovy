@@ -10,29 +10,8 @@ import org.tb.gg.gameObject.Perishable
 // TODO: Add ast transformation annotation to add parameters: Nr. of collisions, include / exclude collision groups.
 @PerishCondition
 trait CollisionPerishable implements Perishable, GameObject {
-
-    @Inject
-    CollisionRegistry collisionRegistry
-
     @SuppressWarnings('unused')
     Boolean shouldPerish__CollisionPerishable() {
-        def collidingGameObject = getCollidingGameObject()
-        return collidingGameObject != null
-    }
-
-    GameObject getCollidingGameObject() {
-        if (!getPhysicsComponent().collides) {
-            return null
-        }
-        collisionRegistry.getCollisions(this).collect { Collision collision ->
-            def a = collision.a
-            def b = collision.b
-            a == this ? b : a
-        }.find { GameObject collidingGameObject ->
-            physicsComponent.collisionSettings.collidesWithGroups.collect { it.collisionGroup }
-                    .contains(
-                            collidingGameObject.physicsComponent.collisionSettings.collisionGroup
-                    )
-        }
+        physicsComponent.collides
     }
 }
