@@ -13,22 +13,22 @@ class DefaultCollisionTypeHandler implements CollisionTypeHandler {
         def objectWithHigherVelocity = collision.a.physicsComponent.velocity.abs().sum() >= collision.b.physicsComponent.velocity.abs().sum() ? collision.a : collision.b
         if (objectWithHigherVelocity == collision.a) {
             // Slightly move a away from b.
-            def newCenter = collision.a.body.center - collision.a.physicsComponent.velocity.normalize() * 10.0
+            def newCenter = collision.a.body.center - collision.a.physicsComponent.velocity.normalize() * 20.0
             collision.a.body.setCenter(newCenter)
 
-//            def aToB = collision.b.body.center - collision.a.body.center
-//            if (collision.a.physicsComponent.velocity.dot(aToB) > 0) {
-//                collision.a.physicsComponent.velocity = Vector.zeroVector()
-//            }
+            def aToB = collision.b.body.center - collision.a.body.center
+            if (collision.a.physicsComponent.velocity.dot(aToB) > 0) {
+                collision.a.physicsComponent.velocity = Vector.zeroVector()
+            }
         } else {
             // Slightly move b away from a.
-            def newCenter = collision.b.body.center - collision.b.physicsComponent.velocity.normalize() * 10.0
+            def newCenter = collision.b.body.center - collision.b.physicsComponent.velocity.normalize() * 20.0
             collision.b.body.setCenter(newCenter)
 
-//            def bToA = collision.a.body.center - collision.b.body.center
-//            if (collision.b.physicsComponent.velocity.dot(bToA) > 0) {
-//                collision.b.physicsComponent.velocity = Vector.zeroVector()
-//            }
+            def bToA = collision.a.body.center - collision.b.body.center
+            if (collision.b.physicsComponent.velocity.dot(bToA) > 0) {
+                collision.b.physicsComponent.velocity = Vector.zeroVector()
+            }
         }
     }
 
