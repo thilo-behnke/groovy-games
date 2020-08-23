@@ -54,16 +54,24 @@ public class PerishConditionASTTransformation extends AbstractASTTransformation 
             return;
         }
 
-        ReturnStatement shouldPerishReturnStatement = new ReturnStatement(combinedShouldPerishBooleanExpressionOpt.get());
+        Statement shouldPerishReturnStatement = new ReturnStatement(combinedShouldPerishBooleanExpressionOpt.get());
 
-        // Remove existing shouldPerish stub if exists.
         MethodNode existingShouldPerish = classNode.getMethod("shouldPerish", Parameter.EMPTY_ARRAY);
-        if (existingShouldPerish != null) {
-            List<Statement> statements = new ArrayList<>();
-            statements.add(existingShouldPerish.getCode());
-            statements.add(shouldPerishReturnStatement);
-            BlockStatement combinedStatement = new BlockStatement(statements, new VariableScope());
+        // If provided by a super class, also add the shouldPerish implementation to the boolean expression.
+        if (existingShouldPerish != null && !existingShouldPerish.getDeclaringClass().equals(classNode)) {
+            BooleanExpression booleanExpression = new BooleanExpression(
+                    new BinaryExpression(
+                            new MethodCallExpression(new VariableExpression("super"), "shouldPerish", ArgumentListExpression.EMPTY_ARGUMENTS),
+                            Token.newSymbol("||", 0, 0),
+                            combinedShouldPerishBooleanExpressionOpt.get()
+                    )
+            );
 
+            shouldPerishReturnStatement = new ReturnStatement(booleanExpression);
+        }
+
+        // TODO: Currently it is not possible to have the shouldPerish implementation in the class itself, only in a super class works. Improve.
+        if (existingShouldPerish != null) {
             classNode.removeMethod(existingShouldPerish);
         }
 
@@ -73,9 +81,8 @@ public class PerishConditionASTTransformation extends AbstractASTTransformation 
                 new ClassNode(Boolean.class),
                 Parameter.EMPTY_ARRAY,
                 ClassNode.EMPTY_ARRAY,
-                new ReturnStatement(combinedShouldPerishBooleanExpressionOpt.get())
+                shouldPerishReturnStatement
         );
-
 
         classNode.addMethod(shouldPerish);
     }

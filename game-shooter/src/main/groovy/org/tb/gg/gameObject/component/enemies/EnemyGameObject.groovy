@@ -29,4 +29,8 @@ class EnemyGameObject extends BaseGameObject {
 
 class EnemyProperties {
     int hp
+
+    void setHp(int hp) {
+        this.hp = Math.max(0, hp)
+    }
 }

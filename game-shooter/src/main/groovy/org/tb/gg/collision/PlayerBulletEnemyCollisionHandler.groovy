@@ -12,6 +12,9 @@ class PlayerBulletEnemyCollisionHandler extends GameObjectCollisionHandler<Bulle
         log.debug("Handling bullet <> enemy collision for ${a} and ${b}".toString())
         a.shouldBeDestroyed = true
         b.hp = b.hp - a.damage
+        if (b.hp <= 0) {
+            b.shouldBeDestroyed = true
+        }
     }
 
     @Override
