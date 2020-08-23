@@ -7,7 +7,7 @@ import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.global.geom.Vector
 
 class EnemyGameObject extends BaseGameObject {
-    @Delegate EnemyProperties enemyProperties = new EnemyProperties()
+    @Delegate EnemyProperties enemyProperties
 
     static EnemyGameObject create(Vector pos) {
         def physicsComp = OneHitEnemyPhysicsComponent.create(Vector.zeroVector())

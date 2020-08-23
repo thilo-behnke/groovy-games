@@ -17,7 +17,7 @@ class GameEntryPoint implements Game {
 
         sceneManager.addScene(defaultScene, true)
 
-        gameEngine.start()
+        Thread.start { gameEngine.start() }
     }
 }
 
