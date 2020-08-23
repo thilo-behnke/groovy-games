@@ -2,12 +2,11 @@ package org.tb.gg.gameObject.component.player
 
 import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.BaseGameObject
-import org.tb.gg.gameObject.component.guns.AutomaticGunProperties
 import org.tb.gg.gameObject.component.guns.Gun
 import org.tb.gg.gameObject.component.guns.AutomaticGun
 import org.tb.gg.gameObject.component.guns.GunFactory
 import org.tb.gg.gameObject.component.guns.GunProperties
-import org.tb.gg.gameObject.component.guns.GunType
+import org.tb.gg.gameObject.component.guns.GunWheel
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.factory.KeyBoundGameObjectBuilder
 import org.tb.gg.gameObject.shape.Rect
@@ -15,9 +14,19 @@ import org.tb.gg.global.geom.Vector
 import org.tb.gg.global.math.MathConstants
 
 class PlayerGameObject extends BaseGameObject {
-    @Inject GunFactory gunFactory
+    @Inject
+    GunWheel gunWheel
 
     private Gun gun
+
+    private long SWITCH_GUN_COOLDOWN_MS = 200
+    private long lastWeaponSwitchTimestamp = 0
+
+    void setGun(Gun gun) {
+        this.gun = gun
+        this.gun.setOrientation(orientation)
+        this.gun.body.setCenter(body.center)
+    }
 
     static PlayerGameObject create() {
         def pos = new Vector(x: 100, y: 100)
@@ -31,7 +40,7 @@ class PlayerGameObject extends BaseGameObject {
                 .setDefaultKeyMapping(PlayerAction.values().collectEntries { it.keys.collectEntries { key -> [(key): it.toString()] } })
                 .build()
 
-        player.gun = AutomaticGun.create(AutomaticGun, AutomaticGun.PISTOL_PROPERTIES, new GunProperties(pos: pos, orientation: orientation))
+        player.switchGun()
         player.setOrientation(orientation)
         return player
     }
@@ -55,6 +64,7 @@ class PlayerGameObject extends BaseGameObject {
 
         updateMovement(activeActions, timestamp, delta)
         updateOrientation(activeActions, timestamp, delta)
+        switchGun(activeActions, timestamp)
         shoot(activeActions)
     }
 
@@ -138,5 +148,17 @@ class PlayerGameObject extends BaseGameObject {
             return
         }
         gun.shoot()
+    }
+
+    private switchGun(List<PlayerAction> activeActions, long timestamp) {
+        if (!activeActions.contains(PlayerAction.SWITCH_WEAPON) || timestamp - lastWeaponSwitchTimestamp < SWITCH_GUN_COOLDOWN_MS) {
+            return
+        }
+        lastWeaponSwitchTimestamp = timestamp
+        switchGun()
+    }
+
+    private switchGun() {
+        setGun(gunWheel.nextGun())
     }
 }

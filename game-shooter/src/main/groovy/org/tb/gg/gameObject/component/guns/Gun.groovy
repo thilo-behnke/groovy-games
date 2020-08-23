@@ -7,7 +7,7 @@ import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.geom.Vector
 
-trait Gun<T> implements GameObject {
+trait Gun<T extends GunSpecificProps> implements GameObject {
     T props
 
     abstract void shoot();
@@ -24,4 +24,8 @@ trait Gun<T> implements GameObject {
 class GunProperties {
     Vector pos
     Vector orientation
+}
+
+class GunSpecificProps {
+    GunType gunType
 }

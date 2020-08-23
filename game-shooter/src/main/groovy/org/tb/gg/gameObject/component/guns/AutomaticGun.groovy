@@ -1,23 +1,21 @@
 package org.tb.gg.gameObject.component.guns
 
+import groovy.transform.EqualsAndHashCode
 import groovy.transform.Immutable
 import org.tb.gg.di.Inject
 import org.tb.gg.engine.SceneManager
 import org.tb.gg.gameObject.BaseGameObject
-import org.tb.gg.gameObject.components.physics.ShapeBody
-import org.tb.gg.gameObject.factory.GameObjectBuilder
-import org.tb.gg.gameObject.shape.Rect
-import org.tb.gg.global.geom.Vector
 import org.tb.gg.world.WorldStateProvider
 
+@EqualsAndHashCode(cache = true, includeFields = true, includes = ['org_tb_gg_gameObject_component_guns_Gun__props'])
 class AutomaticGun extends BaseGameObject implements Gun<AutomaticGunProperties> {
     @Inject
     WorldStateProvider worldStateProvider
     @Inject
     SceneManager sceneManager
 
-    static final PISTOL_PROPERTIES = new AutomaticGunProperties(COOL_DOWN_MS: 300, BULLET_DAMAGE: 20, BULLET_VELOCITY: 1.0)
-    static final MACHINE_GUN_PROPERTIES = new AutomaticGunProperties(COOL_DOWN_MS: 100, BULLET_DAMAGE: 10, BULLET_VELOCITY: 2.0)
+    static final PISTOL_PROPERTIES = new AutomaticGunProperties(gunType: GunType.PISTOL, COOL_DOWN_MS: 300, BULLET_DAMAGE: 40, BULLET_VELOCITY: 1.0)
+    static final MACHINE_GUN_PROPERTIES = new AutomaticGunProperties(gunType: GunType.MACHINE_GUN, COOL_DOWN_MS: 100, BULLET_DAMAGE: 25, BULLET_VELOCITY: 2.0)
 
     private long lastShotTimestamp = 0
 
@@ -37,7 +35,7 @@ class AutomaticGun extends BaseGameObject implements Gun<AutomaticGunProperties>
 }
 
 @Immutable
-class AutomaticGunProperties {
+class AutomaticGunProperties extends GunSpecificProps {
     int COOL_DOWN_MS
     int BULLET_DAMAGE
     BigDecimal BULLET_VELOCITY
