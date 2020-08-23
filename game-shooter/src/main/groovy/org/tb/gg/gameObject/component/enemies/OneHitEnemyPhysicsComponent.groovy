@@ -1,6 +1,8 @@
 package org.tb.gg.gameObject.component.enemies
 
+import org.tb.gg.collision.CollisionType
 import org.tb.gg.gameObject.component.ShooterCollisionGroup
+import org.tb.gg.gameObject.components.physics.CollisionDefinition
 import org.tb.gg.gameObject.components.physics.CollisionSettings
 import org.tb.gg.gameObject.components.physics.PhysicStats
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
@@ -16,8 +18,8 @@ class OneHitEnemyPhysicsComponent extends PhysicsComponent {
                 new CollisionSettings(
                         collisionGroup: ShooterCollisionGroup.ENEMY.toString(),
                         collidesWithGroups: [
-                                ShooterCollisionGroup.PLAYER_BULLET.toString(),
-                                ShooterCollisionGroup.PLAYER.toString(),
+                                new CollisionDefinition(collisionGroup:  ShooterCollisionGroup.PLAYER_BULLET.toString(), collisionType: CollisionType.SOLID),
+                                new CollisionDefinition(collisionGroup:  ShooterCollisionGroup.PLAYER.toString(), collisionType: CollisionType.SOLID),
                         ].toSet()
                 ),
                 new PhysicStats(velocity: Vector.zeroVector())

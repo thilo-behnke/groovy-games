@@ -26,6 +26,10 @@ class DefaultCollisionRegistry implements CollisionRegistry {
             collision.a.physicsComponent.collides = true
             collision.b.physicsComponent.collides = true
 
+            if (collision.type == CollisionType.SOLID) {
+                // TODO: Reposition elements to they don't overlap.
+            }
+
             collisionHandlerReferrer.handleCollision(collision)
         }
     }

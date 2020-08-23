@@ -5,6 +5,7 @@ import org.tb.gg.engine.GameScene
 import org.tb.gg.gameObject.MovableGameObject
 import org.tb.gg.gameObject.component.CollisionVisualizationRenderComponent
 import org.tb.gg.gameObject.components.input.NoopInputComponent
+import org.tb.gg.gameObject.components.physics.CollisionDefinition
 import org.tb.gg.gameObject.components.physics.CollisionSettings
 import org.tb.gg.gameObject.components.physics.PhysicStats
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
@@ -25,7 +26,7 @@ class ShapeCollisionDemoEntryPoint implements Game {
                     .setPhysicsComponent(new PhysicsComponent(
                             new CollisionSettings(
                                     collisionGroup: 'SHAPES',
-                                    collidesWithGroups: ['SHAPES'].toSet()
+                                    collidesWithGroups: [new CollisionDefinition(collisionGroup:  'SHAPES')].toSet()
                             ),
                             new PhysicStats(velocity: Vector.zeroVector())
                     ))

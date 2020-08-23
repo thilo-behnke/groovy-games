@@ -2,6 +2,7 @@ package org.tb.gg.collision
 
 import groovyjarjarantlr4.v4.runtime.misc.Tuple2
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.gameObject.components.physics.CollisionDefinition
 import org.tb.gg.gameObject.components.physics.CollisionSettings
 import org.tb.gg.gameObject.components.physics.PhysicStats
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
@@ -76,7 +77,7 @@ class DefaultCollisionDetectorSpec extends Specification {
         obj.physicsComponent = new PhysicsComponent(
                 new CollisionSettings(
                         collisionGroup: 'SOME',
-                        collidesWithGroups: ['SOME']
+                        collidesWithGroups: [new CollisionDefinition(collisionGroup: 'SOME')]
                 ),
                 new PhysicStats(velocity: Vector.zeroVector())
         )

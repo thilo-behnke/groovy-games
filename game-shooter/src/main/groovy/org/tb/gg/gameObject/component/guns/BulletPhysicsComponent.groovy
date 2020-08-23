@@ -1,6 +1,8 @@
 package org.tb.gg.gameObject.component.guns
 
+import org.tb.gg.collision.CollisionType
 import org.tb.gg.gameObject.component.ShooterCollisionGroup
+import org.tb.gg.gameObject.components.physics.CollisionDefinition
 import org.tb.gg.gameObject.components.physics.CollisionSettings
 import org.tb.gg.gameObject.components.physics.PhysicStats
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
@@ -16,7 +18,7 @@ class BulletPhysicsComponent extends PhysicsComponent {
                 new CollisionSettings(
                         collisionGroup: ShooterCollisionGroup.PLAYER_BULLET.toString(),
                         collidesWithGroups: [
-                                ShooterCollisionGroup.ENEMY.toString(),
+                                new CollisionDefinition(collisionGroup: ShooterCollisionGroup.ENEMY.toString(), collisionType: CollisionType.SOLID),
                         ].toSet()
                 ),
                 new PhysicStats(velocity: startVelocity)
