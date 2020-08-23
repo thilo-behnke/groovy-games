@@ -15,6 +15,9 @@ class PlayerGameObject extends BaseGameObject {
     @Inject
     SceneManager sceneManager
 
+    private static final long SHOOT_DELAY_MS = 200
+    private long lastShot = 0
+
     static PlayerGameObject create() {
         def player = (PlayerGameObject) new KeyBoundGameObjectBuilder(PlayerGameObject)
                 .setBody(new ShapeBody(new Rect(new Vector(x: 100, y: 100), new Vector(x: 20, y: 30))))
@@ -114,6 +117,11 @@ class PlayerGameObject extends BaseGameObject {
         if (!activeActions.contains(PlayerAction.SHOOT)) {
             return
         }
+        if (timestamp - lastShot < SHOOT_DELAY_MS) {
+            return
+        }
+        lastShot = timestamp
+
         def bullet = BulletGameObject.create(timestamp, body.center, orientation.normalize())
         bullet.setDamage(5)
         sceneManager.getActiveScene().ifPresent { it.accessGameObjectProvider().addGameObject(bullet) }

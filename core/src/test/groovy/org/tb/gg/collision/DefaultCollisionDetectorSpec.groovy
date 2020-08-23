@@ -2,6 +2,7 @@ package org.tb.gg.collision
 
 import groovyjarjarantlr4.v4.runtime.misc.Tuple2
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.gameObject.components.physics.CollisionDefinition
 import org.tb.gg.gameObject.components.physics.CollisionSettings
 import org.tb.gg.gameObject.components.physics.PhysicStats
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
@@ -43,7 +44,7 @@ class DefaultCollisionDetectorSpec extends Specification {
         when:
         def res = defaultCollisionHandler.detect((Set<BaseGameObject>) gameObjects)
         then:
-        res == (Set) [new Collision(a: gameObjects[1], b: gameObjects[2])]
+        res == (Set) [new Collision(a: gameObjects[1], b: gameObjects[2], type: CollisionType.OVERLAP)]
     }
 
     def 'lots of game objects, multiple are colliding'() {
@@ -53,8 +54,8 @@ class DefaultCollisionDetectorSpec extends Specification {
         def res = defaultCollisionHandler.detect((Set<BaseGameObject>) gameObjects)
         then:
         res == (Set) [
-                new Collision(a: gameObjects[2], b: gameObjects[10]),
-                new Collision(a: gameObjects[4], b: gameObjects[30])
+                new Collision(a: gameObjects[2], b: gameObjects[10], type: CollisionType.OVERLAP),
+                new Collision(a: gameObjects[4], b: gameObjects[30], type: CollisionType.OVERLAP)
         ]
     }
 
@@ -74,10 +75,14 @@ class DefaultCollisionDetectorSpec extends Specification {
     private static createGameObject(ShapeBody shapeBody, Integer id) {
         def obj = DummyGameObject.create(shapeBody)
         obj.physicsComponent = new PhysicsComponent(
+        )
+        obj.physicsComponent.setCollisionSettings(
                 new CollisionSettings(
                         collisionGroup: 'SOME',
-                        collidesWithGroups: ['SOME']
-                ),
+                        collidesWithGroups: [new CollisionDefinition(collisionGroup: 'SOME')]
+                )
+        )
+        obj.physicsComponent.setPhysicStats(
                 new PhysicStats(velocity: Vector.zeroVector())
         )
         obj.id = id

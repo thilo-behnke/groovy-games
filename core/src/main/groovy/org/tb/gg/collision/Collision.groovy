@@ -10,6 +10,7 @@ import org.tb.gg.gameObject.GameObject
 class Collision<S extends GameObject, T extends GameObject> {
     S a
     T b
+    CollisionType type
 
     GameObject getAt(int index) {
         if (index == 0) {

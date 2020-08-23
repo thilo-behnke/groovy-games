@@ -19,7 +19,7 @@ class DefaultCollisionDetector implements CollisionDetector {
                     if (!a.body || !b.body) {
                         return false
                     }
-                    return a.physicsComponent.collidesWith(b.physicsComponent)
+                    return a.physicsComponent.shouldCollideWith(b.physicsComponent)
                 }
                 .collect { BaseGameObject a, BaseGameObject b ->
                     def areColliding = a.body.collidesWith(b.body.getStructure())
@@ -27,8 +27,9 @@ class DefaultCollisionDetector implements CollisionDetector {
                         return null
                     }
 
-                    def collision = new Collision(a: a, b: b)
-                    log.debug("Collision detected: ${collision}".toString())
+                    def collisionType = a.physicsComponent.getCollisionType(b.physicsComponent)
+                    def collision = new Collision(a: a, b: b, type: collisionType)
+                    log.info("Collision detected: ${collision}".toString())
                     return collision
                 }
                 .findAll { it }
