@@ -7,6 +7,7 @@ import org.tb.gg.global.geom.Vector
 
 class PhysicsComponent<C extends CollisionSettings, S extends PhysicStats> implements Updateable {
     C collisionSettings
+    @Delegate
     S physicStats
 
     BaseGameObject parent

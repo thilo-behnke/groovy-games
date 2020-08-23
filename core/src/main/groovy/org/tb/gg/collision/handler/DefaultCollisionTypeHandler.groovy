@@ -13,11 +13,11 @@ class DefaultCollisionTypeHandler implements CollisionTypeHandler {
         if (objectWithHigherVelocity == collision.a) {
             def aToB = collision.a.getBody().center - collision.b.getBody().center
             // Slightly move a away from b.
-            collision.a.body.center = collision.a.body.center + aToB.normalize() * 10.0
+            collision.a.body.center = collision.a.body.center - collision.a.physicsComponent.velocity.normalize() * 10.0
         } else {
             def bToA = collision.b.getBody().center - collision.a.getBody().center
             // Slightly move b away from a.
-            collision.b.body.center = collision.b.body.center + bToA.normalize() * 10.0
+            collision.b.body.center = collision.b.body.center - collision.b.physicsComponent.velocity.normalize() * 10.0
         }
     }
 
