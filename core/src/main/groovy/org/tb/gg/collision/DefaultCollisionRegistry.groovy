@@ -13,6 +13,8 @@ class DefaultCollisionRegistry implements CollisionRegistry {
     private GameObjectProvider gameObjectProvider
     @Inject
     private CollisionHandlerReferrer collisionHandlerReferrer
+    @Inject
+    private CollisionDirectionResolver collisionDirectionResolver
 
     private Set<Collision> collisions
 
@@ -27,6 +29,8 @@ class DefaultCollisionRegistry implements CollisionRegistry {
             collision.a.body.center
             collision.a.physicsComponent.collides = true
             collision.b.physicsComponent.collides = true
+
+            System.out.println(collisionDirectionResolver.resolveCollisionDirections(collision))
 
             collisionHandlerReferrer.handleCollision(collision)
         }

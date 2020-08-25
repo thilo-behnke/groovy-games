@@ -11,6 +11,8 @@ class MathConstants {
     final static HALF_PI = (PI / 2).round(MathConstants.ctx)
     final static QUARTER_PI = (PI / 4).round(MathConstants.ctx)
 
+    final static ERROR_MARGIN = 1e-4
+
     static pi(BigDecimal div) {
         if (!div) {
             return PI.round(MathConstants.ctx)

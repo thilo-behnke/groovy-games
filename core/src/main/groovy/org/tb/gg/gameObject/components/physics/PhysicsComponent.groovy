@@ -15,9 +15,12 @@ class PhysicsComponent<C extends CollisionSettings, S extends PhysicStats> imple
     Boolean collides
     CollisionDirectionRegistry collisions = new CollisionDirectionRegistry()
 
+    Vector previousCenter
+
     @Override
     void update(Long timestamp, Long delta) {
         def body = parent.body
+        previousCenter = body.center
         body.center = body.center + (physicStats.velocity * BigDecimal.valueOf(delta))
     }
 

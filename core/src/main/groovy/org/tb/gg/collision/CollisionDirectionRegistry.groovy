@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap
 import groovy.transform.Immutable
 import org.tb.gg.global.Direction
 
-@Immutable
 class CollisionDirectionRegistry {
     private Map<Direction, Boolean> collisions = [
             (Direction.UP): false,
