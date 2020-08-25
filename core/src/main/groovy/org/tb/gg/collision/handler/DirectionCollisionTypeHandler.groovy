@@ -6,6 +6,7 @@ import org.tb.gg.gameObject.GameObject
 import org.tb.gg.global.Direction
 import org.tb.gg.global.geom.Vector
 
+// TODO: Write tests. There should not be a collision after the repositioning is done.
 class DirectionCollisionTypeHandler implements CollisionTypeHandler {
     @Override
     void handleCollisionByType(Collision collision) {
