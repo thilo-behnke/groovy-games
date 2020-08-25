@@ -22,7 +22,7 @@ class Circle extends Shape {
 
     @Override
     Rect getBoundingRect() {
-        return new Rect(center - Vector.unitVector() * radius, Vector.unitVector() * 2.0 * radius)
+        return new Rect(center + new Vector(x: -radius, y: radius), Vector.unitVector() * 2.0 * radius)
     }
 
     @Override

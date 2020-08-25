@@ -12,14 +12,14 @@ class CollisionDirectionRegistry {
             (Direction.LEFT): false,
     ]
 
-    void setDirectionCollision(Direction direction, boolean collides) {
-        collisions[direction] = collides
+    void setDirectionCollision(Direction direction) {
+        collisions[direction] = true
     }
 
     void reset() {
-        setDirectionCollision(Direction.UP, false)
-        setDirectionCollision(Direction.RIGHT, false)
-        setDirectionCollision(Direction.DOWN, false)
-        setDirectionCollision(Direction.LEFT, false)
+        collisions[Direction.UP] = false
+        collisions[Direction.RIGHT] = false
+        collisions[Direction.DOWN] = false
+        collisions[Direction.LEFT] = false
     }
 }

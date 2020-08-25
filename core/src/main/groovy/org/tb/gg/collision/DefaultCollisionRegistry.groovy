@@ -20,17 +20,24 @@ class DefaultCollisionRegistry implements CollisionRegistry {
 
     @Override
     void update(Long timestamp, Long delta) {
-        // TODO: Don't do this every tick
         gameObjectProvider.getGameObjects().each {
             it.physicsComponent.collisions.reset()
         }
+        // TODO: Don't do this every tick
         collisions = collisionDetector.detect(gameObjectProvider.getGameObjects())
         collisions.each { collision ->
             collision.a.body.center
             collision.a.physicsComponent.collides = true
             collision.b.physicsComponent.collides = true
 
-            System.out.println(collisionDirectionResolver.resolveCollisionDirections(collision))
+            def collisionDirectionAtoB = collisionDirectionResolver.resolveCollisionDirections(collision)
+            collision.a.physicsComponent.collisions.setDirectionCollision(collisionDirectionAtoB)
+            collision.b.physicsComponent.collisions.setDirectionCollision(collisionDirectionAtoB.invert())
+            // TODO: Not nice that this is set after creation of the object, find better approach.
+            collision.directionA = collisionDirectionAtoB
+            collision.directionB = collisionDirectionAtoB.invert()
+
+            System.out.println(collisionDirectionAtoB)
 
             collisionHandlerReferrer.handleCollision(collision)
         }
