@@ -65,6 +65,16 @@ class Rect extends Shape {
     }
 
     Vector getBottomRight() {
-        return topLeft + new Vector(x: dim.x, y: - dim.y)
+        return topLeft + new Vector(x: dim.x, y: -dim.y)
+    }
+
+    @Override
+    Rect getBoundingRect() {
+        return this
+    }
+
+    @Override
+    Shape copy() {
+        return new Rect(new Vector(x: topLeft.x, y: topLeft.y), new Vector(x: dim.x, y: dim.y))
     }
 }

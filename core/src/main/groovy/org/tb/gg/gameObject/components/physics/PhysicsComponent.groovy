@@ -4,6 +4,7 @@ import org.tb.gg.collision.CollisionType
 import org.tb.gg.collision.CollisionDirectionRegistry
 import org.tb.gg.engine.helper.Updateable
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
 
 class PhysicsComponent<C extends CollisionSettings, S extends PhysicStats> implements Updateable {
@@ -15,12 +16,12 @@ class PhysicsComponent<C extends CollisionSettings, S extends PhysicStats> imple
     Boolean collides
     CollisionDirectionRegistry collisions = new CollisionDirectionRegistry()
 
-    Vector previousCenter
+    Shape previousShape
 
     @Override
     void update(Long timestamp, Long delta) {
         def body = parent.body
-        previousCenter = body.center
+        previousShape = body.getStructure().copy()
         body.center = body.center + (physicStats.velocity * BigDecimal.valueOf(delta))
     }
 

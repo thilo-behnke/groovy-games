@@ -9,6 +9,9 @@ abstract class Shape implements Renderable {
     @Inject
     protected ShapeCollisionDetector shapeCollisionDetector
 
+    abstract Shape copy()
+
+    abstract Rect getBoundingRect()
     abstract Vector getCenter()
     abstract void setCenter(Vector pos)
     abstract boolean isPointWithin(Vector pos)

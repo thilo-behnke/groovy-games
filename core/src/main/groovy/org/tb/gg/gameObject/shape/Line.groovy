@@ -63,4 +63,15 @@ class Line extends Shape {
     BigDecimal getLength() {
         return (end - start).length()
     }
+
+    @Override
+    Rect getBoundingRect() {
+        // TODO: Implement.
+        return new Rect()
+    }
+
+    @Override
+    Shape copy() {
+        return new Line(new Vector(x: start.x, y: start.y), new Vector(x: end.x, y: end.y))
+    }
 }

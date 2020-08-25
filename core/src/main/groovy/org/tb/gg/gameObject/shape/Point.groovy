@@ -27,4 +27,14 @@ class Point extends Shape {
    boolean isPointWithin(Vector pos) {
       return this.pos == pos
    }
+
+   @Override
+   Rect getBoundingRect() {
+      return new Rect(pos, Vector.zeroVector())
+   }
+
+   @Override
+   Shape copy() {
+      return new Point(pos: new Vector(x: pos.x, y: pos.y))
+   }
 }
