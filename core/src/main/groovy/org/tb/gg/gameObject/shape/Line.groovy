@@ -66,8 +66,14 @@ class Line extends Shape {
 
     @Override
     Rect getBoundingRect() {
-        // TODO: Implement.
-        return new Rect()
+        def dim = (end - start).abs()
+        def higherPoint = start.y >= end.y ? start : end
+        def lowerPoint = start.y >= end.y ? end : start
+        if (higherPoint.x >= lowerPoint.x) {
+            return new Rect(higherPoint, dim)
+        } else {
+            return new Rect(higherPoint - new Vector(x: dim.x, y: 0), dim)
+        }
     }
 
     @Override

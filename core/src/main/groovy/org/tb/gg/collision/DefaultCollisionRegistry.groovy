@@ -21,7 +21,10 @@ class DefaultCollisionRegistry implements CollisionRegistry {
     @Override
     void update(Long timestamp, Long delta) {
         gameObjectProvider.getGameObjects().each {
-            it.physicsComponent.collisions.reset()
+            if (it.physicsComponent) {
+                it.physicsComponent.collisions.reset()
+                it.physicsComponent.collides = false
+            }
         }
         // TODO: Don't do this every tick
         collisions = collisionDetector.detect(gameObjectProvider.getGameObjects())

@@ -75,7 +75,7 @@ class ClockRenderComponent extends RenderComponent {
         Clock clock = (Clock) parent
         def minuteMarkNodes = (1..60).collect {
             def minuteStep = clock.MINUTE_CIRCLE_STEP * it
-            def minutePosOnCircle = CircleOperations.getPointOnCircleInRadians(clock.circleDesc, minuteStep)
+            def minutePosOnCircle = clock.clockStart.rotate(minuteStep)
             def line = new Line(clock.center, minutePosOnCircle)
             line.scaleFromEnd(0.05)
             RenderNode.leaf(line, new RenderOptions(drawColor: DrawColor.YELLOW))
@@ -91,7 +91,7 @@ class ClockRenderComponent extends RenderComponent {
         Clock clock = (Clock) parent
         def hourMarkNodes = (1..12).collect {
             def hourStep = clock.HOUR_CIRCLE_STEP * it
-            def hourPosOnCircle = CircleOperations.getPointOnCircleInRadians(clock.circleDesc, hourStep)
+            def hourPosOnCircle = clock.clockStart.rotate(hourStep)
             def line = new Line(clock.center, hourPosOnCircle)
             line.scaleFromEnd(0.2)
             RenderNode.leaf(line, new RenderOptions(drawColor: DrawColor.YELLOW))

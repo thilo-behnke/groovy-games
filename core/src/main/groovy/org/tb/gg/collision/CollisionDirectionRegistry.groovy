@@ -13,7 +13,14 @@ class CollisionDirectionRegistry {
     ]
 
     void setDirectionCollision(Direction direction) {
+        if (direction == Direction.UNDEFINED) {
+            return
+        }
         collisions[direction] = true
+    }
+
+    boolean getCollides() {
+        collisions.values().any()
     }
 
     void reset() {
