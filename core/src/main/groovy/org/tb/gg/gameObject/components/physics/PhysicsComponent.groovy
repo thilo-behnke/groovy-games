@@ -16,12 +16,9 @@ class PhysicsComponent<C extends CollisionSettings, S extends PhysicStats> imple
     Boolean collides
     CollisionDirectionRegistry collisions = new CollisionDirectionRegistry()
 
-    Shape previousShape
-
     @Override
     void update(Long timestamp, Long delta) {
         def body = parent.body
-        previousShape = body.getStructure().copy()
         body.center = body.center + (physicStats.velocity * BigDecimal.valueOf(delta))
     }
 

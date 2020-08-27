@@ -30,14 +30,13 @@ class DefaultCollisionRegistry implements CollisionRegistry {
             collision.a.physicsComponent.collides = true
             collision.b.physicsComponent.collides = true
 
-            def collisionDirectionAtoB = collisionDirectionResolver.resolveCollisionDirections(collision)
+            def collisionDirectionAtoB = collisionDirectionResolver.resolveCollisionDirection(collision)
+
             collision.a.physicsComponent.collisions.setDirectionCollision(collisionDirectionAtoB)
             collision.b.physicsComponent.collisions.setDirectionCollision(collisionDirectionAtoB.invert())
             // TODO: Not nice that this is set after creation of the object, find better approach.
             collision.directionA = collisionDirectionAtoB
             collision.directionB = collisionDirectionAtoB.invert()
-
-            System.out.println(collisionDirectionAtoB)
 
             collisionHandlerReferrer.handleCollision(collision)
         }

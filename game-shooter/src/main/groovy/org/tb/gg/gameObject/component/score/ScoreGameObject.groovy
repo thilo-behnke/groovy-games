@@ -30,6 +30,8 @@ class ScoreGameObject extends BaseGameObject {
 
     @Override
     void update(Long timestamp, Long delta) {
+        super.update(timestamp, delta)
+
         score = scoreManager.score
         selectedGun = gunWheel.selectedGun()
     }

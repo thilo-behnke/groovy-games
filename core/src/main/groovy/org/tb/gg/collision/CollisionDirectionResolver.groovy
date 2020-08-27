@@ -1,9 +1,13 @@
 package org.tb.gg.collision
 
+import org.tb.gg.di.Inject
 import org.tb.gg.di.definition.Singleton
+import org.tb.gg.engine.framecache.FrameCache
 import org.tb.gg.global.Direction
 
 class CollisionDirectionResolver implements Singleton {
+
+    @Inject FrameCache frameCache
 
     Direction resolveCollisionDirection(Collision collision) {
         // It is known here that the objects must collide, therefore it is not necessary to check if there is a collision.
@@ -15,11 +19,11 @@ class CollisionDirectionResolver implements Singleton {
         }
     }
 
-    private static boolean isHorizontalCollision(Collision collision) {
+    private boolean isHorizontalCollision(Collision collision) {
         def boundingRectA = collision.a.body.boundingRect
         def boundingRectB = collision.b.body.boundingRect
-        def previousRectA = collision.a.physicsComponent.previousShape.boundingRect
-        def previousRectB = collision.b.physicsComponent.previousShape.boundingRect
+        def previousRectA = frameCache.getLastFrames(1).first().gameObjectShapeCache.get(collision.a.id).boundingRect
+        def previousRectB = frameCache.getLastFrames(1).first().gameObjectShapeCache.get(collision.b.id).boundingRect
 
         def previousARangeX = CollisionUtils.Range.create(previousRectA.topLeft.x, previousRectA.topRight.x)
         def previousBRangeX = CollisionUtils.Range.create(previousRectB.topLeft.x, previousRectB.topRight.x)

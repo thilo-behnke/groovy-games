@@ -1,10 +1,11 @@
 package org.tb.gg.gameObject.shape
 
-
+import groovy.transform.EqualsAndHashCode
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 
+@EqualsAndHashCode
 class Point extends Shape {
    Vector pos
 

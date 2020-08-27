@@ -19,7 +19,7 @@ class DirectionCollisionTypeHandler implements CollisionTypeHandler {
      */
     @Override
     void handleCollisionByType(Collision collision) {
-        if (collision.type == CollisionType.OVERLAP) {
+        if (collision.type == CollisionType.OVERLAP || collision.directionA == null || collision.directionB == null) {
             return
         }
         def collisionDirectionA = collision.directionA

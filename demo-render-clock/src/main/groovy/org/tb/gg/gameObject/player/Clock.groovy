@@ -44,6 +44,8 @@ class Clock extends BaseGameObject {
 
     @Override
     void update(Long timestamp, Long delta) {
+        super.update(timestamp, delta)
+
         def time = Calendar.getInstance()
 
         secondHandlePos = CircleOperations.getPointOnCircleFromOtherPointInRadians(circleDesc, - SECOND_CIRCLE_STEP * time.get(Calendar.SECOND), clockStart)
