@@ -66,16 +66,15 @@ class DefaultCollisionDetectorSpec extends Specification {
             return createGameObject(mockBody, it)
         }
         for (def pair in collidingPairs) {
-            gameObjects[pair.getItem1()].body.collidesWith(gameObjects[pair.getItem2()].body.getStructure()) >> true
-            gameObjects[pair.getItem2()].body.collidesWith(gameObjects[pair.getItem1()].body.getStructure()) >> true
+            gameObjects[pair.getItem1()].body.collidesWith(gameObjects[pair.getItem2()].body) >> true
+            gameObjects[pair.getItem2()].body.collidesWith(gameObjects[pair.getItem1()].body) >> true
         }
         return gameObjects
     }
 
     private static createGameObject(ShapeBody shapeBody, Integer id) {
         def obj = DummyGameObject.create(shapeBody)
-        obj.physicsComponent = new PhysicsComponent(
-        )
+        obj.physicsComponent = new PhysicsComponent()
         obj.physicsComponent.setCollisionSettings(
                 new CollisionSettings(
                         collisionGroup: 'SOME',
