@@ -8,6 +8,15 @@ import org.tb.gg.global.geom.Vector
 
 // TODO: Write tests. There should not be a collision after the repositioning is done.
 class DirectionCollisionTypeHandler implements CollisionTypeHandler {
+    /**
+     * Reposition the faster of both game objects in a collision so it doesn't collide anymore.
+     *
+     * 0. Ignore collisions of type overlap.
+     * 1. Detect which game object is faster.
+     * 2. Set the faster game object by using inverted velocity until there is a gap of 1px between it and the other game object.
+     *
+     * @param collision
+     */
     @Override
     void handleCollisionByType(Collision collision) {
         if (collision.type == CollisionType.OVERLAP) {
@@ -20,7 +29,7 @@ class DirectionCollisionTypeHandler implements CollisionTypeHandler {
         adjustPosition(objectWithHigherVelocity, objectWithHigherVelocity == collision.a ? collision.b : collision.a, objectWithHigherVelocity == collision.a ? collisionDirectionA : collisionDirectionB)
     }
 
-    private adjustPosition(GameObject gameObject, GameObject otherGameObject, Direction collisionDirection) {
+    private static adjustPosition(GameObject gameObject, GameObject otherGameObject, Direction collisionDirection) {
         Vector newCenter = gameObject.body.center
         if (collisionDirection == Direction.RIGHT) {
             // TODO: Complicated repositioning, instead implement repositioning by bounding box.
