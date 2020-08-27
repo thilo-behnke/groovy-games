@@ -7,32 +7,57 @@ import org.tb.gg.global.Direction
 
 class CollisionDirectionResolver implements Singleton {
 
+    enum CollisionDirection {
+        HORIZONTAL,
+        VERTICAL,
+        // Used if it is not easily possible to determine the collision direction, e.g. when both objects are spawned colliding on frame 0.
+        UNDEFINED
+    }
+
     @Inject FrameCache frameCache
 
     Direction resolveCollisionDirection(Collision collision) {
-        // It is known here that the objects must collide, therefore it is not necessary to check if there is a collision.
-        // Therefore it is enough to just check if the x ranges overlap, otherwise it is an y axis collision.
-        if (isHorizontalCollision(collision)) {
-            getDirectionForHorizontalCollision(collision)
-        } else {
-            getDirectionForVerticalCollision(collision)
+        def collisionDirection = getCollisionDirection(collision)
+
+        switch(collisionDirection) {
+            case CollisionDirection.HORIZONTAL:
+                return getDirectionForHorizontalCollision(collision)
+            case CollisionDirection.VERTICAL:
+                return getDirectionForVerticalCollision(collision)
+            default:
+                return Direction.UNDEFINED
         }
     }
 
-    private boolean isHorizontalCollision(Collision collision) {
+    private CollisionDirection getCollisionDirection(Collision collision) {
         def boundingRectA = collision.a.body.boundingRect
         def boundingRectB = collision.b.body.boundingRect
-        // TODO: Handle null case.
-        def previousRectA = frameCache.getLastFrames(1).first().getShape(collision.a.id).orElse(null)?.boundingRect
-        def previousRectB = frameCache.getLastFrames(1).first().getShape(collision.b.id).orElse(null)?.boundingRect
+        def previousRectA = frameCache.getLastFrames(1)[0]?.getShape(collision.a.id)?.orElse(null)?.boundingRect
+        def previousRectB = frameCache.getLastFrames(1)[0]?.getShape(collision.b.id)?.orElse(null)?.boundingRect
+
+        if (previousRectA == null || previousRectB == null) {
+            return CollisionDirection.UNDEFINED
+        }
 
         def previousARangeX = CollisionUtils.Range.create(previousRectA.topLeft.x, previousRectA.topRight.x)
         def previousBRangeX = CollisionUtils.Range.create(previousRectB.topLeft.x, previousRectB.topRight.x)
-
         def aRangeX = CollisionUtils.Range.create(boundingRectA.topLeft.x, boundingRectA.topRight.x)
         def bRangeX = CollisionUtils.Range.create(boundingRectB.topLeft.x, boundingRectB.topRight.x)
 
-        !CollisionUtils.doRangesOverlap(previousARangeX, previousBRangeX) && CollisionUtils.doRangesOverlap(aRangeX, bRangeX)
+        if(!CollisionUtils.doRangesOverlap(previousARangeX, previousBRangeX) && CollisionUtils.doRangesOverlap(aRangeX, bRangeX)) {
+            return CollisionDirection.HORIZONTAL
+        }
+
+        def previousARangeY = CollisionUtils.Range.create(previousRectA.topLeft.y, previousRectA.topRight.y)
+        def previousBRangeY = CollisionUtils.Range.create(previousRectB.topLeft.y, previousRectB.topRight.y)
+        def aRangeY = CollisionUtils.Range.create(boundingRectA.topLeft.y, boundingRectA.topRight.y)
+        def bRangeY = CollisionUtils.Range.create(boundingRectB.topLeft.y, boundingRectB.topRight.y)
+
+        if(!CollisionUtils.doRangesOverlap(previousARangeY, previousBRangeY) && CollisionUtils.doRangesOverlap(aRangeY, bRangeY)) {
+            return CollisionDirection.VERTICAL
+        }
+
+        return CollisionDirection.UNDEFINED
     }
 
     private static Direction getDirectionForHorizontalCollision(Collision collision) {

@@ -1,7 +1,7 @@
 package org.tb.gg.global
 
 enum Direction {
-    UP, RIGHT, DOWN, LEFT
+    UP, RIGHT, DOWN, LEFT, UNDEFINED
 
     Direction invert() {
         switch (this) {
@@ -13,6 +13,8 @@ enum Direction {
                 return RIGHT
             case RIGHT:
                 return LEFT
+            case UNDEFINED:
+                return UNDEFINED
         }
     }
 }
