@@ -170,6 +170,10 @@ class Vector {
         return invertY
     }
 
+    Vector copy() {
+        return new Vector(x: x, y: y)
+    }
+
     /**
      * Custom equals method for vector operations.
      * Instead of an absolute comparision of the x and y components, are small error margin is considered.

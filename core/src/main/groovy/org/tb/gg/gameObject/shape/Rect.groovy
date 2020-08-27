@@ -75,6 +75,6 @@ class Rect extends Shape {
 
     @Override
     Shape copy() {
-        return new Rect(new Vector(x: topLeft.x, y: topLeft.y), new Vector(x: dim.x, y: dim.y))
+        return new Rect(topLeft.copy(), dim.copy())
     }
 }

@@ -36,6 +36,6 @@ class Point extends Shape {
 
    @Override
    Shape copy() {
-      return new Point(pos: new Vector(x: pos.x, y: pos.y))
+      return new Point(pos: pos.copy())
    }
 }

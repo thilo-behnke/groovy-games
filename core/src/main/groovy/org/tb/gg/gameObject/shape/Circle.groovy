@@ -27,6 +27,6 @@ class Circle extends Shape {
 
     @Override
     Shape copy() {
-        return new Circle(center: new Vector(x: center.x, y: center.y), radius: radius)
+        return new Circle(center: center.copy(), radius: radius)
     }
 }

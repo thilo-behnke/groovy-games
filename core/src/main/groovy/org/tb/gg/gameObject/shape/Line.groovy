@@ -72,6 +72,6 @@ class Line extends Shape {
 
     @Override
     Shape copy() {
-        return new Line(new Vector(x: start.x, y: start.y), new Vector(x: end.x, y: end.y))
+        return new Line(start.copy(), end.copy())
     }
 }
