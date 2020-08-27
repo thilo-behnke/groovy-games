@@ -22,8 +22,9 @@ class CollisionDirectionResolver implements Singleton {
     private boolean isHorizontalCollision(Collision collision) {
         def boundingRectA = collision.a.body.boundingRect
         def boundingRectB = collision.b.body.boundingRect
-        def previousRectA = frameCache.getLastFrames(1).first().gameObjectShapeCache.get(collision.a.id).boundingRect
-        def previousRectB = frameCache.getLastFrames(1).first().gameObjectShapeCache.get(collision.b.id).boundingRect
+        // TODO: Handle null case.
+        def previousRectA = frameCache.getLastFrames(1).first().getShape(collision.a.id).orElse(null)?.boundingRect
+        def previousRectB = frameCache.getLastFrames(1).first().getShape(collision.b.id).orElse(null)?.boundingRect
 
         def previousARangeX = CollisionUtils.Range.create(previousRectA.topLeft.x, previousRectA.topRight.x)
         def previousBRangeX = CollisionUtils.Range.create(previousRectB.topLeft.x, previousRectB.topRight.x)
