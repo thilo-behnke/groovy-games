@@ -5,8 +5,6 @@ class Keyboard extends BaseGameObject {
 
     @Override
     void update(Long timestamp, Long delta) {
-        super.update(timestamp, delta)
-
         activeActions = inputComponent.activeActions
     }
 }

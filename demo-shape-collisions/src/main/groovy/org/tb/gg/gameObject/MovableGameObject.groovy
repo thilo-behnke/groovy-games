@@ -18,8 +18,6 @@ class MovableGameObject extends BaseGameObject implements InteractiveBody {
 
     @Override
     void update(Long timestamp, Long delta) {
-        super.update(timestamp, delta)
-
         handleMovement(timestamp, delta)
     }
 
