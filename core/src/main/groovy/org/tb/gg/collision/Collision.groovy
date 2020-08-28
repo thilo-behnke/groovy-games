@@ -13,6 +13,7 @@ class Collision<S extends GameObject, T extends GameObject> {
     T b
     CollisionType type
 
+    // TODO: This could be done with lazy properties, but this would decentralize the collision detection.
     Direction directionA
     Direction directionB
 
