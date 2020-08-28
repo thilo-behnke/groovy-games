@@ -8,7 +8,7 @@ import org.tb.gg.utils.CollectionUtils
  */
 class DistanceHeuristicCollisionCheckSelectionStrategy implements CollisionCheckSelectionStrategy {
     @Override
-    List<List> selectPotentialCollisions(List<GameObject> gameObjects) {
+    List<List> selectPotentialCollisions(Set<GameObject> gameObjects) {
         if (gameObjects.isEmpty()) {
             return []
         }

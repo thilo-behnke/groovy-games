@@ -1,6 +1,7 @@
 package org.tb.gg.collision.strategy
 
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Rect
@@ -16,7 +17,7 @@ class DistanceHeuristicCollisionCheckSelectionStrategySpec extends Specification
 
     def 'should return empty list for empty provided list of game objects'() {
         given:
-        def gameObjects = []
+        Set<GameObject> gameObjects = [].toSet()
         when:
         def res = distanceHeuristicCollisionCheckSelectionStrategy.selectPotentialCollisions(gameObjects)
         then:
@@ -38,7 +39,7 @@ class DistanceHeuristicCollisionCheckSelectionStrategySpec extends Specification
         when:
         def res = distanceHeuristicCollisionCheckSelectionStrategy.selectPotentialCollisions(gameObjects)
         then:
-        res == [gameObjects]
+        res == [gameObjects.toList()]
     }
 
     def 'should ignore game objects that do not have a body'() {
@@ -52,22 +53,22 @@ class DistanceHeuristicCollisionCheckSelectionStrategySpec extends Specification
 
     private static create2GameObjectsFarAwayFromEachOther() {
         return [
-                new GameObjectBuilder<>(BaseGameObject).setBody(new ShapeBody(new Rect(Vector.unitVector(), Vector.unitVector()))).build(),
-                new GameObjectBuilder<>(BaseGameObject).setBody(new ShapeBody(new Rect(Vector.unitVector() * 30.0, Vector.unitVector()))).build()
-        ]
+                new GameObjectBuilder<>(BaseGameObject).setId(1).setBody(new ShapeBody(new Rect(Vector.unitVector(), Vector.unitVector()))).build(),
+                new GameObjectBuilder<>(BaseGameObject).setId(2).setBody(new ShapeBody(new Rect(Vector.unitVector() * 30.0, Vector.unitVector()))).build()
+        ].toSet()
     }
 
     private static create2GameObjectsCloseTogether() {
         return [
-                new GameObjectBuilder<>(BaseGameObject).setBody(new ShapeBody(new Rect(Vector.unitVector(), Vector.unitVector() * 2.0))).build(),
-                new GameObjectBuilder<>(BaseGameObject).setBody(new ShapeBody(new Rect(Vector.unitVector() * 2.0, Vector.unitVector()))).build()
-        ]
+                new GameObjectBuilder<>(BaseGameObject).setId(1).setBody(new ShapeBody(new Rect(Vector.unitVector(), Vector.unitVector() * 2.0))).build(),
+                new GameObjectBuilder<>(BaseGameObject).setId(2).setBody(new ShapeBody(new Rect(Vector.unitVector() * 2.0, Vector.unitVector()))).build()
+        ].toSet()
     }
 
     private static create2GameObjectsWithoutBodies() {
         return [
-                new GameObjectBuilder<>(BaseGameObject).build(),
-                new GameObjectBuilder<>(BaseGameObject).build()
-        ]
+                new GameObjectBuilder<>(BaseGameObject).setId(1).build(),
+                new GameObjectBuilder<>(BaseGameObject).setId(2).build()
+        ].toSet()
     }
 }

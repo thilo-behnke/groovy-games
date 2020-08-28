@@ -1,6 +1,7 @@
 import org.tb.gg.collision.DefaultCollisionCoordinator
 import org.tb.gg.collision.DefaultCollisionDetector
 import org.tb.gg.collision.handler.DirectionCollisionTypeHandler
+import org.tb.gg.collision.strategy.DistanceHeuristicCollisionCheckSelectionStrategy
 import org.tb.gg.engine.framecache.FixedSizeFrameCache
 import org.tb.gg.events.DefaultEventManager
 import org.tb.gg.global.DefaultDateProvider
@@ -10,8 +11,11 @@ services = {
     dateProvider(DefaultDateProvider)
     frameCache(FixedSizeFrameCache)
     mouseEventProvider(SwingMouseEventAdapter)
+
     collisionCoordinator(DefaultCollisionCoordinator)
     collisionDetector(DefaultCollisionDetector)
+    collisionCheckSelectionStrategy(DistanceHeuristicCollisionCheckSelectionStrategy)
     collisionTypeHandler(DirectionCollisionTypeHandler)
+
     eventManager(DefaultEventManager)
 }

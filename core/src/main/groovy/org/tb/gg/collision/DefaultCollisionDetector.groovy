@@ -1,18 +1,23 @@
 package org.tb.gg.collision
 
 import groovy.util.logging.Log4j
+import org.tb.gg.collision.strategy.CollisionCheckSelectionStrategy
+import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.utils.CollectionUtils
 
 @Log4j
 class DefaultCollisionDetector implements CollisionDetector {
+
+    @Inject CollisionCheckSelectionStrategy collisionCheckSelectionStrategy
+
     @Override
     Set<Collision> detect(Set<GameObject> gameObjects) {
         if (gameObjects.size() < 2) {
             return []
         }
-        def combinations = CollectionUtils.permutations(gameObjects, 2)
+        def combinations = collisionCheckSelectionStrategy.selectPotentialCollisions(gameObjects)
 
         combinations
                 .findAll { BaseGameObject a, BaseGameObject b ->

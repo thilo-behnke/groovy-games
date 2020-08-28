@@ -39,6 +39,11 @@ class GameObjectBuilder<T extends BaseGameObject> implements Builder<BaseGameObj
         return this
     }
 
+    GameObjectBuilder setId(Long id) {
+        gameObject.setId(id)
+        return this
+    }
+
     T build() {
         if (!gameObject.renderComponent) {
             gameObject.renderComponent = new DefaultRenderComponent();

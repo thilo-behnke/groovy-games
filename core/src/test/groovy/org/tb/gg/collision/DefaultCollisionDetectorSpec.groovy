@@ -1,23 +1,36 @@
 package org.tb.gg.collision
 
 import groovyjarjarantlr4.v4.runtime.misc.Tuple2
+import org.tb.gg.collision.strategy.CollisionCheckSelectionStrategy
+import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.components.physics.CollisionDefinition
 import org.tb.gg.gameObject.components.physics.CollisionSettings
 import org.tb.gg.gameObject.components.physics.PhysicStats
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Point
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.mocks.DummyGameObject
+import org.tb.gg.utils.CollectionUtils
 import spock.lang.Specification
 
 class DefaultCollisionDetectorSpec extends Specification {
 
     DefaultCollisionDetector defaultCollisionHandler
+    CollisionCheckSelectionStrategy collisionCheckSelectionStrategy
 
     void setup() {
+        collisionCheckSelectionStrategy = Mock(CollisionCheckSelectionStrategy)
         defaultCollisionHandler = new DefaultCollisionDetector()
+
+        ServiceProvider.registerSingletonService(collisionCheckSelectionStrategy, CollisionCheckSelectionStrategy.class.simpleName)
+    }
+
+    def cleanup() {
+        ServiceProvider.reset()
     }
 
     def 'empty set of game objects'() {
@@ -69,22 +82,21 @@ class DefaultCollisionDetectorSpec extends Specification {
             gameObjects[pair.getItem1()].body.collidesWith(gameObjects[pair.getItem2()].body) >> true
             gameObjects[pair.getItem2()].body.collidesWith(gameObjects[pair.getItem1()].body) >> true
         }
+        collisionCheckSelectionStrategy.selectPotentialCollisions(gameObjects.<GameObject>toSet()) >> CollectionUtils.permutations(gameObjects)
         return gameObjects
     }
 
     private static createGameObject(ShapeBody shapeBody, Integer id) {
-        def obj = DummyGameObject.create(shapeBody)
-        obj.physicsComponent = new PhysicsComponent()
-        obj.physicsComponent.setCollisionSettings(
-                new CollisionSettings(
-                        collisionGroup: 'SOME',
-                        collidesWithGroups: [new CollisionDefinition(collisionGroup: 'SOME')]
-                )
-        )
-        obj.physicsComponent.setPhysicStats(
-                new PhysicStats(velocity: Vector.zeroVector())
-        )
-        obj.id = id
+        def obj = new GameObjectBuilder(BaseGameObject)
+                .setId(id)
+                .setBody(shapeBody)
+                .setPhysicsComponent(new PhysicsComponent(
+                        collisionSettings: new CollisionSettings(
+                                collisionGroup: 'SOME',
+                                collidesWithGroups: [new CollisionDefinition(collisionGroup: 'SOME')]
+                        ),
+                        physicStats: new PhysicStats(velocity: Vector.zeroVector())
+                )).build()
         return obj
     }
 }
