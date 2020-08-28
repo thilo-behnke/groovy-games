@@ -54,9 +54,9 @@ class ClockRenderComponent extends RenderComponent {
     private RenderNode getHandles() {
         Clock parent = (Clock) parent
         def handles = [
-                RenderNode.leaf(new Line(parent.center, parent.secondHandlePos), new RenderOptions(drawColor: DrawColor.RED), 0),
-                RenderNode.leaf(new Line(parent.center, parent.minuteHandlePos).scaleFromStart(0.8), new RenderOptions(drawColor: DrawColor.BLUE), 1),
-                RenderNode.leaf(new Line(parent.center, parent.hourHandlePos).scaleFromStart(0.6), new RenderOptions(drawColor: DrawColor.GREEN), 2)
+                RenderNode.leaf(new Line(parent.center, parent.center + parent.secondHandlePos), new RenderOptions(drawColor: DrawColor.RED), 0),
+                RenderNode.leaf(new Line(parent.center, parent.center + parent.minuteHandlePos).scaleFromStart(0.8), new RenderOptions(drawColor: DrawColor.BLUE), 1),
+                RenderNode.leaf(new Line(parent.center, parent.center + parent.hourHandlePos).scaleFromStart(0.6), new RenderOptions(drawColor: DrawColor.GREEN), 2)
         ]
         return RenderNode.node(handles, ClockRenderOrder.HANDLES.ordinal())
     }
@@ -76,7 +76,7 @@ class ClockRenderComponent extends RenderComponent {
         def minuteMarkNodes = (1..60).collect {
             def minuteStep = clock.MINUTE_CIRCLE_STEP * it
             def minutePosOnCircle = clock.clockStart.rotate(minuteStep)
-            def line = new Line(clock.center, minutePosOnCircle)
+            def line = new Line(clock.center, clock.center + minutePosOnCircle)
             line.scaleFromEnd(0.05)
             RenderNode.leaf(line, new RenderOptions(drawColor: DrawColor.YELLOW))
         }
@@ -92,7 +92,7 @@ class ClockRenderComponent extends RenderComponent {
         def hourMarkNodes = (1..12).collect {
             def hourStep = clock.HOUR_CIRCLE_STEP * it
             def hourPosOnCircle = clock.clockStart.rotate(hourStep)
-            def line = new Line(clock.center, hourPosOnCircle)
+            def line = new Line(clock.center, clock.center + hourPosOnCircle)
             line.scaleFromEnd(0.2)
             RenderNode.leaf(line, new RenderOptions(drawColor: DrawColor.YELLOW))
         }

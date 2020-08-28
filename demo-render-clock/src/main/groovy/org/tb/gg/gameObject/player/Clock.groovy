@@ -48,8 +48,8 @@ class Clock extends BaseGameObject {
     void update(Long timestamp, Long delta) {
         def time = Calendar.getInstance()
 
-        secondHandlePos = clockStart.rotate(SECOND_CIRCLE_STEP * time.get(Calendar.SECOND))
-        minuteHandlePos = clockStart.rotate(MINUTE_CIRCLE_STEP * time.get(Calendar.MINUTE))
-        hourHandlePos = clockStart.rotate(HOUR_CIRCLE_STEP * time.get(Calendar.HOUR))
+        secondHandlePos = clockStart.rotate(-SECOND_CIRCLE_STEP * time.get(Calendar.SECOND))
+        minuteHandlePos = clockStart.rotate(-MINUTE_CIRCLE_STEP * time.get(Calendar.MINUTE))
+        hourHandlePos = clockStart.rotate(-HOUR_CIRCLE_STEP * time.get(Calendar.HOUR))
     }
 }
