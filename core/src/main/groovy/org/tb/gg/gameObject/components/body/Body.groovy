@@ -14,7 +14,11 @@ abstract class Body implements Updateable, Renderable {
     abstract Rect getBoundingRect()
     abstract Vector getCenter()
 
-    def collidesWith(Body body) {
-        return shape.collidesWith(body.shape)
+    boolean collidesWith(Body body) {
+        return this.shape.collidesWith(body.shape)
+    }
+
+    boolean collidesWith(Shape shape) {
+        return this.shape.collidesWith(shape)
     }
 }
