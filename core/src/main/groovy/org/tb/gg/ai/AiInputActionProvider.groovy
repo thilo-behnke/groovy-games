@@ -5,7 +5,7 @@ import org.tb.gg.input.actions.InputActionProvider
 import org.tb.gg.state.ActionState
 import org.tb.gg.state.StateMachine
 
-abstract class AiInputActionProvider implements InputActionProvider {
+class AiInputActionProvider implements InputActionProvider {
 
     private StateMachine<ActionState> stateMachine
 
@@ -21,5 +21,20 @@ abstract class AiInputActionProvider implements InputActionProvider {
     @Override
     Set<String> activeActions() {
         return stateMachine.activeState.actions.collect { it.toString() }.toSet()
+    }
+
+    @Override
+    void update(Long timestamp, Long delta) {
+        stateMachine.update()
+    }
+
+    @Override
+    void init() {
+
+    }
+
+    @Override
+    void destroy() {
+
     }
 }

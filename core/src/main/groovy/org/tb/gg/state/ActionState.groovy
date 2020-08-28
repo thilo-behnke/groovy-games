@@ -1,10 +1,14 @@
 package org.tb.gg.state
 
-abstract class ActionState extends State {
-    List<String> actions
+import org.tb.gg.gameObject.BaseGameObject
 
-    ActionState(String name, List<String> actions) {
+abstract class ActionState extends State {
+    BaseGameObject parent
+
+    ActionState(String name, BaseGameObject parent) {
         super(name)
-        this.actions = actions
+        this.parent = parent
     }
+
+    abstract Set<String> getActions()
 }

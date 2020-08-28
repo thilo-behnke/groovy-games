@@ -19,6 +19,7 @@ class EnemyGameObject extends BaseGameObject {
                 .setRenderComponent(new EnemyRenderComponent())
                 .setPhysicsComponent(physicsComp)
                 .build()
+        bullet.setInputComponent(EnemyInputComponent.create(bullet))
         bullet.setOrientation(Vector.zeroVector())
         return bullet
     }

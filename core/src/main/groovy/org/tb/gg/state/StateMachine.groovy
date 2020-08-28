@@ -16,7 +16,9 @@ class StateMachine<T extends State> {
     }
 
     void setActiveState(T state) {
-        activeState.exit()
+        if (activeState) {
+            activeState.exit()
+        }
         activeState = (T) state
         activeState.enter()
     }
