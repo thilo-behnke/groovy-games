@@ -17,7 +17,7 @@ trait InteractiveBody {
     Observable<MouseEvent> getMouseClicks() {
         mouseEventProvider.mouseClicks
                 .filter {
-                    body.shape.isPointWithin(it.pos)
+                    body.isPointWithin(it.pos)
                 }
     }
 
@@ -32,6 +32,6 @@ trait InteractiveBody {
         if (mouseEventProvider.currentMousePosition == null) {
             return false
         }
-        body.shape.isPointWithin(mouseEventProvider.getCurrentMousePosition().pos)
+        body.isPointWithin(mouseEventProvider.getCurrentMousePosition().pos)
     }
 }

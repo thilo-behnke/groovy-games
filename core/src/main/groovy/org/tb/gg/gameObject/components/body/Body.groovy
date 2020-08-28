@@ -19,4 +19,8 @@ abstract class Body implements Updateable, Renderable {
     boolean collidesWith(Shape shape) {
         return this.shape.collidesWith(shape)
     }
+
+    boolean isPointWithin(Vector pos) {
+        return this.shape.isPointWithin(pos)
+    }
 }
