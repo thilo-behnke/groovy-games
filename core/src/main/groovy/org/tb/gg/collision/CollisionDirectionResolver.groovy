@@ -48,10 +48,10 @@ class CollisionDirectionResolver implements Singleton {
             return CollisionDirection.HORIZONTAL
         }
 
-        def previousARangeY = CollisionUtils.Range.create(previousRectA.topLeft.y, previousRectA.topRight.y)
-        def previousBRangeY = CollisionUtils.Range.create(previousRectB.topLeft.y, previousRectB.topRight.y)
-        def aRangeY = CollisionUtils.Range.create(boundingRectA.topLeft.y, boundingRectA.topRight.y)
-        def bRangeY = CollisionUtils.Range.create(boundingRectB.topLeft.y, boundingRectB.topRight.y)
+        def previousARangeY = CollisionUtils.Range.create(previousRectA.bottomLeft.y, previousRectA.topRight.y)
+        def previousBRangeY = CollisionUtils.Range.create(previousRectB.bottomLeft.y, previousRectB.topRight.y)
+        def aRangeY = CollisionUtils.Range.create(boundingRectA.bottomLeft.y, boundingRectA.topRight.y)
+        def bRangeY = CollisionUtils.Range.create(boundingRectB.bottomLeft.y, boundingRectB.topRight.y)
 
         if(!CollisionUtils.doRangesOverlap(previousARangeY, previousBRangeY) && CollisionUtils.doRangesOverlap(aRangeY, bRangeY)) {
             return CollisionDirection.VERTICAL

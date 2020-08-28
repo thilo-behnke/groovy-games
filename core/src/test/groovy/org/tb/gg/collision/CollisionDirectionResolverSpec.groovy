@@ -65,6 +65,15 @@ class CollisionDirectionResolverSpec extends Specification {
         directionA == Direction.UP
     }
 
+    def 'undefined collision (objects are not moving and were colliding in last frame)'() {
+        given:
+        def collision = createUndefinedCollision()
+        when:
+        def directionA = collisionDirectionResolver.resolveCollisionDirection(collision)
+        then:
+        directionA == Direction.UNDEFINED
+    }
+
     private createARightBCollision() {
         def objA = new GameObjectBuilder(BaseGameObject)
                 .setBody(new ShapeBody(new Rect(new Vector(x: 10, y: 5), new Vector(x: 4, y: 3))))
@@ -127,6 +136,22 @@ class CollisionDirectionResolverSpec extends Specification {
         objB.id = 2
 
         buildFrameCache(objA, objB, new Rect(new Vector(x: 5, y: 4), new Vector(x: 4, y: 3)))
+
+        return new Collision(a: objA, b: objB, type: CollisionType.SOLID)
+    }
+
+    private createUndefinedCollision() {
+        def objA = new GameObjectBuilder(BaseGameObject)
+                .setBody(new ShapeBody(new Rect(new Vector(x: 4, y: 11), new Vector(x: 4, y: 3))))
+                .build()
+        objA.id = 1
+
+        def objB = new GameObjectBuilder(BaseGameObject)
+                .setBody(new ShapeBody(new Rect(new Vector(x: 5, y: 10), new Vector(x: 5, y: 5))))
+                .build()
+        objB.id = 2
+
+        buildFrameCache(objA, objB)
 
         return new Collision(a: objA, b: objB, type: CollisionType.SOLID)
     }
