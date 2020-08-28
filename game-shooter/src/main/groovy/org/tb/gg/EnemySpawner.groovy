@@ -6,6 +6,7 @@ import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.GameObjectProvider
 import org.tb.gg.gameObject.component.enemies.EnemyGameObject
 import org.tb.gg.global.geom.Vector
+import org.tb.gg.random.RandomUtilsService
 import org.tb.gg.spawner.Spawner
 import org.tb.gg.world.WorldStateProvider
 
@@ -15,6 +16,8 @@ class EnemySpawner implements Spawner<GameObject> {
     WorldStateProvider worldStateProvider
     @Inject
     GameObjectProvider gameObjectProvider
+    @Inject
+    RandomUtilsService randomUtilsService
 
     private static final ENEMY_LIMIT = 20
 
@@ -53,20 +56,12 @@ class EnemySpawner implements Spawner<GameObject> {
 
     private findSpawnPosition(EnemyGameObject enemy) {
         for (int i = 0; i <= 20; i++) {
-            enemy.body.center = getRandomPositionInWorldBounds(enemy)
+            enemy.body.center = randomUtilsService.getRandomPositionInWorldBounds(enemy)
             if (!collidesWithGameObject(enemy)) {
                 return true
             }
         }
         return false
-    }
-
-    private getRandomPositionInWorldBounds(EnemyGameObject enemy) {
-        def x = worldStateProvider.get().currentLoopTimestamp % worldStateProvider.get().bounds.topRight.x.toLong()
-        x = Math.min(x, worldStateProvider.get().bounds.topRight.x.toLong() - enemy.body.boundingRect.dim.x.toLong())
-        def y = worldStateProvider.get().currentLoopTimestamp % worldStateProvider.get().bounds.topRight.y.toLong()
-        y = Math.min(y, worldStateProvider.get().bounds.topRight.y.toLong() - enemy.body.boundingRect.dim.y.toLong())
-        new Vector(x: x, y: y)
     }
 
     private collidesWithGameObject(EnemyGameObject enemy) {

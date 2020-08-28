@@ -53,7 +53,9 @@ class BaseGameObject implements GameObject {
     }
 
     @Override
-    void update(Long timestamp, Long delta) {}
+    void update(Long timestamp, Long delta) {
+        inputComponent.update(timestamp, delta)
+    }
 
     @Override
     Boolean shouldPerish() {
