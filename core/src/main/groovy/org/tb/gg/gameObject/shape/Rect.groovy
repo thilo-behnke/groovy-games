@@ -68,6 +68,10 @@ class Rect extends Shape {
         return topLeft + new Vector(x: dim.x, y: -dim.y)
     }
 
+    BigDecimal diagonalLength() {
+        topLeft.distance(center)
+    }
+
     @Override
     Rect getBoundingRect() {
         return this

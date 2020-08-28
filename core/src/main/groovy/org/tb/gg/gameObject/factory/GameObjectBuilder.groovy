@@ -39,6 +39,11 @@ class GameObjectBuilder<T extends BaseGameObject> implements Builder<BaseGameObj
         return this
     }
 
+    GameObjectBuilder setId(Long id) {
+        gameObject.setId(id)
+        return this
+    }
+
     T build() {
         if (!gameObject.renderComponent) {
             gameObject.renderComponent = new DefaultRenderComponent();
@@ -48,9 +53,6 @@ class GameObjectBuilder<T extends BaseGameObject> implements Builder<BaseGameObj
         }
         if (!gameObject.physicsComponent) {
             gameObject.physicsComponent = NoopPhysicsComponent.get();
-        }
-        if (!gameObject.body) {
-            throw new IllegalStateException("A game object must have a body!")
         }
         return (T) gameObject
     }
