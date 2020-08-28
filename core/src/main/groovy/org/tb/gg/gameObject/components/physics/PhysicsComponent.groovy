@@ -1,10 +1,9 @@
 package org.tb.gg.gameObject.components.physics
 
 import org.tb.gg.collision.CollisionType
-import org.tb.gg.collision.CollisionDirectionRegistry
+import org.tb.gg.collision.CollisionDirectionState
 import org.tb.gg.engine.helper.Updateable
 import org.tb.gg.gameObject.BaseGameObject
-import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
 
 class PhysicsComponent<C extends CollisionSettings, S extends PhysicStats> implements Updateable {
@@ -14,7 +13,7 @@ class PhysicsComponent<C extends CollisionSettings, S extends PhysicStats> imple
 
     BaseGameObject parent
     Boolean collides
-    CollisionDirectionRegistry collisions = new CollisionDirectionRegistry()
+    CollisionDirectionState collisions = new CollisionDirectionState()
 
     @Override
     void update(Long timestamp, Long delta) {

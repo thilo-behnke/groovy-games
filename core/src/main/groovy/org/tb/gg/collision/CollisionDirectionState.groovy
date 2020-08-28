@@ -1,10 +1,9 @@
 package org.tb.gg.collision
 
-import com.google.common.collect.ImmutableMap
-import groovy.transform.Immutable
+
 import org.tb.gg.global.Direction
 
-class CollisionDirectionRegistry {
+class CollisionDirectionState {
     private Map<Direction, Boolean> collisions = [
             (Direction.UP): false,
             (Direction.RIGHT): false,
