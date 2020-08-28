@@ -27,7 +27,7 @@ class EnemyWanderingState extends ActionState {
 
     @Override
     State update() {
-        if (!goal) {
+        if (!goal || isStuck()) {
             goal = randomUtilsService.getRandomPositionInWorldBounds(parent, parent.id)
             return this
         } else {
@@ -37,6 +37,10 @@ class EnemyWanderingState extends ActionState {
             }
             return this
         }
+    }
+
+    private boolean isStuck() {
+        parent.physicsComponent.collides
     }
 
     @Override

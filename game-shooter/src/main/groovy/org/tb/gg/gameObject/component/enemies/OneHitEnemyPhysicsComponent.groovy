@@ -22,6 +22,7 @@ class OneHitEnemyPhysicsComponent extends PhysicsComponent {
                         collidesWithGroups: [
                                 new CollisionDefinition(collisionGroup:  ShooterCollisionGroup.PLAYER_BULLET.toString(), collisionType: CollisionType.SOLID),
                                 new CollisionDefinition(collisionGroup:  ShooterCollisionGroup.PLAYER.toString(), collisionType: CollisionType.SOLID),
+                                new CollisionDefinition(collisionGroup:  ShooterCollisionGroup.ENEMY.toString(), collisionType: CollisionType.SOLID),
                         ].toSet()
                 ),
                 new PhysicStats(velocity: Vector.zeroVector())
