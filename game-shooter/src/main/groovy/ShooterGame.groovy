@@ -4,6 +4,7 @@ import org.tb.gg.engine.Game
 import org.tb.gg.gameObject.component.player.PlayerGameObject
 import org.tb.gg.gameObject.component.score.ScoreGameObject
 import org.tb.gg.resources.ResourceLoader
+import org.tb.gg.resources.ShooterGameResource
 
 import java.awt.image.BufferedImage
 
@@ -19,9 +20,9 @@ class GameEntryPoint implements Game {
 
         sceneManager.addScene(defaultScene, true)
 
-        ResourceLoader resourceLoader = ServiceProvider.getSingletonService(ResourceLoader.class.simpleName)
-        resourceLoader.loadResource('spaceship-blue.png', 'SPACESHIP_BLUE')
-        BufferedImage image = resourceLoader.getResource('SPACESHIP_BLUE')
+        ResourceLoader resourceLoader = (ResourceLoader) ServiceProvider.getSingletonService(ResourceLoader.class.simpleName)
+        resourceLoader.loadResource('spaceship-blue.png', ShooterGameResource.SPACESHIP_BLUE.name())
+        resourceLoader.loadResource('projectile-blue.png', ShooterGameResource.PROJECTILE_BLUE.name())
 
         gameEngine.start()
     }

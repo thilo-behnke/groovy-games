@@ -25,5 +25,4 @@ class SwingResourceLoaderSpec extends Specification {
         expect:
         swingResourceLoader.getResource(resourceName).isEmpty()
     }
-
 }
