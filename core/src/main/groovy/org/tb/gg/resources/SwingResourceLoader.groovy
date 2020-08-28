@@ -8,12 +8,22 @@ class SwingResourceLoader implements ResourceLoader<BufferedImage> {
 
     @Override
     void loadResource(String path, String name) {
-        def image = ImageIO.read(new File(path))
+        def image = ImageIO.read(new File(getClass().getClassLoader().getResource(path).getFile()))
         images.put(name, image)
     }
 
     @Override
     Optional<BufferedImage> getResource(String name) {
         Optional.ofNullable(images.get(name))
+    }
+
+    @Override
+    void init() {
+
+    }
+
+    @Override
+    void destroy() {
+
     }
 }
