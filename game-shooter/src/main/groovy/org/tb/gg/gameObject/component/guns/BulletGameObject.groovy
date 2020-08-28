@@ -27,6 +27,7 @@ class BulletGameObject extends BaseGameObject implements TimePerishable, OutOfBo
         def spriteBody = new SpriteBodyFactory().fromResource(ShooterGameResource.PROJECTILE_BLUE.name())
         def bullet = (BulletGameObject) new GameObjectBuilder<>(BulletGameObject)
                 .setBody(spriteBody)
+                // TODO: Add custom render component to rotate bullet image depending orientation.
                 .setInputComponent(NoopInputComponent.get())
                 .setPhysicsComponent(physicsComp)
                 .build()
