@@ -12,7 +12,7 @@ class EnemyRenderComponent extends RenderComponent {
         return RenderNode.node(
                 [
                         RenderNode.leaf(
-                                enemyGameObject.body.shape,
+                                enemyGameObject.body,
                                 new RenderOptions(drawColor: enemyGameObject.wasHitRecently ? DrawColor.RED : DrawColor.BLACK)
                         ),
                         RenderNode.leaf(

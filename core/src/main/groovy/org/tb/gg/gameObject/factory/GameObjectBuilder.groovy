@@ -2,6 +2,7 @@ package org.tb.gg.gameObject.factory
 
 
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.gameObject.components.body.Body
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
@@ -19,7 +20,7 @@ class GameObjectBuilder<T extends BaseGameObject> implements Builder<BaseGameObj
         gameObject = clazz.getConstructor().newInstance()
     }
 
-    GameObjectBuilder setBody(ShapeBody body) {
+    GameObjectBuilder setBody(Body body) {
         gameObject.body = body
         return this
     }

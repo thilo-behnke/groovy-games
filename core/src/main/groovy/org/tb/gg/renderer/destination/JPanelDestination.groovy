@@ -110,7 +110,7 @@ class JPanelDestination extends JPanel implements RenderDestination<BufferedImag
 
     @Override
     void drawImage(BufferedImage image, Vector pos, RenderOptions options) {
-        def drawCl = { Graphics2D g -> g.drawImage(image, pos.x.toInteger(), pos.y.toInteger(), null) }
+        def drawCl = { Graphics2D g -> g.drawImage(image, pos.x.toInteger(), getHeight() - pos.y.toInteger(), null) }
         drawQueue << new DrawAction(action: drawCl, options: options)
     }
 

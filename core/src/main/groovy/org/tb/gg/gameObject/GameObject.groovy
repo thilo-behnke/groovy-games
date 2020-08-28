@@ -1,6 +1,7 @@
 package org.tb.gg.gameObject
 
 import org.tb.gg.engine.helper.Updateable
+import org.tb.gg.gameObject.components.body.Body
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
 import org.tb.gg.gameObject.components.body.ShapeBody
@@ -16,7 +17,8 @@ interface GameObject extends Updateable, Lifecycle, Perishable {
     void setOrientation(Vector orientation)
     Stack<Shape> getPreviousShapeStates()
     Vector getOrientation()
-    ShapeBody getBody()
+
+    Body getBody()
     RenderComponent getRenderComponent()
     PhysicsComponent getPhysicsComponent()
     InputComponent getInputComponent()

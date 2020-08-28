@@ -1,6 +1,7 @@
 package org.tb.gg.gameObject
 
 import groovy.transform.EqualsAndHashCode
+import org.tb.gg.gameObject.components.body.Body
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
 import org.tb.gg.gameObject.components.body.ShapeBody
@@ -18,7 +19,7 @@ class BaseGameObject implements GameObject {
     Vector orientation
     Boolean shouldBeDestroyed
 
-    ShapeBody body
+    Body body
     RenderComponent renderComponent
     PhysicsComponent physicsComponent
     InputComponent inputComponent
@@ -30,7 +31,7 @@ class BaseGameObject implements GameObject {
         this.id = id
     }
 
-    void setBody(ShapeBody body) {
+    void setBody(Body body) {
         this.body = body
     }
 

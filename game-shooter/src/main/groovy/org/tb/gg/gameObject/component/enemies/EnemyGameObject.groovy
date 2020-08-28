@@ -2,9 +2,11 @@ package org.tb.gg.gameObject.component.enemies
 
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.components.body.ShapeBody
+import org.tb.gg.gameObject.components.body.SpriteBodyFactory
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.global.geom.Vector
+import org.tb.gg.resources.ShooterGameResource
 
 class EnemyGameObject extends BaseGameObject {
     @Delegate EnemyProperties enemyProperties = new EnemyProperties()
@@ -14,7 +16,7 @@ class EnemyGameObject extends BaseGameObject {
     static EnemyGameObject create(Vector pos) {
         def physicsComp = OneHitEnemyPhysicsComponent.create(Vector.zeroVector())
         def bullet = (EnemyGameObject) new GameObjectBuilder<>(EnemyGameObject)
-                .setBody(new ShapeBody(new Circle(center: pos, radius: 20)))
+                .setBody(new SpriteBodyFactory().fromResource(ShooterGameResource.SPACESHIP_BLUE.name()))
                 .setRenderComponent(new EnemyRenderComponent())
                 .setPhysicsComponent(physicsComp)
                 .build()
