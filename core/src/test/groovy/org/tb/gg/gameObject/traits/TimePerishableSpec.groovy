@@ -7,7 +7,7 @@ import org.tb.gg.gameObject.PerishAfterTTL
 import org.tb.gg.gameObject.PerishConditions
 import org.tb.gg.gameObject.components.input.NoopInputComponent
 import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.components.render.NoopRenderComponent
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Point

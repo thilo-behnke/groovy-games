@@ -1,10 +1,9 @@
 package org.tb.gg.gameObject.component.enemies
 
 import org.tb.gg.gameObject.BaseGameObject
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Circle
-import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.geom.Vector
 
 class EnemyGameObject extends BaseGameObject {

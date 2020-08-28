@@ -4,7 +4,7 @@ import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.components.render.DefaultRenderComponent
 import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.global.util.Builder

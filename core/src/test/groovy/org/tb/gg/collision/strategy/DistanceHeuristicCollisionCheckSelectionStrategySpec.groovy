@@ -2,7 +2,7 @@ package org.tb.gg.collision.strategy
 
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.GameObject
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.geom.Vector

@@ -4,12 +4,10 @@ package org.tb.gg.gameObject.component.guns
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.PerishAfterTTL
 import org.tb.gg.gameObject.PerishWhenOutOfBounds
-import org.tb.gg.gameObject.component.ShooterCollisionGroup
 import org.tb.gg.gameObject.components.input.NoopInputComponent
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Rect
-import org.tb.gg.gameObject.traits.CollisionPerishable
 import org.tb.gg.gameObject.traits.OutOfBoundsPerishable
 import org.tb.gg.gameObject.traits.TimePerishable
 import org.tb.gg.global.geom.Vector

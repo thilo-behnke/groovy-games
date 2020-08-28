@@ -3,7 +3,7 @@ package org.tb.gg.gameObject
 import groovy.transform.EqualsAndHashCode
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
