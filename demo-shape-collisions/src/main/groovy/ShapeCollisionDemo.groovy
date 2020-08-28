@@ -9,7 +9,7 @@ import org.tb.gg.gameObject.components.physics.CollisionDefinition
 import org.tb.gg.gameObject.components.physics.CollisionSettings
 import org.tb.gg.gameObject.components.physics.PhysicStats
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.gameObject.shape.Line

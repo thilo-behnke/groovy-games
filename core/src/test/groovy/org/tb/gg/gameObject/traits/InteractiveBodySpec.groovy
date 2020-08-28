@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.Subject
 import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.BaseGameObject
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider

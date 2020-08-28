@@ -2,10 +2,8 @@ package org.tb.gg.gameObject.player
 
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.components.input.NoopInputComponent
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.shape.Circle
-import org.tb.gg.global.geom.CircleDesc
-import org.tb.gg.global.geom.CircleOperations
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.global.math.MathConstants
 

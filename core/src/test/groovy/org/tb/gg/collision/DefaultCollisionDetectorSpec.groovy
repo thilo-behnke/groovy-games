@@ -9,11 +9,10 @@ import org.tb.gg.gameObject.components.physics.CollisionDefinition
 import org.tb.gg.gameObject.components.physics.CollisionSettings
 import org.tb.gg.gameObject.components.physics.PhysicStats
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Point
 import org.tb.gg.global.geom.Vector
-import org.tb.gg.mocks.DummyGameObject
 import org.tb.gg.utils.CollectionUtils
 import spock.lang.Specification
 

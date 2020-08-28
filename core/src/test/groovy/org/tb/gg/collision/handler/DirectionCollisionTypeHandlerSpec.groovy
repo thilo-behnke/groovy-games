@@ -6,7 +6,7 @@ import org.tb.gg.collision.ShapeCollisionDetector
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.components.physics.PhysicStats
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.Direction

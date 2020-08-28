@@ -15,9 +15,10 @@ import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
 import java.awt.geom.Line2D
 import java.awt.geom.Rectangle2D
+import java.awt.image.BufferedImage
 import java.util.concurrent.ConcurrentLinkedQueue
 
-class JPanelDestination extends JPanel implements RenderDestination {
+class JPanelDestination extends JPanel implements RenderDestination<BufferedImage> {
     // TODO: Alternative BufferedImage: https://stackoverflow.com/questions/43236656/jpanel-painting-not-cleared.
     private Queue<DrawAction> drawQueue = new ConcurrentLinkedQueue<>()
 
@@ -104,6 +105,12 @@ class JPanelDestination extends JPanel implements RenderDestination {
     @Override
     void drawText(Vector pos, String text, RenderOptions options) {
         def drawCl = { Graphics2D g -> g.drawString(text, pos.x, getHeight() - pos.y) }
+        drawQueue << new DrawAction(action: drawCl, options: options)
+    }
+
+    @Override
+    void drawImage(BufferedImage image, Vector pos, RenderOptions options) {
+        def drawCl = { Graphics2D g -> g.drawImage(image, pos.x.toInteger(), getHeight() - pos.y.toInteger(), null) }
         drawQueue << new DrawAction(action: drawCl, options: options)
     }
 

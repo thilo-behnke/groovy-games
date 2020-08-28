@@ -4,7 +4,7 @@ import org.tb.gg.di.ServiceProvider
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.GameObjectProvider
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Point
 import org.tb.gg.gameObject.shape.Shape

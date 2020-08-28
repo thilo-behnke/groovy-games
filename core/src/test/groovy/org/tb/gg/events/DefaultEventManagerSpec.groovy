@@ -5,7 +5,7 @@ import org.tb.gg.events.event.AttackEventProperties
 import org.tb.gg.events.event.PerishEvent
 import org.tb.gg.events.event.PerishEventProperties
 import org.tb.gg.gameObject.BaseGameObject
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import spock.lang.Specification
 

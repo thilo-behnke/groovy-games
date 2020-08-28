@@ -44,7 +44,7 @@ class MovableGameObject extends BaseGameObject implements InteractiveBody {
         if (activeActions.isEmpty()) {
             return
         }
-        def shape = body.getStructure()
+        def shape = body.shape
         def center = shape.center
         def newX = center.x
         def newY = center.y

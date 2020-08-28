@@ -5,7 +5,7 @@ import org.tb.gg.engine.framecache.FrameCache
 import org.tb.gg.engine.framecache.FrameState
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.GameObject
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.gameObject.shape.Shape

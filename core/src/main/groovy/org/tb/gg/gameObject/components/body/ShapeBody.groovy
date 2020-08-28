@@ -1,9 +1,9 @@
-package org.tb.gg.gameObject.components.physics
+package org.tb.gg.gameObject.components.body
 
 
 import org.tb.gg.gameObject.shape.Shape
 
-class ShapeBody extends Body<Shape> {
+class ShapeBody extends Body {
     @Delegate
     Shape shape
 

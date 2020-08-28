@@ -6,7 +6,7 @@ import org.tb.gg.config.ConfigurationSettings
 import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.components.RectButtonRenderComponent
 import org.tb.gg.gameObject.components.input.NoopInputComponent
-import org.tb.gg.gameObject.components.physics.ShapeBody
+import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.gameObject.traits.InteractiveBody
 import org.tb.gg.global.geom.Vector
