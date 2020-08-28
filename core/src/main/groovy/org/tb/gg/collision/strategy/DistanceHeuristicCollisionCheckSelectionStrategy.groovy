@@ -27,4 +27,14 @@ class DistanceHeuristicCollisionCheckSelectionStrategy implements CollisionCheck
 
         return combinationsForDistanceHeuristic
     }
+
+    @Override
+    void init() {
+
+    }
+
+    @Override
+    void destroy() {
+
+    }
 }
