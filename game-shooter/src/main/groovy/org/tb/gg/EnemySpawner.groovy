@@ -40,19 +40,25 @@ class EnemySpawner implements Spawner<GameObject> {
         def enemy = EnemyGameObject.create(Vector.zeroVector())
         enemy.setHp(100)
         enemy.setScore(50)
-        findSpawnPosition(enemy)
+
+        def couldSpawn = findSpawnPosition(enemy)
+        if (!couldSpawn) {
+            log.info("Could not find position to spawn enemy.".toString())
+            return []
+        }
         log.info("EnemySpawner triggered, spawning enemy at ${enemy.body.center}.".toString())
 
         return [enemy]
     }
 
     private findSpawnPosition(EnemyGameObject enemy) {
-        def iterations = 20
-
-        do {
+        for (int i = 0; i <= 20; i++) {
             enemy.body.center = getRandomPositionInWorldBounds(enemy)
-            iterations = iterations - 1
-        } while (iterations > 0 && collidesWithGameObject(enemy))
+            if (!collidesWithGameObject(enemy)) {
+                return true
+            }
+        }
+        return false
     }
 
     private getRandomPositionInWorldBounds(EnemyGameObject enemy) {
