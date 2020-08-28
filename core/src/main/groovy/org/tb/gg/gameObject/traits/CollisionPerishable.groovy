@@ -1,8 +1,6 @@
 package org.tb.gg.gameObject.traits
 
-import org.tb.gg.collision.Collision
-import org.tb.gg.collision.CollisionRegistry
-import org.tb.gg.di.Inject
+
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.PerishCondition
 import org.tb.gg.gameObject.Perishable

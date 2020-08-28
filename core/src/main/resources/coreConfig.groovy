@@ -1,4 +1,4 @@
-import org.tb.gg.collision.DefaultCollisionRegistry
+import org.tb.gg.collision.DefaultCollisionCoordinator
 import org.tb.gg.collision.DefaultCollisionDetector
 import org.tb.gg.collision.handler.DirectionCollisionTypeHandler
 import org.tb.gg.engine.framecache.FixedSizeFrameCache
@@ -10,7 +10,7 @@ services = {
     dateProvider(DefaultDateProvider)
     frameCache(FixedSizeFrameCache)
     mouseEventProvider(SwingMouseEventAdapter)
-    collisionRegistry(DefaultCollisionRegistry)
+    collisionCoordinator(DefaultCollisionCoordinator)
     collisionDetector(DefaultCollisionDetector)
     collisionTypeHandler(DirectionCollisionTypeHandler)
     eventManager(DefaultEventManager)

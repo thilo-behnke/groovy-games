@@ -4,9 +4,8 @@ import org.tb.gg.collision.handler.CollisionHandlerReferrer
 import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.GameObjectProvider
-import org.tb.gg.global.Direction
 
-class DefaultCollisionRegistry implements CollisionRegistry {
+class DefaultCollisionCoordinator implements CollisionCoordinator {
     @Inject
     private CollisionDetector collisionDetector
     @Inject
