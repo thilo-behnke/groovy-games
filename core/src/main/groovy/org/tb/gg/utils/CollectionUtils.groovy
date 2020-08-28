@@ -7,7 +7,7 @@ class CollectionUtils {
         permutations(list, size)
     }
 
-    static List<List> permutations(List list, size = 2) {
+    static <T> List<List<T>> permutations(List<T> list, size = 2) {
         if (list.size() <= 1) {
             return []
         }

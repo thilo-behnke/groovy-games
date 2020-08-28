@@ -97,6 +97,10 @@ class Vector {
         x * b.x + y * b.y
     }
 
+    BigDecimal distance(Vector b) {
+        (this - b).length()
+    }
+
     boolean isInSameDirection(Vector b) {
         dot(b) > 0
     }

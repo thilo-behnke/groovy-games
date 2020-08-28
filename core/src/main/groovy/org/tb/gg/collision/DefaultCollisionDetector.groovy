@@ -16,7 +16,7 @@ class DefaultCollisionDetector implements CollisionDetector {
 
         combinations
                 .findAll { BaseGameObject a, BaseGameObject b ->
-                    if (!a.body || !b.body) {
+                    if (!a.body || !b.body)     {
                         return false
                     }
                     return a.physicsComponent.shouldCollideWith(b.physicsComponent)
