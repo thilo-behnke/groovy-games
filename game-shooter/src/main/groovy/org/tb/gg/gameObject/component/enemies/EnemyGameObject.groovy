@@ -16,7 +16,6 @@ class EnemyGameObject extends BaseGameObject {
         def physicsComp = OneHitEnemyPhysicsComponent.create(Vector.zeroVector())
         def bullet = (EnemyGameObject) new GameObjectBuilder<>(EnemyGameObject)
                 .setBody(new ShapeBody(new Circle(center: pos, radius: 20)))
-//                .setBody(new ShapeBody(new Rect(pos, new Vector(x: 20, y: 20))))
                 .setRenderComponent(new EnemyRenderComponent())
                 .setPhysicsComponent(physicsComp)
                 .build()
