@@ -8,8 +8,6 @@ import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.renderObjects.Renderable
 
 abstract class Body implements Updateable, Renderable {
-    // TODO: static, dynamic, velocity, etc.
-
     abstract Shape getShape()
     abstract Rect getBoundingRect()
     abstract Vector getCenter()
