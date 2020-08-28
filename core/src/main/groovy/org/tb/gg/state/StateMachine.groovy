@@ -1,9 +1,9 @@
 package org.tb.gg.state
 
-class StateMachine {
-    private State activeState
+class StateMachine<T extends State> {
+    private T activeState
 
-    StateMachine(State initialState) {
+    StateMachine(T initialState) {
         setActiveState(initialState)
     }
 
@@ -12,16 +12,16 @@ class StateMachine {
         if (activeState == newState) {
             return
         }
-        setActiveState(newState)
+        setActiveState((T) newState)
     }
 
-    void setActiveState(State state) {
+    void setActiveState(T state) {
         activeState.exit()
-        activeState = state
+        activeState = (T) state
         activeState.enter()
     }
 
-    State getActiveState(State state) {
+    T getActiveState() {
         activeState
     }
 }
