@@ -6,7 +6,7 @@ import org.tb.gg.renderer.renderObjects.RenderNode
 class BulletRenderComponent extends RenderComponent {
     @Override
     RenderNode getRenderNode() {
-        return RenderNode.leaf(parent.body.shape)
+        return RenderNode.leaf(parent.body)
     }
 
     @Override
