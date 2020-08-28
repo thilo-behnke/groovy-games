@@ -6,11 +6,13 @@ import org.tb.gg.engine.framecache.FixedSizeFrameCache
 import org.tb.gg.events.DefaultEventManager
 import org.tb.gg.global.DefaultDateProvider
 import org.tb.gg.input.awt.SwingMouseEventAdapter
+import org.tb.gg.resources.SwingResourceLoader
 
 services = {
     dateProvider(DefaultDateProvider)
     frameCache(FixedSizeFrameCache)
     mouseEventProvider(SwingMouseEventAdapter)
+    resourceLoader(SwingResourceLoader)
 
     collisionCoordinator(DefaultCollisionCoordinator)
     collisionDetector(DefaultCollisionDetector)
