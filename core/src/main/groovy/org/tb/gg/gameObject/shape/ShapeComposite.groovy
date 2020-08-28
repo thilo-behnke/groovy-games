@@ -31,4 +31,16 @@ class ShapeComposite extends Shape {
     void render(RenderDestination renderDestination, RenderOptions options) {
         shapes.each { it.render(renderDestination, options) }
     }
+
+    @Override
+    Rect getBoundingRect() {
+        // TODO: Implement.
+        return null
+    }
+
+    @Override
+    Shape copy() {
+        // TODO: Implement.
+        return null
+    }
 }

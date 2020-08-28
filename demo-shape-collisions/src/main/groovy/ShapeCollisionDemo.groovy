@@ -24,11 +24,11 @@ class ShapeCollisionDemoEntryPoint implements Game {
         def getBaseBuilder = {
             new GameObjectBuilder<MovableGameObject>(MovableGameObject.class)
                     .setPhysicsComponent(new PhysicsComponent(
-                            new CollisionSettings(
+                            collisionSettings: new CollisionSettings(
                                     collisionGroup: 'SHAPES',
                                     collidesWithGroups: [new CollisionDefinition(collisionGroup:  'SHAPES')].toSet()
                             ),
-                            new PhysicStats(velocity: Vector.zeroVector())
+                            physicStats: new PhysicStats(velocity: Vector.zeroVector())
                     ))
                     .setRenderComponent(new CollisionVisualizationRenderComponent())
                     .setInputComponent(NoopInputComponent.get())

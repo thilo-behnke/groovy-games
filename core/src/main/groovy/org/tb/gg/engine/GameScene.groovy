@@ -1,9 +1,10 @@
 package org.tb.gg.engine
 
 
-import org.tb.gg.collision.CollisionRegistry
+import org.tb.gg.collision.CollisionCoordinator
 import org.tb.gg.di.Inject
 import org.tb.gg.di.MultiInject
+import org.tb.gg.engine.framecache.FrameCache
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.GameObject
 import org.tb.gg.gameObject.GameObjectProvider
@@ -16,7 +17,9 @@ class GameScene {
     @Inject
     private GameObjectProvider gameObjectProvider
     @Inject
-    private CollisionRegistry collisionRegistry
+    private CollisionCoordinator collisionRegistry
+    @Inject
+    FrameCache frameCache
     @MultiInject
     private List<Spawner> spawners
 
@@ -39,8 +42,12 @@ class GameScene {
             }
             def gameObjects = updateGameObjects()
             // TODO: Copy to avoid concurrent modification - but is this the right way?
-            new HashSet<>(gameObjects).each { obj -> obj.update(timestamp, delta) }
+            new HashSet<>(gameObjects).each { obj ->
+                obj.update(timestamp, delta)
+            }
             collisionRegistry.update(timestamp, delta)
+
+            updateFrameCache()
         }
     }
 
@@ -52,6 +59,10 @@ class GameScene {
             log.info("Destroyed ${nrDestroyed} game objects on scene update.".toString())
         }
         return gameObjectProvider.getGameObjects()
+    }
+
+    private void updateFrameCache() {
+        frameCache.update()
     }
 
     void setState(GameSceneState state) {

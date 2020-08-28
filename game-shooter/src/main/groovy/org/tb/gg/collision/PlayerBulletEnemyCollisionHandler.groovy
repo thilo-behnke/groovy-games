@@ -19,6 +19,7 @@ class PlayerBulletEnemyCollisionHandler extends GameObjectCollisionHandler<Bulle
 
     private handleDamage(BulletGameObject a, EnemyGameObject b) {
         a.shouldBeDestroyed = true
+        b.wasHitRecently = true
         if (b.hp <= 0) {
             return
         }

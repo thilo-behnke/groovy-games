@@ -19,4 +19,14 @@ class Circle extends Shape {
     boolean isPointWithin(Vector pos) {
         return (pos - center).length() <= radius
     }
+
+    @Override
+    Rect getBoundingRect() {
+        return new Rect(center + new Vector(x: -radius, y: radius), Vector.unitVector() * 2.0 * radius)
+    }
+
+    @Override
+    Shape copy() {
+        return new Circle(center: center.copy(), radius: radius)
+    }
 }

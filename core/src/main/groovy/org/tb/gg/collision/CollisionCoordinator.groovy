@@ -5,7 +5,7 @@ import org.tb.gg.engine.helper.Updateable
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.GameObject
 
-interface CollisionRegistry extends Singleton, Updateable {
+interface CollisionCoordinator extends Singleton, Updateable {
     Set<Collision> getCollisions()
     Set<Collision> getCollisions(GameObject gameObject)
 }

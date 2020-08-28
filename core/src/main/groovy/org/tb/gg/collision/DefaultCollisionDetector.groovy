@@ -22,7 +22,7 @@ class DefaultCollisionDetector implements CollisionDetector {
                     return a.physicsComponent.shouldCollideWith(b.physicsComponent)
                 }
                 .collect { BaseGameObject a, BaseGameObject b ->
-                    def areColliding = a.body.collidesWith(b.body.getStructure())
+                    def areColliding = a.body.collidesWith(b.body)
                     if (!areColliding) {
                         return null
                     }

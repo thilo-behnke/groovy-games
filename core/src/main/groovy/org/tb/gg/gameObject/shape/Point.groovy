@@ -1,10 +1,11 @@
 package org.tb.gg.gameObject.shape
 
-
+import groovy.transform.EqualsAndHashCode
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 
+@EqualsAndHashCode
 class Point extends Shape {
    Vector pos
 
@@ -26,5 +27,15 @@ class Point extends Shape {
    @Override
    boolean isPointWithin(Vector pos) {
       return this.pos == pos
+   }
+
+   @Override
+   Rect getBoundingRect() {
+      return new Rect(pos, Vector.zeroVector())
+   }
+
+   @Override
+   Shape copy() {
+      return new Point(pos: pos.copy())
    }
 }

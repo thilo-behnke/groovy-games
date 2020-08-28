@@ -5,8 +5,11 @@ import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.components.render.RenderComponent
+import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.destination.RenderDestination
+import org.tb.gg.utils.FixedStack
+import org.tb.gg.utils.Stack
 
 @EqualsAndHashCode(includes='id')
 class BaseGameObject implements GameObject {
@@ -19,6 +22,8 @@ class BaseGameObject implements GameObject {
     RenderComponent renderComponent
     PhysicsComponent physicsComponent
     InputComponent inputComponent
+
+    Stack<Shape> previousShapeStates = FixedStack.ofSize(2)
 
     @Override
     void setId(long id) {
@@ -48,8 +53,7 @@ class BaseGameObject implements GameObject {
     }
 
     @Override
-    void update(Long timestamp, Long delta) {
-    }
+    void update(Long timestamp, Long delta) {}
 
     @Override
     Boolean shouldPerish() {

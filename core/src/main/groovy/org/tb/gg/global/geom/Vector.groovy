@@ -154,6 +154,10 @@ class Vector {
         return angle >= 0 ? angle : 2 * MathConstants.pi() + angle
     }
 
+    Vector invert() {
+        new Vector(x: x * -1, y: y * -1)
+    }
+
     static unitVector() {
         return unit
     }
@@ -164,6 +168,10 @@ class Vector {
 
     static invertYVector() {
         return invertY
+    }
+
+    Vector copy() {
+        return new Vector(x: x, y: y)
     }
 
     /**

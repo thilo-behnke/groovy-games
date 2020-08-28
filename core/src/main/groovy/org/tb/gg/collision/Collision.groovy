@@ -4,6 +4,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.GameObject
+import org.tb.gg.global.Direction
 
 @EqualsAndHashCode
 @ToString
@@ -11,6 +12,10 @@ class Collision<S extends GameObject, T extends GameObject> {
     S a
     T b
     CollisionType type
+
+    // TODO: This could be done with lazy properties, but this would decentralize the collision detection.
+    Direction directionA
+    Direction directionB
 
     GameObject getAt(int index) {
         if (index == 0) {

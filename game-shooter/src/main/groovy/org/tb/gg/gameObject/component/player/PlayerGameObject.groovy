@@ -3,9 +3,6 @@ package org.tb.gg.gameObject.component.player
 import org.tb.gg.di.Inject
 import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.component.guns.Gun
-import org.tb.gg.gameObject.component.guns.AutomaticGun
-import org.tb.gg.gameObject.component.guns.GunFactory
-import org.tb.gg.gameObject.component.guns.GunProperties
 import org.tb.gg.gameObject.component.guns.GunWheel
 import org.tb.gg.gameObject.components.physics.ShapeBody
 import org.tb.gg.gameObject.factory.KeyBoundGameObjectBuilder
@@ -62,34 +59,33 @@ class PlayerGameObject extends BaseGameObject {
             return
         }
 
-        updateMovement(activeActions, timestamp, delta)
+        updateVelocity(activeActions)
         updateOrientation(activeActions, timestamp, delta)
+        physicsComponent.update(timestamp, delta)
+        updatePos(body.shape.center)
         switchGun(activeActions, timestamp)
         shoot(activeActions)
     }
 
-    private updateMovement(List<PlayerAction> activeActions, Long timestamp, Long delta) {
-        def shape = body.getStructure()
-        def center = shape.center
-        def newX = center.x
-        def newY = center.y
+    private updateVelocity(List<PlayerAction> activeActions) {
+        def newX = 0
+        def newY = 0
         // Update X.
         if (activeActions.contains(PlayerAction.MOVE_RIGHT)) {
-            newX = newX + 1 * delta
+            newX = 1
         } else if (activeActions.contains(PlayerAction.MOVE_LEFT)) {
-            newX = newX - 1 * delta
+            newX = -1
         }
         // Update Y.
         if (activeActions.contains(PlayerAction.MOVE_UP)) {
-            newY = newY + 1 * delta
+            newY = 1
         } else if (activeActions.contains(PlayerAction.MOVE_DOWN)) {
-            newY = newY - 1 * delta
+            newY = -1
         }
-        updatePos(new Vector(x: newX, y: newY))
+        physicsComponent.setVelocity(new Vector(x: newX, y: newY))
     }
 
     private updatePos(Vector pos) {
-        body.center = pos
         if (gun) {
             gun.body.center = pos
         }
