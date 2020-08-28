@@ -8,12 +8,14 @@ import org.tb.gg.world.WorldStateProvider
 
 class RandomUtilsService implements Singleton {
 
-    @Inject WorldStateProvider worldStateProvider
+    @Inject
+    WorldStateProvider worldStateProvider
 
-    Vector getRandomPositionInWorldBounds(GameObject gameObject) {
-        def x = worldStateProvider.get().currentLoopTimestamp % worldStateProvider.get().bounds.topRight.x.toLong()
+    // TODO: Very rudimentary implementation - improve.
+    Vector getRandomPositionInWorldBounds(GameObject gameObject, long seed = 0) {
+        def x = worldStateProvider.get().currentLoopTimestamp % (worldStateProvider.get().bounds.topRight.x.toLong() + seed)
         x = Math.min(x, worldStateProvider.get().bounds.topRight.x.toLong() - gameObject.body.boundingRect.dim.x.toLong())
-        def y = worldStateProvider.get().currentLoopTimestamp % worldStateProvider.get().bounds.topRight.y.toLong()
+        def y = worldStateProvider.get().currentLoopTimestamp % (worldStateProvider.get().bounds.topRight.y.toLong() + seed)
         y = Math.min(y, worldStateProvider.get().bounds.topRight.y.toLong() - gameObject.body.boundingRect.dim.y.toLong())
         new Vector(x: x, y: y)
     }

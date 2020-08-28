@@ -28,11 +28,11 @@ class EnemyWanderingState extends ActionState {
     @Override
     State update() {
         if (!goal) {
-            goal = randomUtilsService.getRandomPositionInWorldBounds(parent)
+            goal = randomUtilsService.getRandomPositionInWorldBounds(parent, parent.id)
             return this
         } else {
             def distanceToGoal = parent.body.center.distance(goal)
-            if (distanceToGoal <= 1e-1) {
+            if (distanceToGoal <= parent.body.boundingRect.diagonalLength()) {
                 return new EnemyIdleState(parent)
             }
             return this

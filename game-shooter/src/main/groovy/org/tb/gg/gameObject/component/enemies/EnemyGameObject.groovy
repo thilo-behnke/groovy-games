@@ -28,9 +28,31 @@ class EnemyGameObject extends BaseGameObject {
     void update(Long timestamp, Long delta) {
         super.update(timestamp, delta)
 
+        updateVelocity(inputComponent.activeActions)
+
         wasHitRecently = false
         physicsComponent.update(timestamp, delta)
     }
+
+    // TODO: Copy and pasted - refactor.
+    private updateVelocity(Set<String> activeActions) {
+        def newX = 0
+        def newY = 0
+        // Update X.
+        if (activeActions.contains(EnemyAction.RIGHT.toString())) {
+            newX = 1
+        } else if (activeActions.contains(EnemyAction.LEFT.toString())) {
+            newX = -1
+        }
+        // Update Y.
+        if (activeActions.contains(EnemyAction.UP.toString())) {
+            newY = 1
+        } else if (activeActions.contains(EnemyAction.DOWN.toString())) {
+            newY = -1
+        }
+        physicsComponent.setVelocity(new Vector(x: newX, y: newY))
+    }
+
 }
 
 class EnemyProperties {
