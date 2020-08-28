@@ -11,7 +11,9 @@ trait FrameCache implements Singleton {
     GameObjectProvider gameObjectProvider
 
     abstract void add(FrameState frame)
+
     abstract List<FrameState> getLastFrames(int n)
+
     abstract void clear()
 
     void update() {
@@ -20,7 +22,9 @@ trait FrameCache implements Singleton {
     }
 
     private FrameState createFrameState() {
-        def gameObjectShapeCache = gameObjectProvider.gameObjects.<Long, Shape, GameObject> collectEntries { [(it.id): it.body.shape.copy()] }
+        def gameObjectShapeCache = gameObjectProvider.gameObjects
+                .findAll { it.body }
+                .<Long, Shape, GameObject> collectEntries { [(it.id): it.body.shape.copy()] }
         new FrameState(gameObjectShapeCache: gameObjectShapeCache)
     }
 }
