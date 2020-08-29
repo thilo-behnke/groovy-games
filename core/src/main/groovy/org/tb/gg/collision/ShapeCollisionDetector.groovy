@@ -103,8 +103,15 @@ class ShapeCollisionDetector implements Singleton {
         a.isPointWithin(b.center)
     }
 
-    // TODO: Fix for rotated rects.
     private static boolean detectCollision(Circle circle, Rect rect) {
+        if (rect.rotation > 0) {
+            def rectToCircle = circle.center - rect.center
+            def rectToCircleWithoutRotation = rectToCircle.rotate(-rect.rotation)
+            def rectWithoutRotationAt0 = new Rect(new Vector(x: 0, y: rect.dim.y), rect.dim)
+
+            circle = new Circle(center: rectWithoutRotationAt0.center + rectToCircleWithoutRotation, radius: circle.radius)
+            rect = rectWithoutRotationAt0
+        }
         def closestPointInRectToCircleCenter = circle.center.clampOnRange(rect.bottomLeft, rect.topRight)
         return circle.isPointWithin(closestPointInRectToCircleCenter)
     }
