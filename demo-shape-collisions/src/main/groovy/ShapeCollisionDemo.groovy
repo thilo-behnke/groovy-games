@@ -13,6 +13,7 @@ import org.tb.gg.gameObject.components.body.ShapeBody
 import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.gameObject.shape.Line
+import org.tb.gg.gameObject.shape.Point
 import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.geom.Vector
 
@@ -26,7 +27,7 @@ class ShapeCollisionDemoEntryPoint implements Game {
                     .setPhysicsComponent(new PhysicsComponent(
                             collisionSettings: new CollisionSettings(
                                     collisionGroup: 'SHAPES',
-                                    collidesWithGroups: [new CollisionDefinition(collisionGroup:  'SHAPES')].toSet()
+                                    collidesWithGroups: [new CollisionDefinition(collisionGroup: 'SHAPES')].toSet()
                             ),
                             physicStats: new PhysicStats(velocity: Vector.zeroVector())
                     ))
@@ -70,14 +71,19 @@ class ShapeCollisionDemoEntryPoint implements Game {
                 ))
                 .build()
 
+        def point = getBaseBuilder()
+                .setBody(new ShapeBody(new Point(pos: Vector.unitVector() * 550.0)))
+                .build()
+
         def defaultScene = new GameScene('default')
 
-        defaultScene.accessGameObjectProvider() << circle1
-        defaultScene.accessGameObjectProvider() << circle2
-        defaultScene.accessGameObjectProvider() << line1
-        defaultScene.accessGameObjectProvider() << line2
+//        defaultScene.accessGameObjectProvider() << circle1
+//        defaultScene.accessGameObjectProvider() << circle2
+//        defaultScene.accessGameObjectProvider() << line1
+//        defaultScene.accessGameObjectProvider() << line2
         defaultScene.accessGameObjectProvider() << rect1
-        defaultScene.accessGameObjectProvider() << rect2
+//        defaultScene.accessGameObjectProvider() << rect2
+        defaultScene.accessGameObjectProvider() << point
 
         addScene(defaultScene, true)
 

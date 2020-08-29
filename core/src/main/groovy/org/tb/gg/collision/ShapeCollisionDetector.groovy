@@ -182,9 +182,16 @@ class ShapeCollisionDetector implements Singleton {
         return dp1 * dp2 <= 0 || dp2 * dp3 <= 0 || dp3 * dp4 <= 0
     }
 
-    // TODO: Fix for rotated rects.
-    private static boolean detectCollision(Rect a, Point b) {
-        a.isPointWithin(b.center)
+    private static boolean detectCollision(Rect rect, Point point) {
+        if (rect.rotation > 0) {
+            def rectCenterToPoint = point.pos - rect.center
+            def rectCenterToPointWithoutRotation = rectCenterToPoint.rotate(-rect.rotation)
+            def rectWithoutRotationAt0 = new Rect(new Vector(x: 0, y: rect.dim.y), rect.dim)
+
+            point = new Point(pos: rectWithoutRotationAt0.center + rectCenterToPointWithoutRotation)
+            rect = rectWithoutRotationAt0
+        }
+        rect.isPointWithin(point.center)
     }
 
     private static boolean detectCollision(Line a, Point b) {
