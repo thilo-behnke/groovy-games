@@ -78,17 +78,17 @@ class ShapeCollisionDetector implements Singleton {
     }
 
     private static boolean detectCollisionBetweenOrientedRects(Rect a, Rect b) {
-        if (isRectangleHullOnAxis(b, a.topEdge) || isRectangleHullOnAxis(b, a.rightEdge)) {
+        if (isRectangleHullNotOnAxis(b, a.topEdge) || isRectangleHullNotOnAxis(b, a.rightEdge)) {
             return false
         }
-        if (isRectangleHullOnAxis(a, b.topEdge) || isRectangleHullOnAxis(a, b.rightEdge)) {
+        if (isRectangleHullNotOnAxis(a, b.topEdge) || isRectangleHullNotOnAxis(a, b.rightEdge)) {
             return false
         }
         return true
     }
 
     // TODO: Does not work 100%
-    private static boolean isRectangleHullOnAxis(Rect rect, Line axis) {
+    private static boolean isRectangleHullNotOnAxis(Rect rect, Line axis) {
         def edgeLeft = rect.leftEdge
         def edgeRight = rect.rightEdge
         def axisDirection = axis.start - axis.end
