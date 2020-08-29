@@ -24,6 +24,7 @@ class Rect extends Shape {
 
     @Override
     boolean isPointWithin(Vector pos) {
+        // TODO: Does this work for rotated rects?
         return topLeft.x <= pos.x && pos.x <= topRight.x && bottomLeft.y <= pos.y && pos.y <= topRight.y
     }
 
@@ -42,19 +43,19 @@ class Rect extends Shape {
         return (dim.x * dim.y).abs()
     }
 
-    Line getTopBorder() {
+    Line getTopEdge() {
         return new Line(topLeft, topRight)
     }
 
-    Line getRightBorder() {
+    Line getRightEdge() {
         return new Line(topRight, bottomRight)
     }
 
-    Line getBottomBorder() {
+    Line getBottomEdge() {
         return new Line(bottomLeft, bottomRight)
     }
 
-    Line getLeftBorder() {
+    Line getLeftEdge() {
         return new Line(topLeft, bottomLeft)
     }
 

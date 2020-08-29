@@ -9,7 +9,6 @@ import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.global.math.MathConstants
-import org.tb.gg.utils.CollectionUtils
 
 class ShapeCollisionDetector implements Singleton {
 
@@ -63,6 +62,10 @@ class ShapeCollisionDetector implements Singleton {
 
     // TODO: Fix for rotated rects.
     private static boolean detectCollision(Rect a, Rect b) {
+        if (a.rotation > 0 || b.rotation > 0) {
+            return detectCollisionBetweenOrientedRects(a, b)
+        }
+
         def rectAXRange = CollisionUtils.Range.create(a.topLeft.x, a.topRight.x)
         def rectBXRange = CollisionUtils.Range.create(b.topLeft.x, b.topRight.x)
         if (!CollisionUtils.doRangesOverlap(rectAXRange, rectBXRange)) {
@@ -72,6 +75,31 @@ class ShapeCollisionDetector implements Singleton {
         def rectBYRange = CollisionUtils.Range.create(b.bottomLeft.y, b.topLeft.y)
 
         return CollisionUtils.doRangesOverlap(rectAYRange, rectBYRange)
+    }
+
+    private static boolean detectCollisionBetweenOrientedRects(Rect a, Rect b) {
+        if (isRectangleHullOnAxis(b, a.topEdge) || isRectangleHullOnAxis(b, a.rightEdge)) {
+            return false
+        }
+        if (isRectangleHullOnAxis(a, b.topEdge) || isRectangleHullOnAxis(a, b.rightEdge)) {
+            return false
+        }
+        return true
+    }
+
+    // TODO: Does not work 100%
+    private static boolean isRectangleHullOnAxis(Rect rect, Line axis) {
+        def edgeLeft = rect.leftEdge
+        def edgeRight = rect.rightEdge
+        def axisDirection = axis.start - axis.end
+
+        def edgeLeftOnAxis = CollisionUtils.Range.projectLine(edgeLeft, axisDirection)
+        def edgeRightOnAxis = CollisionUtils.Range.projectLine(edgeRight, axisDirection)
+
+        def axisProjection = CollisionUtils.Range.projectLine(axis, axisDirection)
+        def rectProjection = CollisionUtils.Range.hullFrom(edgeLeftOnAxis, edgeRightOnAxis)
+
+        return !CollisionUtils.doRangesOverlap(axisProjection, rectProjection)
     }
 
     private static boolean detectCollision(Line lineA, Line lineB) {

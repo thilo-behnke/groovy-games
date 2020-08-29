@@ -82,8 +82,8 @@ class ShapeCollisionDemoEntryPoint implements Game {
 //        defaultScene.accessGameObjectProvider() << line1
 //        defaultScene.accessGameObjectProvider() << line2
         defaultScene.accessGameObjectProvider() << rect1
-//        defaultScene.accessGameObjectProvider() << rect2
-        defaultScene.accessGameObjectProvider() << point
+        defaultScene.accessGameObjectProvider() << rect2
+//        defaultScene.accessGameObjectProvider() << point
 
         addScene(defaultScene, true)
 
