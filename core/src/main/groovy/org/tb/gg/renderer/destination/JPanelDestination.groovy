@@ -103,7 +103,7 @@ class JPanelDestination extends JPanel implements RenderDestination<BufferedImag
             def rectangle = new Rectangle2D.Float(topLeft.x, getHeight() - topLeft.y, dim.x, dim.y)
             if (rotation > 0) {
                 AffineTransform tx = new AffineTransform();
-                tx.rotate(rotation);
+                tx.rotate(rotation, rectangle.getX() + rectangle.width/2, rectangle.getY() + rectangle.height/2 );
                 rectangle = tx.createTransformedShape(rectangle)
             }
 
