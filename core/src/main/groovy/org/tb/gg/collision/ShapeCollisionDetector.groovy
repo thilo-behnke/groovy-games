@@ -61,6 +61,7 @@ class ShapeCollisionDetector implements Singleton {
         (b.center - a.center).length() <= a.radius + b.radius
     }
 
+    // TODO: Fix for rotated rects.
     private static boolean detectCollision(Rect a, Rect b) {
         def rectAXRange = CollisionUtils.Range.create(a.topLeft.x, a.topRight.x)
         def rectBXRange = CollisionUtils.Range.create(b.topLeft.x, b.topRight.x)
@@ -102,6 +103,7 @@ class ShapeCollisionDetector implements Singleton {
         a.isPointWithin(b.center)
     }
 
+    // TODO: Fix for rotated rects.
     private static boolean detectCollision(Circle circle, Rect rect) {
         def closestPointInRectToCircleCenter = circle.center.clampOnRange(rect.bottomLeft, rect.topRight)
         return circle.isPointWithin(closestPointInRectToCircleCenter)
@@ -128,6 +130,7 @@ class ShapeCollisionDetector implements Singleton {
         a.isPointWithin(b.center)
     }
 
+    // TODO: Fix for rotated rects.
     private static boolean detectCollision(Rect a, Line b) {
         if (!checkLineRectCollision(a, b)) {
             return false
@@ -158,6 +161,7 @@ class ShapeCollisionDetector implements Singleton {
         return dp1 * dp2 <= 0 || dp2 * dp3 <= 0 || dp3 * dp4 <= 0
     }
 
+    // TODO: Fix for rotated rects.
     private static boolean detectCollision(Rect a, Point b) {
         a.isPointWithin(b.center)
     }
