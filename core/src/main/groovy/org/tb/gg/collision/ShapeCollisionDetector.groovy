@@ -137,23 +137,37 @@ class ShapeCollisionDetector implements Singleton {
         a.isPointWithin(b.center)
     }
 
-    // TODO: Fix for rotated rects.
-    private static boolean detectCollision(Rect a, Line b) {
-        if (!checkLineRectCollision(a, b)) {
+    private static boolean detectCollision(Rect rect, Line line) {
+        if (rect.rotation > 0) {
+            def rectToLineStart = line.start - rect.center
+            def rectToLineEnd = line.end - rect.center
+            def rectToLineStartWithoutRotation = rectToLineStart.rotate(-rect.rotation)
+            def rectToLineEndWithoutRotation = rectToLineEnd.rotate(-rect.rotation)
+            def rectWithoutRotationAt0 = new Rect(new Vector(x: 0, y: rect.dim.y), rect.dim)
+
+            def newLineStart = rectWithoutRotationAt0.center + rectToLineStartWithoutRotation
+            def newLineEnd = rectWithoutRotationAt0.center + rectToLineEndWithoutRotation
+
+            line = new Line(newLineStart, newLineEnd)
+            rect = rectWithoutRotationAt0
+        }
+
+        if (!checkLineRectCollision(rect, line)) {
             return false
         }
-        def rectXRange = CollisionUtils.Range.create(a.topLeft.x, a.topRight.x)
-        def lineXRange = CollisionUtils.Range.create(b.start.x, b.end.x)
+        def rectXRange = CollisionUtils.Range.create(rect.topLeft.x, rect.topRight.x)
+        def lineXRange = CollisionUtils.Range.create(line.start.x, line.end.x)
         def doesXRangeOverlap = CollisionUtils.doRangesOverlap(lineXRange, rectXRange)
         if (!doesXRangeOverlap) {
             return false
         }
 
-        def rectYRange = CollisionUtils.Range.create(a.bottomLeft.y, a.topLeft.y)
-        def lineYRange = CollisionUtils.Range.create(b.start.y, b.end.y)
+        def rectYRange = CollisionUtils.Range.create(rect.bottomLeft.y, rect.topLeft.y)
+        def lineYRange = CollisionUtils.Range.create(line.start.y, line.end.y)
         def doesYRangeOverlap = CollisionUtils.doRangesOverlap(lineYRange, rectYRange)
         return doesYRangeOverlap
     }
+
 
     private static boolean checkLineRectCollision(Rect a, Line b) {
         def perpendicularToLine = (b.end - b.start).rotate(MathConstants.HALF_PI)
