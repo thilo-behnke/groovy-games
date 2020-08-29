@@ -200,12 +200,9 @@ class ShapeCollisionDetector implements Singleton {
 
     private static boolean detectCollision(Rect rect, Point point) {
         if (rect.rotation > 0) {
-            def rectCenterToPoint = point.pos - rect.center
-            def rectCenterToPointWithoutRotation = rectCenterToPoint.rotate(-rect.rotation)
-            def rectWithoutRotationAt0 = new Rect(new Vector(x: 0, y: rect.dim.y), rect.dim)
-
-            point = new Point(pos: rectWithoutRotationAt0.center + rectCenterToPointWithoutRotation)
-            rect = rectWithoutRotationAt0
+            def normalized = normalizeOrientedRectAndPoint(rect, point)
+            rect = normalized.getItem1()
+            point = normalized.getItem2()
         }
         rect.isPointWithin(point.center)
     }
