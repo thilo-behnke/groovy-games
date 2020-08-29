@@ -1,6 +1,6 @@
 package org.tb.gg.collision
 
-
+import groovyjarjarantlr4.v4.runtime.misc.Tuple2
 import org.tb.gg.di.definition.Singleton
 import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.gameObject.shape.Line
@@ -105,15 +105,23 @@ class ShapeCollisionDetector implements Singleton {
 
     private static boolean detectCollision(Circle circle, Rect rect) {
         if (rect.rotation > 0) {
-            def rectToCircle = circle.center - rect.center
-            def rectToCircleWithoutRotation = rectToCircle.rotate(-rect.rotation)
-            def rectWithoutRotationAt0 = new Rect(new Vector(x: 0, y: rect.dim.y), rect.dim)
-
-            circle = new Circle(center: rectWithoutRotationAt0.center + rectToCircleWithoutRotation, radius: circle.radius)
-            rect = rectWithoutRotationAt0
+            def normalized = normalizeOrientedRectAndCircle(rect, circle)
+            rect = normalized.getItem1()
+            circle = normalized.getItem2()
         }
         def closestPointInRectToCircleCenter = circle.center.clampOnRange(rect.bottomLeft, rect.topRight)
         return circle.isPointWithin(closestPointInRectToCircleCenter)
+    }
+
+    private static Tuple2<Rect, Circle> normalizeOrientedRectAndCircle(Rect rect, Circle circle) {
+        def rectToCircle = circle.center - rect.center
+        def rectToCircleWithoutRotation = rectToCircle.rotate(-rect.rotation)
+        def rectWithoutRotationAt0 = new Rect(new Vector(x: 0, y: rect.dim.y), rect.dim)
+
+        def normalizedCircle = new Circle(center: rectWithoutRotationAt0.center + rectToCircleWithoutRotation, radius: circle.radius)
+        def normalizedRect = rectWithoutRotationAt0
+
+        return new Tuple2<Rect, Circle>(normalizedRect, normalizedCircle)
     }
 
     private static boolean detectCollision(Circle circle, Line line) {
@@ -139,17 +147,9 @@ class ShapeCollisionDetector implements Singleton {
 
     private static boolean detectCollision(Rect rect, Line line) {
         if (rect.rotation > 0) {
-            def rectToLineStart = line.start - rect.center
-            def rectToLineEnd = line.end - rect.center
-            def rectToLineStartWithoutRotation = rectToLineStart.rotate(-rect.rotation)
-            def rectToLineEndWithoutRotation = rectToLineEnd.rotate(-rect.rotation)
-            def rectWithoutRotationAt0 = new Rect(new Vector(x: 0, y: rect.dim.y), rect.dim)
-
-            def newLineStart = rectWithoutRotationAt0.center + rectToLineStartWithoutRotation
-            def newLineEnd = rectWithoutRotationAt0.center + rectToLineEndWithoutRotation
-
-            line = new Line(newLineStart, newLineEnd)
-            rect = rectWithoutRotationAt0
+            def normalized = normalizeOrientedRectAndLine(rect, line)
+            rect = normalized.getItem1()
+            line = normalized.getItem2()
         }
 
         if (!checkLineRectCollision(rect, line)) {
@@ -166,6 +166,22 @@ class ShapeCollisionDetector implements Singleton {
         def lineYRange = CollisionUtils.Range.create(line.start.y, line.end.y)
         def doesYRangeOverlap = CollisionUtils.doRangesOverlap(lineYRange, rectYRange)
         return doesYRangeOverlap
+    }
+
+    private static Tuple2<Rect, Line> normalizeOrientedRectAndLine(Rect rect, Line line) {
+        def rectToLineStart = line.start - rect.center
+        def rectToLineEnd = line.end - rect.center
+        def rectToLineStartWithoutRotation = rectToLineStart.rotate(-rect.rotation)
+        def rectToLineEndWithoutRotation = rectToLineEnd.rotate(-rect.rotation)
+        def rectWithoutRotationAt0 = new Rect(new Vector(x: 0, y: rect.dim.y), rect.dim)
+
+        def newLineStart = rectWithoutRotationAt0.center + rectToLineStartWithoutRotation
+        def newLineEnd = rectWithoutRotationAt0.center + rectToLineEndWithoutRotation
+
+        def normalizedLine = new Line(newLineStart, newLineEnd)
+        def normalizedRect = rectWithoutRotationAt0
+
+        return new Tuple2<>(normalizedRect, normalizedLine)
     }
 
 
@@ -192,6 +208,17 @@ class ShapeCollisionDetector implements Singleton {
             rect = rectWithoutRotationAt0
         }
         rect.isPointWithin(point.center)
+    }
+
+    private static Tuple2<Rect, Point> normalizeOrientedRectAndPoint(Rect rect, Point point) {
+        def rectCenterToPoint = point.pos - rect.center
+        def rectCenterToPointWithoutRotation = rectCenterToPoint.rotate(-rect.rotation)
+        def rectWithoutRotationAt0 = new Rect(new Vector(x: 0, y: rect.dim.y), rect.dim)
+
+        def normalizedPoint = new Point(pos: rectWithoutRotationAt0.center + rectCenterToPointWithoutRotation)
+        def normalizedRect = rectWithoutRotationAt0
+
+        return new Tuple2<Rect, Point>(normalizedRect, normalizedPoint)
     }
 
     private static boolean detectCollision(Line a, Point b) {
