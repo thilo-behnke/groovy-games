@@ -77,13 +77,13 @@ class ShapeCollisionDemoEntryPoint implements Game {
 
         def defaultScene = new GameScene('default')
 
-//        defaultScene.accessGameObjectProvider() << circle1
-//        defaultScene.accessGameObjectProvider() << circle2
-//        defaultScene.accessGameObjectProvider() << line1
-//        defaultScene.accessGameObjectProvider() << line2
+        defaultScene.accessGameObjectProvider() << circle1
+        defaultScene.accessGameObjectProvider() << circle2
+        defaultScene.accessGameObjectProvider() << line1
+        defaultScene.accessGameObjectProvider() << line2
         defaultScene.accessGameObjectProvider() << rect1
         defaultScene.accessGameObjectProvider() << rect2
-//        defaultScene.accessGameObjectProvider() << point
+        defaultScene.accessGameObjectProvider() << point
 
         addScene(defaultScene, true)
 
