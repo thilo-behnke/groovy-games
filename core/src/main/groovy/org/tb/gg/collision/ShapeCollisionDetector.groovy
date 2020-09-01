@@ -91,10 +91,6 @@ class ShapeCollisionDetector implements Singleton {
         return true
     }
 
-    @Inject
-    static EnvironmentService environmentService
-
-    // TODO: Does not work 100%
     private static boolean isRectangleHullNotOnAxis(Rect rect, Line axis) {
         def edgeLeft = rect.leftEdge
         def edgeRight = rect.rightEdge
@@ -105,12 +101,6 @@ class ShapeCollisionDetector implements Singleton {
 
         def axisProjection = CollisionUtils.Range.projectLine(axis, axisDirection)
         def rectProjection = CollisionUtils.Range.hullFrom(edgeLeftOnAxis, edgeRightOnAxis)
-
-        environmentService.getEnvironment().renderDestination.drawLine(axis.start, axis.end, new RenderOptions(drawColor: DrawColor.BLUE))
-        environmentService.getEnvironment().renderDestination.drawLine(edgeLeft.start, edgeLeft.end, new RenderOptions(drawColor: DrawColor.GREEN))
-        environmentService.getEnvironment().renderDestination.drawLine(edgeRight.start, edgeRight.end, new RenderOptions(drawColor: DrawColor.GREEN))
-        environmentService.getEnvironment().renderDestination.drawCircle(rect.topLeft, 20.0, new RenderOptions(drawColor: DrawColor.RED))
-        environmentService.getEnvironment().renderDestination.drawCircle(rect.topRight, 20.0, new RenderOptions(drawColor: DrawColor.RED))
 
         return !CollisionUtils.doRangesOverlap(axisProjection, rectProjection)
     }

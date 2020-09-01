@@ -11,7 +11,7 @@ class Rect extends Shape {
     Vector dim
     private BigDecimal rotation
 
-    // TODO: Use center instead of topLeft to construct, this would make it easier to rotate.
+    // TODO: Use center instead of topLeft to construct.
     Rect(Vector topLeft, Vector dim, BigDecimal rotation = 0) {
         this.center = topLeft + new Vector(x: dim.x, y: -dim.y) / 2.0
         this.dim = dim.abs()
@@ -26,7 +26,6 @@ class Rect extends Shape {
 
     @Override
     boolean isPointWithin(Vector pos) {
-        // TODO: Does this work for rotated rects?
         return topLeft.x <= pos.x && pos.x <= topRight.x && bottomLeft.y <= pos.y && pos.y <= topRight.y
     }
 
