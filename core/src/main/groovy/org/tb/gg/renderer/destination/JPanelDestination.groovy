@@ -12,6 +12,7 @@ import java.awt.Color
 import java.awt.Dimension
 import java.awt.Graphics
 import java.awt.Graphics2D
+import java.awt.geom.AffineTransform
 import java.awt.geom.Ellipse2D
 import java.awt.geom.Line2D
 import java.awt.geom.Rectangle2D
@@ -97,8 +98,17 @@ class JPanelDestination extends JPanel implements RenderDestination<BufferedImag
     }
 
     @Override
-    void drawRect(Vector topLeft, Vector dim, RenderOptions options) {
-        def drawCl = { Graphics2D g -> g.draw(new Rectangle2D.Float(topLeft.x, getHeight() - topLeft.y, dim.x, dim.y)) }
+    void drawRect(Vector topLeft, Vector dim, Float rotation, RenderOptions options) {
+        def drawCl = { Graphics2D g ->
+            def rectangle = new Rectangle2D.Float(topLeft.x, getHeight() - topLeft.y, dim.x, dim.y)
+            if (rotation > 0) {
+                AffineTransform tx = new AffineTransform();
+                tx.rotate(-rotation, rectangle.centerX, rectangle.centerY);
+                rectangle = tx.createTransformedShape(rectangle)
+            }
+
+            g.draw(rectangle)
+        }
         drawQueue << new DrawAction(action: drawCl, options: options)
     }
 

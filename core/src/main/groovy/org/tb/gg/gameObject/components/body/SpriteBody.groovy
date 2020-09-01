@@ -29,7 +29,7 @@ class SpriteBody extends Body {
             renderDestination.drawImage(image.getImage(), shape.boundingRect.topLeft, options)
         } else {
             def rect = shape.boundingRect
-            renderDestination.drawRect(rect.topLeft, rect.dim, options)
+            renderDestination.drawRect(rect.topLeft, rect.dim, rect.rotation.toFloat(), options)
         }
     }
 

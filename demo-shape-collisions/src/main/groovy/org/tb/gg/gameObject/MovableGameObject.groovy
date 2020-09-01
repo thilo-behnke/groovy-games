@@ -63,12 +63,10 @@ class MovableGameObject extends BaseGameObject implements InteractiveBody {
         shape.center = new Vector(x: newX, y: newY)
 
         // Collision detection won't work for rects atm if they are rotated!
-        if ((activeActions.contains(MovableGameObjectAction.ROTATE_COUNTER) || activeActions.contains(MovableGameObjectAction.ROTATE)) && shape instanceof Line) {
-            def line = (Line) shape
-            def lineDirection = line.end - line.start
+        if (activeActions.contains(MovableGameObjectAction.ROTATE_COUNTER) || activeActions.contains(MovableGameObjectAction.ROTATE)) {
             def rotationDirection = activeActions.contains(MovableGameObjectAction.ROTATE) ? -1 : 1
-            def rotatedLineDirection = lineDirection.rotate(rotationDirection * MathConstants.PI / 100)
-            line.end = line.start + rotatedLineDirection
+            def radians = rotationDirection * MathConstants.PI / 100
+            shape.rotate(radians)
         }
     }
 }

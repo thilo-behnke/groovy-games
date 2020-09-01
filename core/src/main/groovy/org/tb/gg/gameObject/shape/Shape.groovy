@@ -16,6 +16,7 @@ abstract class Shape implements Renderable {
     abstract Vector getCenter()
     abstract void setCenter(Vector pos)
     abstract boolean isPointWithin(Vector pos)
+    abstract void rotate(BigDecimal radians)
 
     boolean collidesWith(Shape shape) {
         return shapeCollisionDetector.detect(this, shape)

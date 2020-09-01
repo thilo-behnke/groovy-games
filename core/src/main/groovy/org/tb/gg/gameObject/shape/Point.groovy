@@ -38,4 +38,9 @@ class Point extends Shape {
    Shape copy() {
       return new Point(pos: pos.copy())
    }
+
+   @Override
+   void rotate(BigDecimal radians) {
+      // Left intentionally empty, there is no point in rotating a point.
+   }
 }

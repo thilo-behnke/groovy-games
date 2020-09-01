@@ -65,6 +65,13 @@ class Line extends Shape {
     }
 
     @Override
+    void rotate(BigDecimal radians) {
+        def line = end - start
+        def rotatedLine = line.rotate(radians)
+        end = start + rotatedLine
+    }
+
+    @Override
     Rect getBoundingRect() {
         def dim = (end - start).abs()
         def higherPoint = start.y >= end.y ? start : end
