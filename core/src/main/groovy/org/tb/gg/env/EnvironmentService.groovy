@@ -47,6 +47,7 @@ class EnvironmentService implements Singleton {
 
     }
 
+    // TODO: Instead of providing the whole env in one object, services could also be configured through the coreConfig.groovy file.
     private constructSwingEnvironment() {
         def renderDestination = new JPanelDestination()
 

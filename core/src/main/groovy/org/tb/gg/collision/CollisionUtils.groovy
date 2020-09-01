@@ -17,8 +17,8 @@ class CollisionUtils {
 
         static Range projectLine(Line line, Vector onto) {
             def ontoNormalized = onto.normalize()
-            def dotLineStart = ontoNormalized.dot(line.start)
-            def dotLineEnd = ontoNormalized.dot(line.end)
+            def dotLineStart = line.start.dot(ontoNormalized)
+            def dotLineEnd = line.end.dot(ontoNormalized)
             create(dotLineStart, dotLineEnd)
         }
 

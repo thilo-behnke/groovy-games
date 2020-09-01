@@ -7,36 +7,27 @@ import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.RenderOptions
 
 class Rect extends Shape {
-    Vector topLeft
+    Vector center
     Vector dim
-    BigDecimal rotation
+    private BigDecimal rotation
 
+    // TODO: Use center instead of topLeft to construct, this would make it easier to rotate.
     Rect(Vector topLeft, Vector dim, BigDecimal rotation = 0) {
-        this.topLeft = topLeft
+        this.center = topLeft + new Vector(x: dim.x, y: -dim.y) / 2.0
         this.dim = dim.abs()
         this.rotation = rotation
     }
 
     @Override
     void render(RenderDestination renderDestination, RenderOptions options) {
-        renderDestination.drawRect(topLeft, dim, rotation.toFloat(), options)
+        def topLeftWithoutRotation = center + new Vector(x: -dim.x, y: dim.y) / 2.0
+        renderDestination.drawRect(topLeftWithoutRotation, dim, rotation.toFloat(), options)
     }
 
     @Override
     boolean isPointWithin(Vector pos) {
         // TODO: Does this work for rotated rects?
         return topLeft.x <= pos.x && pos.x <= topRight.x && bottomLeft.y <= pos.y && pos.y <= topRight.y
-    }
-
-    // TODO: Add cache.
-    @Override
-    Vector getCenter() {
-        topLeft + dim * Vector.invertYVector() / 2.0
-    }
-
-    @Override
-    void setCenter(Vector pos) {
-        topLeft = pos - dim * Vector.invertYVector() / 2.0
     }
 
     BigDecimal getSize() {
@@ -59,16 +50,24 @@ class Rect extends Shape {
         return new Line(topLeft, bottomLeft)
     }
 
+    Vector getTopLeft() {
+        def centerToCorner = new Vector(x: -dim.x, y: dim.y) / 2.0
+        return center + centerToCorner.rotate(rotation)
+    }
+
     Vector getTopRight() {
-        return topLeft + new Vector(x: dim.x).rotate(rotation)
+        def centerToCorner = new Vector(x: dim.x, y: dim.y) / 2.0
+        return center + centerToCorner.rotate(rotation)
     }
 
     Vector getBottomLeft() {
-        return topLeft + new Vector(y: -dim.y).rotate(rotation)
+        def centerToCorner = new Vector(x: -dim.x, y: -dim.y) / 2.0
+        return center + centerToCorner.rotate(rotation)
     }
 
     Vector getBottomRight() {
-        return topLeft + new Vector(x: dim.x, y: -dim.y).rotate(rotation)
+        def centerToCorner = new Vector(x: dim.x, y: -dim.y) / 2.0
+        return center + centerToCorner.rotate(rotation)
     }
 
     BigDecimal diagonalLength() {
@@ -82,7 +81,7 @@ class Rect extends Shape {
 
     @Override
     Shape copy() {
-        return new Rect(topLeft.copy(), dim.copy())
+        return new Rect(topLeft.copy(), dim.copy(), rotation)
     }
 
     @Override

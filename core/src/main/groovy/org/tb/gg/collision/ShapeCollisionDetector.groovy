@@ -1,7 +1,9 @@
 package org.tb.gg.collision
 
 import groovyjarjarantlr4.v4.runtime.misc.Tuple2
+import org.tb.gg.di.Inject
 import org.tb.gg.di.definition.Singleton
+import org.tb.gg.env.EnvironmentService
 import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.gameObject.shape.Line
 import org.tb.gg.gameObject.shape.Point
@@ -9,6 +11,8 @@ import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.global.math.MathConstants
+import org.tb.gg.renderer.options.DrawColor
+import org.tb.gg.renderer.options.RenderOptions
 
 class ShapeCollisionDetector implements Singleton {
 
@@ -87,17 +91,26 @@ class ShapeCollisionDetector implements Singleton {
         return true
     }
 
+    @Inject
+    static EnvironmentService environmentService
+
     // TODO: Does not work 100%
     private static boolean isRectangleHullNotOnAxis(Rect rect, Line axis) {
         def edgeLeft = rect.leftEdge
         def edgeRight = rect.rightEdge
-        def axisDirection = axis.start - axis.end
+        def axisDirection = axis.end - axis.start
 
         def edgeLeftOnAxis = CollisionUtils.Range.projectLine(edgeLeft, axisDirection)
         def edgeRightOnAxis = CollisionUtils.Range.projectLine(edgeRight, axisDirection)
 
         def axisProjection = CollisionUtils.Range.projectLine(axis, axisDirection)
         def rectProjection = CollisionUtils.Range.hullFrom(edgeLeftOnAxis, edgeRightOnAxis)
+
+        environmentService.getEnvironment().renderDestination.drawLine(axis.start, axis.end, new RenderOptions(drawColor: DrawColor.BLUE))
+        environmentService.getEnvironment().renderDestination.drawLine(edgeLeft.start, edgeLeft.end, new RenderOptions(drawColor: DrawColor.GREEN))
+        environmentService.getEnvironment().renderDestination.drawLine(edgeRight.start, edgeRight.end, new RenderOptions(drawColor: DrawColor.GREEN))
+        environmentService.getEnvironment().renderDestination.drawCircle(rect.topLeft, 20.0, new RenderOptions(drawColor: DrawColor.RED))
+        environmentService.getEnvironment().renderDestination.drawCircle(rect.topRight, 20.0, new RenderOptions(drawColor: DrawColor.RED))
 
         return !CollisionUtils.doRangesOverlap(axisProjection, rectProjection)
     }
