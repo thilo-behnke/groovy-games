@@ -19,12 +19,6 @@ class PlayerGameObject extends BaseGameObject {
     private long SWITCH_GUN_COOLDOWN_MS = 200
     private long lastWeaponSwitchTimestamp = 0
 
-    void setGun(Gun gun) {
-        this.gun = gun
-        this.gun.setOrientation(orientation)
-        this.gun.body.setCenter(body.center)
-    }
-
     static PlayerGameObject create() {
         def pos = new Vector(x: 100, y: 100)
         def orientation = new Vector(x: 0, y: 50.0)
@@ -37,8 +31,8 @@ class PlayerGameObject extends BaseGameObject {
                 .setDefaultKeyMapping(PlayerAction.values().collectEntries { it.keys.collectEntries { key -> [(key): it.toString()] } })
                 .build()
 
-        player.switchGun()
         player.setOrientation(orientation)
+        player.switchGun()
         return player
     }
 
@@ -46,7 +40,7 @@ class PlayerGameObject extends BaseGameObject {
     void setOrientation(Vector orientation) {
         super.setOrientation(orientation)
         if (gun) {
-            gun.setOrientation(orientation)
+            updateGunPosition()
         }
     }
 
@@ -62,7 +56,7 @@ class PlayerGameObject extends BaseGameObject {
         updateVelocity(activeActions)
         updateOrientation(activeActions, timestamp, delta)
         physicsComponent.update(timestamp, delta)
-        updatePos(body.shape.center)
+        updatePos()
         switchGun(activeActions, timestamp)
         shoot(activeActions)
     }
@@ -85,9 +79,9 @@ class PlayerGameObject extends BaseGameObject {
         physicsComponent.setVelocity(new Vector(x: newX, y: newY))
     }
 
-    private updatePos(Vector pos) {
+    private updatePos() {
         if (gun) {
-            gun.body.center = pos
+            updateGunPosition()
         }
     }
 
@@ -157,4 +151,15 @@ class PlayerGameObject extends BaseGameObject {
     private switchGun() {
         setGun(gunWheel.nextGun())
     }
+
+    void setGun(Gun gun) {
+        this.gun = gun
+        updateGunPosition()
+    }
+
+    void updateGunPosition() {
+        this.gun.setOrientation(orientation)
+        this.gun.body.shape.setCenter(body.center + orientation.normalize() * this.gun.body.shape.boundingRect.diagonalLength())
+    }
+
 }

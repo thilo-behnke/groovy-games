@@ -22,7 +22,7 @@ class BulletGameObject extends BaseGameObject implements TimePerishable, OutOfBo
     @Delegate
     BulletProperties bulletProperties = new BulletProperties()
 
-    static BulletGameObject create(Vector pos, Vector orientation) {
+    static BulletGameObject create(Vector center, Vector orientation) {
         def physicsComp = BulletPhysicsComponent.create(orientation)
         def spriteBody = new SpriteBodyFactory().fromResource(ShooterGameResource.PROJECTILE_BLUE.name())
         def bullet = (BulletGameObject) new GameObjectBuilder<>(BulletGameObject)
@@ -32,7 +32,7 @@ class BulletGameObject extends BaseGameObject implements TimePerishable, OutOfBo
                 .setPhysicsComponent(physicsComp)
                 .build()
         bullet.setOrientation(orientation)
-        bullet.body.shape.setCenter(pos)
+        bullet.body.shape.setCenter(center)
         bullet.body.shape.rotate(new Vector(x: 1, y: 0).angleBetween(orientation))
         return bullet
     }

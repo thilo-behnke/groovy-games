@@ -9,6 +9,7 @@ import org.tb.gg.gameObject.components.render.RenderComponent
 import org.tb.gg.gameObject.lifecycle.Lifecycle
 import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
+import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.utils.Stack
 
 interface GameObject extends Updateable, Lifecycle, Perishable {
@@ -17,6 +18,7 @@ interface GameObject extends Updateable, Lifecycle, Perishable {
     void setOrientation(Vector orientation)
     Stack<Shape> getPreviousShapeStates()
     Vector getOrientation()
+    void render(RenderDestination renderDestination)
 
     Body getBody()
     RenderComponent getRenderComponent()

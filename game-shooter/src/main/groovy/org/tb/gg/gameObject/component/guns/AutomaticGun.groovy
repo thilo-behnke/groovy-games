@@ -28,7 +28,8 @@ class AutomaticGun extends BaseGameObject implements Gun<AutomaticGunProperties>
 
         lastShotTimestamp = timestamp
 
-        def bullet = BulletGameObject.create(body.center, orientation.normalize() * props.BULLET_VELOCITY)
+        def bulletSpawnPosition = body.center + orientation.normalize() * body.boundingRect.diagonalLength()
+        def bullet = BulletGameObject.create(bulletSpawnPosition, orientation.normalize() * props.BULLET_VELOCITY)
         bullet.setDamage(props.BULLET_DAMAGE)
         sceneManager.getActiveScene().ifPresent { it.accessGameObjectProvider().addGameObject(bullet) }
     }
