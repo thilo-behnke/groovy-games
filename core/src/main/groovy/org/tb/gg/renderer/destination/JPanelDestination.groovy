@@ -16,6 +16,7 @@ import java.awt.geom.AffineTransform
 import java.awt.geom.Ellipse2D
 import java.awt.geom.Line2D
 import java.awt.geom.Rectangle2D
+import java.awt.image.AffineTransformOp
 import java.awt.image.BufferedImage
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -119,8 +120,18 @@ class JPanelDestination extends JPanel implements RenderDestination<BufferedImag
     }
 
     @Override
-    void drawImage(BufferedImage image, Vector pos, RenderOptions options) {
-        def drawCl = { Graphics2D g -> g.drawImage(image, pos.x.toInteger(), getHeight() - pos.y.toInteger(), null) }
+    void drawImage(BufferedImage image, Vector pos, BigDecimal rotation, RenderOptions options) {
+        def drawCl = { Graphics2D g ->
+
+            if (rotation > 0) {
+                AffineTransform tx = AffineTransform.getRotateInstance(-rotation, image.getWidth() / 2, image.getHeight() / 2);
+                AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+
+                g.drawImage(op.filter(image, null), pos.x.toInteger(), getHeight() - pos.y.toInteger(), null)
+            } else {
+                g.drawImage(image, pos.x.toInteger(), getHeight() - pos.y.toInteger(), null)
+            }
+        }
         drawQueue << new DrawAction(action: drawCl, options: options)
     }
 

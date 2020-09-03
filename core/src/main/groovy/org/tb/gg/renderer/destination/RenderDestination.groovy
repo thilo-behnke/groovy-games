@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage
 interface RenderDestination<I> {
     void setDimensions(int width, int height)
     // TODO: Command pattern for render options?
-    void drawImage(I image, Vector pos, RenderOptions options)
+    void drawImage(I image, Vector pos, BigDecimal rotation, RenderOptions options)
     void drawLine(Vector start, Vector end, RenderOptions options)
     void drawPoint(Vector pos, RenderOptions options)
     void drawCircle(Vector center, BigDecimal radius, RenderOptions options)

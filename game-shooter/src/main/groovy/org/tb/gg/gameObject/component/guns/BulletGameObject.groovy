@@ -33,6 +33,7 @@ class BulletGameObject extends BaseGameObject implements TimePerishable, OutOfBo
                 .build()
         bullet.setOrientation(orientation)
         bullet.body.shape.setCenter(pos)
+        bullet.body.shape.rotate(new Vector(x: 1, y: 0).angleBetween(orientation))
         return bullet
     }
 
