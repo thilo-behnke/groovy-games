@@ -158,8 +158,8 @@ class PlayerGameObject extends BaseGameObject {
     }
 
     void updateGunPosition() {
-        this.gun.setOrientation(orientation)
-        this.gun.body.shape.setCenter(body.center + orientation.normalize() * this.gun.body.shape.boundingRect.diagonalLength())
+        gun.setOrientation(orientation)
+        gun.body.shape.setCenter(body.center + orientation.normalize() * body.shape.boundingRect.diagonalLength())
     }
 
 }

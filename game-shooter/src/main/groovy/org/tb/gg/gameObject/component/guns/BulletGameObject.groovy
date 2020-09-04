@@ -31,8 +31,8 @@ class BulletGameObject extends BaseGameObject implements TimePerishable, OutOfBo
                 .setInputComponent(NoopInputComponent.get())
                 .setPhysicsComponent(physicsComp)
                 .build()
+        bullet.body.setCenter(center)
         bullet.setOrientation(orientation)
-        bullet.body.shape.setCenter(center)
         bullet.body.shape.rotate(new Vector(x: 1, y: 0).angleBetween(orientation))
         return bullet
     }

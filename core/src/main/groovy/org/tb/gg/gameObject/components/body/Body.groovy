@@ -11,6 +11,7 @@ abstract class Body implements Updateable, Renderable {
     abstract Shape getShape()
     abstract Rect getBoundingRect()
     abstract Vector getCenter()
+    abstract void setCenter(Vector center)
 
     boolean collidesWith(Body body) {
         return this.shape.collidesWith(body.shape)
