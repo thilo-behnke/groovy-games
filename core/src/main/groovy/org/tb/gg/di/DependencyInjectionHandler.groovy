@@ -27,7 +27,7 @@ class DependencyInjectionHandler {
         def serviceMappingRegistry = new ServiceMappingRegistry()
         new ServiceConfigReader(new DefaultResourceProvider(), serviceMappingRegistry).readConfigAndRegisterServices()
 
-        def singletonClasses = new ClasspathSingletonScanner().scanForServices()
+        def singletonClasses = new ClasspathSingletonScanner().scanForServices().findAll { !ServiceProvider.hasSingletonImplementation(it.simpleName) }
         def multiInstanceServiceClasses = new ClasspathMultiInstanceServiceScanner().scanForServices()
         def validatedSingletonClasses = new ServiceImplementationValidator(serviceMappingRegistry).validateServicesAndReplaceInterfaces(singletonClasses)
         def serviceClasses = validatedSingletonClasses + multiInstanceServiceClasses

@@ -2,6 +2,7 @@ package org.tb.gg.di.config
 
 import com.google.common.collect.BiMap
 import com.google.common.collect.HashBiMap
+import org.tb.gg.di.ServiceProvider
 import org.tb.gg.di.definition.Service
 
 import javax.annotation.Nullable
@@ -18,12 +19,12 @@ class ServiceMappingRegistry {
             argArray = new Object[]{args};
         }
 
-        if(!(argArray[0] instanceof Class)) {
-            return super.invokeMethod(name, args)
-        }
-
         def interfaceName = name.capitalize()
-        registeredServices[interfaceName] = (Class) argArray[0]
+        if (argArray[0] instanceof Class) {
+            registeredServices[interfaceName] = (Class) argArray[0]
+        } else {
+            ServiceProvider.registerSingletonService(argArray[0], interfaceName)
+        }
         return null
     }
 

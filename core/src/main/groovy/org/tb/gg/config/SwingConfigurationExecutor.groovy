@@ -14,7 +14,7 @@ class SwingConfigurationExecutor implements ConfigurationExecutor {
 
     @Override
     void setFullScreen() {
-        switch(environmentService.environment.graphics) {
+        switch(environmentService.environment.graphicsAPI) {
             case Graphics.SWING:
                 def jFrame = (JFrame) environmentService.environment.environmentFrame
                 GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -25,13 +25,13 @@ class SwingConfigurationExecutor implements ConfigurationExecutor {
                 device.setFullScreenWindow(jFrame)
                 break
             default:
-                throw new IllegalArgumentException("Can't enter fullscreen mode for unknown graphics type ${environmentService.environment.graphics}".toString())
+                throw new IllegalArgumentException("Can't enter fullscreen mode for unknown graphics type ${environmentService.environment.graphicsAPI}".toString())
         }
     }
 
     @Override
     void setWindowed() {
-        switch(environmentService.environment.graphics) {
+        switch(environmentService.environment.graphicsAPI) {
             case Graphics.SWING:
                 def jFrame = (JFrame) environmentService.environment.environmentFrame
                 GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -42,7 +42,7 @@ class SwingConfigurationExecutor implements ConfigurationExecutor {
                 jFrame.setVisible(true)
                 break
             default:
-                throw new IllegalArgumentException("Can't enter windowed mode for unknown graphics type ${environmentService.environment.graphics}".toString())
+                throw new IllegalArgumentException("Can't enter windowed mode for unknown graphics type ${environmentService.environment.graphicsAPI}".toString())
         }
     }
 }

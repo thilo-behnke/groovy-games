@@ -1,10 +1,11 @@
 package org.tb.gg.env
 
 import groovy.util.logging.Log4j
-import org.tb.gg.config.ConfigurationService
-import org.tb.gg.di.Inject
 import org.tb.gg.di.definition.Singleton
+import org.tb.gg.env.frame.DefaultFrameService
+import org.tb.gg.env.frame.FrameService
 import org.tb.gg.renderer.destination.JPanelDestination
+import org.tb.gg.renderer.destination.RenderDestination
 
 import javax.swing.JFrame
 
@@ -31,24 +32,27 @@ class EnvironmentService implements Singleton {
         if (graphics == null) {
             graphics = Graphics.SWING
         }
-        def environment = constructEnvironment(graphics)
+        def environment = new EnvironmentSettings(graphicsAPI: graphics)
         log.info("Environment determined: " + environment)
         this.environment = environment
     }
 
-    private constructEnvironment(Graphics graphics) {
-        switch (graphics) {
-            case Graphics.SWING:
-                def swingEnvironment = this.constructSwingEnvironment()
-                return new EnvironmentSettings(graphics: graphics, environmentFrame: swingEnvironment.jFrame, renderDestination: swingEnvironment.renderDestination)
-            default:
-                throw new IllegalArgumentException("Can't construct environment for unknown graphics type ${graphics}".toString())
-        }
-
+    static class GraphicsAPIEnvironment {
+        RenderDestination renderDestination
+        FrameService frameService
     }
 
-    // TODO: Instead of providing the whole env in one object, services could also be configured through the coreConfig.groovy file.
-    private constructSwingEnvironment() {
+    public GraphicsAPIEnvironment constructGraphicsAPIEnvironment() {
+        switch (environment.graphicsAPI) {
+            case Graphics.SWING:
+                def swingEnvironment = constructSwingEnvironment()
+                return swingEnvironment
+            default:
+                throw new IllegalArgumentException("No environment available for graphicsAPI ${environment.graphicsAPI}")
+        }
+    }
+
+    private static constructSwingEnvironment() {
         def renderDestination = new JPanelDestination()
 
         JFrame f = new JFrame("Game")
@@ -58,8 +62,10 @@ class EnvironmentService implements Singleton {
         f.setUndecorated(false)
         f.setVisible(true)
         f.pack()
+        def frameService = new DefaultFrameService()
+        frameService.setFrame(f)
 
-        return [ renderDestination: renderDestination, jFrame: f ]
+        return new GraphicsAPIEnvironment(renderDestination: renderDestination, frameService: frameService)
     }
 
     EnvironmentSettings getEnvironment() {

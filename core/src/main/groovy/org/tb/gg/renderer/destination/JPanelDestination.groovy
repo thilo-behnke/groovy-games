@@ -43,6 +43,9 @@ class JPanelDestination extends JPanel implements RenderDestination<BufferedImag
 
     @Override
     Dimension getPreferredSize() {
+        if(!configurationService) {
+            return new Dimension(400, 400)
+        }
         def (x, y) = configurationService.getConfiguration().resolution
         return new Dimension(x, y)
     }

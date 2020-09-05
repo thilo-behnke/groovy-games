@@ -34,6 +34,10 @@ public class ServiceProvider {
         singletonServiceMap.put(name, service);
     }
 
+    public static boolean hasSingletonImplementation(String name) {
+        return singletonServiceMap.containsKey(name);
+    }
+
     public static void registerMultiInstanceService(Object service, String name) {
         List<Object> existingInstances = multiInstanceServiceMap.computeIfAbsent(name, k -> new ArrayList<>());
         existingInstances.add(service);
@@ -44,5 +48,4 @@ public class ServiceProvider {
         singletonServiceMap.clear();
         multiInstanceServiceMap.clear();
     }
-
 }
