@@ -3,6 +3,7 @@ package org.tb.gg.config
 import org.tb.gg.di.Inject
 import org.tb.gg.di.definition.Singleton
 import org.tb.gg.env.EnvironmentService
+import org.tb.gg.renderer.destination.RenderDestination
 
 class ConfigurationService implements Singleton {
     // TODO: Load from file somewhere.
@@ -13,6 +14,8 @@ class ConfigurationService implements Singleton {
 
     @Inject
     private EnvironmentService environmentService
+    @Inject
+    private RenderDestination renderDestination
 
     private ConfigurationExecutor configurationExecutor
 
@@ -47,6 +50,8 @@ class ConfigurationService implements Singleton {
     @Override
     void init() {
         configurationExecutor = new ConfigurationExecutorFactory().getExecutor()
+        // TODO: It is not that easy - the panel has to be recreated when the dimensions change :/
+        renderDestination.setDimensions(resolution.getV1(), resolution.getV2())
     }
 
     @Override

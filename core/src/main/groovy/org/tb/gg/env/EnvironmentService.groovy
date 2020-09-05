@@ -42,7 +42,7 @@ class EnvironmentService implements Singleton {
         FrameService frameService
     }
 
-    public GraphicsAPIEnvironment constructGraphicsAPIEnvironment() {
+    GraphicsAPIEnvironment constructGraphicsAPIEnvironment() {
         switch (environment.graphicsAPI) {
             case Graphics.SWING:
                 def swingEnvironment = constructSwingEnvironment()
