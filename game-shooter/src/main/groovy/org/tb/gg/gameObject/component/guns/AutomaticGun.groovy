@@ -24,9 +24,6 @@ class AutomaticGun extends BaseGameObject implements Gun<AutomaticGunProperties>
 
     private long lastShotTimestamp = 0
 
-    @Inject
-    EnvironmentService environmentService
-
     @Override
     void shoot() {
         def timestamp = worldStateProvider.get().currentLoopTimestamp
@@ -37,7 +34,6 @@ class AutomaticGun extends BaseGameObject implements Gun<AutomaticGunProperties>
         lastShotTimestamp = timestamp
 
         def bulletSpawnPosition = body.center
-        environmentService.environment.renderDestination.drawCircle(bulletSpawnPosition, 20.0, new RenderOptions(drawColor: DrawColor.RED))
         def bullet = BulletGameObject.create(bulletSpawnPosition, orientation.normalize() * props.BULLET_VELOCITY)
         bullet.setDamage(props.BULLET_DAMAGE)
 

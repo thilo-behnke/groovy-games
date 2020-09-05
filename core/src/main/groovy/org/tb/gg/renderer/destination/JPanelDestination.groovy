@@ -120,15 +120,13 @@ class JPanelDestination extends JPanel implements RenderDestination<BufferedImag
     }
 
     @Override
-    void drawImage(BufferedImage image, Vector topLeft, Vector center, BigDecimal rotation, RenderOptions options) {
+    void drawImage(BufferedImage image, Vector topLeft, BigDecimal rotation, RenderOptions options) {
         def drawCl = { Graphics2D g ->
 
             if (rotation > 0) {
                 AffineTransform tx = AffineTransform.getRotateInstance(-rotation, image.getWidth() / 2, image.getHeight() / 2)
                 AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
                 BufferedImage rotatedImage = op.filter(image, null)
-                // TODO: The topLeft position needs to be updated after rotation, otherwise the image is positioned at the wrong coordinates.
-                def newTopLeft = center + (topLeft - center).rotate(rotation)
 
                 g.drawImage(rotatedImage, topLeft.x.toInteger(), getHeight() - topLeft.y.toInteger(), null)
             } else {

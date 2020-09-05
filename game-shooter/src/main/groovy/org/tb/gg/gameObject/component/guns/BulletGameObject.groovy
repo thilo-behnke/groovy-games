@@ -24,8 +24,6 @@ import org.tb.gg.resources.ShooterGameResource
 class BulletGameObject extends BaseGameObject implements TimePerishable, OutOfBoundsPerishable {
     @Delegate
     BulletProperties bulletProperties = new BulletProperties()
-    @Inject
-    static EnvironmentService environmentService
 
     static BulletGameObject create(Vector center, Vector orientation) {
         def physicsComp = BulletPhysicsComponent.create(orientation)
@@ -40,8 +38,6 @@ class BulletGameObject extends BaseGameObject implements TimePerishable, OutOfBo
         bullet.setOrientation(orientation)
         bullet.body.setCenter(center)
         bullet.body.shape.rotate(new Vector(x: 1, y: 0).angleBetween(orientation))
-
-        environmentService.environment.renderDestination.drawCircle(bullet.body.shape.boundingRect.topLeft, 10.0, new RenderOptions(drawColor: DrawColor.GREEN))
 
         return bullet
     }
