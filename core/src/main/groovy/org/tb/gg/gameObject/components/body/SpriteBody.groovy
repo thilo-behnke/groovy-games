@@ -27,7 +27,7 @@ class SpriteBody extends Body {
     void render(RenderDestination renderDestination, RenderOptions options) {
         if (image) {
             def originalTopLeft = shape.boundingRect.originalTopLeft()
-            renderDestination.drawImage(image.getImage(), originalTopLeft, shape.boundingRect.center, shape.boundingRect.rotation, options)
+            renderDestination.drawImage(image.getImage(), originalTopLeft, shape.boundingRect.rotation, options)
             // TODO: Implement debug extension.
             renderDestination.drawRect(originalTopLeft, shape.boundingRect.dim, shape.boundingRect.rotation, new RenderOptions(drawColor: DrawColor.RED))
         } else {
