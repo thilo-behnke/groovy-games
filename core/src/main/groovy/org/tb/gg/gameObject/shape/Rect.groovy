@@ -49,6 +49,11 @@ class Rect extends Shape {
         return new Line(topLeft, bottomLeft)
     }
 
+    // TopLeft with rotation = 0.
+    Vector originalTopLeft() {
+        center + new Vector(x: -dim.x / 2, y: dim.y / 2)
+    }
+
     Vector getTopLeft() {
         def centerToCorner = new Vector(x: -dim.x, y: dim.y) / 2.0
         return center + centerToCorner.rotate(rotation)

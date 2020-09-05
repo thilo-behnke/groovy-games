@@ -26,9 +26,9 @@ class SpriteBody extends Body {
     @Override
     void render(RenderDestination renderDestination, RenderOptions options) {
         if (image) {
-            renderDestination.drawImage(image.getImage(), shape.boundingRect.topLeft, shape.boundingRect.center, shape.boundingRect.rotation, options)
-            // TODO: Only for debug purposes, remove later.
-            renderDestination.drawRect(shape.boundingRect.topLeft, shape.boundingRect.dim, shape.boundingRect.rotation, new RenderOptions(drawColor: DrawColor.RED))
+            def unrotatedTopLeft = shape.boundingRect.center + (shape.boundingRect.topLeft - shape.boundingRect.center).rotate(-shape.boundingRect.rotation)
+            renderDestination.drawImage(image.getImage(), unrotatedTopLeft, shape.boundingRect.center, shape.boundingRect.rotation, options)
+            renderDestination.drawRect(unrotatedTopLeft, shape.boundingRect.dim, shape.boundingRect.rotation, new RenderOptions(drawColor: DrawColor.RED))
         } else {
             def rect = shape.boundingRect
             renderDestination.drawRect(rect.topLeft, rect.dim, rect.rotation.toFloat(), options)
