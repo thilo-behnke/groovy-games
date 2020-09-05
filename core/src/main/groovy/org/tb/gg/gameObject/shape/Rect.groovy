@@ -9,7 +9,7 @@ import org.tb.gg.renderer.options.RenderOptions
 class Rect extends Shape {
     Vector center
     Vector dim
-    private BigDecimal rotation
+    BigDecimal rotation
 
     // TODO: Use center instead of topLeft to construct.
     Rect(Vector topLeft, Vector dim, BigDecimal rotation = 0) {
@@ -47,6 +47,11 @@ class Rect extends Shape {
 
     Line getLeftEdge() {
         return new Line(topLeft, bottomLeft)
+    }
+
+    // TopLeft with rotation = 0.
+    Vector originalTopLeft() {
+        center + new Vector(x: -dim.x / 2, y: dim.y / 2)
     }
 
     Vector getTopLeft() {

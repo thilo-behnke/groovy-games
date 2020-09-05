@@ -4,7 +4,12 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.Immutable
 import org.tb.gg.di.Inject
 import org.tb.gg.engine.SceneManager
+import org.tb.gg.env.EnvironmentService
+import org.tb.gg.env.EnvironmentSettings
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.global.geom.Vector
+import org.tb.gg.renderer.options.DrawColor
+import org.tb.gg.renderer.options.RenderOptions
 import org.tb.gg.world.WorldStateProvider
 
 @EqualsAndHashCode(cache = true, includeFields = true, includes = ['org_tb_gg_gameObject_component_guns_Gun__props'])
@@ -28,8 +33,10 @@ class AutomaticGun extends BaseGameObject implements Gun<AutomaticGunProperties>
 
         lastShotTimestamp = timestamp
 
-        def bullet = BulletGameObject.create(body.center, orientation.normalize() * props.BULLET_VELOCITY)
+        def bulletSpawnPosition = body.center
+        def bullet = BulletGameObject.create(bulletSpawnPosition, orientation.normalize() * props.BULLET_VELOCITY)
         bullet.setDamage(props.BULLET_DAMAGE)
+
         sceneManager.getActiveScene().ifPresent { it.accessGameObjectProvider().addGameObject(bullet) }
     }
 }
