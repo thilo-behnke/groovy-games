@@ -7,6 +7,7 @@ import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.resources.ShooterGameResource
+import org.tb.gg.utils.MathUtils
 
 class EnemyGameObject extends BaseGameObject {
     @Delegate
@@ -49,16 +50,18 @@ class EnemyGameObject extends BaseGameObject {
         def newY = physicsComponent.velocity.y
         // Update X.
         if (activeActions.contains(EnemyAction.RIGHT.toString())) {
-            newX += 0.05
+            newX = newX + 0.05
         } else if (activeActions.contains(EnemyAction.LEFT.toString())) {
-            newX -= 0.05
+            newX = newY - 0.05
         }
         // Update Y.
         if (activeActions.contains(EnemyAction.UP.toString())) {
-            newY += 0.05
+            newY = newY + 0.05
         } else if (activeActions.contains(EnemyAction.DOWN.toString())) {
-            newY -= 0.05
+            newY = newY - 0.05
         }
+        newX = MathUtils.normalizeInRange(newX, -maxVelocity, +maxVelocity)
+        newY = MathUtils.normalizeInRange(newY, -maxVelocity, +maxVelocity)
         def velocity = new Vector(x: newX, y: newY)
 
         physicsComponent.setVelocity(velocity)
