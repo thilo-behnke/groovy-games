@@ -14,7 +14,7 @@ class EnemyWanderingState extends ActionState {
     @Inject
     RandomUtilsService randomUtilsService
 
-    private Vector goal
+    Vector goal
 
     EnemyWanderingState(BaseGameObject parent) {
         super(EnemyState.WANDERING.toString(), parent)
