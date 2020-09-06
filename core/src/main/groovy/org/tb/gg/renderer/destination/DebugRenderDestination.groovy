@@ -49,4 +49,13 @@ class DebugRenderDestination implements RenderDestination {
 
     }
 
+    @Override
+    void init() {
+
+    }
+
+    @Override
+    void destroy() {
+
+    }
 }

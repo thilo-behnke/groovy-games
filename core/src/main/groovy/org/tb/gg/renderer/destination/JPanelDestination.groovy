@@ -139,4 +139,14 @@ class JPanelDestination extends JPanel implements RenderDestination<BufferedImag
     void refresh() {
         repaint()
     }
+
+    @Override
+    void init() {
+
+    }
+
+    @Override
+    void destroy() {
+
+    }
 }

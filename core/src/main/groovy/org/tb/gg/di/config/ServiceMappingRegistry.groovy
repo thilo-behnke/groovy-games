@@ -9,6 +9,7 @@ import javax.annotation.Nullable
 
 class ServiceMappingRegistry {
     BiMap<String, Class<? extends Service>> registeredServices = HashBiMap.create()
+    BiMap<String, Service> registeredServiceInstances = HashBiMap.create()
 
     @Override
     Object invokeMethod(String name, Object args) {
@@ -23,7 +24,7 @@ class ServiceMappingRegistry {
         if (argArray[0] instanceof Class) {
             registeredServices[interfaceName] = (Class) argArray[0]
         } else {
-            ServiceProvider.registerSingletonService(argArray[0], interfaceName, true)
+            registeredServiceInstances[interfaceName] = (Service) argArray[0]
         }
         return null
     }
@@ -31,5 +32,10 @@ class ServiceMappingRegistry {
     @Nullable
     Class<? extends Service> getImplementationForBaseClass(String baseClassName) {
         return registeredServices.get(baseClassName)
+    }
+
+    @Nullable
+    Service getServiceInstanceForBaseClass(String baseClassName) {
+        return registeredServiceInstances.get(baseClassName)
     }
 }

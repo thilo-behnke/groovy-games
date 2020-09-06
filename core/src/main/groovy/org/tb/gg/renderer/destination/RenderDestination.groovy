@@ -1,11 +1,12 @@
 package org.tb.gg.renderer.destination
 
+import org.tb.gg.di.definition.Singleton
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.options.RenderOptions
 
 import java.awt.image.BufferedImage
 
-interface RenderDestination<I> {
+interface RenderDestination<I> extends Singleton {
     void setDimensions(int width, int height)
     // TODO: Command pattern for render options?
     void drawImage(I image, Vector topLeft, BigDecimal rotation, RenderOptions options)
