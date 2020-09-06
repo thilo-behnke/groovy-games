@@ -6,6 +6,7 @@ import org.tb.gg.di.config.ServiceConfigReader
 import org.tb.gg.di.config.ServiceMappingRegistry
 import org.tb.gg.di.creator.DefaultConstructorServiceCreator
 import org.tb.gg.di.definition.Service
+import org.tb.gg.di.definition.Singleton
 import org.tb.gg.di.scanner.ClasspathMultiInstanceServiceScanner
 import org.tb.gg.di.scanner.ClasspathSingletonScanner
 import org.tb.gg.di.validation.ServiceImplementationValidator
@@ -27,7 +28,7 @@ class DependencyInjectionHandler {
         def serviceMappingRegistry = new ServiceMappingRegistry()
         new ServiceConfigReader(new DefaultResourceProvider(), serviceMappingRegistry).readConfigAndRegisterServices()
 
-        def singletonClasses = new ClasspathSingletonScanner().scanForServices().findAll { !ServiceProvider.hasSingletonImplementation(it.simpleName) }
+        def singletonClasses = findSingletonClasses()
         def multiInstanceServiceClasses = new ClasspathMultiInstanceServiceScanner().scanForServices()
         def validatedSingletonClasses = new ServiceImplementationValidator(serviceMappingRegistry).validateServicesAndReplaceInterfaces(singletonClasses)
         def serviceClasses = validatedSingletonClasses + multiInstanceServiceClasses
@@ -37,5 +38,9 @@ class DependencyInjectionHandler {
         isInitialized = true
 
         return serviceInstances
+    }
+
+    private static Set<Class<? extends Singleton>> findSingletonClasses() {
+        return (Set<Class<? extends Singleton>>) new ClasspathSingletonScanner().scanForServices().findAll { !ServiceProvider.hasSingletonImplementation(it.simpleName) }
     }
 }

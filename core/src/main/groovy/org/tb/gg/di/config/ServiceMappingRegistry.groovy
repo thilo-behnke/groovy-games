@@ -23,7 +23,7 @@ class ServiceMappingRegistry {
         if (argArray[0] instanceof Class) {
             registeredServices[interfaceName] = (Class) argArray[0]
         } else {
-            ServiceProvider.registerSingletonService(argArray[0], interfaceName)
+            ServiceProvider.registerSingletonService(argArray[0], interfaceName, true)
         }
         return null
     }

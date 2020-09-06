@@ -28,7 +28,11 @@ public class ServiceProvider {
     }
 
     public static void registerSingletonService(Object service, String name) {
-        if (singletonServiceMap.containsKey(name)) {
+        registerSingletonService(service, name, false);
+    }
+
+    public static void registerSingletonService(Object service, String name, boolean overrideExistingService) {
+        if (!overrideExistingService && singletonServiceMap.containsKey(name)) {
             return;
         }
         singletonServiceMap.put(name, service);
