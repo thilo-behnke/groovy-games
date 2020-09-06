@@ -2,6 +2,7 @@ package org.tb.gg.env
 
 import org.tb.gg.env.systemProperty.SystemPropertyProvider
 import org.tb.gg.input.awt.SwingMouseEventAdapter
+import org.tb.gg.renderer.destination.DebugRenderDestination
 import org.tb.gg.renderer.destination.JPanelDestination
 import org.tb.gg.resources.SwingResourceLoader
 import spock.lang.Specification
@@ -63,7 +64,17 @@ class DefaultEnvironmentServiceSpec extends Specification {
         def swingEnv = defaultEnvironmentService.constructGraphicsAPIEnvironment()
         then:
         swingEnv.renderDestination instanceof JPanelDestination && swingEnv.resourceLoader instanceof SwingResourceLoader && swingEnv.mouseEventProvider instanceof SwingMouseEventAdapter
+    }
 
-
+    def 'should correctly construct the swing environment in debug mode (debug render destination)'() {
+        given:
+        systemPropertiesEnvironmentAnalyzer.getGraphics() >> Graphics.SWING
+        systemPropertiesEnvironmentAnalyzer.isDebugModeActive() >> true
+        defaultEnvironmentService.init()
+        when:
+        def swingEnv = defaultEnvironmentService.constructGraphicsAPIEnvironment()
+        then:
+        swingEnv.renderDestination instanceof DebugRenderDestination && ((DebugRenderDestination) swingEnv.renderDestination).renderDestination instanceof JPanelDestination
+                && swingEnv.resourceLoader instanceof SwingResourceLoader && swingEnv.mouseEventProvider instanceof SwingMouseEventAdapter
     }
 }
