@@ -67,7 +67,7 @@ class ServiceImplementationValidatorSpec extends Specification {
 
     def 'should replace the service interface with the correct implementation provided by the service mapping registry'() {
         given:
-        serviceMappingRegistry.getServiceInstanceForBaseClass(SomeInterface.getSimpleName()) >> SomeClassImplementingInterface
+        serviceMappingRegistry.getImplementationForBaseClass(SomeInterface.getSimpleName()) >> SomeClassImplementingInterface
         def services = (Set<Class>) [SomeClassImplementingInterface.class]
         when:
         def res = serviceImplementationValidator.validateServicesAndReplaceInterfaces(services)
@@ -77,7 +77,7 @@ class ServiceImplementationValidatorSpec extends Specification {
 
     def 'should replace the abstract service class with the correct implementation provided by the service mapping registry'() {
         given:
-        serviceMappingRegistry.getServiceInstanceForBaseClass(SomeAbstractClass.getSimpleName()) >> SomeClassExtendingAbstractClass
+        serviceMappingRegistry.getImplementationForBaseClass(SomeAbstractClass.getSimpleName()) >> SomeClassExtendingAbstractClass
         def services = (Set<Class>) [SomeAbstractClass.class]
         when:
         def res = serviceImplementationValidator.validateServicesAndReplaceInterfaces(services)
