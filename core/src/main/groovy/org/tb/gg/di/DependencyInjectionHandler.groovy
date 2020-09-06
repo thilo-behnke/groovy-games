@@ -29,17 +29,20 @@ class DependencyInjectionHandler {
         new ServiceConfigReader(new DefaultResourceProvider(), serviceMappingRegistry).readConfigAndRegisterServices()
 
         def providedSingletonInstances = findProvidedSingletonInstances(serviceMappingRegistry)
-
-        def singletonClasses = findSingletonClassesToInstantiate(serviceMappingRegistry)
-        def multiInstanceServiceClasses = new ClasspathMultiInstanceServiceScanner().scanForServices()
-        def validatedSingletonClasses = new ServiceImplementationValidator(serviceMappingRegistry).validateServicesAndReplaceInterfaces(singletonClasses)
-        def serviceClasses = validatedSingletonClasses + multiInstanceServiceClasses
-        def createdServiceInstances = new DefaultConstructorServiceCreator(new SinglePipelineServiceCreationOrderResolver(), serviceMappingRegistry).createServices(serviceClasses)
+        def createdServiceInstances = createSingletonServiceInstances(serviceMappingRegistry)
 
         def allServiceInstances = createdServiceInstances + providedSingletonInstances
         isInitialized = true
 
-        return allServiceInstances
+        return allServiceInstances.toList()
+    }
+
+    private static Set<Service> createSingletonServiceInstances(ServiceMappingRegistry serviceMappingRegistry) {
+        def singletonClasses = findSingletonClassesToInstantiate(serviceMappingRegistry)
+        def multiInstanceServiceClasses = new ClasspathMultiInstanceServiceScanner().scanForServices()
+        def validatedSingletonClasses = new ServiceImplementationValidator(serviceMappingRegistry).validateServicesAndReplaceInterfaces(singletonClasses)
+        def serviceClasses = validatedSingletonClasses + multiInstanceServiceClasses
+        return new DefaultConstructorServiceCreator(new SinglePipelineServiceCreationOrderResolver(), serviceMappingRegistry).createServices(serviceClasses)
     }
 
     private static Set<Class<? extends Singleton>> findSingletonClassesToInstantiate(ServiceMappingRegistry serviceMappingRegistry) {
@@ -51,13 +54,13 @@ class DependencyInjectionHandler {
         def serviceInstances = (Set<Tuple2<String, Service>>) new ClasspathSingletonScanner().scanForServices()
                 .collect {
                     def serviceInstance = serviceMappingRegistry.getServiceInstanceForBaseClass(it.simpleName)
-                    if(serviceInstance) {
+                    if (serviceInstance) {
                         return new Tuple2<String, Service>(it.simpleName, serviceInstance)
                     }
                     return null
                 }
                 .findAll { it }
-        serviceInstances.each {ServiceProvider.registerSingletonService(it.getV2(), it.getV1())}
+        serviceInstances.each { ServiceProvider.registerSingletonService(it.getV2(), it.getV1()) }
         return serviceInstances.collect { it.getV2() }
     }
 }
