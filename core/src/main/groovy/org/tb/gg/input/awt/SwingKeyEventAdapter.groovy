@@ -2,6 +2,7 @@ package org.tb.gg.input.awt
 
 import org.tb.gg.di.Inject
 import org.tb.gg.env.EnvironmentService
+import org.tb.gg.env.frame.GraphicsAPIFrameProvider
 import org.tb.gg.input.Key
 import org.tb.gg.input.keyEvent.KeyEventSubject
 import io.reactivex.rxjava3.core.Observable
@@ -38,17 +39,21 @@ class SwingKeyEventAdapter implements KeyEventSubject {
 
     @Inject
     private EnvironmentService environmentService
+    @Inject
+    private GraphicsAPIFrameProvider frameService
 
-    private final JFrame frame
     private final SwingKeyListener keyListener
     private final Set<Integer> keyCodesToListenTo = new HashSet<>()
     private Set<Key> keysPressed = new HashSet<>()
     private BehaviorSubject<Set<Key>> source
 
     SwingKeyEventAdapter() {
-        this.frame = (JFrame) environmentService.environment.environmentFrame
         this.keyListener = new SwingKeyListener(this)
         this.source = BehaviorSubject.createDefault(new HashSet<>())
+    }
+
+    private JFrame getFrame() {
+        (JFrame) frameService.frame
     }
 
     @Override

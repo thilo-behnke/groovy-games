@@ -2,16 +2,16 @@ package org.tb.gg.input.awt
 
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.subjects.AsyncSubject
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import org.tb.gg.di.Inject
-import org.tb.gg.env.EnvironmentService
+import org.tb.gg.env.frame.GraphicsAPIFrameProvider
 import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
 import org.tb.gg.input.mouseEvent.MouseRectangleEvent
+import org.tb.gg.renderer.destination.JPanelDestination
+import org.tb.gg.renderer.destination.RenderDestination
 
 import javax.swing.JFrame
 import javax.swing.JPanel
@@ -54,7 +54,9 @@ class SwingMouseEventAdapter implements MouseEventProvider {
     }
 
     @Inject
-    private EnvironmentService environmentService
+    private GraphicsAPIFrameProvider frameService
+    @Inject
+    private RenderDestination renderDestination
 
     private PublishSubject<MouseEvent> mouseDownSubject
     private PublishSubject<MouseEvent> mouseUpSubject
@@ -67,8 +69,6 @@ class SwingMouseEventAdapter implements MouseEventProvider {
 
     private MouseEvent currentMousePosition
 
-    private JFrame jFrame
-    private JPanel jPanel
     private MouseListener mouseListener
 
     @Override
@@ -78,32 +78,34 @@ class SwingMouseEventAdapter implements MouseEventProvider {
         mouseClickSubject = PublishSubject.create()
         mouseRectanglesSubject = PublishSubject.create()
 
-        jFrame = (JFrame) environmentService.environment.environmentFrame
-        jPanel = (JPanel) environmentService.environment.renderDestination
-
         subscribeAndProcessMouseMoveEvents()
         subscribeAndProcessRectangleEvents()
 
         mouseListener = new SwingMouseListener(this)
-        jFrame.addMouseListener(mouseListener)
+        getJFrame().addMouseListener(mouseListener)
 
         // This class needs to provide the current position of the mouse synchronously, therefore subscribe here to make the observable hot.
         mouseMoveEventDisposable = mouseMoveEvent.subscribe()
         mouseRectangleDisposable = mouseRectangleEvent.subscribe()
     }
 
+    private JFrame getJFrame() {
+        (JFrame) frameService.getFrame()
+    }
+
     private subscribeAndProcessMouseMoveEvents() {
+        def dimensions = renderDestination.getDimensions()
         mouseMoveEvent = (Observable<MouseEvent>) Observable
                 .interval((1000 / 60).toInteger(), TimeUnit.MILLISECONDS)
                 .map {
-                    Optional.ofNullable(jPanel.getMousePosition())
+                    Optional.ofNullable(renderDestination.getMousePosition())
                 }
                 .filter {
                     it.isPresent()
                 }
                 .map { mousePosOpt ->
                     def mousePos = mousePosOpt.get()
-                    return new MouseEvent(pos: new Vector(x: mousePos.x, y: jPanel.getHeight() - mousePos.y))
+                    return new MouseEvent(pos: new Vector(x: mousePos.x, y: dimensions.y - mousePos.y))
                 }
                 .doOnNext { mouseEvent ->
                     currentMousePosition = mouseEvent
@@ -123,21 +125,21 @@ class SwingMouseEventAdapter implements MouseEventProvider {
 
     @Override
     void destroy() {
-        jFrame.removeMouseListener(mouseListener)
+        getJFrame().removeMouseListener(mouseListener)
         mouseMoveEventDisposable.dispose()
         mouseRectangleDisposable.dispose()
     }
 
     protected alertMouseDown(java.awt.event.MouseEvent e) {
-        mouseDownSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: jFrame.getHeight() - e.y)))
+        mouseDownSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: getJFrame().getHeight() - e.y)))
     }
 
     protected alertMouseUp(java.awt.event.MouseEvent e) {
-        mouseUpSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: jFrame.getHeight() - e.y)))
+        mouseUpSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: getJFrame().getHeight() - e.y)))
     }
 
     protected alertMouseClick(java.awt.event.MouseEvent e) {
-        mouseClickSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: jFrame.getHeight() - e.y)))
+        mouseClickSubject.onNext(new MouseEvent(pos: new Vector(x: e.x, y: getJFrame().getHeight() - e.y)))
     }
 
     @Override

@@ -9,11 +9,11 @@ class ConfigurationExecutorFactory {
     private EnvironmentService environmentService
 
     ConfigurationExecutor getExecutor() {
-       switch (environmentService.environment.graphics) {
+       switch (environmentService.environment.graphicsAPI) {
            case Graphics.SWING:
                return new SwingConfigurationExecutor()
            default:
-               throw new IllegalArgumentException("Can't enter windowed mode for unknown graphics type ${environmentService.environment.graphics}".toString())
+               throw new IllegalArgumentException("Can't enter windowed mode for unknown graphics type ${environmentService.environment.graphicsAPI}".toString())
        }
     }
 }

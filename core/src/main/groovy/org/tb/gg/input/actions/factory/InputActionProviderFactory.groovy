@@ -31,8 +31,8 @@ class AbstractInputActionProviderFactory {
 
     // TODO: This should be done once at the beginning, once the environment is determined. After that, the correct factory is a static attribute.
     static factory() {
-        def type = environmentService.environment.graphics
-        switch (environmentService.environment.graphics) {
+        def type = environmentService.environment.graphicsAPI
+        switch (environmentService.environment.graphicsAPI) {
             case Graphics.SWING:
                 return new AwtInputActionProviderFactory()
             default:

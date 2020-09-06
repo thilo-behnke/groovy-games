@@ -1,10 +1,16 @@
 package org.tb.gg.env
 
 import groovy.util.logging.Log4j
-import org.tb.gg.config.ConfigurationService
-import org.tb.gg.di.Inject
 import org.tb.gg.di.definition.Singleton
+import org.tb.gg.env.frame.DefaultGraphicsAPIFrameProvider
+import org.tb.gg.env.frame.GraphicsAPIFrameProvider
+import org.tb.gg.input.awt.SwingMouseEventAdapter
+import org.tb.gg.input.mouseEvent.MouseEventProvider
+import org.tb.gg.renderer.destination.DebugRenderDestination
 import org.tb.gg.renderer.destination.JPanelDestination
+import org.tb.gg.renderer.destination.RenderDestination
+import org.tb.gg.resources.ResourceLoader
+import org.tb.gg.resources.SwingResourceLoader
 
 import javax.swing.JFrame
 
@@ -16,7 +22,8 @@ class EnvironmentService implements Singleton {
     @Override
     void init() {
         def graphics = environmentAnalyzer.getGraphics()
-        setEnvironment(graphics)
+        def debugModeActive = environmentAnalyzer.isDebugModeActive()
+        setEnvironment(graphics, debugModeActive)
     }
 
     @Override
@@ -24,42 +31,60 @@ class EnvironmentService implements Singleton {
 
     }
 
-    private void setEnvironment(Graphics graphics) {
+    private void setEnvironment(Graphics graphics, boolean debugModeActive) {
         if (this.environment) {
             throw new IllegalStateException("Can't redefine the environment once it was set!")
         }
         if (graphics == null) {
             graphics = Graphics.SWING
         }
-        def environment = constructEnvironment(graphics)
+        def environment = new EnvironmentSettings(graphicsAPI: graphics, debugMode: debugModeActive)
         log.info("Environment determined: " + environment)
         this.environment = environment
     }
 
-    private constructEnvironment(Graphics graphics) {
-        switch (graphics) {
-            case Graphics.SWING:
-                def swingEnvironment = this.constructSwingEnvironment()
-                return new EnvironmentSettings(graphics: graphics, environmentFrame: swingEnvironment.jFrame, renderDestination: swingEnvironment.renderDestination)
-            default:
-                throw new IllegalArgumentException("Can't construct environment for unknown graphics type ${graphics}".toString())
-        }
-
+    static class GraphicsAPIEnvironment {
+        RenderDestination renderDestination
+        GraphicsAPIFrameProvider frameProvider
+        MouseEventProvider mouseEventProvider
+        ResourceLoader resourceLoader
     }
 
-    // TODO: Instead of providing the whole env in one object, services could also be configured through the coreConfig.groovy file.
-    private constructSwingEnvironment() {
-        def renderDestination = new JPanelDestination()
+    GraphicsAPIEnvironment constructGraphicsAPIEnvironment() {
+        switch (environment.graphicsAPI) {
+            case Graphics.SWING:
+                def swingEnvironment = constructSwingEnvironment()
+                return swingEnvironment
+            default:
+                throw new IllegalArgumentException("No environment available for graphicsAPI ${environment.graphicsAPI}")
+        }
+    }
 
+    private constructSwingEnvironment() {
+        def renderDestination = constructSwingRenderDestination()
+
+        // Construct frame and canvas panel.
         JFrame f = new JFrame("Game")
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
         f.setResizable(false)
-        f.add(renderDestination)
         f.setUndecorated(false)
         f.setVisible(true)
         f.pack()
+        def frameService = new DefaultGraphicsAPIFrameProvider()
+        frameService.setFrame(f)
 
-        return [ renderDestination: renderDestination, jFrame: f ]
+        def mouseEventProvider = new SwingMouseEventAdapter()
+        def resourceLoader = new SwingResourceLoader()
+
+        return new GraphicsAPIEnvironment(renderDestination: renderDestination, frameProvider: frameService, mouseEventProvider: mouseEventProvider, resourceLoader: resourceLoader)
+    }
+
+    private constructSwingRenderDestination() {
+        def renderDestination = new JPanelDestination()
+        if (!environment.debugMode) {
+            return renderDestination
+        }
+        return new DebugRenderDestination(renderDestination)
     }
 
     EnvironmentSettings getEnvironment() {

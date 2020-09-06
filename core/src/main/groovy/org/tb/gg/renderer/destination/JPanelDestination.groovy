@@ -1,78 +1,55 @@
 package org.tb.gg.renderer.destination
 
-import org.tb.gg.config.ConfigurationService
 import org.tb.gg.di.Inject
+import org.tb.gg.env.frame.GraphicsAPIFrameProvider
 import org.tb.gg.global.geom.Vector
-import org.tb.gg.renderer.options.DrawColor
 import org.tb.gg.renderer.options.RenderOptions
+import org.tb.gg.resources.ImageWrapper
 
-import javax.swing.BorderFactory
-import javax.swing.JPanel
-import java.awt.Color
-import java.awt.Dimension
-import java.awt.Graphics
-import java.awt.Graphics2D
+import javax.swing.JFrame
+import java.awt.*
 import java.awt.geom.AffineTransform
 import java.awt.geom.Ellipse2D
 import java.awt.geom.Line2D
 import java.awt.geom.Rectangle2D
 import java.awt.image.AffineTransformOp
 import java.awt.image.BufferedImage
-import java.util.concurrent.ConcurrentLinkedQueue
 
-class JPanelDestination extends JPanel implements RenderDestination<BufferedImage> {
-    // TODO: Alternative BufferedImage: https://stackoverflow.com/questions/43236656/jpanel-painting-not-cleared.
-    private Queue<DrawAction> drawQueue = new ConcurrentLinkedQueue<>()
-
+class JPanelDestination implements RenderDestination<ImageWrapper<BufferedImage>> {
     @Inject
-    private ConfigurationService configurationService
+    GraphicsAPIFrameProvider frameService
+
+    JPanelWrapper jPanelWrapper
+    private Dimension dimension
 
     class DrawAction {
         Closure action
         RenderOptions options
     }
 
-    JPanelDestination() {
-        setBorder(BorderFactory.createLineBorder(Color.black))
-    }
-
     @Override
     void setDimensions(int width, int height) {
-//        dimensions = [width, height]
-    }
+        dimension = new Dimension(width, height)
 
-    @Override
-    Dimension getPreferredSize() {
-        def (x, y) = configurationService.getConfiguration().resolution
-        return new Dimension(x, y)
-    }
-
-    @Override
-    void paintComponent(Graphics g) {
-        super.paintComponent(g)
-
-        drawQueue.forEach({
-            g.setColor(translateColor(it.options.drawColor))
-            it.action g
-        })
-        drawQueue.clear()
-    }
-
-    private static translateColor(DrawColor drawColor) {
-        switch (drawColor) {
-            case DrawColor.BLACK:
-                return Color.black
-            case DrawColor.RED:
-                return Color.red
-            case DrawColor.YELLOW:
-                return Color.yellow
-            case DrawColor.BLUE:
-                return Color.blue
-            case DrawColor.GREEN:
-                return Color.green
-            default:
-                return Color.black
+        JFrame jFrame = (JFrame) frameService.getFrame()
+        if (jPanelWrapper) {
+            jFrame.remove(jPanelWrapper)
         }
+
+        jPanelWrapper = new JPanelWrapper(dimension)
+        jFrame.add(jPanelWrapper)
+        jFrame.pack()
+    }
+
+    @Override
+    Vector getDimensions() {
+        return new Vector(x: dimension.getWidth(), y: dimension.getHeight())
+    }
+
+    @Override
+    Vector getMousePosition() {
+        def mousePos = jPanelWrapper.getMousePosition()
+        return mousePos ? new Vector(x: mousePos.x, y: mousePos.y) : null
     }
 
     // TODO: Could be this repetition be solved with an AST transformation?
@@ -80,28 +57,28 @@ class JPanelDestination extends JPanel implements RenderDestination<BufferedImag
     void drawLine(Vector start, Vector end, RenderOptions options) {
         def drawCl = { Graphics2D g ->
             g.setColor()
-            g.draw(new Line2D.Float(start.x, getHeight() - start.y, end.x, getHeight() - end.y))
+            g.draw(new Line2D.Float(start.x, jPanelWrapper.getHeight() - start.y, end.x, jPanelWrapper.getHeight() - end.y))
         }
-        drawQueue << new DrawAction(action: drawCl, options: options)
+        jPanelWrapper.draw(new DrawAction(action: drawCl, options: options))
     }
 
     @Override
     void drawPoint(Vector pos, RenderOptions options) {
-        def drawCl = { Graphics2D g -> g.draw(new Ellipse2D.Float(pos.x, getHeight() - pos.y, 1, 1)) }
-        drawQueue << new DrawAction(action: drawCl, options: options)
+        def drawCl = { Graphics2D g -> g.draw(new Ellipse2D.Float(pos.x, jPanelWrapper.getHeight() - pos.y, 1, 1)) }
+        jPanelWrapper.draw(new DrawAction(action: drawCl, options: options))
     }
 
     @Override
     void drawCircle(Vector center, BigDecimal radius, RenderOptions options) {
         // TODO: Inefficient, should the shape classes provide both center and bounding areas?
-        def drawCl = { Graphics2D g -> g.draw(new Ellipse2D.Float(center.x - radius, getHeight() - center.y - radius, 2 * radius, 2 * radius)) }
-        drawQueue << new DrawAction(action: drawCl, options: options)
+        def drawCl = { Graphics2D g -> g.draw(new Ellipse2D.Float(center.x - radius, jPanelWrapper.getHeight() - center.y - radius, 2 * radius, 2 * radius)) }
+        jPanelWrapper.draw(new DrawAction(action: drawCl, options: options))
     }
 
     @Override
     void drawRect(Vector topLeft, Vector dim, Float rotation, RenderOptions options) {
         def drawCl = { Graphics2D g ->
-            def rectangle = new Rectangle2D.Float(topLeft.x, getHeight() - topLeft.y, dim.x, dim.y)
+            def rectangle = new Rectangle2D.Float(topLeft.x, jPanelWrapper.getHeight() - topLeft.y, dim.x, dim.y)
             if (rotation > 0) {
                 AffineTransform tx = new AffineTransform();
                 tx.rotate(-rotation, rectangle.centerX, rectangle.centerY);
@@ -110,34 +87,44 @@ class JPanelDestination extends JPanel implements RenderDestination<BufferedImag
 
             g.draw(rectangle)
         }
-        drawQueue << new DrawAction(action: drawCl, options: options)
+        jPanelWrapper.draw(new DrawAction(action: drawCl, options: options))
     }
 
     @Override
     void drawText(Vector pos, String text, RenderOptions options) {
-        def drawCl = { Graphics2D g -> g.drawString(text, pos.x, getHeight() - pos.y) }
-        drawQueue << new DrawAction(action: drawCl, options: options)
+        def drawCl = { Graphics2D g -> g.drawString(text, pos.x, jPanelWrapper.getHeight() - pos.y) }
+        jPanelWrapper.draw(new DrawAction(action: drawCl, options: options))
     }
 
     @Override
-    void drawImage(BufferedImage image, Vector topLeft, BigDecimal rotation, RenderOptions options) {
+    void drawImage(ImageWrapper<BufferedImage> imageWrapper, Vector topLeft, BigDecimal rotation, RenderOptions options) {
         def drawCl = { Graphics2D g ->
+            def image = imageWrapper.getImage()
 
             if (rotation > 0) {
                 AffineTransform tx = AffineTransform.getRotateInstance(-rotation, image.getWidth() / 2, image.getHeight() / 2)
                 AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
                 BufferedImage rotatedImage = op.filter(image, null)
 
-                g.drawImage(rotatedImage, topLeft.x.toInteger(), getHeight() - topLeft.y.toInteger(), null)
+                g.drawImage(rotatedImage, topLeft.x.toInteger(), jPanelWrapper.getHeight() - topLeft.y.toInteger(), null)
             } else {
-                g.drawImage(image, topLeft.x.toInteger(), getHeight() - topLeft.y.toInteger(), null)
+                g.drawImage(image, topLeft.x.toInteger(), jPanelWrapper.getHeight() - topLeft.y.toInteger(), null)
             }
         }
-        drawQueue << new DrawAction(action: drawCl, options: options)
+        jPanelWrapper.draw(new DrawAction(action: drawCl, options: options))
     }
 
     @Override
     void refresh() {
-        repaint()
+        jPanelWrapper.repaint()
+    }
+
+    @Override
+    void init() {
+    }
+
+    @Override
+    void destroy() {
+
     }
 }

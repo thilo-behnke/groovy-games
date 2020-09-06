@@ -3,6 +3,8 @@ package org.tb.gg.input.keyEvent
 import org.tb.gg.di.ServiceProvider
 import org.tb.gg.env.EnvironmentService
 import org.tb.gg.env.EnvironmentSettings
+import org.tb.gg.env.frame.DefaultGraphicsAPIFrameProvider
+import org.tb.gg.env.frame.GraphicsAPIFrameProvider
 import org.tb.gg.input.Key
 import org.tb.gg.input.awt.SwingKeyEventAdapter
 import io.reactivex.rxjava3.observers.TestObserver
@@ -30,8 +32,12 @@ class SwingKeyEventAdapterSpec extends Specification {
 
         // TODO: Hotfix, This should also be handled by DI.
         def environmentService = Mock(EnvironmentService)
-        environmentService.getEnvironment() >> {args -> new EnvironmentSettings(graphics: org.tb.gg.env.Graphics.SWING, environmentFrame: jFrameMock)}
+        environmentService.getEnvironment() >> {args -> new EnvironmentSettings(graphicsAPI: org.tb.gg.env.Graphics.SWING)}
         ServiceProvider.registerSingletonService(environmentService, EnvironmentService.getSimpleName())
+
+        def frameProvider = Mock(DefaultGraphicsAPIFrameProvider)
+        frameProvider.getFrame() >> jFrameMock
+        ServiceProvider.registerSingletonService(frameProvider, GraphicsAPIFrameProvider.simpleName)
 
         keyEventJwtAdapter = new SwingKeyEventAdapter()
     }

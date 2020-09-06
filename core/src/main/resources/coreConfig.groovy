@@ -3,18 +3,24 @@ import org.tb.gg.collision.DefaultCollisionDetector
 import org.tb.gg.collision.handler.DirectionCollisionTypeHandler
 import org.tb.gg.collision.strategy.DistanceHeuristicCollisionCheckSelectionStrategy
 import org.tb.gg.engine.framecache.FixedSizeFrameCache
+import org.tb.gg.env.EnvironmentService
 import org.tb.gg.events.DefaultEventManager
 import org.tb.gg.global.DefaultDateProvider
-import org.tb.gg.input.awt.SwingMouseEventAdapter
-import org.tb.gg.renderer.destination.JPanelDestination
-import org.tb.gg.resources.SwingResourceLoader
+import org.tb.gg.renderer.DefaultRenderer
 
 services = {
+    def environmentService = new EnvironmentService()
+    environmentService.init()
+
+    def graphicsEnv = environmentService.constructGraphicsAPIEnvironment()
+    renderDestination(graphicsEnv.renderDestination)
+    graphicsAPIFrameProvider(graphicsEnv.frameProvider)
+    mouseEventProvider(graphicsEnv.mouseEventProvider)
+    resourceLoader(graphicsEnv.resourceLoader)
+
+    renderer(DefaultRenderer)
     dateProvider(DefaultDateProvider)
     frameCache(FixedSizeFrameCache)
-    mouseEventProvider(SwingMouseEventAdapter)
-    resourceLoader(SwingResourceLoader)
-    renderDestination(JPanelDestination)
 
     collisionCoordinator(DefaultCollisionCoordinator)
     collisionDetector(DefaultCollisionDetector)

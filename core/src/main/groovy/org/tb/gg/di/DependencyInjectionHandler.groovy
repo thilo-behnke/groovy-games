@@ -6,6 +6,7 @@ import org.tb.gg.di.config.ServiceConfigReader
 import org.tb.gg.di.config.ServiceMappingRegistry
 import org.tb.gg.di.creator.DefaultConstructorServiceCreator
 import org.tb.gg.di.definition.Service
+import org.tb.gg.di.definition.Singleton
 import org.tb.gg.di.scanner.ClasspathMultiInstanceServiceScanner
 import org.tb.gg.di.scanner.ClasspathSingletonScanner
 import org.tb.gg.di.validation.ServiceImplementationValidator
@@ -27,15 +28,39 @@ class DependencyInjectionHandler {
         def serviceMappingRegistry = new ServiceMappingRegistry()
         new ServiceConfigReader(new DefaultResourceProvider(), serviceMappingRegistry).readConfigAndRegisterServices()
 
-        def singletonClasses = new ClasspathSingletonScanner().scanForServices()
+        def providedSingletonInstances = findProvidedSingletonInstances(serviceMappingRegistry)
+        def createdServiceInstances = createSingletonServiceInstances(serviceMappingRegistry)
+
+        def allServiceInstances = createdServiceInstances + providedSingletonInstances
+        isInitialized = true
+
+        return allServiceInstances.toList()
+    }
+
+    private static Set<Service> createSingletonServiceInstances(ServiceMappingRegistry serviceMappingRegistry) {
+        def singletonClasses = findSingletonClassesToInstantiate(serviceMappingRegistry)
         def multiInstanceServiceClasses = new ClasspathMultiInstanceServiceScanner().scanForServices()
         def validatedSingletonClasses = new ServiceImplementationValidator(serviceMappingRegistry).validateServicesAndReplaceInterfaces(singletonClasses)
         def serviceClasses = validatedSingletonClasses + multiInstanceServiceClasses
+        return new DefaultConstructorServiceCreator(new SinglePipelineServiceCreationOrderResolver(), serviceMappingRegistry).createServices(serviceClasses)
+    }
 
-        def serviceInstances = new DefaultConstructorServiceCreator(new SinglePipelineServiceCreationOrderResolver(), serviceMappingRegistry).createServices(serviceClasses)
+    private static Set<Class<? extends Singleton>> findSingletonClassesToInstantiate(ServiceMappingRegistry serviceMappingRegistry) {
+        return (Set<Class<? extends Singleton>>) new ClasspathSingletonScanner()
+                .scanForServices().findAll { !serviceMappingRegistry.getServiceInstanceForBaseClass(it.simpleName) }
+    }
 
-        isInitialized = true
-
-        return serviceInstances
+    private static Set<Service> findProvidedSingletonInstances(ServiceMappingRegistry serviceMappingRegistry) {
+        def serviceInstances = (Set<Tuple2<String, Service>>) new ClasspathSingletonScanner().scanForServices()
+                .collect {
+                    def serviceInstance = serviceMappingRegistry.getServiceInstanceForBaseClass(it.simpleName)
+                    if (serviceInstance) {
+                        return new Tuple2<String, Service>(it.simpleName, serviceInstance)
+                    }
+                    return null
+                }
+                .findAll { it }
+        serviceInstances.each { ServiceProvider.registerSingletonService(it.getV2(), it.getV1()) }
+        return serviceInstances.collect { it.getV2() }
     }
 }

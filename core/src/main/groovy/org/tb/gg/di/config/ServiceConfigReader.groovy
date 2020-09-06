@@ -5,6 +5,9 @@ import groovy.util.logging.Log4j
 
 @Log4j
 class ServiceConfigReader {
+    /**
+     * The order of the config files defines their priority: The last definition found will be valid, all previous ones forgotten.
+     */
     private static final CONFIG_FILES = ['coreConfig.groovy', 'config.groovy']
     private ResourceProvider resourceProvider
     private ServiceMappingRegistry serviceMappingRegistry

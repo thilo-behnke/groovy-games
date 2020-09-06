@@ -1,6 +1,8 @@
 package org.tb.gg.resources
 
-interface ImageWrapper<T> {
+import org.tb.gg.renderer.BaseImage
+
+interface ImageWrapper<T> extends BaseImage {
      int getWidth()
      int getHeight()
      T getImage()

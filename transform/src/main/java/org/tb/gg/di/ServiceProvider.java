@@ -28,10 +28,18 @@ public class ServiceProvider {
     }
 
     public static void registerSingletonService(Object service, String name) {
-        if (singletonServiceMap.containsKey(name)) {
+        registerSingletonService(service, name, false);
+    }
+
+    public static void registerSingletonService(Object service, String name, boolean overrideExistingService) {
+        if (!overrideExistingService && singletonServiceMap.containsKey(name)) {
             return;
         }
         singletonServiceMap.put(name, service);
+    }
+
+    public static boolean hasSingletonImplementation(String name) {
+        return singletonServiceMap.containsKey(name);
     }
 
     public static void registerMultiInstanceService(Object service, String name) {
@@ -44,5 +52,4 @@ public class ServiceProvider {
         singletonServiceMap.clear();
         multiInstanceServiceMap.clear();
     }
-
 }

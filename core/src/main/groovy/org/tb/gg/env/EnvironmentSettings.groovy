@@ -6,9 +6,7 @@ import org.tb.gg.renderer.destination.RenderDestination
 
 @ToString
 class EnvironmentSettings {
-    Graphics graphics
-    // TODO: Find better name.
-    Object environmentFrame
-    RenderDestination renderDestination
+    Graphics graphicsAPI
+    boolean debugMode
 }
 

@@ -8,11 +8,13 @@ import org.tb.gg.engine.GameEngineExecutionRuleEngine
 import org.tb.gg.env.EnvironmentService
 import org.tb.gg.global.DefaultDateProvider
 import org.tb.gg.renderer.DefaultRenderer
+import org.tb.gg.renderer.Renderer
+import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.utils.HaltingExecutorService
 
 class GameEngineProvider {
     @Inject
-    private static EnvironmentService environmentService
+    private static Renderer renderer
 
     private static GameEngine gameEngine
     private static List<Service> services
@@ -48,8 +50,6 @@ class GameEngineProvider {
         def executorService = new HaltingExecutorService()
         def executionRuleEngine = new GameEngineExecutionRuleEngine()
 //        executionRuleEngine << ShutdownAfterFixedNumberOfCyclesExecutionRule.nrOfCycles(10000)
-
-        def renderer = new DefaultRenderer(renderDestination: environmentService.environment.renderDestination)
 
         def gameEngine = new GameEngine(executorService, dateProvider, renderer)
         gameEngine.setExecutionRuleEngine(executionRuleEngine)

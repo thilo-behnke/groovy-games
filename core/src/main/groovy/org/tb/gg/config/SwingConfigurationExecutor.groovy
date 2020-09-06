@@ -3,6 +3,7 @@ package org.tb.gg.config
 import org.tb.gg.di.Inject
 import org.tb.gg.env.EnvironmentService
 import org.tb.gg.env.Graphics
+import org.tb.gg.env.frame.GraphicsAPIFrameProvider
 
 import javax.swing.JFrame
 import java.awt.GraphicsDevice
@@ -11,12 +12,14 @@ import java.awt.GraphicsEnvironment
 class SwingConfigurationExecutor implements ConfigurationExecutor {
     @Inject
     private EnvironmentService environmentService
+    @Inject
+    private GraphicsAPIFrameProvider frameService
 
     @Override
     void setFullScreen() {
-        switch(environmentService.environment.graphics) {
+        switch(environmentService.environment.graphicsAPI) {
             case Graphics.SWING:
-                def jFrame = (JFrame) environmentService.environment.environmentFrame
+                def jFrame = (JFrame) frameService.getFrame()
                 GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
                 GraphicsDevice device = env.getDefaultScreenDevice();
 
@@ -25,15 +28,15 @@ class SwingConfigurationExecutor implements ConfigurationExecutor {
                 device.setFullScreenWindow(jFrame)
                 break
             default:
-                throw new IllegalArgumentException("Can't enter fullscreen mode for unknown graphics type ${environmentService.environment.graphics}".toString())
+                throw new IllegalArgumentException("Can't enter fullscreen mode for unknown graphics type ${environmentService.environment.graphicsAPI}".toString())
         }
     }
 
     @Override
     void setWindowed() {
-        switch(environmentService.environment.graphics) {
+        switch(environmentService.environment.graphicsAPI) {
             case Graphics.SWING:
-                def jFrame = (JFrame) environmentService.environment.environmentFrame
+                def jFrame = (JFrame) frameService.getFrame()
                 GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
                 GraphicsDevice device = env.getDefaultScreenDevice();
 
@@ -42,7 +45,7 @@ class SwingConfigurationExecutor implements ConfigurationExecutor {
                 jFrame.setVisible(true)
                 break
             default:
-                throw new IllegalArgumentException("Can't enter windowed mode for unknown graphics type ${environmentService.environment.graphics}".toString())
+                throw new IllegalArgumentException("Can't enter windowed mode for unknown graphics type ${environmentService.environment.graphicsAPI}".toString())
         }
     }
 }
