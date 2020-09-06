@@ -13,6 +13,7 @@ import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
 import org.tb.gg.input.mouseEvent.MouseEventProvider
 import org.tb.gg.input.mouseEvent.MouseRectangleEvent
+import org.tb.gg.renderer.destination.JPanelDestination
 import org.tb.gg.renderer.destination.RenderDestination
 
 import javax.swing.JFrame
@@ -96,7 +97,7 @@ class SwingMouseEventAdapter implements MouseEventProvider {
     }
 
     private JPanel getJPanel() {
-        (JPanel) renderDestination
+        ((JPanelDestination) renderDestination).jPanelWrapper
     }
 
     private subscribeAndProcessMouseMoveEvents() {

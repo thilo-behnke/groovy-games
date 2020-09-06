@@ -58,7 +58,7 @@ class EnvironmentService implements Singleton {
         JFrame f = new JFrame("Game")
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
         f.setResizable(false)
-        f.add(renderDestination)
+        f.add(renderDestination.jPanelWrapper)
         f.setUndecorated(false)
         f.setVisible(true)
         f.pack()
