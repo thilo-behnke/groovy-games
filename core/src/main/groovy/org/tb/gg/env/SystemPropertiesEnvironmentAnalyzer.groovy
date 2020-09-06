@@ -1,6 +1,15 @@
 package org.tb.gg.env
 
+import org.tb.gg.env.systemProperty.SystemPropertyProvider
+
 class SystemPropertiesEnvironmentAnalyzer implements EnvironmentAnalyzer {
+
+    SystemPropertyProvider systemPropertyProvider
+
+    SystemPropertiesEnvironmentAnalyzer(SystemPropertyProvider systemPropertyProvider) {
+        this.systemPropertyProvider = systemPropertyProvider
+    }
+
     @Override
     Graphics getGraphics() {
         def graphics = System.properties.getProperty('org.tb.gg.graphicsAPI')
