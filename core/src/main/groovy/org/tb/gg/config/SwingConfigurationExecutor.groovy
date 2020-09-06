@@ -3,6 +3,7 @@ package org.tb.gg.config
 import org.tb.gg.di.Inject
 import org.tb.gg.env.EnvironmentService
 import org.tb.gg.env.Graphics
+import org.tb.gg.env.frame.GraphicsAPIFrameProvider
 
 import javax.swing.JFrame
 import java.awt.GraphicsDevice
@@ -11,12 +12,14 @@ import java.awt.GraphicsEnvironment
 class SwingConfigurationExecutor implements ConfigurationExecutor {
     @Inject
     private EnvironmentService environmentService
+    @Inject
+    private GraphicsAPIFrameProvider frameService
 
     @Override
     void setFullScreen() {
         switch(environmentService.environment.graphicsAPI) {
             case Graphics.SWING:
-                def jFrame = (JFrame) environmentService.environment.environmentFrame
+                def jFrame = (JFrame) frameService.getFrame()
                 GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
                 GraphicsDevice device = env.getDefaultScreenDevice();
 
@@ -33,7 +36,7 @@ class SwingConfigurationExecutor implements ConfigurationExecutor {
     void setWindowed() {
         switch(environmentService.environment.graphicsAPI) {
             case Graphics.SWING:
-                def jFrame = (JFrame) environmentService.environment.environmentFrame
+                def jFrame = (JFrame) frameService.getFrame()
                 GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
                 GraphicsDevice device = env.getDefaultScreenDevice();
 

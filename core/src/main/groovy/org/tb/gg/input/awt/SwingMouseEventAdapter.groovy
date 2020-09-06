@@ -2,12 +2,9 @@ package org.tb.gg.input.awt
 
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.subjects.AsyncSubject
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import org.tb.gg.di.Inject
-import org.tb.gg.env.EnvironmentService
-import org.tb.gg.env.frame.FrameService
+import org.tb.gg.env.frame.GraphicsAPIFrameProvider
 import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.input.mouseEvent.MouseEvent
@@ -57,7 +54,7 @@ class SwingMouseEventAdapter implements MouseEventProvider {
     }
 
     @Inject
-    private FrameService frameService
+    private GraphicsAPIFrameProvider frameService
     @Inject
     private RenderDestination renderDestination
 

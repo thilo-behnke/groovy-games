@@ -9,7 +9,6 @@ import org.tb.gg.events.DefaultEventManager
 import org.tb.gg.global.DefaultDateProvider
 import org.tb.gg.input.awt.SwingMouseEventAdapter
 import org.tb.gg.renderer.DefaultRenderer
-import org.tb.gg.renderer.destination.JPanelDestination
 import org.tb.gg.resources.SwingResourceLoader
 
 services = {
@@ -18,7 +17,7 @@ services = {
 
     def graphicsEnv = environmentService.constructGraphicsAPIEnvironment()
     renderDestination(graphicsEnv.renderDestination)
-    frameService(graphicsEnv.frameService)
+    graphicsAPIFrameProvider(graphicsEnv.frameProvider)
 
     def graphicsAPI = System.getProperty('graphicsAPI');
     if (!graphicsAPI || graphicsAPI == Graphics.SWING.name()) {

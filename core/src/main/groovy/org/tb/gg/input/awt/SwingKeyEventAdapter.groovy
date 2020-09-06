@@ -2,7 +2,7 @@ package org.tb.gg.input.awt
 
 import org.tb.gg.di.Inject
 import org.tb.gg.env.EnvironmentService
-import org.tb.gg.env.frame.FrameService
+import org.tb.gg.env.frame.GraphicsAPIFrameProvider
 import org.tb.gg.input.Key
 import org.tb.gg.input.keyEvent.KeyEventSubject
 import io.reactivex.rxjava3.core.Observable
@@ -40,7 +40,7 @@ class SwingKeyEventAdapter implements KeyEventSubject {
     @Inject
     private EnvironmentService environmentService
     @Inject
-    private FrameService frameService
+    private GraphicsAPIFrameProvider frameService
 
     private final SwingKeyListener keyListener
     private final Set<Integer> keyCodesToListenTo = new HashSet<>()

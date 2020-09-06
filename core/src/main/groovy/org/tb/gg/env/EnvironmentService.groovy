@@ -2,8 +2,8 @@ package org.tb.gg.env
 
 import groovy.util.logging.Log4j
 import org.tb.gg.di.definition.Singleton
-import org.tb.gg.env.frame.DefaultFrameService
-import org.tb.gg.env.frame.FrameService
+import org.tb.gg.env.frame.DefaultGraphicsAPIFrameProvider
+import org.tb.gg.env.frame.GraphicsAPIFrameProvider
 import org.tb.gg.renderer.destination.JPanelDestination
 import org.tb.gg.renderer.destination.RenderDestination
 
@@ -39,7 +39,7 @@ class EnvironmentService implements Singleton {
 
     static class GraphicsAPIEnvironment {
         RenderDestination renderDestination
-        FrameService frameService
+        GraphicsAPIFrameProvider frameProvider
     }
 
     GraphicsAPIEnvironment constructGraphicsAPIEnvironment() {
@@ -62,10 +62,10 @@ class EnvironmentService implements Singleton {
         f.setUndecorated(false)
         f.setVisible(true)
         f.pack()
-        def frameService = new DefaultFrameService()
+        def frameService = new DefaultGraphicsAPIFrameProvider()
         frameService.setFrame(f)
 
-        return new GraphicsAPIEnvironment(renderDestination: renderDestination, frameService: frameService)
+        return new GraphicsAPIEnvironment(renderDestination: renderDestination, frameProvider: frameService)
     }
 
     EnvironmentSettings getEnvironment() {

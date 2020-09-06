@@ -1,7 +1,7 @@
 package org.tb.gg.renderer.destination
 
 import org.tb.gg.di.Inject
-import org.tb.gg.env.frame.FrameService
+import org.tb.gg.env.frame.GraphicsAPIFrameProvider
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.options.RenderOptions
 
@@ -16,7 +16,7 @@ import java.awt.image.BufferedImage
 
 class JPanelDestination implements RenderDestination<BufferedImage> {
     @Inject
-    FrameService frameService
+    GraphicsAPIFrameProvider frameService
 
     JPanelWrapper jPanelWrapper
     private Dimension dimension

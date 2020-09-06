@@ -1,6 +1,6 @@
 package org.tb.gg.env.frame
 
-class DefaultFrameService implements FrameService {
+class DefaultGraphicsAPIFrameProvider implements GraphicsAPIFrameProvider {
 
     private Object frame
 
