@@ -1,6 +1,5 @@
 package org.tb.gg.env
 
-
 import org.tb.gg.di.definition.Singleton
 import org.tb.gg.env.frame.GraphicsAPIFrameProvider
 import org.tb.gg.input.mouseEvent.MouseEventProvider

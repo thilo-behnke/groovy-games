@@ -4,7 +4,6 @@ import org.tb.gg.collision.handler.DirectionCollisionTypeHandler
 import org.tb.gg.collision.strategy.DistanceHeuristicCollisionCheckSelectionStrategy
 import org.tb.gg.engine.framecache.FixedSizeFrameCache
 import org.tb.gg.env.DefaultEnvironmentService
-import org.tb.gg.env.EnvironmentService
 import org.tb.gg.env.SystemPropertiesEnvironmentAnalyzer
 import org.tb.gg.env.systemProperty.DefaultSystemPropertyProvider
 import org.tb.gg.events.DefaultEventManager
