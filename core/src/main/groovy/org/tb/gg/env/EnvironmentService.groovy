@@ -4,8 +4,12 @@ import groovy.util.logging.Log4j
 import org.tb.gg.di.definition.Singleton
 import org.tb.gg.env.frame.DefaultGraphicsAPIFrameProvider
 import org.tb.gg.env.frame.GraphicsAPIFrameProvider
+import org.tb.gg.input.awt.SwingMouseEventAdapter
+import org.tb.gg.input.mouseEvent.MouseEventProvider
 import org.tb.gg.renderer.destination.JPanelDestination
 import org.tb.gg.renderer.destination.RenderDestination
+import org.tb.gg.resources.ResourceLoader
+import org.tb.gg.resources.SwingResourceLoader
 
 import javax.swing.JFrame
 
@@ -40,6 +44,8 @@ class EnvironmentService implements Singleton {
     static class GraphicsAPIEnvironment {
         RenderDestination renderDestination
         GraphicsAPIFrameProvider frameProvider
+        MouseEventProvider mouseEventProvider
+        ResourceLoader resourceLoader
     }
 
     GraphicsAPIEnvironment constructGraphicsAPIEnvironment() {
@@ -55,6 +61,7 @@ class EnvironmentService implements Singleton {
     private static constructSwingEnvironment() {
         def renderDestination = new JPanelDestination()
 
+        // Construct frame and canvas panel.
         JFrame f = new JFrame("Game")
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
         f.setResizable(false)
@@ -65,7 +72,10 @@ class EnvironmentService implements Singleton {
         def frameService = new DefaultGraphicsAPIFrameProvider()
         frameService.setFrame(f)
 
-        return new GraphicsAPIEnvironment(renderDestination: renderDestination, frameProvider: frameService)
+        def mouseEventProvider = new SwingMouseEventAdapter()
+        def resourceLoader = new SwingResourceLoader()
+
+        return new GraphicsAPIEnvironment(renderDestination: renderDestination, frameProvider: frameService, mouseEventProvider: mouseEventProvider, resourceLoader: resourceLoader)
     }
 
     EnvironmentSettings getEnvironment() {
