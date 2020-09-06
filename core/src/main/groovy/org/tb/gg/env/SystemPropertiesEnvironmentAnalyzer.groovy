@@ -13,4 +13,10 @@ class SystemPropertiesEnvironmentAnalyzer implements EnvironmentAnalyzer {
         }
         return graphicsValue
     }
+
+    @Override
+    boolean isDebugModeActive() {
+        def debugMode = System.properties.getProperty('org.tb.gg.debugMode')
+        return debugMode
+    }
 }

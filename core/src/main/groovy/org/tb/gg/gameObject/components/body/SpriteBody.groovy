@@ -3,13 +3,14 @@ package org.tb.gg.gameObject.components.body
 import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.gameObject.shape.Shape
 import org.tb.gg.global.geom.Vector
+import org.tb.gg.renderer.BaseImage
 import org.tb.gg.renderer.destination.RenderDestination
 import org.tb.gg.renderer.options.DrawColor
 import org.tb.gg.renderer.options.RenderOptions
 import org.tb.gg.resources.ImageWrapper
 
 class SpriteBody extends Body {
-    ImageWrapper image
+    ImageWrapper<BaseImage> image
     @Delegate
     Shape shape
 
@@ -27,9 +28,7 @@ class SpriteBody extends Body {
     void render(RenderDestination renderDestination, RenderOptions options) {
         if (image) {
             def originalTopLeft = shape.boundingRect.originalTopLeft()
-            renderDestination.drawImage(image.getImage(), originalTopLeft, shape.boundingRect.rotation, options)
-            // TODO: Implement debug extension.
-            renderDestination.drawRect(originalTopLeft, shape.boundingRect.dim, shape.boundingRect.rotation, new RenderOptions(drawColor: DrawColor.RED))
+            renderDestination.drawImage(image, originalTopLeft, shape.boundingRect.rotation, options)
         } else {
             def rect = shape.boundingRect
             renderDestination.drawRect(rect.topLeft, rect.dim, rect.rotation.toFloat(), options)

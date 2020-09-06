@@ -2,12 +2,16 @@ package org.tb.gg.renderer.destination
 
 import org.tb.gg.di.definition.Singleton
 import org.tb.gg.global.geom.Vector
+import org.tb.gg.renderer.BaseImage
 import org.tb.gg.renderer.options.RenderOptions
 
 import java.awt.image.BufferedImage
 
-interface RenderDestination<I> extends Singleton {
+interface RenderDestination<I extends BaseImage> extends Singleton {
     void setDimensions(int width, int height)
+    Vector getDimensions()
+    Vector getMousePosition()
+
     // TODO: Command pattern for render options?
     void drawImage(I image, Vector topLeft, BigDecimal rotation, RenderOptions options)
     void drawLine(Vector start, Vector end, RenderOptions options)

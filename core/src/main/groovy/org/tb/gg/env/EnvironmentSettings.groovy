@@ -7,5 +7,6 @@ import org.tb.gg.renderer.destination.RenderDestination
 @ToString
 class EnvironmentSettings {
     Graphics graphicsAPI
+    boolean debugMode
 }
 

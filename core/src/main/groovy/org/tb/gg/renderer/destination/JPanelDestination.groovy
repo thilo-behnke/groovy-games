@@ -4,6 +4,7 @@ import org.tb.gg.di.Inject
 import org.tb.gg.env.frame.GraphicsAPIFrameProvider
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.renderer.options.RenderOptions
+import org.tb.gg.resources.ImageWrapper
 
 import javax.swing.JFrame
 import java.awt.*
@@ -14,7 +15,7 @@ import java.awt.geom.Rectangle2D
 import java.awt.image.AffineTransformOp
 import java.awt.image.BufferedImage
 
-class JPanelDestination implements RenderDestination<BufferedImage> {
+class JPanelDestination implements RenderDestination<ImageWrapper<BufferedImage>> {
     @Inject
     GraphicsAPIFrameProvider frameService
 
@@ -26,20 +27,29 @@ class JPanelDestination implements RenderDestination<BufferedImage> {
         RenderOptions options
     }
 
-    JPanelDestination() {
-        jPanelWrapper = new JPanelWrapper()
-    }
-
     @Override
     void setDimensions(int width, int height) {
         dimension = new Dimension(width, height)
 
         JFrame jFrame = (JFrame) frameService.getFrame()
-        jFrame.remove(jPanelWrapper)
+        if (jPanelWrapper) {
+            jFrame.remove(jPanelWrapper)
+        }
 
         jPanelWrapper = new JPanelWrapper(dimension)
         jFrame.add(jPanelWrapper)
         jFrame.pack()
+    }
+
+    @Override
+    Vector getDimensions() {
+        return new Vector(x: dimension.getWidth(), y: dimension.getHeight())
+    }
+
+    @Override
+    Vector getMousePosition() {
+        def mousePos = jPanelWrapper.getMousePosition()
+        return mousePos ? new Vector(x: mousePos.x, y: mousePos.y) : null
     }
 
     // TODO: Could be this repetition be solved with an AST transformation?
@@ -87,8 +97,9 @@ class JPanelDestination implements RenderDestination<BufferedImage> {
     }
 
     @Override
-    void drawImage(BufferedImage image, Vector topLeft, BigDecimal rotation, RenderOptions options) {
+    void drawImage(ImageWrapper<BufferedImage> imageWrapper, Vector topLeft, BigDecimal rotation, RenderOptions options) {
         def drawCl = { Graphics2D g ->
+            def image = imageWrapper.getImage()
 
             if (rotation > 0) {
                 AffineTransform tx = AffineTransform.getRotateInstance(-rotation, image.getWidth() / 2, image.getHeight() / 2)
