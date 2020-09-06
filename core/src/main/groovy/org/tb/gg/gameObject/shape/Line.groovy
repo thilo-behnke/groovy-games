@@ -66,6 +66,7 @@ class Line extends Shape {
 
     @Override
     void rotate(BigDecimal radians) {
+        // TODO: The rotation should be around the center, not the start.
         def line = end - start
         def rotatedLine = line.rotate(radians)
         end = start + rotatedLine
@@ -86,5 +87,10 @@ class Line extends Shape {
     @Override
     Shape copy() {
         return new Line(start.copy(), end.copy())
+    }
+
+    @Override
+    void setRotation(BigDecimal rotation) {
+        // TODO: This is hard to implement with the current start/end definition.
     }
 }

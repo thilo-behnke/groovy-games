@@ -48,4 +48,9 @@ class ShapeComposite extends Shape {
     void rotate(BigDecimal radians) {
         // TODO: Implement.
     }
+
+    @Override
+    void setRotation(BigDecimal rotation) {
+        // TODO: Implement.
+    }
 }

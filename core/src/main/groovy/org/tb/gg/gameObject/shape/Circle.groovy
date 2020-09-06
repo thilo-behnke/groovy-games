@@ -34,4 +34,9 @@ class Circle extends Shape {
     void rotate(BigDecimal radians) {
         // Left intentionally empty, there is no point in rotating a circle.
     }
+
+    @Override
+    void setRotation(BigDecimal rotation) {
+        // Left intentionally empty, there is no point in rotating a circle.
+    }
 }

@@ -90,6 +90,11 @@ class Rect extends Shape {
 
     @Override
     void rotate(BigDecimal radians) {
-        this.rotation = (rotation + radians).remainder(2.0 * MathConstants.PI)
+        setRotation(rotation + radians)
+    }
+
+    @Override
+    void setRotation(BigDecimal rotation) {
+        this.rotation = (rotation).remainder(2.0 * MathConstants.PI)
     }
 }
