@@ -23,7 +23,7 @@ class PlayerGameObject extends BaseGameObject {
 
     static PlayerGameObject create() {
         def pos = new Vector(x: 100, y: 100)
-        def orientation = new Vector(x: 0, y: 50.0)
+        def orientation = new Vector(x: 1, y: 0)
         def body = new SpriteBodyFactory().fromResource(ShooterGameResource.SPACESHIP_GREEN.name())
         body.center = pos
         def player = (PlayerGameObject) new KeyBoundGameObjectBuilder(PlayerGameObject)
@@ -90,51 +90,14 @@ class PlayerGameObject extends BaseGameObject {
     }
 
     private updateOrientation(List<PlayerAction> activeActions, Long timestamp, Long delta) {
-        def goal = null
-
-        if (activeActions.containsAll([PlayerAction.LOOK_UP, PlayerAction.LOOK_RIGHT])) {
-            goal = new Vector(x: 1, y: 1)
-        } else if (activeActions.containsAll([PlayerAction.LOOK_RIGHT, PlayerAction.LOOK_DOWN])) {
-            goal = new Vector(x: 1, y: -1)
-        } else if (activeActions.containsAll([PlayerAction.LOOK_DOWN, PlayerAction.LOOK_LEFT])) {
-            goal = new Vector(x: -1, y: -1)
-        } else if (activeActions.containsAll([PlayerAction.LOOK_LEFT, PlayerAction.LOOK_UP])) {
-            goal = new Vector(x: -1, y: 1)
-        } else if (activeActions.contains(PlayerAction.LOOK_UP)) {
-            goal = new Vector(x: 0, y: 1)
-        } else if (activeActions.contains(PlayerAction.LOOK_RIGHT)) {
-            goal = new Vector(x: 1, y: 0)
-        } else if (activeActions.contains(PlayerAction.LOOK_DOWN)) {
-            goal = new Vector(x: 0, y: -1)
-        } else if (activeActions.contains(PlayerAction.LOOK_LEFT)) {
-            goal = new Vector(x: -1, y: 0)
-        }
-
-        if (goal == null) {
+        if (!activeActions.contains(PlayerAction.LOOK_LEFT) && !activeActions.contains(PlayerAction.LOOK_RIGHT)) {
             return
         }
-        def turnDirection = getTurnDirection(goal)
-        def turnAngle = turnDirection * MathConstants.PI / 60
+        def turnDirection = activeActions.contains(PlayerAction.LOOK_LEFT) ? 1 : -1
+        def turnAngle = (turnDirection * MathConstants.PI / 60).remainder(2 * MathConstants.PI)
 
         orientation = orientation.rotate(turnAngle)
-    }
-
-    private getTurnDirection(Vector goal) {
-        def perpendicularToOrientation = orientation.rotate(MathConstants.HALF_PI)
-        def goalDot = perpendicularToOrientation.dot(goal)
-
-        // Special cases, goal is either in opposite or in same direction.
-        if (goalDot.abs() <= 1e-2) {
-            // Opposite direction of current direction, turn direction is arbitrary.
-            if (orientation.dot(goal) < 0) {
-                return -1
-            }
-            // No turn because goal is already reached.
-            return 0
-        }
-
-        // Regular case, turn in the closest direction of the goal.
-        return goalDot > 0 ? 1 : -1
+        body.shape.rotate(turnAngle)
     }
 
     private shoot(List<PlayerAction> activeActions) {
