@@ -66,21 +66,16 @@ class PlayerGameObject extends BaseGameObject {
     }
 
     private updateVelocity(List<PlayerAction> activeActions) {
-        def newX = 0
-        def newY = 0
-        // Update X.
-        if (activeActions.contains(PlayerAction.MOVE_RIGHT)) {
-            newX = 1
-        } else if (activeActions.contains(PlayerAction.MOVE_LEFT)) {
-            newX = -1
+        // TODO: Introduce acceleration.
+        if (activeActions.contains(PlayerAction.THRUST)) {
+            if (physicsComponent.velocity == Vector.zeroVector()) {
+                physicsComponent.velocity = orientation.scale(1.05)
+            }
+            def angleBetweenOrientationAndVelocity = orientation.angleBetween(physicsComponent.velocity)
+            physicsComponent.velocity = physicsComponent.velocity.rotate(angleBetweenOrientationAndVelocity / 10)
+        } else {
+            physicsComponent.velocity = physicsComponent.velocity.scale(0.005)
         }
-        // Update Y.
-        if (activeActions.contains(PlayerAction.MOVE_UP)) {
-            newY = 1
-        } else if (activeActions.contains(PlayerAction.MOVE_DOWN)) {
-            newY = -1
-        }
-        physicsComponent.setVelocity(new Vector(x: newX, y: newY))
     }
 
     private updatePos() {
