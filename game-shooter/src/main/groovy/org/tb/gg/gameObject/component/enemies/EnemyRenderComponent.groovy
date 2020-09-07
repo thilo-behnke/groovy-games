@@ -4,36 +4,20 @@ import org.tb.gg.di.Inject
 import org.tb.gg.env.EnvironmentService
 import org.tb.gg.gameObject.component.enemies.state.EnemyState
 import org.tb.gg.gameObject.component.enemies.state.EnemyWanderingState
-import org.tb.gg.gameObject.components.render.RenderComponent
+import org.tb.gg.gameObject.components.render.DefaultRenderComponent
 import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.gameObject.shape.Line
-import org.tb.gg.renderer.options.DrawColor
-import org.tb.gg.renderer.options.RenderOptions
 import org.tb.gg.renderer.renderObjects.RenderNode
 import org.tb.gg.state.StateMachine
 
-class EnemyRenderComponent extends RenderComponent {
+class EnemyRenderComponent extends DefaultRenderComponent {
     @Inject
     EnvironmentService environmentService
 
     @Override
-    RenderNode getRenderNode() {
-        EnemyGameObject enemyGameObject = (EnemyGameObject) parent;
-        def debugNodes = getDebugNodes(enemyGameObject)
-        return RenderNode.node(
-                [
-                        *debugNodes,
-                        RenderNode.leaf(
-                                enemyGameObject.body,
-                                new RenderOptions(drawColor: enemyGameObject.wasHitRecently ? DrawColor.RED : DrawColor.BLACK)
-                        )
-
-                ],
-        )
-    }
-
-    private List<RenderNode> getDebugNodes(EnemyGameObject enemyGameObject) {
+    protected List<RenderNode> getDebugNodes() {
         if (environmentService.environment.debugMode) {
+            EnemyGameObject enemyGameObject = (EnemyGameObject) parent
             StateMachine enemyStateMachine = ((EnemyInputComponent) enemyGameObject.inputComponent).stateMachine
             if (enemyStateMachine.activeState.name == EnemyState.WANDERING.name()) {
                 def wanderingState = (EnemyWanderingState) enemyStateMachine.activeState
@@ -46,15 +30,5 @@ class EnemyRenderComponent extends RenderComponent {
             }
         }
         return []
-    }
-
-    @Override
-    void init() {
-
-    }
-
-    @Override
-    void destroy() {
-
     }
 }

@@ -5,10 +5,12 @@ import org.tb.gg.gameObject.BaseGameObject
 import org.tb.gg.gameObject.component.guns.Gun
 import org.tb.gg.gameObject.component.guns.GunWheel
 import org.tb.gg.gameObject.components.body.ShapeBody
+import org.tb.gg.gameObject.components.body.SpriteBodyFactory
 import org.tb.gg.gameObject.factory.KeyBoundGameObjectBuilder
 import org.tb.gg.gameObject.shape.Rect
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.global.math.MathConstants
+import org.tb.gg.resources.ShooterGameResource
 
 class PlayerGameObject extends BaseGameObject {
     @Inject
@@ -22,8 +24,10 @@ class PlayerGameObject extends BaseGameObject {
     static PlayerGameObject create() {
         def pos = new Vector(x: 100, y: 100)
         def orientation = new Vector(x: 0, y: 50.0)
+        def body = new SpriteBodyFactory().fromResource(ShooterGameResource.SPACESHIP_GREEN.name())
+        body.center = pos
         def player = (PlayerGameObject) new KeyBoundGameObjectBuilder(PlayerGameObject)
-                .setBody(new ShapeBody(new Rect(pos, new Vector(x: 20, y: 30))))
+                .setBody(body)
                 .setInputComponentClass(PlayerInputComponent)
                 .setRenderComponent(new PlayerRenderComponent())
                 .setPhysicsComponent(PlayerPhysicsComponent.create())

@@ -1,5 +1,5 @@
 package org.tb.gg.resources
 
 enum ShooterGameResource {
-    SPACESHIP_BLUE, PROJECTILE_BLUE
+    SPACESHIP_BLUE, SPACESHIP_GREEN, PROJECTILE_BLUE
 }
