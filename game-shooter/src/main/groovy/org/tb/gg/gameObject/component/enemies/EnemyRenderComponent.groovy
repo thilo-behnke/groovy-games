@@ -11,23 +11,19 @@ import org.tb.gg.renderer.renderObjects.RenderNode
 import org.tb.gg.state.StateMachine
 
 class EnemyRenderComponent extends DefaultRenderComponent {
-    @Inject
-    EnvironmentService environmentService
 
     @Override
     protected List<RenderNode> getDebugNodes() {
-        if (environmentService.environment.debugMode) {
-            EnemyGameObject enemyGameObject = (EnemyGameObject) parent
-            StateMachine enemyStateMachine = ((EnemyInputComponent) enemyGameObject.inputComponent).stateMachine
-            if (enemyStateMachine.activeState.name == EnemyState.WANDERING.name()) {
-                def wanderingState = (EnemyWanderingState) enemyStateMachine.activeState
-                if (!wanderingState.goal) {
-                    return []
-                }
-                def goalNode = new Circle(center: wanderingState.goal, radius: 20.0)
-                def lineToGoalNode = new Line(enemyGameObject.body.center, wanderingState.goal)
-                return [RenderNode.leaf(goalNode), RenderNode.leaf(lineToGoalNode)]
+        EnemyGameObject enemyGameObject = (EnemyGameObject) parent
+        StateMachine enemyStateMachine = ((EnemyInputComponent) enemyGameObject.inputComponent).stateMachine
+        if (enemyStateMachine.activeState.name == EnemyState.WANDERING.name()) {
+            def wanderingState = (EnemyWanderingState) enemyStateMachine.activeState
+            if (!wanderingState.goal) {
+                return []
             }
+            def goalNode = new Circle(center: wanderingState.goal, radius: 20.0)
+            def lineToGoalNode = new Line(enemyGameObject.body.center, wanderingState.goal)
+            return [RenderNode.leaf(goalNode), RenderNode.leaf(lineToGoalNode)]
         }
         return []
     }
