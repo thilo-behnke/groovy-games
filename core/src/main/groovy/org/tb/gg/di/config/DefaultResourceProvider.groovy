@@ -1,17 +1,16 @@
 package org.tb.gg.di.config
 
-import javax.annotation.Nullable
+import org.apache.commons.io.FileUtils
 
 class DefaultResourceProvider implements ResourceProvider {
     @Override
     File getResourceFile(String fileName) {
-        def resource = getClass().getClassLoader().getResource(fileName)
+        def resource = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)
         if (!resource) {
             return null
         }
-
-        new File(
-                resource.getFile()
-        );
+        def file = new File(fileName)
+        FileUtils.copyInputStreamToFile(resource, file);
+        return file
     }
 }

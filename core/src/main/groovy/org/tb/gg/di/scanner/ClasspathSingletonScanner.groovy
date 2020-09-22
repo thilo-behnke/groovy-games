@@ -7,7 +7,8 @@ import org.tb.gg.di.definition.Singleton
 class ClasspathSingletonScanner extends ClasspathServiceScanner {
     @Override
     Set<Class<? extends Service>> scanForServices() {
-        removeConcreteServiceImplementations(super.scanForServices(Singleton))
+        def singletons = super.scanForServices(Singleton)
+        removeConcreteServiceImplementations(singletons)
     }
 
     private static Set<Class<? extends Service>> removeConcreteServiceImplementations(Set<Class<? extends Service>> services) {
