@@ -67,6 +67,24 @@ class ServiceConfigReaderSpec extends Specification {
         0 * serviceMappingRegistry.invokeMethod(*_)
     }
 
+    def 'no scanPackages in config'() {
+        given:
+        stubServiceConfigFile('configWithoutScanForPackages.groovy')
+        when:
+        serviceConfigReader.readConfigFiles()
+        then:
+        serviceConfigReader.packagesToScan == []
+    }
+
+    def 'empty scanPackages in config'() {
+        given:
+        stubServiceConfigFile('configWithScanPackages.groovy')
+        when:
+        serviceConfigReader.readConfigFiles()
+        then:
+        serviceConfigReader.packagesToScan == ["org.tb.gg", "my.other.project"]
+    }
+
     private stubServiceConfigFile(String fileName) {
         def configFile = loadConfigFile(fileName)
         resourceProvider.getResourceFileContent('config.groovy') >> configFile
