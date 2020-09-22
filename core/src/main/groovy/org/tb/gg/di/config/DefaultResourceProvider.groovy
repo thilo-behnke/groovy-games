@@ -1,17 +1,18 @@
 package org.tb.gg.di.config
 
-import javax.annotation.Nullable
+import org.apache.commons.io.FileUtils
+import org.apache.commons.io.IOUtils
+
+import java.nio.charset.StandardCharsets
+import java.nio.file.Paths
 
 class DefaultResourceProvider implements ResourceProvider {
     @Override
-    File getResourceFile(String fileName) {
-        def resource = getClass().getClassLoader().getResource(fileName)
+    String getResourceFileContent(String fileName) {
+        def resource = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)
         if (!resource) {
             return null
         }
-
-        new File(
-                resource.getFile()
-        );
+        return IOUtils.toString(resource, StandardCharsets.UTF_8)
     }
 }

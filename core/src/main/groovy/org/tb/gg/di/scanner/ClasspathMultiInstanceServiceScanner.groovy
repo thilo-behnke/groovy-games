@@ -1,10 +1,15 @@
 package org.tb.gg.di.scanner
 
+import org.tb.gg.di.config.ServiceConfigReader
 import org.tb.gg.di.definition.MultiInstanceService
 import org.tb.gg.di.definition.Service
 import org.tb.gg.utils.ReflectionUtils
 
 class ClasspathMultiInstanceServiceScanner extends ClasspathServiceScanner {
+    ClasspathMultiInstanceServiceScanner(ServiceConfigReader serviceConfigReader) {
+        super(serviceConfigReader)
+    }
+
     @Override
     Set<Class<? extends Service>> scanForServices() {
         removeInterfacesAndAbstractClasses(super.scanForServices(MultiInstanceService))
