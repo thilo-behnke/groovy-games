@@ -65,7 +65,7 @@ class ServiceConfigReaderSpec extends Specification {
 
     private stubServiceConfigFile(String fileName) {
         def configFile = loadConfigFile(fileName)
-        resourceProvider.getResourceFile('config.groovy') >> configFile
+        resourceProvider.getResourceFileContent('config.groovy') >> configFile
     }
 
     private loadConfigFile(String fileName) {

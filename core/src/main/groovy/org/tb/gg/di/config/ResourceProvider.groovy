@@ -6,5 +6,5 @@ import javax.annotation.Nullable
 
 interface ResourceProvider {
     @Nullable
-    File getResourceFile(String fileName)
+    String getResourceFileContent(String fileName)
 }
