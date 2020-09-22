@@ -15,6 +15,6 @@ dependencies {
 }
 
 task runGame (dependsOn: 'classes', type: JavaExec) {
-    main = 'EntryPoint'
+    main = 'InputBindingsDemo'
     classpath = sourceSets.main.runtimeClasspath
 }
