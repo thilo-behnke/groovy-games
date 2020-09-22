@@ -25,6 +25,11 @@ class SpriteBody extends Body {
     }
 
     @Override
+    Shape getStructure() {
+        return shape
+    }
+
+    @Override
     void render(RenderDestination renderDestination, RenderOptions options) {
         if (image) {
             def originalTopLeft = shape.boundingRect.originalTopLeft()

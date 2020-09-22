@@ -7,9 +7,11 @@ import org.tb.gg.gameObject.factory.GameObjectBuilder
 import org.tb.gg.gameObject.shape.Circle
 import org.tb.gg.global.geom.Vector
 import org.tb.gg.resources.ShooterGameResource
+import org.tb.gg.utils.MathUtils
 
 class EnemyGameObject extends BaseGameObject {
-    @Delegate EnemyProperties enemyProperties = new EnemyProperties()
+    @Delegate
+    EnemyProperties enemyProperties = new EnemyProperties()
 
     boolean wasHitRecently = false
 
@@ -31,29 +33,40 @@ class EnemyGameObject extends BaseGameObject {
 
         updateVelocity(inputComponent.activeActions)
 
+        if (orientation != Vector.zeroVector()) {
+            body.shape.setRotation(new Vector(x: 1, y: 0).angleBetween(orientation))
+        } else {
+            body.shape.setRotation(0.0)
+        }
+
         wasHitRecently = false
         physicsComponent.update(timestamp, delta)
     }
 
     // TODO: Copy and pasted - refactor.
     private updateVelocity(Set<String> activeActions) {
-        def newX = 0
-        def newY = 0
+        def maxVelocity = 0.5
+        def newX = physicsComponent.velocity.x
+        def newY = physicsComponent.velocity.y
         // Update X.
         if (activeActions.contains(EnemyAction.RIGHT.toString())) {
-            newX = 1
+            newX = newX + 0.05
         } else if (activeActions.contains(EnemyAction.LEFT.toString())) {
-            newX = -1
+            newX = newY - 0.05
         }
         // Update Y.
         if (activeActions.contains(EnemyAction.UP.toString())) {
-            newY = 1
+            newY = newY + 0.05
         } else if (activeActions.contains(EnemyAction.DOWN.toString())) {
-            newY = -1
+            newY = newY - 0.05
         }
-        physicsComponent.setVelocity(new Vector(x: newX, y: newY))
-    }
+        newX = MathUtils.normalizeInRange(newX, -maxVelocity, +maxVelocity)
+        newY = MathUtils.normalizeInRange(newY, -maxVelocity, +maxVelocity)
+        def velocity = new Vector(x: newX, y: newY)
 
+        physicsComponent.setVelocity(velocity)
+        orientation = velocity.normalize()
+    }
 }
 
 class EnemyProperties {

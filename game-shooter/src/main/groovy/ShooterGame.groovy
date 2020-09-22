@@ -13,16 +13,17 @@ class GameEntryPoint implements Game {
     void runGame() {
         def defaultScene = new GameScene('default')
 
+        ResourceLoader resourceLoader = (ResourceLoader) ServiceProvider.getSingletonService(ResourceLoader.class.simpleName)
+        resourceLoader.loadResource('spaceship-blue.png', ShooterGameResource.SPACESHIP_BLUE.name())
+        resourceLoader.loadResource('spaceship-green.png', ShooterGameResource.SPACESHIP_GREEN.name())
+        resourceLoader.loadResource('projectile-blue.png', ShooterGameResource.PROJECTILE_BLUE.name())
+
         def player = PlayerGameObject.create()
         defaultScene.accessGameObjectProvider() << player
         def score = ScoreGameObject.create()
         defaultScene.accessGameObjectProvider() << score
 
         sceneManager.addScene(defaultScene, true)
-
-        ResourceLoader resourceLoader = (ResourceLoader) ServiceProvider.getSingletonService(ResourceLoader.class.simpleName)
-        resourceLoader.loadResource('spaceship-blue.png', ShooterGameResource.SPACESHIP_BLUE.name())
-        resourceLoader.loadResource('projectile-blue.png', ShooterGameResource.PROJECTILE_BLUE.name())
 
         gameEngine.start()
     }

@@ -1,6 +1,7 @@
 package org.tb.gg.gameObject.factory
 
 import org.tb.gg.gameObject.BaseGameObject
+import org.tb.gg.gameObject.components.body.Body
 import org.tb.gg.gameObject.components.input.InputComponent
 import org.tb.gg.gameObject.components.physics.NoopPhysicsComponent
 import org.tb.gg.gameObject.components.physics.PhysicsComponent
@@ -24,7 +25,7 @@ class KeyBoundGameObjectBuilder<T extends BaseGameObject> implements Builder<Bas
         gameObject = clazz.getConstructor().newInstance()
     }
 
-    KeyBoundGameObjectBuilder setBody(ShapeBody body) {
+    KeyBoundGameObjectBuilder setBody(Body body) {
         gameObject.body = body
         return this
     }
