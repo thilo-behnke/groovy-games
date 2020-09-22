@@ -13,6 +13,6 @@ dependencies {
 }
 
 task runGame (dependsOn: 'classes', type: JavaExec) {
-    main = 'EntryPoint'
+    main = 'ClockRenderDemo'
     classpath = sourceSets.main.runtimeClasspath
 }

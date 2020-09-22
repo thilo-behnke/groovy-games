@@ -13,6 +13,6 @@ dependencies {
 }
 
 task runGame (dependsOn: 'classes', type: JavaExec) {
-    main = 'EntryPoint'
+    main = 'ShapeCollisionDemo'
     classpath = sourceSets.main.runtimeClasspath
 }

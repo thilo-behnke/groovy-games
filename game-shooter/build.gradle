@@ -13,6 +13,6 @@ dependencies {
 }
 
 task runGame (dependsOn: 'classes', type: JavaExec) {
-    main = 'GameShooter'
+    main = 'ShooterGame'
     classpath = sourceSets.main.runtimeClasspath
 }
