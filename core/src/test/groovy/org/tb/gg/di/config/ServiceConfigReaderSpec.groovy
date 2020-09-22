@@ -1,7 +1,11 @@
 package org.tb.gg.di.config
 
+import org.apache.commons.io.FileUtils
 import spock.lang.Specification
 import spock.lang.Unroll
+
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
 
 @Unroll
 class ServiceConfigReaderSpec extends Specification {
@@ -70,8 +74,6 @@ class ServiceConfigReaderSpec extends Specification {
 
     private loadConfigFile(String fileName) {
         def resource = getClass().getClassLoader().getResource(fileName)
-        new File(resource.getFile());
+        FileUtils.readFileToString(new File(resource.getFile()), StandardCharsets.UTF_8)
     }
-
-
 }
