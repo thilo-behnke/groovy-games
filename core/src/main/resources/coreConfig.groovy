@@ -33,3 +33,5 @@ services = {
 
     eventManager(DefaultEventManager)
 }
+
+scanPackages = ["org.tb.gg"]

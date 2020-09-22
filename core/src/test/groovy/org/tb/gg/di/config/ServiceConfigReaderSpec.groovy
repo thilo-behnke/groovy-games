@@ -1,7 +1,11 @@
 package org.tb.gg.di.config
 
+import org.apache.commons.io.FileUtils
 import spock.lang.Specification
 import spock.lang.Unroll
+
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
 
 @Unroll
 class ServiceConfigReaderSpec extends Specification {
@@ -18,7 +22,7 @@ class ServiceConfigReaderSpec extends Specification {
 
     def 'no config file exists'() {
         when:
-        serviceConfigReader.readConfigAndRegisterServices()
+        serviceConfigReader.readConfigFiles()
         then:
         0 * serviceMappingRegistry.invokeMethod(*_)
     }
@@ -27,7 +31,7 @@ class ServiceConfigReaderSpec extends Specification {
         given:
         stubServiceConfigFile('configWithoutServiceDeclaration.groovy')
         when:
-        serviceConfigReader.readConfigAndRegisterServices()
+        serviceConfigReader.readConfigFiles()
         then:
         0 * serviceMappingRegistry.invokeMethod(*_)
     }
@@ -36,7 +40,7 @@ class ServiceConfigReaderSpec extends Specification {
         given:
         stubServiceConfigFile('configWithEmptyServiceDeclaration.groovy')
         when:
-        serviceConfigReader.readConfigAndRegisterServices()
+        serviceConfigReader.readConfigFiles()
         then:
         0 * serviceMappingRegistry.invokeMethod(*_)
     }
@@ -45,7 +49,7 @@ class ServiceConfigReaderSpec extends Specification {
         given:
         stubServiceConfigFile('configWithSingleServiceDeclaration.groovy')
         when:
-        serviceConfigReader.readConfigAndRegisterServices()
+        serviceConfigReader.readConfigFiles()
         then:
         1 * serviceMappingRegistry.invokeMethod('myService', [String.class])
         0 * serviceMappingRegistry.invokeMethod(*_)
@@ -55,7 +59,7 @@ class ServiceConfigReaderSpec extends Specification {
         given:
         stubServiceConfigFile('configWithMultipleServiceDeclarations.groovy')
         when:
-        serviceConfigReader.readConfigAndRegisterServices()
+        serviceConfigReader.readConfigFiles()
         then:
         1 * serviceMappingRegistry.invokeMethod('myService', [String.class])
         1 * serviceMappingRegistry.invokeMethod('myOtherService', [Long.class])
@@ -63,15 +67,31 @@ class ServiceConfigReaderSpec extends Specification {
         0 * serviceMappingRegistry.invokeMethod(*_)
     }
 
+    def 'no scanPackages in config'() {
+        given:
+        stubServiceConfigFile('configWithoutScanForPackages.groovy')
+        when:
+        serviceConfigReader.readConfigFiles()
+        then:
+        serviceConfigReader.packagesToScan == []
+    }
+
+    def 'empty scanPackages in config'() {
+        given:
+        stubServiceConfigFile('configWithScanPackages.groovy')
+        when:
+        serviceConfigReader.readConfigFiles()
+        then:
+        serviceConfigReader.packagesToScan == ["org.tb.gg", "my.other.project"]
+    }
+
     private stubServiceConfigFile(String fileName) {
         def configFile = loadConfigFile(fileName)
-        resourceProvider.getResourceFile('config.groovy') >> configFile
+        resourceProvider.getResourceFileContent('config.groovy') >> configFile
     }
 
     private loadConfigFile(String fileName) {
         def resource = getClass().getClassLoader().getResource(fileName)
-        new File(resource.getFile());
+        FileUtils.readFileToString(new File(resource.getFile()), StandardCharsets.UTF_8)
     }
-
-
 }

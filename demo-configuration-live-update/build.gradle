@@ -15,6 +15,6 @@ dependencies {
 }
 
 task runGame (dependsOn: 'classes', type: JavaExec) {
-    main = 'EntryPoint'
+    main = 'ConfigurationLiveUpdateDemo'
     classpath = sourceSets.main.runtimeClasspath
 }
