@@ -18,7 +18,7 @@ class ServiceConfigReaderSpec extends Specification {
 
     def 'no config file exists'() {
         when:
-        serviceConfigReader.readConfigAndRegisterServices()
+        serviceConfigReader.readConfigFiles()
         then:
         0 * serviceMappingRegistry.invokeMethod(*_)
     }
@@ -27,7 +27,7 @@ class ServiceConfigReaderSpec extends Specification {
         given:
         stubServiceConfigFile('configWithoutServiceDeclaration.groovy')
         when:
-        serviceConfigReader.readConfigAndRegisterServices()
+        serviceConfigReader.readConfigFiles()
         then:
         0 * serviceMappingRegistry.invokeMethod(*_)
     }
@@ -36,7 +36,7 @@ class ServiceConfigReaderSpec extends Specification {
         given:
         stubServiceConfigFile('configWithEmptyServiceDeclaration.groovy')
         when:
-        serviceConfigReader.readConfigAndRegisterServices()
+        serviceConfigReader.readConfigFiles()
         then:
         0 * serviceMappingRegistry.invokeMethod(*_)
     }
@@ -45,7 +45,7 @@ class ServiceConfigReaderSpec extends Specification {
         given:
         stubServiceConfigFile('configWithSingleServiceDeclaration.groovy')
         when:
-        serviceConfigReader.readConfigAndRegisterServices()
+        serviceConfigReader.readConfigFiles()
         then:
         1 * serviceMappingRegistry.invokeMethod('myService', [String.class])
         0 * serviceMappingRegistry.invokeMethod(*_)
@@ -55,7 +55,7 @@ class ServiceConfigReaderSpec extends Specification {
         given:
         stubServiceConfigFile('configWithMultipleServiceDeclarations.groovy')
         when:
-        serviceConfigReader.readConfigAndRegisterServices()
+        serviceConfigReader.readConfigFiles()
         then:
         1 * serviceMappingRegistry.invokeMethod('myService', [String.class])
         1 * serviceMappingRegistry.invokeMethod('myOtherService', [Long.class])

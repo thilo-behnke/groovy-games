@@ -20,14 +20,12 @@ class ServiceConfigReader {
         this.serviceMappingRegistry = serviceMappingRegistry
     }
 
-    void readConfigAndRegisterServices() {
+    void readConfigFiles() {
         for (String fileName in CONFIG_FILES) {
             registerServiceDefinitionsFromConfigFile(fileName, serviceMappingRegistry)
         }
-    }
 
-    List<String> getPackagesToScan() {
-        Set<String> packagesToScan = []
+        Set<String> uniqPackages = []
         for (String fileName in CONFIG_FILES) {
             def serviceConfig = resourceProvider.getResourceFileContent(fileName)
             if (!serviceConfig) {
@@ -42,9 +40,9 @@ class ServiceConfigReader {
                 continue
             }
             def scanPackages = (List<String>) binding.getVariable(SCAN_PACKAGES_KEY)
-            packagesToScan.addAll(scanPackages)
+            uniqPackages.addAll(scanPackages)
         }
-        return packagesToScan.toList()
+        packagesToScan = uniqPackages.toList()
     }
 
     private void registerServiceDefinitionsFromConfigFile(String fileName, ServiceMappingRegistry serviceRegistry) {

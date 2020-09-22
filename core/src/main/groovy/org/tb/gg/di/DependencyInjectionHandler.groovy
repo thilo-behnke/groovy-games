@@ -28,7 +28,7 @@ class DependencyInjectionHandler {
         }
         def serviceMappingRegistry = new ServiceMappingRegistry()
         serviceConfigReader = new ServiceConfigReader(new DefaultResourceProvider(), serviceMappingRegistry)
-        serviceConfigReader.readConfigAndRegisterServices()
+        serviceConfigReader.readConfigFiles()
 
         def providedSingletonInstances = findProvidedSingletonInstances(serviceMappingRegistry)
         def createdServiceInstances = createSingletonServiceInstances(serviceMappingRegistry)
